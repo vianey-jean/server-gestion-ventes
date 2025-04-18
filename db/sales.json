@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1745000149010",
+    "date": "2025-04-18",
+    "productId": "1744997295911",
+    "description": "Perruque bouclé noir 24 pouces",
+    "sellingPrice": 120,
+    "quantitySold": 2,
+    "purchasePrice": 56,
+    "profit": 128
+  },
+  {
+    "id": "1745000388406",
+    "date": "2025-04-18",
+    "productId": "1",
+    "description": "Laptop",
+    "sellingPrice": 1000,
+    "quantitySold": 4,
+    "purchasePrice": 600,
+    "profit": 1600
+  }
+]

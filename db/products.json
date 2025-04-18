@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "description": "Laptop",
+    "purchasePrice": 600,
+    "quantity": 16
+  },
+  {
+    "id": "2",
+    "description": "Smartphone",
+    "purchasePrice": 300,
+    "quantity": 15
+  },
+  {
+    "id": "3",
+    "description": "Headphones",
+    "purchasePrice": 50,
+    "quantity": 30
+  },
+  {
+    "id": "1744997295911",
+    "description": "Perruque bouclé noir 24 pouces",
+    "purchasePrice": 56,
+    "quantity": 2
+  },
+  {
+    "id": "1744998526552",
+    "description": "Tissages bouclé noir 22 pouces",
+    "purchasePrice": 50,
+    "quantity": 4
+  }
+]
