@@ -84,10 +84,10 @@
     "date": "2025-04-9",
     "productId": "10",
     "description": "Tissages bouclé noir 22 pouces",
-    "sellingPrice": 50,
+    "sellingPrice": 150,
     "quantitySold": 1,
-    "purchasePrice": 150,
-    "profit": 150
+    "purchasePrice": 50,
+    "profit": 100
   }
 ]
 
