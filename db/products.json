@@ -1,32 +1,68 @@
 [
   {
     "id": "1",
-    "description": "Laptop",
-    "purchasePrice": 600,
-    "quantity": 16
+    "description": "Perruque blanche gris 24 pouces",
+    "purchasePrice": 101,
+    "quantity": 1
   },
   {
     "id": "2",
-    "description": "Smartphone",
-    "purchasePrice": 300,
-    "quantity": 15
+    "description": "Perruque bouclé noir 26 pouces",
+    "purchasePrice": 49,
+    "quantity": 1
   },
   {
     "id": "3",
-    "description": "Headphones",
-    "purchasePrice": 50,
-    "quantity": 30
-  },
-  {
-    "id": "1744997295911",
-    "description": "Perruque bouclé noir 24 pouces",
-    "purchasePrice": 56,
-    "quantity": 2
-  },
-  {
-    "id": "1744998526552",
     "description": "Tissages bouclé noir 22 pouces",
     "purchasePrice": 50,
+    "quantity": 3
+  },
+  {
+    "id": "4",
+    "description": "Perruque lisse frange noir 26 pouces",
+    "purchasePrice": 50,
+    "quantity": 1
+  },
+  {
+    "id": "5",
+    "description": "Tissages bouclé noir 20 pouces",
+    "purchasePrice": 60,
+    "quantity": 4
+  },
+  {
+    "id": "6",
+    "description": "Perruque lisse blonde miel 30 pouces",
+    "purchasePrice": 59,
+    "quantity": 1
+  },
+  {
+    "id": "7",
+    "description": "Perruque lisse ondulé orange 18 pouces",
+    "purchasePrice": 50,
+    "quantity": 1
+  },
+  {
+    "id": "8",
+    "description": "Perruque bouclé lisse 14 pouces",
+    "purchasePrice": 34,
+    "quantity": 1
+  },
+  {
+    "id": "9",
+    "description": "Perruque bandeau bouclé noir 18 pouces",
+    "purchasePrice": 31,
+    "quantity": 1
+  },
+  {
+    "id": "9",
+    "description": "Perruque bouclé frise rouge 12 pouces",
+    "purchasePrice": 30,
+    "quantity": 1
+  },
+  {
+    "id": "10",
+    "description": "Tissages blonde meil 20 pouces",
+    "purchasePrice": 59,
     "quantity": 4
   }
 ]

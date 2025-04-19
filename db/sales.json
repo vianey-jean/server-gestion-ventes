@@ -1,22 +1,103 @@
 [
   {
-    "id": "1745000149010",
-    "date": "2025-04-18",
-    "productId": "1744997295911",
-    "description": "Perruque bouclé noir 24 pouces",
+    "id": "1",
+    "date": "2025-04-2",
+    "productId": "7",
+    "description": "Perruque lisse ondulé orange 18 pouces",
     "sellingPrice": 120,
-    "quantitySold": 2,
-    "purchasePrice": 56,
-    "profit": 128
+    "quantitySold": 1,
+    "purchasePrice": 50,
+    "profit": 70
   },
   {
-    "id": "1745000388406",
-    "date": "2025-04-18",
+    "id": "2",
+    "date": "2025-04-5",
+    "productId": "6",
+    "description": "Perruque lisse blonde miel 30 pouces",
+    "sellingPrice": 230,
+    "quantitySold": 1,
+    "purchasePrice": 67,
+    "profit": 163
+  },
+  {
+    "id": "3",
+    "date": "2025-04-5",
+    "productId": "6",
+    "description": "Perruque lisse blonde miel 30 pouces",
+    "sellingPrice": 120,
+    "quantitySold": 1,
+    "purchasePrice": 31,
+    "profit": 89
+  },
+  {
+    "id": "4",
+    "date": "2025-04-7",
+    "productId": "9",
+    "description": "Perruque lisse blonde miel 30 pouces",
+    "sellingPrice": 60,
+    "quantitySold": 1,
+    "purchasePrice": 30,
+    "profit": 30
+  },
+  {
+    "id": "5",
+    "date": "2025-04-8",
+    "productId": "2",
+    "description": "Perruque lisse blonde miel 30 pouces",
+    "sellingPrice": 49,
+    "quantitySold": 1,
+    "purchasePrice": 190,
+    "profit": 141
+  },
+  {
+    "id": "6",
+    "date": "2025-04-8",
     "productId": "1",
-    "description": "Laptop",
-    "sellingPrice": 1000,
+    "description": "Perruque blanche gris 24 pouces",
+    "sellingPrice": 101,
+    "quantitySold": 1,
+    "purchasePrice": 200,
+    "profit": 99
+  },
+  {
+    "id": "7",
+    "date": "2025-04-8",
+    "productId": "10",
+    "description": "Tissages blonde meil 20 pouces",
+    "sellingPrice": 59,
     "quantitySold": 4,
-    "purchasePrice": 600,
-    "profit": 1600
+    "purchasePrice": 150,
+    "profit": 91
+  },
+  {
+    "id": "7",
+    "date": "2025-04-8",
+    "productId": "10",
+    "description": "Tissages blonde meil 20 pouces",
+    "sellingPrice": 59,
+    "quantitySold": 4,
+    "purchasePrice": 150,
+    "profit": 91
+  },
+  {
+    "id": "8",
+    "date": "2025-04-9",
+    "productId": "10",
+    "description": "Perruque bouclé noir 26 pouces",
+    "sellingPrice": 49,
+    "quantitySold": 1,
+    "purchasePrice": 190,
+    "profit": 141
+  },
+  {
+    "id": "9",
+    "date": "2025-04-9",
+    "productId": "10",
+    "description": "Tissages bouclé noir 22 pouces",
+    "sellingPrice": 150,
+    "quantitySold": 1,
+    "purchasePrice": 50,
+    "profit": 150
   }
 ]
+
