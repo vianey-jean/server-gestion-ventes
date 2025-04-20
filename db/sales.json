@@ -78,6 +78,15 @@
     "quantitySold": 1,
     "purchasePrice": 50,
     "profit": 100
+  },
+  {
+    "id": "1745140693790",
+    "date": "2025-04-20",
+    "productId": "1745140662674",
+    "description": "Perruque bouclé noir France 12 pouce noir ",
+    "sellingPrice": 50,
+    "quantitySold": 1,
+    "purchasePrice": 20,
+    "profit": 30
   }
 ]
-

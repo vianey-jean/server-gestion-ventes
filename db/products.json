@@ -64,5 +64,11 @@
     "description": "Tissages blonde meil 20 pouces",
     "purchasePrice": 59,
     "quantity": 4
+  },
+  {
+    "id": "1745140662674",
+    "description": "Perruque bouclé noir France 12 pouce noir ",
+    "purchasePrice": 20,
+    "quantity": 0
   }
 ]
