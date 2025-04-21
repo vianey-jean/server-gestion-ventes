@@ -1,0 +1,7 @@
+
+[
+    { "id": "1", "date": "2023-04-10", "description": "Perruque Blonde", "prixVente": 450, "avanceRecue": 200, "reste": 250, "estPaye": false },
+    { "id": "2", "date": "2023-04-15", "description": "Perruque Brune", "prixVente": 300, "avanceRecue": 300, "reste": 0, "estPaye": true },
+    { "id": "3", "date": "2023-04-20", "description": "Perruque Rousse", "prixVente": 500, "avanceRecue": 250, "reste": 250, "estPaye": false }
+  ]
+  

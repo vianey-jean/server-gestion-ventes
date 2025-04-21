@@ -1,0 +1,7 @@
+
+[
+    { "id": "1", "nom": "Famille Martin", "pretTotal": 2000, "soldeRestant": 1500, "dernierRemboursement": 500, "dateRemboursement": "2024-04-15" },
+    { "id": "2", "nom": "Famille Dupont", "pretTotal": 1000, "soldeRestant": 500, "dernierRemboursement": 200, "dateRemboursement": "2024-04-10" },
+    { "id": "3", "nom": "Famille Bernard", "pretTotal": 3000, "soldeRestant": 2000, "dernierRemboursement": 1000, "dateRemboursement": "2024-04-05" }
+  ]
+  
