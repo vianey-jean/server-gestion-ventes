@@ -1,7 +1,22 @@
-
 [
-    { "id": "1", "date": "2023-04-10", "description": "Perruque Blonde", "prixVente": 450, "avanceRecue": 200, "reste": 250, "estPaye": false },
-    { "id": "2", "date": "2023-04-15", "description": "Perruque Brune", "prixVente": 300, "avanceRecue": 300, "reste": 0, "estPaye": true },
-    { "id": "3", "date": "2023-04-20", "description": "Perruque Rousse", "prixVente": 500, "avanceRecue": 250, "reste": 250, "estPaye": false }
-  ]
-  
+  {
+    "id": "1",
+    "date": "2024-10-05",
+    "description": "Perruque ondulé noir marron ",
+    "nom": "Sophie Martin",
+    "prixVente": 100,
+    "avanceRecue": 100,
+    "reste": 0,
+    "estPaye": true
+  },
+  {
+    "id": "2",
+    "date": "2024-10-05",
+    "description": "Perruque bouclé noir ",
+    "nom": "Sophie Martin",
+    "prixVente": 140,
+    "avanceRecue": 0,
+    "reste": 140,
+    "estPaye": false
+  }
+]

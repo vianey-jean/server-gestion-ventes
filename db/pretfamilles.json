@@ -1,7 +1,50 @@
-
 [
-    { "id": "1", "nom": "Famille Martin", "pretTotal": 2000, "soldeRestant": 1500, "dernierRemboursement": 500, "dateRemboursement": "2024-04-15" },
-    { "id": "2", "nom": "Famille Dupont", "pretTotal": 1000, "soldeRestant": 500, "dernierRemboursement": 200, "dateRemboursement": "2024-04-10" },
-    { "id": "3", "nom": "Famille Bernard", "pretTotal": 3000, "soldeRestant": 2000, "dernierRemboursement": 1000, "dateRemboursement": "2024-04-05" }
-  ]
-  
+  {
+    "id": "1",
+    "nom": "Famille Zalfya",
+    "pretTotal": 400,
+    "soldeRestant": 100,
+    "dernierRemboursement": 300,
+    "dateRemboursement": "2025-04-21"
+  },
+  {
+    "id": "2",
+    "nom": "Famille Kamarya",
+    "pretTotal": 1000,
+    "soldeRestant": 700,
+    "dernierRemboursement": 300,
+    "dateRemboursement": "2025-04-21"
+  },
+  {
+    "id": "3",
+    "nom": "Famille Soraya",
+    "pretTotal": 865,
+    "soldeRestant": 465,
+    "dernierRemboursement": 200,
+    "dateRemboursement": "2025-04-05"
+  },
+  {
+    "id": "4",
+    "nom": "Famille Huber",
+    "pretTotal": 1300,
+    "soldeRestant": 0,
+    "dernierRemboursement": 1300,
+    "dateRemboursement": "2025-04-05"
+  },
+  {
+    "id": "5",
+    "nom": "Famille Noryan",
+    "pretTotal": 1200,
+    "soldeRestant": 800,
+    "dernierRemboursement": 400,
+    "dateRemboursement": "2025-04-05"
+  },
+  {
+    "id": "6",
+    "nom": "Famille Richard",
+    "pretTotal": 1250,
+    "soldeRestant": 1250,
+    "dernierRemboursement": 0,
+    "dateRemboursement": "2025-04-05"
+  }
+]
