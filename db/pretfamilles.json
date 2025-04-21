@@ -18,9 +18,9 @@
   {
     "id": "3",
     "nom": "Famille Soraya",
-    "pretTotal": 865,
-    "soldeRestant": 465,
-    "dernierRemboursement": 200,
+    "pretTotal": 465,
+    "soldeRestant": 300,
+    "dernierRemboursement": 165,
     "dateRemboursement": "2025-04-05"
   },
   {
