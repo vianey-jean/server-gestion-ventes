@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const DepenseDuMois = require('../models/DepenseDuMois');
@@ -104,16 +105,39 @@ router.put('/fixe', auth, (req, res) => {
   }
 });
 
-// Nouvelle route pour reset les mouvements du mois
+// Route pour réinitialiser les dépenses du mois (vidage de la table)
 router.post('/reset', auth, (req, res) => {
   try {
-    const fs = require('fs');
-    const path = require('path');
-    const dbPath = path.join(__dirname, '../db/depensedumois.json');
-    fs.writeFileSync(dbPath, JSON.stringify([], null, 2)); // Vide le fichier
-    res.status(200).json({ message: 'Dépenses du mois réinitialisées !' });
+    DepenseDuMois.resetAllMouvements();
+    res.json({ message: 'Toutes les dépenses du mois ont été réinitialisées avec succès' });
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur lors du reset' });
+    console.error('Erreur lors de la réinitialisation des dépenses:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Route pour vérifier si c'est la fin du mois et réinitialiser si nécessaire
+router.get('/check-month-end', auth, (req, res) => {
+  try {
+    const today = new Date();
+    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    
+    // Vérifie si c'est le dernier jour du mois
+    if (today.getDate() === lastDayOfMonth) {
+      DepenseDuMois.resetAllMouvements();
+      res.json({ 
+        reset: true, 
+        message: 'Fin du mois détectée, les dépenses ont été réinitialisées' 
+      });
+    } else {
+      res.json({ 
+        reset: false, 
+        message: 'Ce n\'est pas la fin du mois, aucune réinitialisation effectuée' 
+      });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la vérification de fin de mois:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 });
 
