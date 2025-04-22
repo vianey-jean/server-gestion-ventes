@@ -11,6 +11,7 @@ router.get('/', authMiddleware, async (req, res) => {
     const sales = Sale.getAll();
     res.json(sales);
   } catch (error) {
+    console.error('Error getting all sales:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -27,6 +28,7 @@ router.get('/by-month', authMiddleware, async (req, res) => {
     const sales = Sale.getByMonthYear(Number(month), Number(year));
     res.json(sales);
   } catch (error) {
+    console.error('Error getting sales by month/year:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -79,6 +81,7 @@ router.post('/', authMiddleware, async (req, res) => {
     
     res.status(201).json(newSale);
   } catch (error) {
+    console.error('Error creating sale:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -120,6 +123,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     
     res.json(updatedSale);
   } catch (error) {
+    console.error('Error updating sale:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -135,6 +139,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     
     res.json({ success: true });
   } catch (error) {
+    console.error('Error deleting sale:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -161,6 +166,7 @@ router.post('/export-month', authMiddleware, async (req, res) => {
     
     res.json({ success: true, salesCount: sales.length });
   } catch (error) {
+    console.error('Error exporting sales:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultsecretkey');
     
     // Set user data in request
     const user = User.getById(decoded.id);
@@ -23,6 +23,7 @@ const authMiddleware = (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    console.error('Auth middleware error:', error.message);
     res.status(401).json({ message: 'Token is not valid' });
   }
 };
