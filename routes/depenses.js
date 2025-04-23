@@ -108,8 +108,12 @@ router.put('/fixe', auth, (req, res) => {
 // Route pour réinitialiser les dépenses du mois (vidage de la table)
 router.post('/reset', auth, (req, res) => {
   try {
-    DepenseDuMois.resetAllMouvements();
-    res.json({ message: 'Toutes les dépenses du mois ont été réinitialisées avec succès' });
+    const result = DepenseDuMois.resetAllMouvements();
+    if (result) {
+      res.json({ message: 'Toutes les dépenses du mois ont été réinitialisées avec succès' });
+    } else {
+      res.status(500).json({ message: 'Erreur lors de la réinitialisation des dépenses' });
+    }
   } catch (error) {
     console.error('Erreur lors de la réinitialisation des dépenses:', error);
     res.status(500).json({ message: 'Erreur serveur' });

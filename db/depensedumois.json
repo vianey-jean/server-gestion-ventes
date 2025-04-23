@@ -1,20 +1,20 @@
 [
   {
     "id": "1",
-    "date": "2023-04-05",
-    "description": "Salaire",
-    "categorie": "salaire",
-    "debit": 0,
-    "credit": 2000,
-    "solde": 2000
+    "description": "Charge fixe",
+    "categorie": "chargeFixe",
+    "date": "2025-04-23",
+    "debit": "352.96000000000004",
+    "credit": "",
+    "solde": -352.96000000000004
   },
   {
     "id": "2",
-    "date": "2025-04-21",
     "description": "RSA",
-    "categorie": "autre",
-    "debit": 0,
-    "credit": 1818,
-    "solde": 3818
+    "categorie": "Autres",
+    "date": "2025-04-23",
+    "debit": "",
+    "credit": "1818",
+    "solde": 1465.04
   }
 ]

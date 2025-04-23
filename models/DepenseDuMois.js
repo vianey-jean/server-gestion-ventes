@@ -39,7 +39,7 @@ const createMouvement = (mouvement) => {
     const lastMouvement = mouvements.length > 0 ? mouvements[mouvements.length - 1] : null;
     const lastSolde = lastMouvement ? lastMouvement.solde : 0;
     
-    const newSolde = lastSolde + (mouvement.credit || 0) - (mouvement.debit || 0);
+    const newSolde = lastSolde + (mouvement.credit ? parseFloat(mouvement.credit) || 0 : 0) - (mouvement.debit ? parseFloat(mouvement.debit) || 0 : 0);
     
     const newMouvement = {
       id: newId,
@@ -80,10 +80,10 @@ const updateMouvement = (id, updatedMouvement) => {
     for (let i = index; i < mouvements.length; i++) {
       if (i === 0) {
         // Premier élément: le solde est simplement crédit - débit
-        mouvements[i].solde = (mouvements[i].credit || 0) - (mouvements[i].debit || 0);
+        mouvements[i].solde = (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       } else {
         // Autres éléments: solde précédent + crédit - débit
-        mouvements[i].solde = mouvements[i-1].solde + (mouvements[i].credit || 0) - (mouvements[i].debit || 0);
+        mouvements[i].solde = mouvements[i-1].solde + (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       }
     }
     
@@ -112,10 +112,10 @@ const deleteMouvement = (id) => {
     for (let i = 0; i < mouvements.length; i++) {
       if (i === 0) {
         // Premier élément: le solde est simplement crédit - débit
-        mouvements[i].solde = (mouvements[i].credit || 0) - (mouvements[i].debit || 0);
+        mouvements[i].solde = (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       } else {
         // Autres éléments: solde précédent + crédit - débit
-        mouvements[i].solde = mouvements[i-1].solde + (mouvements[i].credit || 0) - (mouvements[i].debit || 0);
+        mouvements[i].solde = mouvements[i-1].solde + (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       }
     }
     
@@ -165,7 +165,7 @@ const updateDepensesFixe = (depensesFixe) => {
     
     const updatedDepensesFixe = {
       ...depensesFixe,
-      total
+      total: parseFloat(total.toFixed(2))
     };
     
     fs.writeFileSync(depenseFixePath, JSON.stringify(updatedDepensesFixe, null, 2));
@@ -177,6 +177,17 @@ const updateDepensesFixe = (depensesFixe) => {
   }
 };
 
+// Fonction pour réinitialiser tous les mouvements
+const resetAllMouvements = () => {
+  try {
+    fs.writeFileSync(depenseDuMoisPath, JSON.stringify([], null, 2));
+    return true;
+  } catch (error) {
+    console.error('Erreur lors de la réinitialisation des mouvements:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   getAllMouvements,
   getMouvementById,
@@ -184,5 +195,6 @@ module.exports = {
   updateMouvement,
   deleteMouvement,
   getDepensesFixe,
-  updateDepensesFixe
+  updateDepensesFixe,
+  resetAllMouvements
 };
