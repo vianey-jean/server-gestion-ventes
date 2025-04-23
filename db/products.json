@@ -3,19 +3,19 @@
     "id": "1",
     "description": "Perruque blanche gris 24 pouces",
     "purchasePrice": 101,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "2",
     "description": "Perruque bouclé noir 26 pouces",
     "purchasePrice": 49,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "3",
     "description": "Tissages bouclé noir 22 pouces",
     "purchasePrice": 50,
-    "quantity": 3
+    "quantity": 2
   },
   {
     "id": "4",
@@ -33,13 +33,13 @@
     "id": "6",
     "description": "Perruque lisse blonde miel 30 pouces",
     "purchasePrice": 59,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "7",
     "description": "Perruque lisse ondulé orange 18 pouces",
     "purchasePrice": 50,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "8",
@@ -51,24 +51,66 @@
     "id": "9",
     "description": "Perruque bandeau bouclé noir 18 pouces",
     "purchasePrice": 31,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "10",
     "description": "Perruque bouclé frise rouge 12 pouces",
     "purchasePrice": 30,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "11",
     "description": "Tissages blonde meil 20 pouces",
     "purchasePrice": 59,
-    "quantity": 4
+    "quantity": 3
   },
   {
-    "id": "1745140662674",
-    "description": "Perruque bouclé noir France 12 pouce noir ",
+    "id": "12",
+    "description": "Perruque bouclé noir Frange 12 pouce noir ",
     "purchasePrice": 20,
     "quantity": 0
+  },
+  {
+    "id": "1745414593633",
+    "description": "Perruque lisse blonde miel 24 pouces",
+    "purchasePrice": 47,
+    "quantity": 1
+  },
+  {
+    "id": "1745414812444",
+    "description": "Tissages lisse ondulé 22 pouces",
+    "purchasePrice": 55,
+    "quantity": 3
+  },
+  {
+    "id": "1745415432141",
+    "description": "Perruque bouclé orange 20 pouces",
+    "purchasePrice": 50,
+    "quantity": 1
+  },
+  {
+    "id": "1745415543888",
+    "description": "Perruque court tressé noir",
+    "purchasePrice": 26,
+    "quantity": 1
+  },
+  {
+    "id": "1745415671664",
+    "description": "Perruque Frisé lisse 20 pouces",
+    "purchasePrice": 56,
+    "quantity": 1
+  },
+  {
+    "id": "1745415790700",
+    "description": "Perruque bouclé marron 22 pouces",
+    "purchasePrice": 46,
+    "quantity": 1
+  },
+  {
+    "id": "1745415935938",
+    "description": "Perruque bouclé noir 20 pouces Vendu",
+    "purchasePrice": 56,
+    "quantity": 1
   }
 ]

@@ -1,22 +1,90 @@
 [
   {
     "id": "1",
-    "date": "2024-10-05",
-    "description": "Perruque ondulé noir marron ",
-    "nom": "Sophie Martin",
-    "prixVente": 100,
-    "avanceRecue": 100,
-    "reste": 0,
-    "estPaye": true
+    "date": "2025-04-05",
+    "description": "Perruque lisse blonde miel 30 pouces",
+    "nom": "Copine St Louis",
+    "prixVente": 230,
+    "avanceRecue": 130,
+    "reste": 100,
+    "estPaye": false,
+    "productId": "6"
   },
   {
     "id": "2",
+    "date": "2025-04-01",
+    "description": "Perruque lisse blonde miel 24 pouces",
+    "nom": "Cliente Shaty centre ville st denis",
+    "prixVente": 160,
+    "avanceRecue": 0,
+    "reste": 160,
+    "estPaye": false,
+    "productId": "1745414593633"
+  },
+  {
+    "id": "3",
+    "date": "2025-03-30",
+    "description": "Tissages lisse ondulé 22 pouces",
+    "nom": "Cliente Shaty Centre ville st denis",
+    "prixVente": 150,
+    "avanceRecue": 75,
+    "reste": 75,
+    "estPaye": false,
+    "productId": "1745414812444"
+  },
+  {
+    "id": "4",
+    "date": "2025-02-11",
+    "description": "Perruque bouclé orange 20 pouces",
+    "nom": "Cliente Naomie Vaubon",
+    "prixVente": 130,
+    "avanceRecue": 0,
+    "reste": 130,
+    "estPaye": false,
+    "productId": "1745415432141"
+  },
+  {
+    "id": "5",
+    "date": "2025-02-08",
+    "description": "Perruque court tressé noir",
+    "nom": "Cliente Marie José Le Port",
+    "prixVente": 90,
+    "avanceRecue": 0,
+    "reste": 90,
+    "estPaye": false,
+    "productId": "1745415543888"
+  },
+  {
+    "id": "6",
+    "date": "2024-11-10",
+    "description": "Perruque Frisé lisse 20 pouces",
+    "nom": "Cliente Ma warren Chaudron",
+    "prixVente": 130,
+    "avanceRecue": 0,
+    "reste": 130,
+    "estPaye": false,
+    "productId": "1745415671664"
+  },
+  {
+    "id": "7",
+    "date": "2024-10-21",
+    "description": "Perruque bouclé marron 22 pouces",
+    "nom": "Cliente Ma Warren chaudron",
+    "prixVente": 160,
+    "avanceRecue": 100,
+    "reste": 60,
+    "estPaye": false,
+    "productId": "1745415790700"
+  },
+  {
+    "id": "8",
     "date": "2024-10-05",
-    "description": "Perruque bouclé noir ",
-    "nom": "Sophie Martin",
+    "description": "Perruque bouclé noir 20 pouces Vendu",
+    "nom": "Soeur Naomie Vaubon ",
     "prixVente": 140,
     "avanceRecue": 0,
     "reste": 140,
-    "estPaye": false
+    "estPaye": false,
+    "productId": "1745415935938"
   }
 ]
