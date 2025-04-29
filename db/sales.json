@@ -88,5 +88,15 @@
     "quantitySold": 1,
     "purchasePrice": 20,
     "profit": 30
+  },
+  {
+    "id": "1745933741602",
+    "date": "2025-04-29",
+    "productId": "1745933694208",
+    "description": "Perruque lisse ondulé noir mèche rouge bordeau de 24 pouces",
+    "sellingPrice": 170,
+    "quantitySold": 1,
+    "purchasePrice": 65.24,
+    "profit": 104.76
   }
 ]

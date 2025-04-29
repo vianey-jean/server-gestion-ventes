@@ -45,7 +45,7 @@
     "id": "8",
     "description": "Perruque bouclé lisse 14 pouces",
     "purchasePrice": 34,
-    "quantity": 1
+    "quantity": 2
   },
   {
     "id": "9",
@@ -111,6 +111,180 @@
     "id": "1745415935938",
     "description": "Perruque bouclé noir 20 pouces Vendu",
     "purchasePrice": 56,
+    "quantity": 1
+  },
+  {
+    "id": "1745933694208",
+    "description": "Perruque lisse ondulé noir mèche rouge bordeau de 24 pouces",
+    "purchasePrice": 65.24,
+    "quantity": 0
+  },
+  {
+    "id": "1745933824476",
+    "description": "Perruque blonde miel lisse 18 pouces 13x4 lace frontale",
+    "purchasePrice": 31.4,
+    "quantity": 1
+  },
+  {
+    "id": "1745933865809",
+    "description": "Perruque lisse noir en frange de 26 pouces",
+    "purchasePrice": 48.39,
+    "quantity": 1
+  },
+  {
+    "id": "1745933978887",
+    "description": "Perruque cheveux gasy 16 pouces ",
+    "purchasePrice": 19.79,
+    "quantity": 2
+  },
+  {
+    "id": "1745934022973",
+    "description": "Perruque lisse noir et rouge ondulé 13x4 lace frontale de 22 pouces",
+    "purchasePrice": 63.53,
+    "quantity": 1
+  },
+  {
+    "id": "1745934086516",
+    "description": "Perruque blonde miel mèche blanche de 22 pouces",
+    "purchasePrice": 59.98,
+    "quantity": 1
+  },
+  {
+    "id": "1745934143195",
+    "description": "Perruque tressé 8 pouces ",
+    "purchasePrice": 32.02,
+    "quantity": 1
+  },
+  {
+    "id": "1745934199543",
+    "description": "Perruque lisse 13x4 marron 20pouces",
+    "purchasePrice": 51.42,
+    "quantity": 1
+  },
+  {
+    "id": "1745934613426",
+    "description": "Perruque lisse noir rouge frange 18 pouces",
+    "purchasePrice": 24.72,
+    "quantity": 1
+  },
+  {
+    "id": "1745934648794",
+    "description": "Perruque lisse frange marron 20 pouces",
+    "purchasePrice": 29.44,
+    "quantity": 1
+  },
+  {
+    "id": "1745934693435",
+    "description": "Perruque lisse frange ondulé marron 18 pouces",
+    "purchasePrice": 30.84,
+    "quantity": 1
+  },
+  {
+    "id": "1745934771042",
+    "description": "Perruque bouclé noir 13x4 24 pouces et 200%",
+    "purchasePrice": 59.77,
+    "quantity": 1
+  },
+  {
+    "id": "1745934815562",
+    "description": "Perruque bouclé rouge bordeau 13x4 26 pouces et 210%",
+    "purchasePrice": 69.53,
+    "quantity": 1
+  },
+  {
+    "id": "1745934859972",
+    "description": "Perruque lisse noir ondulé 13x4 30pouces et 200%",
+    "purchasePrice": 48.68,
+    "quantity": 1
+  },
+  {
+    "id": "1745934912998",
+    "description": "Perruque lisse ondulé marron 13x4 28 pouces et 200%",
+    "purchasePrice": 56.89,
+    "quantity": 1
+  },
+  {
+    "id": "1745934973005",
+    "description": "Perruque lisse rouge bordeau 13x4 26 pouces",
+    "purchasePrice": 66.99,
+    "quantity": 1
+  },
+  {
+    "id": "1745935024364",
+    "description": "Perruque bouclé noir 12 pouces lace T ",
+    "purchasePrice": 30.19,
+    "quantity": 1
+  },
+  {
+    "id": "1745935063486",
+    "description": "Perruque bouclé mèche blonde 12 pouces 200%",
+    "purchasePrice": 30.19,
+    "quantity": 1
+  },
+  {
+    "id": "1745935106995",
+    "description": "Perruque bouclé frange 12 pouces blonde miel",
+    "purchasePrice": 43.62,
+    "quantity": 1
+  },
+  {
+    "id": "1745935150488",
+    "description": "Perruque bouclé frange 14 pouces blonde miel ",
+    "purchasePrice": 34.41,
+    "quantity": 1
+  },
+  {
+    "id": "1745935188943",
+    "description": "Perruque lisse blonde blanche 16 pouces 13x4",
+    "purchasePrice": 48.9,
+    "quantity": 1
+  },
+  {
+    "id": "1745935314013",
+    "description": "Tissage bouclé noir 18 pouces 12A",
+    "purchasePrice": 50.24,
+    "quantity": 4
+  },
+  {
+    "id": "1745935345067",
+    "description": "Perruque blonde miel lisse 30 pouces 13x4",
+    "purchasePrice": 81.84,
+    "quantity": 1
+  },
+  {
+    "id": "1745935376127",
+    "description": "Tissages lisse noir 30 pouces",
+    "purchasePrice": 75.85,
+    "quantity": 3
+  },
+  {
+    "id": "1745935413775",
+    "description": "Perruque lisse marron 6 pouces ",
+    "purchasePrice": 11.68,
+    "quantity": 1
+  },
+  {
+    "id": "1745935444003",
+    "description": "Perruque lisse noir 6 pouces ",
+    "purchasePrice": 14.08,
+    "quantity": 1
+  },
+  {
+    "id": "1745935490944",
+    "description": "Tissages lisse 20 pouces 12A",
+    "purchasePrice": 53.75,
+    "quantity": 4
+  },
+  {
+    "id": "1745935530399",
+    "description": "Perruque blonde blanche ondulé 34 pouces 13x4 et 200%",
+    "purchasePrice": 51.2,
+    "quantity": 1
+  },
+  {
+    "id": "1745935558814",
+    "description": "Perruque bandeau noir bouclé 22 pouces et 250%",
+    "purchasePrice": 45.43,
     "quantity": 1
   }
 ]
