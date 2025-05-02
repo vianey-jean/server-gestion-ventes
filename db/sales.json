@@ -1,102 +1,22 @@
 [
   {
-    "id": "1745413081866",
-    "date": "2025-04-02",
-    "productId": "7",
-    "description": "Perruque lisse ondulé orange 18 pouces",
-    "sellingPrice": 120,
-    "quantitySold": 1,
-    "purchasePrice": 50,
-    "profit": 70
-  },
-  {
-    "id": "1745413150170",
-    "date": "2025-04-04",
-    "productId": "6",
-    "description": "Perruque lisse blonde miel 30 pouces",
-    "sellingPrice": 230,
-    "quantitySold": 1,
-    "purchasePrice": 59,
-    "profit": 171
-  },
-  {
-    "id": "1745413220585",
-    "date": "2025-04-05",
-    "productId": "9",
-    "description": "Perruque bandeau bouclé noir 18 pouces",
-    "sellingPrice": 120,
-    "quantitySold": 1,
-    "purchasePrice": 31,
-    "profit": 89
-  },
-  {
-    "id": "1745413328725",
-    "date": "2025-04-05",
-    "productId": "10",
-    "description": "Perruque bouclé frise rouge 12 pouces",
+    "id": "1746196986698",
+    "date": "2025-05-02",
+    "productId": "1746196961916",
+    "description": "Perruque bouclé marron 13x4 16 pouces 200%",
     "sellingPrice": 80,
     "quantitySold": 1,
-    "purchasePrice": 30,
-    "profit": 50
+    "purchasePrice": 50.6,
+    "profit": 29.4
   },
   {
-    "id": "1745413364660",
-    "date": "2025-04-08",
-    "productId": "2",
-    "description": "Perruque bouclé noir 26 pouces",
-    "sellingPrice": 190,
+    "id": "1746197197758",
+    "date": "2025-05-02",
+    "productId": "1746197176031",
+    "description": "Colle et disolvant",
+    "sellingPrice": 12,
     "quantitySold": 1,
-    "purchasePrice": 49,
-    "profit": 141
-  },
-  {
-    "id": "1745413390850",
-    "date": "2025-04-08",
-    "productId": "1",
-    "description": "Perruque blanche gris 24 pouces",
-    "sellingPrice": 200,
-    "quantitySold": 1,
-    "purchasePrice": 101,
-    "profit": 99
-  },
-  {
-    "id": "1745413425033",
-    "date": "2025-04-08",
-    "productId": "11",
-    "description": "Tissages blonde meil 20 pouces",
-    "sellingPrice": 150,
-    "quantitySold": 1,
-    "purchasePrice": 59,
-    "profit": 91
-  },
-  {
-    "id": "1745413449208",
-    "date": "2025-04-09",
-    "productId": "3",
-    "description": "Tissages bouclé noir 22 pouces",
-    "sellingPrice": 150,
-    "quantitySold": 1,
-    "purchasePrice": 50,
-    "profit": 100
-  },
-  {
-    "id": "1745413820867",
-    "date": "2025-04-20",
-    "productId": "12",
-    "description": "Perruque bouclé noir Frange 12 pouce noir ",
-    "sellingPrice": 50,
-    "quantitySold": 1,
-    "purchasePrice": 20,
-    "profit": 30
-  },
-  {
-    "id": "1745933741602",
-    "date": "2025-04-29",
-    "productId": "1745933694208",
-    "description": "Perruque lisse ondulé noir mèche rouge bordeau de 24 pouces",
-    "sellingPrice": 170,
-    "quantitySold": 1,
-    "purchasePrice": 65.24,
-    "profit": 104.76
+    "purchasePrice": 8,
+    "profit": 4
   }
 ]

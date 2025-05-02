@@ -286,5 +286,17 @@
     "description": "Perruque bandeau noir bouclé 22 pouces et 250%",
     "purchasePrice": 45.43,
     "quantity": 1
+  },
+  {
+    "id": "1746196961916",
+    "description": "Perruque bouclé marron 13x4 16 pouces 200%",
+    "purchasePrice": 50.6,
+    "quantity": 1
+  },
+  {
+    "id": "1746197176031",
+    "description": "Colle et disolvant",
+    "purchasePrice": 8,
+    "quantity": 3
   }
 ]
