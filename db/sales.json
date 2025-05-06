@@ -18,5 +18,15 @@
     "quantitySold": 1,
     "purchasePrice": 8,
     "profit": 4
+  },
+  {
+    "id": "1746508578487",
+    "date": "2025-05-06",
+    "productId": "1745415935938",
+    "description": "Perruque bouclé noir 20 pouces Vendu",
+    "sellingPrice": 130,
+    "quantitySold": 1,
+    "purchasePrice": 56,
+    "profit": 74
   }
 ]

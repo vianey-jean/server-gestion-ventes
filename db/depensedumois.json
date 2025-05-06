@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "1",
+    "description": "RSA",
+    "categorie": "Autres",
+    "date": "2025-05-06",
+    "debit": "",
+    "credit": "1822",
+    "solde": 1822
+  },
+  {
+    "id": "2",
+    "description": "Charge fixe",
+    "categorie": "chargeFixe",
+    "date": "2025-05-06",
+    "debit": "352.96000000000004",
+    "credit": "",
+    "solde": 1469.04
+  }
+]

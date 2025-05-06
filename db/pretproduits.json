@@ -86,5 +86,16 @@
     "reste": 140,
     "estPaye": false,
     "productId": "1745415935938"
+  },
+  {
+    "id": "9",
+    "date": "2025-05-02",
+    "description": "Perruque bouclé marron 13x4 16 pouces 200%",
+    "nom": "Emilienne",
+    "prixVente": 90,
+    "avanceRecue": 50,
+    "reste": 40,
+    "estPaye": false,
+    "productId": "1746196961916"
   }
 ]
