@@ -28,5 +28,15 @@
     "quantitySold": 1,
     "purchasePrice": 56,
     "profit": 74
+  },
+  {
+    "id": "1746628484125",
+    "date": "2025-04-01",
+    "productId": "5",
+    "description": "Tissages bouclé noir 20 pouces",
+    "sellingPrice": 72,
+    "quantitySold": 1,
+    "purchasePrice": 60,
+    "profit": 12
   }
 ]

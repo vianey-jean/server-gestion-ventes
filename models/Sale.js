@@ -26,9 +26,16 @@ const Sale = {
         return sales;
       }
       
+      // Make sure month is treated as a number
+      const monthNum = Number(month);
+      const yearNum = Number(year);
+
       return sales.filter(sale => {
         const saleDate = new Date(sale.date);
-        return saleDate.getMonth() === month && saleDate.getFullYear() === year;
+        // JavaScript months are 0-based, DB months are 1-based
+        // saleDate.getMonth() returns 0-11, but our parameter is 1-12
+        // So we add 1 to getMonth() for comparison
+        return (saleDate.getMonth() + 1) === monthNum && saleDate.getFullYear() === yearNum;
       });
     } catch (error) {
       console.error("Error filtering sales by month/year:", error);
@@ -148,7 +155,8 @@ const Sale = {
       // Filter out sales for the specified month
       sales = sales.filter(sale => {
         const saleDate = new Date(sale.date);
-        return saleDate.getMonth() !== month || saleDate.getFullYear() !== year;
+        // JavaScript months are 0-based (0-11), but our parameter is 1-based (1-12)
+        return saleDate.getMonth() + 1 !== month || saleDate.getFullYear() !== year;
       });
       
       // Write back to file

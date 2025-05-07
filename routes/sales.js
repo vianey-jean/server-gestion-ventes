@@ -25,7 +25,14 @@ router.get('/by-month', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'Month and year are required' });
     }
     
-    const sales = Sale.getByMonthYear(Number(month), Number(year));
+    console.log(`Fetching sales for month: ${month}, year: ${year}`);
+    
+    const monthNum = Number(month);
+    const yearNum = Number(year);
+    
+    const sales = Sale.getByMonthYear(monthNum, yearNum);
+    console.log(`Found ${sales.length} sales for ${monthNum}/${yearNum}`);
+    
     res.json(sales);
   } catch (error) {
     console.error('Error getting sales by month/year:', error);
@@ -153,8 +160,11 @@ router.post('/export-month', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'Month and year are required' });
     }
     
+    console.log(`Exporting sales for month: ${month}, year: ${year}`);
+    
     // Get sales for the month (for PDF generation in a real app)
     const sales = Sale.getByMonthYear(Number(month), Number(year));
+    console.log(`Found ${sales.length} sales to export`);
     
     // In a real app, this would generate a PDF file
     // For now, we'll just clear the sales for the month
