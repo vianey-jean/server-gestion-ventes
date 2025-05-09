@@ -237,7 +237,7 @@
     "id": "1745935188943",
     "description": "Perruque lisse blonde blanche 16 pouces 13x4",
     "purchasePrice": 48.9,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1745935314013",
@@ -298,5 +298,29 @@
     "description": "Colle et disolvant",
     "purchasePrice": 8,
     "quantity": 3
+  },
+  {
+    "id": "1746811388842",
+    "description": "Perruque lisse court noir 13x4",
+    "purchasePrice": 14.08,
+    "quantity": 2
+  },
+  {
+    "id": "1746811465191",
+    "description": "Perruque bouclé court marron",
+    "purchasePrice": 20.97,
+    "quantity": 1
+  },
+  {
+    "id": "1746811570529",
+    "description": "Avance Perruque ou Tissages",
+    "purchasePrice": 1,
+    "quantity": 98
+  },
+  {
+    "id": "1746811792105",
+    "description": "Perruque lise blonde blanche",
+    "purchasePrice": 48.9,
+    "quantity": 1
   }
 ]

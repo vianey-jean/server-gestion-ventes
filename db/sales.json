@@ -38,5 +38,45 @@
     "quantitySold": 1,
     "purchasePrice": 60,
     "profit": 12
+  },
+  {
+    "id": "1746811595982",
+    "date": "2025-05-09",
+    "productId": "1746811570529",
+    "description": "Avance Perruque ou Tissages",
+    "sellingPrice": 110,
+    "quantitySold": 1,
+    "purchasePrice": 1,
+    "profit": 109
+  },
+  {
+    "id": "1746811669135",
+    "date": "2025-05-09",
+    "productId": "1746811570529",
+    "description": "Avance Perruque ou Tissages",
+    "sellingPrice": 40,
+    "quantitySold": 1,
+    "purchasePrice": 1,
+    "profit": 39
+  },
+  {
+    "id": "1746811752399",
+    "date": "2025-05-09",
+    "productId": "1745935150488",
+    "description": "Perruque bouclé frange 14 pouces blonde miel ",
+    "sellingPrice": 70,
+    "quantitySold": 1,
+    "purchasePrice": 34.41,
+    "profit": 35.59
+  },
+  {
+    "id": "1746811825067",
+    "date": "2025-05-09",
+    "productId": "1745935188943",
+    "description": "Perruque lisse blonde blanche 16 pouces 13x4",
+    "sellingPrice": 120,
+    "quantitySold": 1,
+    "purchasePrice": 48.9,
+    "profit": 71.1
   }
 ]

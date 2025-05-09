@@ -5,9 +5,9 @@
     "description": "Perruque lisse blonde miel 30 pouces",
     "nom": "Copine St Louis",
     "prixVente": 230,
-    "avanceRecue": 130,
-    "reste": 100,
-    "estPaye": false,
+    "avanceRecue": 230,
+    "reste": 0,
+    "estPaye": true,
     "productId": "6"
   },
   {
@@ -93,9 +93,31 @@
     "description": "Perruque bouclé marron 13x4 16 pouces 200%",
     "nom": "Emilienne",
     "prixVente": 90,
-    "avanceRecue": 50,
-    "reste": 40,
-    "estPaye": false,
+    "avanceRecue": 90,
+    "reste": 0,
+    "estPaye": true,
     "productId": "1746196961916"
+  },
+  {
+    "id": "10",
+    "date": "2025-05-09",
+    "description": "Perruque bouclé court marron",
+    "nom": "Touky st Louis",
+    "prixVente": 50,
+    "avanceRecue": 0,
+    "reste": 50,
+    "estPaye": false,
+    "productId": "1746811465191"
+  },
+  {
+    "id": "11",
+    "date": "2025-05-09",
+    "description": "Perruque lisse court noir 13x4",
+    "nom": "Emilienne",
+    "prixVente": 50,
+    "avanceRecue": 0,
+    "reste": 50,
+    "estPaye": false,
+    "productId": "1746811388842"
   }
 ]
