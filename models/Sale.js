@@ -48,9 +48,18 @@ const Sale = {
     try {
       const sales = JSON.parse(fs.readFileSync(salesPath, 'utf8'));
       
+      // Check if this is an advance product
+      const isAdvanceProduct = saleData.description.includes('Avance Perruque') || 
+                               saleData.description.includes('Tissages');
+      
       // Calculate profit if not provided
       if (!saleData.profit) {
-        saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
+        if (isAdvanceProduct) {
+          saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
+          saleData.quantitySold = 0;
+        } else {
+          saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
+        }
       }
       
       // Create new sale object
@@ -59,10 +68,13 @@ const Sale = {
         ...saleData
       };
       
-      // Update product quantity
-      const productResult = Product.updateQuantity(saleData.productId, -saleData.quantitySold);
-      if (productResult && productResult.error) {
-        return { error: productResult.error };
+      // For advance products, do not update product quantity
+      if (!isAdvanceProduct) {
+        // Update product quantity
+        const productResult = Product.updateQuantity(saleData.productId, -saleData.quantitySold);
+        if (productResult && productResult.error) {
+          return { error: productResult.error };
+        }
       }
       
       // Add to sales array
@@ -91,18 +103,35 @@ const Sale = {
       
       const oldSale = sales[saleIndex];
       
-      // Calculate quantity difference
-      const quantityDifference = oldSale.quantitySold - saleData.quantitySold;
+      // Check if this is an advance product
+      const isAdvanceProduct = saleData.description.includes('Avance Perruque') || 
+                               saleData.description.includes('Tissages');
       
-      // Update product quantity
-      const productResult = Product.updateQuantity(oldSale.productId, quantityDifference);
-      if (productResult && productResult.error) {
-        return { error: productResult.error };
+      // For advance products, force quantity to 0 and recalculate profit
+      if (isAdvanceProduct) {
+        saleData.quantitySold = 0;
+        saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
+      }
+      
+      // Handle product quantity update only for non-advance products
+      if (!isAdvanceProduct) {
+        // Calculate quantity difference
+        const quantityDifference = oldSale.quantitySold - saleData.quantitySold;
+        
+        // Update product quantity
+        const productResult = Product.updateQuantity(oldSale.productId, quantityDifference);
+        if (productResult && productResult.error) {
+          return { error: productResult.error };
+        }
       }
       
       // Calculate profit if not provided
       if (!saleData.profit) {
-        saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
+        if (isAdvanceProduct) {
+          saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
+        } else {
+          saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
+        }
       }
       
       // Update sale data
@@ -131,8 +160,15 @@ const Sale = {
       
       const sale = sales[saleIndex];
       
-      // Return quantity to product
-      Product.updateQuantity(sale.productId, sale.quantitySold);
+      // Check if this is an advance product
+      const isAdvanceProduct = sale.description.includes('Avance Perruque') || 
+                               sale.description.includes('Tissages');
+      
+      // Only return quantity to product inventory if it's not an advance
+      if (!isAdvanceProduct) {
+        // Return quantity to product
+        Product.updateQuantity(sale.productId, sale.quantitySold);
+      }
       
       // Remove from sales array
       sales.splice(saleIndex, 1);

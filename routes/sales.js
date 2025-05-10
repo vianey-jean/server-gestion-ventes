@@ -48,7 +48,7 @@ router.post('/', authMiddleware, async (req, res) => {
       quantitySold, purchasePrice 
     } = req.body;
     
-    if (!date || !productId || !description || !sellingPrice || !quantitySold || !purchasePrice) {
+    if (!date || !productId || !description || !sellingPrice || purchasePrice === undefined) {
       return res.status(400).json({ message: 'All fields are required' });
     }
     
@@ -58,22 +58,31 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
     
-    // Check if enough quantity is available
-    if (product.quantity < quantitySold) {
-      return res.status(400).json({ message: 'Not enough quantity available' });
+    // Verify if it's an advance product
+    const isAdvanceProduct = description.includes('Avance Perruque') || description.includes('Tissages');
+    
+    // For advance products, we don't check stock and force quantity to 0
+    let finalQuantitySold = quantitySold;
+    if (isAdvanceProduct) {
+      finalQuantitySold = 0;
+    } else {
+      // Check if enough quantity is available (only for non-advance products)
+      if (!finalQuantitySold || product.quantity < finalQuantitySold) {
+        return res.status(400).json({ message: 'Not enough quantity available' });
+      }
     }
     
     // Calculate profit
-    const profit = (Number(sellingPrice) - Number(purchasePrice)) * Number(quantitySold);
+    const profit = (Number(sellingPrice) - Number(purchasePrice)) * Number(finalQuantitySold);
     
     const saleData = {
       date,
       productId,
       description,
       sellingPrice: Number(sellingPrice),
-      quantitySold: Number(quantitySold),
+      quantitySold: Number(finalQuantitySold),
       purchasePrice: Number(purchasePrice),
-      profit
+      profit: isAdvanceProduct ? Number(sellingPrice) - Number(purchasePrice) : profit
     };
     
     const newSale = Sale.create(saleData);
@@ -101,21 +110,30 @@ router.put('/:id', authMiddleware, async (req, res) => {
       quantitySold, purchasePrice 
     } = req.body;
     
-    if (!date || !productId || !description || !sellingPrice || !quantitySold || !purchasePrice) {
+    if (!date || !productId || !description || !sellingPrice || purchasePrice === undefined) {
       return res.status(400).json({ message: 'All fields are required' });
     }
     
+    // Verify if it's an advance product
+    const isAdvanceProduct = description.includes('Avance Perruque') || description.includes('Tissages');
+    
+    // For advance products, we force quantity to 0
+    let finalQuantitySold = quantitySold;
+    if (isAdvanceProduct) {
+      finalQuantitySold = 0;
+    }
+    
     // Calculate profit
-    const profit = (Number(sellingPrice) - Number(purchasePrice)) * Number(quantitySold);
+    const profit = (Number(sellingPrice) - Number(purchasePrice)) * Number(finalQuantitySold);
     
     const saleData = {
       date,
       productId,
       description,
       sellingPrice: Number(sellingPrice),
-      quantitySold: Number(quantitySold),
+      quantitySold: Number(finalQuantitySold),
       purchasePrice: Number(purchasePrice),
-      profit
+      profit: isAdvanceProduct ? Number(sellingPrice) - Number(purchasePrice) : profit
     };
     
     const updatedSale = Sale.update(req.params.id, saleData);
