@@ -78,5 +78,25 @@
     "quantitySold": 1,
     "purchasePrice": 48.9,
     "profit": 71.1
+  },
+  {
+    "id": "1747071224510",
+    "date": "2025-05-12",
+    "productId": "1747071198367",
+    "description": "Perruque bouclé noir bandeau 20 pouces",
+    "sellingPrice": 120,
+    "quantitySold": 1,
+    "purchasePrice": 45.43,
+    "profit": 74.57
+  },
+  {
+    "id": "1747071504566",
+    "date": "2025-05-12",
+    "productId": "1745935150488",
+    "description": "Perruque bouclé frange 14 pouces blonde miel ",
+    "sellingPrice": 90,
+    "quantitySold": 1,
+    "purchasePrice": 34.41,
+    "profit": 55.59
   }
 ]

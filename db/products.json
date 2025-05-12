@@ -230,7 +230,7 @@
   {
     "id": "1745935150488",
     "description": "Perruque bouclé frange 14 pouces blonde miel ",
-    "purchasePrice": 34.41,
+    "purchasePrice": 35.7,
     "quantity": 1
   },
   {
@@ -322,5 +322,11 @@
     "description": "Perruque lise blonde blanche",
     "purchasePrice": 48.9,
     "quantity": 1
+  },
+  {
+    "id": "1747071198367",
+    "description": "Perruque bouclé noir bandeau 20 pouces",
+    "purchasePrice": 45.43,
+    "quantity": 0
   }
 ]
