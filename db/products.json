@@ -32,8 +32,8 @@
   {
     "id": "6",
     "description": "Perruque lisse blonde miel 30 pouces",
-    "purchasePrice": 59,
-    "quantity": 0
+    "purchasePrice": 81.84,
+    "quantity": 1
   },
   {
     "id": "7",
@@ -249,7 +249,7 @@
     "id": "1745935345067",
     "description": "Perruque blonde miel lisse 30 pouces 13x4",
     "purchasePrice": 81.84,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1745935376127",
@@ -328,5 +328,11 @@
     "description": "Perruque bouclé noir bandeau 20 pouces",
     "purchasePrice": 45.43,
     "quantity": 0
+  },
+  {
+    "id": "1747145372539",
+    "description": "Tissages lisse noir 30 pouces",
+    "purchasePrice": 75.85,
+    "quantity": 1
   }
 ]
