@@ -58,31 +58,30 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
     
-    // Verify if it's an advance product
-    const isAdvanceProduct = description.includes('Avance Perruque') || description.includes('Tissages');
+    // Check if description contains "avance" word (case insensitive)
+    const isAdvanceProduct = description.toLowerCase().includes('avance');
     
-    // For advance products, we don't check stock and force quantity to 0
-    let finalQuantitySold = quantitySold;
-    if (isAdvanceProduct) {
-      finalQuantitySold = 0;
-    } else {
-      // Check if enough quantity is available (only for non-advance products)
-      if (!finalQuantitySold || product.quantity < finalQuantitySold) {
+    // For advance products, we force quantity to 0
+    let finalQuantitySold = isAdvanceProduct ? 0 : Number(quantitySold);
+    
+    // For non-advance products, check stock availability
+    if (!isAdvanceProduct) {
+      if (!quantitySold || product.quantity < Number(quantitySold)) {
         return res.status(400).json({ message: 'Not enough quantity available' });
       }
     }
     
     // Calculate profit
-    const profit = (Number(sellingPrice) - Number(purchasePrice)) * Number(finalQuantitySold);
+    const profit = (Number(sellingPrice) - Number(purchasePrice)) * (isAdvanceProduct ? 1 : Number(finalQuantitySold));
     
     const saleData = {
       date,
       productId,
       description,
       sellingPrice: Number(sellingPrice),
-      quantitySold: Number(finalQuantitySold),
+      quantitySold: finalQuantitySold,
       purchasePrice: Number(purchasePrice),
-      profit: isAdvanceProduct ? Number(sellingPrice) - Number(purchasePrice) : profit
+      profit
     };
     
     const newSale = Sale.create(saleData);
@@ -114,26 +113,23 @@ router.put('/:id', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
     
-    // Verify if it's an advance product
-    const isAdvanceProduct = description.includes('Avance Perruque') || description.includes('Tissages');
+    // Check if description contains "avance" word (case insensitive)
+    const isAdvanceProduct = description.toLowerCase().includes('avance');
     
     // For advance products, we force quantity to 0
-    let finalQuantitySold = quantitySold;
-    if (isAdvanceProduct) {
-      finalQuantitySold = 0;
-    }
+    let finalQuantitySold = isAdvanceProduct ? 0 : Number(quantitySold);
     
-    // Calculate profit
-    const profit = (Number(sellingPrice) - Number(purchasePrice)) * Number(finalQuantitySold);
+    // Calculate profit based on whether it's an advance product
+    const profit = (Number(sellingPrice) - Number(purchasePrice)) * (isAdvanceProduct ? 1 : Number(finalQuantitySold));
     
     const saleData = {
       date,
       productId,
       description,
       sellingPrice: Number(sellingPrice),
-      quantitySold: Number(finalQuantitySold),
+      quantitySold: finalQuantitySold,
       purchasePrice: Number(purchasePrice),
-      profit: isAdvanceProduct ? Number(sellingPrice) - Number(purchasePrice) : profit
+      profit
     };
     
     const updatedSale = Sale.update(req.params.id, saleData);

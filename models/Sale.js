@@ -48,18 +48,16 @@ const Sale = {
     try {
       const sales = JSON.parse(fs.readFileSync(salesPath, 'utf8'));
       
-      // Check if this is an advance product
-      const isAdvanceProduct = saleData.description.includes('Avance Perruque') || 
-                               saleData.description.includes('Tissages');
+      // Check if this is an advance product (case insensitive)
+      const isAdvanceProduct = saleData.description.toLowerCase().includes('avance');
       
-      // Calculate profit if not provided
-      if (!saleData.profit) {
-        if (isAdvanceProduct) {
-          saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
-          saleData.quantitySold = 0;
-        } else {
-          saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
-        }
+      // For advance products, ensure quantity is 0 and recalculate profit
+      if (isAdvanceProduct) {
+        saleData.quantitySold = 0;
+        saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
+      } else {
+        // For regular products, calculate profit based on quantity
+        saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
       }
       
       // Create new sale object
@@ -68,7 +66,7 @@ const Sale = {
         ...saleData
       };
       
-      // For advance products, do not update product quantity
+      // For regular products, update product quantity
       if (!isAdvanceProduct) {
         // Update product quantity
         const productResult = Product.updateQuantity(saleData.productId, -saleData.quantitySold);
@@ -103,9 +101,8 @@ const Sale = {
       
       const oldSale = sales[saleIndex];
       
-      // Check if this is an advance product
-      const isAdvanceProduct = saleData.description.includes('Avance Perruque') || 
-                               saleData.description.includes('Tissages');
+      // Check if this is an advance product (case insensitive)
+      const isAdvanceProduct = saleData.description.toLowerCase().includes('avance');
       
       // For advance products, force quantity to 0 and recalculate profit
       if (isAdvanceProduct) {
@@ -122,15 +119,6 @@ const Sale = {
         const productResult = Product.updateQuantity(oldSale.productId, quantityDifference);
         if (productResult && productResult.error) {
           return { error: productResult.error };
-        }
-      }
-      
-      // Calculate profit if not provided
-      if (!saleData.profit) {
-        if (isAdvanceProduct) {
-          saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
-        } else {
-          saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
         }
       }
       
@@ -160,11 +148,10 @@ const Sale = {
       
       const sale = sales[saleIndex];
       
-      // Check if this is an advance product
-      const isAdvanceProduct = sale.description.includes('Avance Perruque') || 
-                               sale.description.includes('Tissages');
+      // Check if this is an advance product (case insensitive)
+      const isAdvanceProduct = sale.description.toLowerCase().includes('avance');
       
-      // Only return quantity to product inventory if it's not an advance
+      // Only return quantity to product inventory if it's not an advance product
       if (!isAdvanceProduct) {
         // Return quantity to product
         Product.updateQuantity(sale.productId, sale.quantitySold);
