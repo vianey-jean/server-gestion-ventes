@@ -19,8 +19,8 @@ router.post('/login', (req, res) => {
     return res.status(400).json({ message: 'User does not exist' });
   }
   
-  // Check password
-  if (user.password !== password) {
+  // Check password with bcrypt compare
+  if (!User.comparePassword(password, user.password)) {
     return res.status(400).json({ message: 'Invalid credentials' });
   }
   
@@ -88,7 +88,7 @@ router.post('/register', (req, res) => {
     return res.status(400).json({ message: 'Email already registered' });
   }
   
-  // Create user
+  // Create user with hashed password (handled in User.create)
   const userData = {
     email,
     password,
@@ -156,7 +156,7 @@ router.post('/reset-password', (req, res) => {
     return res.status(400).json({ message: 'User not found' });
   }
   
-  // Update password
+  // Update password (hashing is handled in User.updatePassword)
   const success = User.updatePassword(email, newPassword);
   
   if (!success) {

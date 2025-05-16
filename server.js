@@ -5,6 +5,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
 
 // Load environment variables
 dotenv.config();
@@ -30,22 +31,13 @@ if (!fs.existsSync(uploadsPath)) {
   fs.mkdirSync(uploadsPath);
 }
 
-// Initialize JSON files if they don't exist
-const usersPath = path.join(dbPath, 'users.json');
-if (!fs.existsSync(usersPath)) {
-  fs.writeFileSync(usersPath, JSON.stringify([
-    {
-      id: "1",
-      email: "demo@example.com",
-      password: "Demo@123",
-      firstName: "Demo",
-      lastName: "User",
-      gender: "male",
-      address: "123 Demo Street",
-      phone: "123-456-7890"
-    }
-  ], null, 2));
-}
+// Hash a password
+const hashPassword = (password) => {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
+};
+
+
 
 const productsPath = path.join(dbPath, 'products.json');
 if (!fs.existsSync(productsPath)) {

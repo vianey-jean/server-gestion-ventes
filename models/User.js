@@ -1,6 +1,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 
 const usersPath = path.join(__dirname, '../db/users.json');
 
@@ -49,10 +50,15 @@ const User = {
         return null;
       }
       
-      // Create new user object
+      // Hash the password with bcrypt
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(userData.password, salt);
+      
+      // Create new user object with hashed password
       const newUser = {
         id: Date.now().toString(),
-        ...userData
+        ...userData,
+        password: hashedPassword
       };
       
       // Add to users array
@@ -81,6 +87,12 @@ const User = {
         return null;
       }
       
+      // If password is being updated, hash it
+      if (userData.password) {
+        const salt = bcrypt.genSaltSync(10);
+        userData.password = bcrypt.hashSync(userData.password, salt);
+      }
+      
       // Update user data
       users[userIndex] = { ...users[userIndex], ...userData };
       
@@ -107,13 +119,17 @@ const User = {
         return false;
       }
       
-      // Check if new password is the same as old password
-      if (users[userIndex].password === newPassword) {
+      // Check if new password is the same as old password (after hashing)
+      if (bcrypt.compareSync(newPassword, users[userIndex].password)) {
         return false;
       }
       
+      // Hash the new password
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(newPassword, salt);
+      
       // Update password
-      users[userIndex].password = newPassword;
+      users[userIndex].password = hashedPassword;
       
       // Write back to file
       fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
@@ -123,6 +139,11 @@ const User = {
       console.error("Error updating password:", error);
       return false;
     }
+  },
+  
+  // Compare password
+  comparePassword: (plainPassword, hashedPassword) => {
+    return bcrypt.compareSync(plainPassword, hashedPassword);
   }
 };
 
