@@ -118,5 +118,15 @@
     "quantitySold": 1,
     "purchasePrice": 75.85,
     "profit": 24.150000000000006
+  },
+  {
+    "id": "1747993713069",
+    "date": "2025-05-20",
+    "productId": "1745934815562",
+    "description": "Perruque bouclé rouge bordeau 13x4 26 pouces et 210%",
+    "sellingPrice": 190,
+    "quantitySold": 1,
+    "purchasePrice": 69.53,
+    "profit": 120.47
   }
 ]
