@@ -334,5 +334,11 @@
     "description": "Tissages lisse noir 30 pouces",
     "purchasePrice": 75.85,
     "quantity": 1
+  },
+  {
+    "id": "1748111374048",
+    "description": "perruque bouclé blonde miel 16 pouces",
+    "purchasePrice": 41.93,
+    "quantity": 0
   }
 ]
