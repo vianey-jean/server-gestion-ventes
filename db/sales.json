@@ -148,5 +148,15 @@
     "quantitySold": 1,
     "purchasePrice": 53.85,
     "profit": 146.15
+  },
+  {
+    "id": "1748527434383",
+    "date": "2025-05-29",
+    "productId": "1748527396369",
+    "description": "Perruque bouclé noir 24 pouces",
+    "sellingPrice": 150,
+    "quantitySold": 1,
+    "purchasePrice": 59.77,
+    "profit": 90.22999999999999
   }
 ]

@@ -346,5 +346,11 @@
     "description": "Perruque bouclé noir 30 pouces",
     "purchasePrice": 53.85,
     "quantity": 1
+  },
+  {
+    "id": "1748527396369",
+    "description": "Perruque bouclé noir 24 pouces",
+    "purchasePrice": 59.77,
+    "quantity": 0
   }
 ]
