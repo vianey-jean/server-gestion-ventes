@@ -340,5 +340,11 @@
     "description": "perruque bouclé blonde miel 16 pouces",
     "purchasePrice": 41.93,
     "quantity": 0
+  },
+  {
+    "id": "1748490364800",
+    "description": "Perruque bouclé noir 30 pouces",
+    "purchasePrice": 53.85,
+    "quantity": 1
   }
 ]

@@ -138,5 +138,15 @@
     "quantitySold": 1,
     "purchasePrice": 41.93,
     "profit": 48.07
+  },
+  {
+    "id": "1748490407421",
+    "date": "2025-05-27",
+    "productId": "1748490364800",
+    "description": "Perruque bouclé noir 30 pouces",
+    "sellingPrice": 200,
+    "quantitySold": 1,
+    "purchasePrice": 53.85,
+    "profit": 146.15
   }
 ]
