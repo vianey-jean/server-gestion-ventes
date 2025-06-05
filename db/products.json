@@ -27,7 +27,7 @@
     "id": "5",
     "description": "Tissages bouclé noir 20 pouces",
     "purchasePrice": 57.9,
-    "quantity": 3
+    "quantity": 2
   },
   {
     "id": "6",
@@ -135,7 +135,7 @@
     "id": "1745933978887",
     "description": "Perruque cheveux gasy 16 pouces ",
     "purchasePrice": 19.79,
-    "quantity": 2
+    "quantity": 1
   },
   {
     "id": "1745934022973",
@@ -243,7 +243,7 @@
     "id": "1745935314013",
     "description": "Tissage bouclé noir 18 pouces 12A",
     "purchasePrice": 50.24,
-    "quantity": 4
+    "quantity": 3
   },
   {
     "id": "1745935345067",
@@ -352,5 +352,23 @@
     "description": "Perruque bouclé noir 24 pouces",
     "purchasePrice": 59.77,
     "quantity": 0
+  },
+  {
+    "id": "1749141142855",
+    "description": "Perruque bouclé marron et noir court 8 pouces",
+    "purchasePrice": 16.92,
+    "quantity": 1
+  },
+  {
+    "id": "1749141425560",
+    "description": "Perruque bouclé gasy ",
+    "purchasePrice": 19.79,
+    "quantity": 4
+  },
+  {
+    "id": "1749141528437",
+    "description": "Perruque bouclé marron coté ",
+    "purchasePrice": 25.25,
+    "quantity": 1
   }
 ]
