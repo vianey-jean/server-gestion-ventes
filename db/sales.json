@@ -218,5 +218,25 @@
     "quantitySold": 1,
     "purchasePrice": 25.25,
     "profit": 24.75
+  },
+  {
+    "id": "1749312784916",
+    "date": "2025-06-06",
+    "productId": "1745935490944",
+    "description": "Tissages lisse 20 pouces 12A",
+    "sellingPrice": 120,
+    "quantitySold": 1,
+    "purchasePrice": 53.75,
+    "profit": 66.25
+  },
+  {
+    "id": "1749312807104",
+    "date": "2025-06-07",
+    "productId": "1746811570529",
+    "description": "Avance Perruque ou Tissages",
+    "sellingPrice": 100,
+    "quantitySold": 0,
+    "purchasePrice": 1,
+    "profit": 99
   }
 ]

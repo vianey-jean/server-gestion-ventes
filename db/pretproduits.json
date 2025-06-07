@@ -137,8 +137,8 @@
     "description": "Perruque blonde miel 30 pouces",
     "nom": "Cya Météo",
     "prixVente": 200,
-    "avanceRecue": 100,
-    "reste": 100,
-    "estPaye": false
+    "avanceRecue": 200,
+    "reste": 0,
+    "estPaye": true
   }
 ]
