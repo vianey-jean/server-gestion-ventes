@@ -14,8 +14,8 @@
   {
     "id": "3",
     "description": "Tissages bouclé noir 22 pouces",
-    "purchasePrice": 50,
-    "quantity": 2
+    "purchasePrice": 17.18,
+    "quantity": 3
   },
   {
     "id": "4",
@@ -26,8 +26,8 @@
   {
     "id": "5",
     "description": "Tissages bouclé noir 20 pouces",
-    "purchasePrice": 57.9,
-    "quantity": 2
+    "purchasePrice": 14.91,
+    "quantity": 1
   },
   {
     "id": "6",
@@ -61,8 +61,8 @@
   },
   {
     "id": "11",
-    "description": "Tissages blonde meil 20 pouces",
-    "purchasePrice": 59,
+    "description": "Tissages blonde meil 22 pouces",
+    "purchasePrice": 2045,
     "quantity": 3
   },
   {
@@ -242,7 +242,7 @@
   {
     "id": "1745935314013",
     "description": "Tissage bouclé noir 18 pouces 12A",
-    "purchasePrice": 50.24,
+    "purchasePrice": 16.74,
     "quantity": 3
   },
   {
@@ -250,12 +250,6 @@
     "description": "Perruque blonde miel lisse 30 pouces 13x4",
     "purchasePrice": 81.84,
     "quantity": 0
-  },
-  {
-    "id": "1745935376127",
-    "description": "Tissages lisse noir 30 pouces",
-    "purchasePrice": 75.85,
-    "quantity": 3
   },
   {
     "id": "1745935413775",
@@ -272,7 +266,7 @@
   {
     "id": "1745935490944",
     "description": "Tissages lisse 20 pouces 12A",
-    "purchasePrice": 53.75,
+    "purchasePrice": 17.9,
     "quantity": 3
   },
   {
@@ -332,8 +326,8 @@
   {
     "id": "1747145372539",
     "description": "Tissages lisse noir 30 pouces",
-    "purchasePrice": 75.85,
-    "quantity": 1
+    "purchasePrice": 23.71,
+    "quantity": 3
   },
   {
     "id": "1748111374048",
