@@ -250,13 +250,63 @@
     "profit": 35.09
   },
   {
-    "id": "1749557685997",
+    "id": "1749734652228",
     "date": "2025-06-10",
-    "productId": "5",
-    "description": "Tissages bouclé noir 20 pouces",
+    "productId": "1745935314013",
+    "description": "Tissage bouclé noir 18 pouces 12A",
     "sellingPrice": 40,
     "quantitySold": 1,
-    "purchasePrice": 14.91,
-    "profit": 25.09
+    "purchasePrice": 16.74,
+    "profit": 23.26
+  },
+  {
+    "id": "1749734734939",
+    "date": "2025-06-11",
+    "productId": "1746811570529",
+    "description": "Avance Perruque ou Tissages",
+    "sellingPrice": 100,
+    "quantitySold": 0,
+    "purchasePrice": 1,
+    "profit": 99
+  },
+  {
+    "id": "1749734847350",
+    "date": "2025-06-11",
+    "productId": "1745935150488",
+    "description": "Perruque bouclé frange 14 pouces blonde miel ",
+    "sellingPrice": 90,
+    "quantitySold": 1,
+    "purchasePrice": 35.7,
+    "profit": 54.3
+  },
+  {
+    "id": "1749734868573",
+    "date": "2025-06-11",
+    "productId": "1749734681713",
+    "description": "Perruque blonde blanche 26 pouces",
+    "sellingPrice": 100,
+    "quantitySold": 1,
+    "purchasePrice": 65.35,
+    "profit": 34.650000000000006
+  },
+  {
+    "id": "1749734900962",
+    "date": "2025-06-12",
+    "productId": "1746811570529",
+    "description": "Avance Perruque ou Tissages",
+    "sellingPrice": 100,
+    "quantitySold": 0,
+    "purchasePrice": 1,
+    "profit": 99
+  },
+  {
+    "id": "1749734914110",
+    "date": "2025-06-12",
+    "productId": "1749734708720",
+    "description": "Perruque bouclé blonde miel 360°",
+    "sellingPrice": 150,
+    "quantitySold": 1,
+    "purchasePrice": 69.99,
+    "profit": 80.01
   }
 ]

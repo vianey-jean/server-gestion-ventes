@@ -38,8 +38,8 @@
     "description": "Perruque bouclé orange 20 pouces",
     "nom": "Cliente Naomie Vaubon",
     "prixVente": 130,
-    "avanceRecue": 0,
-    "reste": 130,
+    "avanceRecue": 100,
+    "reste": 30,
     "estPaye": false,
     "productId": "1745415432141"
   },
@@ -126,9 +126,9 @@
     "description": "Tissages lisse noir 30 pouces",
     "nom": "lalao Elisabeth",
     "prixVente": 200,
-    "avanceRecue": 100,
-    "reste": 100,
-    "estPaye": false,
+    "avanceRecue": 200,
+    "reste": 0,
+    "estPaye": true,
     "productId": "1745935376127"
   },
   {
@@ -140,5 +140,16 @@
     "avanceRecue": 200,
     "reste": 0,
     "estPaye": true
+  },
+  {
+    "id": "14",
+    "date": "2025-06-12",
+    "description": "Perruque blonde blanche 26 pouces",
+    "nom": "Lalao Elisabeth",
+    "prixVente": 200,
+    "avanceRecue": 0,
+    "reste": 200,
+    "estPaye": false,
+    "productId": "1749734681713"
   }
 ]
