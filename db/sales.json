@@ -308,5 +308,15 @@
     "quantitySold": 1,
     "purchasePrice": 69.99,
     "profit": 80.01
+  },
+  {
+    "id": "1749871281296",
+    "date": "2025-06-13",
+    "productId": "1749871256406",
+    "description": "Perruque bouclé blonde miel 22 pouces",
+    "sellingPrice": 180,
+    "quantitySold": 1,
+    "purchasePrice": 48.27,
+    "profit": 131.73
   }
 ]

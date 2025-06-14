@@ -376,5 +376,11 @@
     "description": "Perruque bouclé blonde miel 360°",
     "purchasePrice": 69.99,
     "quantity": 2
+  },
+  {
+    "id": "1749871256406",
+    "description": "Perruque bouclé blonde miel 22 pouces",
+    "purchasePrice": 48.27,
+    "quantity": 0
   }
 ]
