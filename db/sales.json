@@ -318,5 +318,25 @@
     "quantitySold": 1,
     "purchasePrice": 48.27,
     "profit": 131.73
+  },
+  {
+    "id": "1750583010980",
+    "date": "2025-06-21",
+    "productId": "1745414812444",
+    "description": "Tissages lisse ondulé 22 pouces",
+    "sellingPrice": 110,
+    "quantitySold": 1,
+    "purchasePrice": 55,
+    "profit": 55
+  },
+  {
+    "id": "1750583116833",
+    "date": "2025-06-20",
+    "productId": "1745935063486",
+    "description": "Perruque bouclé mèche blonde 12 pouces 200%",
+    "sellingPrice": 70,
+    "quantitySold": 1,
+    "purchasePrice": 30.19,
+    "profit": 39.81
   }
 ]
