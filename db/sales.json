@@ -338,5 +338,15 @@
     "quantitySold": 1,
     "purchasePrice": 30.19,
     "profit": 39.81
+  },
+  {
+    "id": "1750688789194",
+    "date": "2025-06-23",
+    "productId": "1750688735646",
+    "description": "Tissages bouclé noir 24 pouces",
+    "sellingPrice": 53,
+    "quantitySold": 3,
+    "purchasePrice": 19.46,
+    "profit": 100.62
   }
 ]
