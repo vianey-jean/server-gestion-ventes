@@ -20,7 +20,7 @@ const corsOptions = {
       'http://localhost:5173',
       'http://localhost:3000', 
       'http://localhost:8080',
-      'https://id-preview--7a015186-d276-4e02-9b20-6915e92ed036.lovable.app',
+      'https://riziky-gestion-ventes.vercel.app',
       'https://4d7ac2d5-2cf0-40f0-b5f2-c401087b8839.lovableproject.com'
     ];
     
@@ -64,7 +64,8 @@ app.use((err, req, res, next) => {
       origin: req.get('Origin'),
       allowedOrigins: [
         'http://localhost:5173',
-        'https://*.lovableproject.com'
+        'https://*.lovableproject.com',
+        'https://riziky-gestion-ventes.vercel.app'
       ]
     });
   } else {
@@ -195,5 +196,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`CORS enabled for Lovable domains`);
-  console.log(`Sync events available at http://localhost:${PORT}/api/sync/events`);
+  console.log(`Sync events available at https://riziky-gestion-ventes.vercel.app:${PORT}/api/sync/events`);
 });
