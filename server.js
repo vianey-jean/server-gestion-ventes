@@ -20,7 +20,8 @@ const corsOptions = {
       'http://localhost:5173',
       'http://localhost:3000', 
       'http://localhost:8080',
-      'https://4d7ac2d5-2cf0-40f0-b5f2-c401087b8839.lovableproject.com'
+      'https://4d7ac2d5-2cf0-40f0-b5f2-c401087b8839.lovableproject.com',
+      'https://server-gestion-ventes.onrender.com'
     ];
     
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -169,5 +170,5 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Sync events available at http://localhost:${PORT}/api/sync/events`);
+  console.log(`Sync events available at https://server-gestion-ventes.onrender.com:${PORT}/api/sync/events`);
 });
