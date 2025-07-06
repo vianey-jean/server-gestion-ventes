@@ -448,5 +448,35 @@
     "quantitySold": 1,
     "purchasePrice": 16.74,
     "profit": 28.26
+  },
+  {
+    "id": "1751721788888",
+    "date": "2025-07-05",
+    "productId": "1751721764807",
+    "description": "Perruque bouclé marron 16 pouces",
+    "sellingPrice": 100,
+    "quantitySold": 1,
+    "purchasePrice": 57.07,
+    "profit": 42.93
+  },
+  {
+    "id": "1751721946106",
+    "date": "2025-07-05",
+    "productId": "1751721921151",
+    "description": "Perruque bouclé blonde miel 24 pouces",
+    "sellingPrice": 170,
+    "quantitySold": 1,
+    "purchasePrice": 42.24,
+    "profit": 127.75999999999999
+  },
+  {
+    "id": "1751810345805",
+    "date": "2025-07-05",
+    "productId": "1745933824476",
+    "description": "Perruque blonde miel lisse 18 pouces 13x4 lace frontale",
+    "sellingPrice": 90,
+    "quantitySold": 1,
+    "purchasePrice": 31.4,
+    "profit": 58.6
   }
 ]

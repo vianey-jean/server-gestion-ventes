@@ -75,7 +75,7 @@
     "id": "1745414593633",
     "description": "Perruque lisse blonde miel 24 pouces",
     "purchasePrice": 47,
-    "quantity": 1
+    "quantity": 2
   },
   {
     "id": "1745414812444",
@@ -123,7 +123,7 @@
     "id": "1745933824476",
     "description": "Perruque blonde miel lisse 18 pouces 13x4 lace frontale",
     "purchasePrice": 31.4,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1745933865809",
@@ -406,5 +406,17 @@
     "description": "tissages bouclé blonde miel 20 pouces",
     "purchasePrice": 13.88,
     "quantity": 2
+  },
+  {
+    "id": "1751721764807",
+    "description": "Perruque bouclé marron 16 pouces",
+    "purchasePrice": 57.07,
+    "quantity": 0
+  },
+  {
+    "id": "1751721921151",
+    "description": "Perruque bouclé blonde miel 24 pouces",
+    "purchasePrice": 42.24,
+    "quantity": 0
   }
 ]
