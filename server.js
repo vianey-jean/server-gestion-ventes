@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration CORS simplifiée et corrigée
+// Configuration CORS mise à jour
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
@@ -21,7 +21,7 @@ const corsOptions = {
       'http://localhost:3000', 
       'http://localhost:8080',
       'https://4d7ac2d5-2cf0-40f0-b5f2-c401087b8839.lovableproject.com',
-      'https://server-gestion-ventes.onrender.com'
+      'https://riziky-gestion-ventes.vercel.app'
     ];
     
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -32,6 +32,7 @@ const corsOptions = {
       return callback(null, true);
     }
     
+    console.log('CORS blocked origin:', origin);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
@@ -51,6 +52,24 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Add error handling middleware for CORS
+app.use((err, req, res, next) => {
+  if (err.message === 'Not allowed by CORS') {
+    console.error('CORS Error for origin:', req.get('Origin'));
+    res.status(403).json({ 
+      error: 'CORS not allowed',
+      origin: req.get('Origin'),
+      allowedOrigins: [
+        'http://localhost:5173',
+        'https://*.lovableproject.com',
+        'https://riziky-gestion-ventes.vercel.app'
+      ]
+    });
+  } else {
+    next(err);
+  }
+});
 
 // Create db directory if it doesn't exist
 const dbPath = path.join(__dirname, 'db');
@@ -163,12 +182,17 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send({ error: 'Something broke!' });
+  console.error('Server error:', err.stack);
+  res.status(500).json({ 
+    error: 'Something broke!', 
+    message: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
 });
 
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Sync events available at https://server-gestion-ventes.onrender.com:${PORT}/api/sync/events`);
+  console.log(`CORS enabled for Lovable domains`);
+  console.log(`Sync events available at https://riziky-gestion-ventes.vercel.app:${PORT}/api/sync/events`);
 });
