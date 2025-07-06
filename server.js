@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -14,8 +13,41 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+// Configuration CORS simplifiée et corrigée
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000', 
+      'http://localhost:8080',
+      'https://4d7ac2d5-2cf0-40f0-b5f2-c401087b8839.lovableproject.com'
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin matches allowed origins or is a lovableproject.com subdomain
+    if (allowedOrigins.includes(origin) || origin.match(/^https:\/\/.*\.lovableproject\.com$/)) {
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'Cache-Control',
+    'X-Requested-With',
+    'Accept',
+    'Origin'
+  ],
+  optionsSuccessStatus: 200
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -36,8 +68,6 @@ const hashPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
 };
-
-
 
 const productsPath = path.join(dbPath, 'products.json');
 if (!fs.existsSync(productsPath)) {
@@ -116,6 +146,7 @@ const salesRoutes = require('./routes/sales');
 const pretFamillesRoutes = require('./routes/pretfamilles');
 const pretProduitsRoutes = require('./routes/pretproduits');
 const depensesRoutes = require('./routes/depenses');
+const syncRoutes = require('./routes/sync');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -124,6 +155,7 @@ app.use('/api/sales', salesRoutes);
 app.use('/api/pretfamilles', pretFamillesRoutes);
 app.use('/api/pretproduits', pretProduitsRoutes);
 app.use('/api/depenses', depensesRoutes);
+app.use('/api/sync', syncRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -137,4 +169,5 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Sync events available at http://localhost:${PORT}/api/sync/events`);
 });

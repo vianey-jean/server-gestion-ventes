@@ -43,6 +43,8 @@ router.post('/login', (req, res) => {
 router.post('/check-email', (req, res) => {
   const { email } = req.body;
   
+  console.log('Check email request:', email);
+  
   if (!email) {
     return res.status(400).json({ message: 'Email is required' });
   }
