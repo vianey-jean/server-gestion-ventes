@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const Sale = require('../models/Sale');
@@ -45,7 +44,7 @@ router.post('/', authMiddleware, async (req, res) => {
   try {
     const { 
       date, productId, description, sellingPrice, 
-      quantitySold, purchasePrice 
+      quantitySold, purchasePrice, profit 
     } = req.body;
     
     if (!date || !productId || !description || !sellingPrice || purchasePrice === undefined) {
@@ -71,9 +70,7 @@ router.post('/', authMiddleware, async (req, res) => {
       }
     }
     
-    // Calculate profit
-    const profit = (Number(sellingPrice) - Number(purchasePrice)) * (isAdvanceProduct ? 1 : Number(finalQuantitySold));
-    
+    // Use the profit already calculated by AddSaleForm
     const saleData = {
       date,
       productId,
@@ -81,7 +78,7 @@ router.post('/', authMiddleware, async (req, res) => {
       sellingPrice: Number(sellingPrice),
       quantitySold: finalQuantitySold,
       purchasePrice: Number(purchasePrice),
-      profit
+      profit: Number(profit) // Use the profit directly from frontend calculation
     };
     
     const newSale = Sale.create(saleData);
@@ -106,7 +103,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { 
       date, productId, description, sellingPrice, 
-      quantitySold, purchasePrice 
+      quantitySold, purchasePrice, profit 
     } = req.body;
     
     if (!date || !productId || !description || !sellingPrice || purchasePrice === undefined) {
@@ -119,9 +116,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     // For advance products, we force quantity to 0
     let finalQuantitySold = isAdvanceProduct ? 0 : Number(quantitySold);
     
-    // Calculate profit based on whether it's an advance product
-    const profit = (Number(sellingPrice) - Number(purchasePrice)) * (isAdvanceProduct ? 1 : Number(finalQuantitySold));
-    
+    // Use the profit already calculated by AddSaleForm
     const saleData = {
       date,
       productId,
@@ -129,7 +124,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
       sellingPrice: Number(sellingPrice),
       quantitySold: finalQuantitySold,
       purchasePrice: Number(purchasePrice),
-      profit
+      profit: Number(profit) // Use the profit directly from frontend calculation
     };
     
     const updatedSale = Sale.update(req.params.id, saleData);

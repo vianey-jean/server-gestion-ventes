@@ -51,14 +51,13 @@ const Sale = {
       // Check if this is an advance product (case insensitive)
       const isAdvanceProduct = saleData.description.toLowerCase().includes('avance');
       
-      // For advance products, ensure quantity is 0 and recalculate profit
+      // For advance products, ensure quantity is 0
       if (isAdvanceProduct) {
         saleData.quantitySold = 0;
-        saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
-      } else {
-        // For regular products, calculate profit based on quantity
-        saleData.profit = (saleData.sellingPrice - saleData.purchasePrice) * saleData.quantitySold;
       }
+      
+      // Don't recalculate profit - use the profit already calculated by AddSaleForm
+      // The profit should already be correctly calculated (V - A) from the frontend
       
       // Create new sale object
       const newSale = {
@@ -104,11 +103,12 @@ const Sale = {
       // Check if this is an advance product (case insensitive)
       const isAdvanceProduct = saleData.description.toLowerCase().includes('avance');
       
-      // For advance products, force quantity to 0 and recalculate profit
+      // For advance products, force quantity to 0
       if (isAdvanceProduct) {
         saleData.quantitySold = 0;
-        saleData.profit = saleData.sellingPrice - saleData.purchasePrice;
       }
+      
+      // Don't recalculate profit - use the profit already calculated by AddSaleForm
       
       // Handle product quantity update only for non-advance products
       if (!isAdvanceProduct) {
