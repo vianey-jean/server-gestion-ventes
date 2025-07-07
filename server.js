@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -13,7 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration CORS mise à jour
+// Configuration CORS améliorée pour SSE
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
@@ -46,13 +47,30 @@ const corsOptions = {
     'Cache-Control',
     'X-Requested-With',
     'Accept',
-    'Origin'
+    'Origin',
+    'X-Accel-Buffering'
   ],
-  optionsSuccessStatus: 200
+  exposedHeaders: [
+    'Content-Type',
+    'Cache-Control', 
+    'Connection'
+  ],
+  optionsSuccessStatus: 200,
+  preflightContinue: false
 };
 
 // Middleware
 app.use(cors(corsOptions));
+
+// Middleware spécial pour les EventSource
+app.use('/api/sync/events', (req, res, next) => {
+  // Headers spéciaux pour EventSource
+  res.header('Cache-Control', 'no-cache, no-transform');
+  res.header('Connection', 'keep-alive');
+  res.header('X-Accel-Buffering', 'no');
+  next();
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

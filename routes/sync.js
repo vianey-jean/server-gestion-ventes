@@ -1,25 +1,28 @@
-
 const express = require('express');
 const router = express.Router();
 const syncManager = require('../middleware/sync');
 const authMiddleware = require('../middleware/auth');
 
-// Endpoint pour Server-Sent Events avec meilleure gestion
+// Endpoint pour Server-Sent Events avec gestion CORS améliorée
 router.get('/events', (req, res) => {
-  console.log('Nouvelle connexion SSE demandée');
+  console.log('Nouvelle connexion SSE demandée depuis:', req.get('Origin'));
   
-  // Configuration SSE optimisée
+  // Configuration SSE avec headers CORS explicites
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
+    'Cache-Control': 'no-cache, no-transform',
     'Connection': 'keep-alive',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Cache-Control, Authorization',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS'
+    'X-Accel-Buffering': 'no', // Pour Nginx
+    // Headers CORS explicites pour SSE
+    'Access-Control-Allow-Origin': req.get('Origin') || '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Expose-Headers': 'Content-Type, Cache-Control, Connection'
   });
 
   const clientId = `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  console.log(`Client SSE connecté: ${clientId}`);
+  console.log(`Client SSE connecté: ${clientId} depuis ${req.get('Origin')}`);
   
   // Fonction pour envoyer des événements au client
   const sendEvent = (event, data) => {
@@ -58,6 +61,16 @@ router.get('/events', (req, res) => {
     console.error(`Erreur client ${clientId}:`, error);
     syncManager.removeClient(clientId);
   });
+});
+
+// Middleware OPTIONS pour préflight CORS sur SSE
+router.options('/events', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.get('Origin') || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin');
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Max-Age', '86400');
+  res.status(200).send();
 });
 
 // Endpoint pour forcer la synchronisation
