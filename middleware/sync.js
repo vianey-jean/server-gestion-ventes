@@ -12,6 +12,25 @@ class SyncManager {
     this.dbPath = path.join(__dirname, '../db');
   }
 
+  // Obtenir le mois et l'année actuels
+  getCurrentMonthYear() {
+    const now = new Date();
+    return {
+      month: now.getMonth() + 1, // JavaScript months are 0-based
+      year: now.getFullYear()
+    };
+  }
+
+  // Filtrer les ventes pour le mois en cours seulement
+  filterCurrentMonthSales(sales) {
+    const { month, year } = this.getCurrentMonthYear();
+    
+    return sales.filter(sale => {
+      const saleDate = new Date(sale.date);
+      return (saleDate.getMonth() + 1) === month && saleDate.getFullYear() === year;
+    });
+  }
+
   // Surveiller les changements de fichiers avec détection immédiate
   watchFile(filePath, callback) {
     if (this.watchers.has(filePath)) {
@@ -55,7 +74,7 @@ class SyncManager {
         } catch (error) {
           console.error('Erreur polling:', error);
         }
-      }, 1000); // Poll toutes les secondes
+      }, 100); // Poll toutes les 100ms pour une réactivité maximale
       
       this.watchers.set(filePath + '_poll', pollWatcher);
       
@@ -88,7 +107,7 @@ class SyncManager {
     this.clients.add(client);
     console.log(`Client SSE ajouté: ${clientId}, total: ${this.clients.size}`);
     
-    // Envoyer les données actuelles immédiatement
+    // Envoyer les données actuelles immédiatement (seulement ventes du mois en cours)
     this.sendCurrentData(client);
     
     // Heartbeat pour maintenir la connexion
@@ -101,7 +120,7 @@ class SyncManager {
         this.removeClient(clientId);
         clearInterval(heartbeat);
       }
-    }, 30000); // Heartbeat toutes les 30 secondes
+    }, 30000);
     
     client.heartbeat = heartbeat;
   }
@@ -121,8 +140,14 @@ class SyncManager {
       const filePath = path.join(this.dbPath, fileName);
       if (fs.existsSync(filePath)) {
         try {
-          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          let data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           const dataType = path.basename(filePath, '.json');
+          
+          // Filtrer les ventes pour le mois en cours seulement
+          if (dataType === 'sales') {
+            data = this.filterCurrentMonthSales(data);
+            console.log(`Envoi de ${data.length} ventes du mois en cours au client ${client.id}`);
+          }
           
           client.notify('data-changed', {
             type: dataType,
@@ -197,7 +222,13 @@ class SyncManager {
             const dataType = path.basename(filePath, '.json');
             
             // Lire et envoyer les nouvelles données
-            const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            let data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            
+            // Filtrer les ventes pour le mois en cours seulement
+            if (dataType === 'sales') {
+              data = this.filterCurrentMonthSales(data);
+              console.log(`Synchronisation: ${data.length} ventes du mois en cours`);
+            }
             
             this.notifyClients('data-changed', {
               type: dataType,
@@ -210,7 +241,7 @@ class SyncManager {
           console.error('Erreur sync périodique:', filePath, error);
         }
       }
-    }, 1000); // Vérification toutes les secondes
+    }, 100); // Vérification toutes les 100ms pour une réactivité maximale
   }
   
   // Arrêter la synchronisation périodique
@@ -247,7 +278,13 @@ filesToWatch.forEach(fileName => {
       
       try {
         // Lire les nouvelles données
-        const data = JSON.parse(fs.readFileSync(changedFile, 'utf8'));
+        let data = JSON.parse(fs.readFileSync(changedFile, 'utf8'));
+        
+        // Filtrer les ventes pour le mois en cours seulement
+        if (dataType === 'sales') {
+          data = syncManager.filterCurrentMonthSales(data);
+          console.log(`Notification changement: ${data.length} ventes du mois en cours`);
+        }
         
         // Notification immédiate avec données
         syncManager.notifyClients('data-changed', {
