@@ -1,28 +1,51 @@
+
 const express = require('express');
 const router = express.Router();
 const syncManager = require('../middleware/sync');
 const authMiddleware = require('../middleware/auth');
 
-// Endpoint pour Server-Sent Events avec gestion CORS améliorée
+// Endpoint pour Server-Sent Events avec configuration CORS spécifique
 router.get('/events', (req, res) => {
   console.log('Nouvelle connexion SSE demandée depuis:', req.get('Origin'));
   
-  // Configuration SSE avec headers CORS explicites
-  res.writeHead(200, {
+  const origin = req.get('Origin');
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000', 
+    'http://localhost:8080',
+    'https://riziky-gestion-ventes.vercel.app',
+    'https://server-gestion-ventes.onrender.com'
+  ];
+  
+  // Vérifier si l'origine est autorisée
+  const isAllowed = !origin || 
+    allowedOrigins.includes(origin) || 
+    origin.match(/^https:\/\/.*\.lovableproject\.com$/) ||
+    origin.match(/^https:\/\/.*\.lovable\.app$/);
+    
+  if (!isAllowed) {
+    console.log('CORS bloqué pour:', origin);
+    return res.status(403).json({ error: 'Origin non autorisé' });
+  }
+  
+  // Configuration SSE avec headers CORS corrects pour EventSource
+  const headers = {
     'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache, no-transform',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
     'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no', // Pour Nginx
-    // Headers CORS explicites pour SSE
-    'Access-Control-Allow-Origin': req.get('Origin') || '*',
-    'Access-Control-Allow-Credentials': 'true',
-    'Access-Control-Allow-Headers': 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Expose-Headers': 'Content-Type, Cache-Control, Connection'
-  });
+    'X-Accel-Buffering': 'no'
+  };
+  
+  // Ajouter les headers CORS seulement si nécessaire
+  if (origin) {
+    headers['Access-Control-Allow-Origin'] = origin;
+    headers['Access-Control-Allow-Credentials'] = 'true';
+  }
+  
+  res.writeHead(200, headers);
 
   const clientId = `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  console.log(`Client SSE connecté: ${clientId} depuis ${req.get('Origin')}`);
+  console.log(`Client SSE connecté: ${clientId} depuis ${origin || 'unknown'}`);
   
   // Fonction pour envoyer des événements au client
   const sendEvent = (event, data) => {

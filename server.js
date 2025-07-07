@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -14,7 +13,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration CORS améliorée pour SSE
+// Configuration CORS simplifiée et efficace
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
@@ -22,14 +21,13 @@ const corsOptions = {
       'http://localhost:3000', 
       'http://localhost:8080',
       'https://riziky-gestion-ventes.vercel.app',
-      'https://server-gestion-ventes.onrender.com',
-      'https://4d7ac2d5-2cf0-40f0-b5f2-c401087b8839.lovableproject.com'
+      'https://server-gestion-ventes.onrender.com'
     ];
     
-    // Allow requests with no origin (like mobile apps or curl requests)
+    // Allow requests with no origin (comme les apps mobiles)
     if (!origin) return callback(null, true);
     
-    // Check if origin matches allowed origins or is a lovable domain
+    // Vérifier les domaines autorisés
     if (allowedOrigins.includes(origin) || 
         origin.match(/^https:\/\/.*\.lovableproject\.com$/) ||
         origin.match(/^https:\/\/.*\.lovable\.app$/)) {
@@ -37,7 +35,7 @@ const corsOptions = {
     }
     
     console.log('CORS blocked origin:', origin);
-    callback(new Error('Not allowed by CORS'));
+    return callback(null, false); // Ne pas lever d'erreur, juste refuser
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -47,51 +45,22 @@ const corsOptions = {
     'Cache-Control',
     'X-Requested-With',
     'Accept',
-    'Origin',
-    'X-Accel-Buffering'
+    'Origin'
   ],
-  exposedHeaders: [
-    'Content-Type',
-    'Cache-Control', 
-    'Connection'
-  ],
-  optionsSuccessStatus: 200,
-  preflightContinue: false
+  optionsSuccessStatus: 200
 };
 
-// Middleware
+// Middleware CORS global
 app.use(cors(corsOptions));
 
-// Middleware spécial pour les EventSource
+// Middleware spécial pour les EventSource - pas de CORS additionnel
 app.use('/api/sync/events', (req, res, next) => {
-  // Headers spéciaux pour EventSource
-  res.header('Cache-Control', 'no-cache, no-transform');
-  res.header('Connection', 'keep-alive');
-  res.header('X-Accel-Buffering', 'no');
+  // Les headers CORS sont gérés dans la route elle-même
   next();
 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Add error handling middleware for CORS
-app.use((err, req, res, next) => {
-  if (err.message === 'Not allowed by CORS') {
-    console.error('CORS Error for origin:', req.get('Origin'));
-    res.status(403).json({ 
-      error: 'CORS not allowed',
-      origin: req.get('Origin'),
-      allowedOrigins: [
-        'http://localhost:5173',
-        'https://*.lovableproject.com',
-        'https://server-gestion-ventes.onrender.com',
-        'https://riziky-gestion-ventes.vercel.app'
-      ]
-    });
-  } else {
-    next(err);
-  }
-});
 
 // Create db directory if it doesn't exist
 const dbPath = path.join(__dirname, 'db');
