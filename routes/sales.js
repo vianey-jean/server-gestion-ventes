@@ -42,30 +42,45 @@ router.get('/by-month', authMiddleware, async (req, res) => {
 // Create new sale
 router.post('/', authMiddleware, async (req, res) => {
   try {
+    console.log('📝 SALES API - Création d\'une nouvelle vente');
+    console.log('📝 Données reçues:', req.body);
+    
     const { 
       date, productId, description, sellingPrice, 
       quantitySold, purchasePrice, profit 
     } = req.body;
     
     if (!date || !productId || !description || !sellingPrice || purchasePrice === undefined) {
+      console.log('❌ Données manquantes:', { date, productId, description, sellingPrice, purchasePrice });
       return res.status(400).json({ message: 'All fields are required' });
     }
     
     // Check if product exists
     const product = Product.getById(productId);
     if (!product) {
+      console.log('❌ Produit non trouvé:', productId);
       return res.status(404).json({ message: 'Product not found' });
     }
     
+    console.log('✅ Produit trouvé:', {
+      id: product.id,
+      description: product.description,
+      purchasePrice: product.purchasePrice,
+      quantity: product.quantity
+    });
+    
     // Check if description contains "avance" word (case insensitive)
     const isAdvanceProduct = description.toLowerCase().includes('avance');
+    console.log('🔍 Type de produit:', isAdvanceProduct ? 'Avance' : 'Normal');
     
     // For advance products, we force quantity to 0
     let finalQuantitySold = isAdvanceProduct ? 0 : Number(quantitySold);
+    console.log('📊 Quantité finale:', finalQuantitySold);
     
     // For non-advance products, check stock availability
     if (!isAdvanceProduct) {
       if (!quantitySold || product.quantity < Number(quantitySold)) {
+        console.log('❌ Stock insuffisant:', { demande: quantitySold, disponible: product.quantity });
         return res.status(400).json({ message: 'Not enough quantity available' });
       }
     }
@@ -81,19 +96,24 @@ router.post('/', authMiddleware, async (req, res) => {
       profit: Number(profit) // Use the profit directly from frontend calculation
     };
     
+    console.log('💾 Données de vente à créer:', saleData);
+    
     const newSale = Sale.create(saleData);
     
     if (!newSale) {
+      console.log('❌ Erreur lors de la création de la vente');
       return res.status(500).json({ message: 'Error creating sale' });
     }
     
     if (newSale.error) {
+      console.log('❌ Erreur retournée:', newSale.error);
       return res.status(400).json({ message: newSale.error });
     }
     
+    console.log('✅ Vente créée avec succès:', newSale);
     res.status(201).json(newSale);
   } catch (error) {
-    console.error('Error creating sale:', error);
+    console.error('❌ Error creating sale:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
