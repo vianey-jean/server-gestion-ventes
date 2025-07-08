@@ -7,7 +7,6 @@ class SyncManager {
     this.watchers = new Map();
     this.clients = new Set();
     this.lastModified = new Map();
-    this.syncInterval = null;
     this.lastSyncData = new Map();
     this.dbPath = path.join(__dirname, '../db');
   }
@@ -16,7 +15,7 @@ class SyncManager {
   getCurrentMonthYear() {
     const now = new Date();
     return {
-      month: now.getMonth() + 1, // JavaScript months are 0-based
+      month: now.getMonth() + 1,
       year: now.getFullYear()
     };
   }
@@ -31,7 +30,26 @@ class SyncManager {
     });
   }
 
-  // Surveiller les changements de fichiers avec détection immédiate
+  // Vérifier si les données ont réellement changé
+  hasDataChanged(filePath, newData) {
+    const dataType = path.basename(filePath, '.json');
+    const lastData = this.lastSyncData.get(dataType);
+    
+    if (!lastData) {
+      this.lastSyncData.set(dataType, JSON.stringify(newData));
+      return true;
+    }
+    
+    const currentDataStr = JSON.stringify(newData);
+    if (lastData !== currentDataStr) {
+      this.lastSyncData.set(dataType, currentDataStr);
+      return true;
+    }
+    
+    return false;
+  }
+
+  // Surveiller les changements de fichiers avec détection de vrais changements
   watchFile(filePath, callback) {
     if (this.watchers.has(filePath)) {
       return;
@@ -40,43 +58,39 @@ class SyncManager {
     console.log(`Démarrage surveillance du fichier: ${filePath}`);
 
     try {
-      // Surveillance immédiate avec fs.watch
       const watcher = fs.watch(filePath, { persistent: true }, (eventType, filename) => {
         if (eventType === 'change') {
-          console.log(`Changement détecté dans ${filePath}`);
-          
-          // Petit délai pour éviter les lectures partielles
           setTimeout(() => {
-            const stats = fs.statSync(filePath);
-            const lastMod = this.lastModified.get(filePath);
-            
-            if (!lastMod || stats.mtime > lastMod) {
-              this.lastModified.set(filePath, stats.mtime);
-              callback(filePath);
+            try {
+              const stats = fs.statSync(filePath);
+              const lastMod = this.lastModified.get(filePath);
+              
+              if (!lastMod || stats.mtime > lastMod) {
+                this.lastModified.set(filePath, stats.mtime);
+                
+                // Lire et vérifier si les données ont vraiment changé
+                const rawData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                const dataType = path.basename(filePath, '.json');
+                
+                // Filtrer les ventes pour le mois en cours
+                let processedData = dataType === 'sales' ? this.filterCurrentMonthSales(rawData) : rawData;
+                
+                // Vérifier si les données ont réellement changé
+                if (this.hasDataChanged(filePath, processedData)) {
+                  console.log(`🔄 Changement détecté dans ${dataType} - Synchronisation nécessaire`);
+                  callback(filePath, processedData);
+                } else {
+                  console.log(`⏭️ Pas de changement réel dans ${dataType} - Synchronisation ignorée`);
+                }
+              }
+            } catch (error) {
+              console.error('Erreur lors de la vérification des changements:', error);
             }
-          }, 50);
+          }, 100);
         }
       });
 
       this.watchers.set(filePath, watcher);
-      
-      // Backup avec polling pour être sûr
-      const pollWatcher = setInterval(() => {
-        try {
-          const stats = fs.statSync(filePath);
-          const lastMod = this.lastModified.get(filePath) || new Date(0);
-          
-          if (stats.mtime > lastMod) {
-            this.lastModified.set(filePath, stats.mtime);
-            console.log(`Changement détecté par polling dans ${filePath}`);
-            callback(filePath);
-          }
-        } catch (error) {
-          console.error('Erreur polling:', error);
-        }
-      }, 100); // Poll toutes les 100ms pour une réactivité maximale
-      
-      this.watchers.set(filePath + '_poll', pollWatcher);
       
     } catch (error) {
       console.error('Erreur création watcher:', error);
@@ -86,18 +100,12 @@ class SyncManager {
   // Arrêter la surveillance
   unwatchFile(filePath) {
     const watcher = this.watchers.get(filePath);
-    const pollWatcher = this.watchers.get(filePath + '_poll');
     
     if (watcher) {
       if (typeof watcher.close === 'function') {
         watcher.close();
       }
       this.watchers.delete(filePath);
-    }
-    
-    if (pollWatcher) {
-      clearInterval(pollWatcher);
-      this.watchers.delete(filePath + '_poll');
     }
   }
 
@@ -107,7 +115,7 @@ class SyncManager {
     this.clients.add(client);
     console.log(`Client SSE ajouté: ${clientId}, total: ${this.clients.size}`);
     
-    // Envoyer les données actuelles immédiatement (seulement ventes du mois en cours)
+    // Envoyer les données actuelles immédiatement
     this.sendCurrentData(client);
     
     // Heartbeat pour maintenir la connexion
@@ -143,10 +151,8 @@ class SyncManager {
           let data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           const dataType = path.basename(filePath, '.json');
           
-          // Filtrer les ventes pour le mois en cours seulement
           if (dataType === 'sales') {
             data = this.filterCurrentMonthSales(data);
-            console.log(`Envoi de ${data.length} ventes du mois en cours au client ${client.id}`);
           }
           
           client.notify('data-changed', {
@@ -156,7 +162,6 @@ class SyncManager {
             file: filePath
           });
           
-          console.log(`Données ${dataType} envoyées au client ${client.id}`);
         } catch (error) {
           console.error(`Erreur lecture ${fileName}:`, error);
         }
@@ -178,9 +183,9 @@ class SyncManager {
     }
   }
 
-  // Notifier tous les clients avec données
+  // Notifier tous les clients avec données (seulement si changement réel)
   notifyClients(event, data) {
-    console.log(`Notification à ${this.clients.size} clients:`, event, data.type);
+    console.log(`📡 Notification à ${this.clients.size} clients:`, event, data.type);
     
     const clientsToRemove = [];
     
@@ -193,64 +198,12 @@ class SyncManager {
       }
     });
     
-    // Supprimer les clients déconnectés
     clientsToRemove.forEach(clientId => this.removeClient(clientId));
   }
 
   // Obtenir la dernière modification
   getLastModified(filePath) {
     return this.lastModified.get(filePath) || new Date(0);
-  }
-  
-  // Démarrer la synchronisation périodique
-  startPeriodicSync() {
-    if (this.syncInterval) return;
-    
-    console.log('Démarrage synchronisation périodique');
-    
-    this.syncInterval = setInterval(() => {
-      // Vérifier tous les fichiers surveillés
-      for (let [filePath] of this.watchers) {
-        if (filePath.endsWith('_poll')) continue;
-        
-        try {
-          const stats = fs.statSync(filePath);
-          const lastMod = this.lastModified.get(filePath) || new Date(0);
-          
-          if (stats.mtime > lastMod) {
-            this.lastModified.set(filePath, stats.mtime);
-            const dataType = path.basename(filePath, '.json');
-            
-            // Lire et envoyer les nouvelles données
-            let data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-            
-            // Filtrer les ventes pour le mois en cours seulement
-            if (dataType === 'sales') {
-              data = this.filterCurrentMonthSales(data);
-              console.log(`Synchronisation: ${data.length} ventes du mois en cours`);
-            }
-            
-            this.notifyClients('data-changed', {
-              type: dataType,
-              data: data,
-              timestamp: new Date(),
-              file: filePath
-            });
-          }
-        } catch (error) {
-          console.error('Erreur sync périodique:', filePath, error);
-        }
-      }
-    }, 100); // Vérification toutes les 100ms pour une réactivité maximale
-  }
-  
-  // Arrêter la synchronisation périodique
-  stopPeriodicSync() {
-    if (this.syncInterval) {
-      clearInterval(this.syncInterval);
-      this.syncInterval = null;
-      console.log('Synchronisation périodique arrêtée');
-    }
   }
 }
 
@@ -266,49 +219,32 @@ const filesToWatch = [
   'depensefixe.json'
 ];
 
-console.log('Initialisation des watchers de fichiers...');
+console.log('Initialisation des watchers de fichiers optimisés...');
 
 filesToWatch.forEach(fileName => {
   const filePath = path.join(syncManager.dbPath, fileName);
   if (fs.existsSync(filePath)) {
     console.log(`Configuration surveillance: ${fileName}`);
-    syncManager.watchFile(filePath, (changedFile) => {
+    syncManager.watchFile(filePath, (changedFile, processedData) => {
       const dataType = path.basename(changedFile, '.json');
-      console.log(`CHANGEMENT DÉTECTÉ: ${dataType}`);
+      console.log(`🔄 CHANGEMENT RÉEL DÉTECTÉ: ${dataType}`);
       
-      try {
-        // Lire les nouvelles données
-        let data = JSON.parse(fs.readFileSync(changedFile, 'utf8'));
-        
-        // Filtrer les ventes pour le mois en cours seulement
-        if (dataType === 'sales') {
-          data = syncManager.filterCurrentMonthSales(data);
-          console.log(`Notification changement: ${data.length} ventes du mois en cours`);
-        }
-        
-        // Notification immédiate avec données
-        syncManager.notifyClients('data-changed', {
-          type: dataType,
-          data: data,
-          timestamp: new Date(),
-          file: changedFile
-        });
-      } catch (error) {
-        console.error(`Erreur lecture ${dataType}:`, error);
-      }
+      // Notification immédiate avec données déjà traitées
+      syncManager.notifyClients('data-changed', {
+        type: dataType,
+        data: processedData,
+        timestamp: new Date(),
+        file: changedFile
+      });
     });
   } else {
     console.warn(`Fichier non trouvé: ${filePath}`);
   }
 });
 
-// Démarrer la synchronisation périodique
-syncManager.startPeriodicSync();
-
 // Nettoyage à l'arrêt
 process.on('SIGINT', () => {
   console.log('Arrêt du gestionnaire de synchronisation...');
-  syncManager.stopPeriodicSync();
   process.exit(0);
 });
 

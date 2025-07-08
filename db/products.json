@@ -241,9 +241,9 @@
   },
   {
     "id": "1745935314013",
-    "description": "Tissage bouclé noir 18 pouces 12A",
+    "description": "Tissages bouclé noir 18 pouces 12A",
     "purchasePrice": 16.74,
-    "quantity": 0
+    "quantity": 2
   },
   {
     "id": "1745935345067",
@@ -405,7 +405,7 @@
     "id": "1751641563836",
     "description": "tissages bouclé blonde miel 20 pouces",
     "purchasePrice": 13.88,
-    "quantity": 2
+    "quantity": 0
   },
   {
     "id": "1751721764807",
@@ -417,6 +417,12 @@
     "id": "1751721921151",
     "description": "Perruque bouclé blonde miel 24 pouces",
     "purchasePrice": 42.24,
+    "quantity": 0
+  },
+  {
+    "id": "1751980607991",
+    "description": "tissages lisse ondulé blonde miel 22 pouces",
+    "purchasePrice": 16.8,
     "quantity": 0
   }
 ]
