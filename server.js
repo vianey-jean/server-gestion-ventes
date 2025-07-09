@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -13,7 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration CORS simplifiée et efficace
+// Configuration CORS spécifique pour EventSource
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
@@ -35,7 +36,7 @@ const corsOptions = {
     }
     
     console.log('CORS blocked origin:', origin);
-    return callback(null, false); // Ne pas lever d'erreur, juste refuser
+    return callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -50,13 +51,13 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-// Middleware CORS global
-app.use(cors(corsOptions));
-
-// Middleware spécial pour les EventSource - pas de CORS additionnel
-app.use('/api/sync/events', (req, res, next) => {
-  // Les headers CORS sont gérés dans la route elle-même
-  next();
+// Middleware CORS global SAUF pour les SSE
+app.use((req, res, next) => {
+  // Ne pas appliquer CORS automatique pour les SSE
+  if (req.path === '/api/sync/events') {
+    return next();
+  }
+  cors(corsOptions)(req, res, next);
 });
 
 app.use(bodyParser.json());
@@ -184,6 +185,6 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`CORS enabled for Lovable domains`);
-  console.log(`Sync events available at https://server-gestion-ventes.onrender.com:${PORT}/api/sync/events`);
+  console.log(`CORS enabled for EventSource`);
+  console.log(`Sync events available at http://localhost:${PORT}/api/sync/events`);
 });

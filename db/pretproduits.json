@@ -2,6 +2,8 @@
   {
     "id": "1",
     "date": "2025-04-05",
+    "datePaiement": "2025-04-15",
+    "phone": "+262 692 123 456",
     "description": "Perruque lisse blonde miel 30 pouces",
     "nom": "Copine St Louis",
     "prixVente": 230,
@@ -13,6 +15,8 @@
   {
     "id": "2",
     "date": "2025-04-01",
+    "datePaiement": "2025-12-31",
+    "phone": "+262 692 234 567",
     "description": "Perruque lisse blonde miel 24 pouces",
     "nom": "Cliente Shaty centre ville st denis",
     "prixVente": 160,
@@ -24,6 +28,8 @@
   {
     "id": "3",
     "date": "2025-03-30",
+    "datePaiement": "2025-12-31",
+    "phone": "+262 692 345 678",
     "description": "Tissages lisse ondulé 22 pouces",
     "nom": "Cliente Shaty Centre ville st denis",
     "prixVente": 150,
@@ -35,6 +41,8 @@
   {
     "id": "4",
     "date": "2025-02-11",
+    "datePaiement": "2025-12-31",
+    "phone": "+262 692 456 789",
     "description": "Perruque bouclé orange 20 pouces",
     "nom": "Cliente Naomie Vaubon",
     "prixVente": 130,
@@ -46,6 +54,8 @@
   {
     "id": "5",
     "date": "2025-02-08",
+    "datePaiement": "2025-12-31",
+    "phone": "+262 692 567 890",
     "description": "Perruque court tressé noir",
     "nom": "Cliente Marie José Le Port",
     "prixVente": 90,
@@ -57,6 +67,8 @@
   {
     "id": "6",
     "date": "2024-11-10",
+    "datePaiement": "2025-12-31",
+    "phone": "+262 692 678 901",
     "description": "Perruque Frisé lisse 20 pouces",
     "nom": "Cliente Ma warren Chaudron",
     "prixVente": 130,
@@ -68,6 +80,8 @@
   {
     "id": "7",
     "date": "2024-10-21",
+    "datePaiement": "2025-12-31",
+    "phone": "+262 692 789 012",
     "description": "Perruque bouclé marron 22 pouces",
     "nom": "Cliente Ma Warren chaudron",
     "prixVente": 160,
@@ -79,6 +93,8 @@
   {
     "id": "8",
     "date": "2024-10-05",
+    "datePaiement": "2025-12-31",
+    "phone": "+262 692 890 123",
     "description": "Perruque bouclé noir 20 pouces Vendu",
     "nom": "Soeur Naomie Vaubon ",
     "prixVente": 140,
@@ -90,6 +106,8 @@
   {
     "id": "9",
     "date": "2025-05-02",
+    "datePaiement": "2025-05-12",
+    "phone": "+262 692 901 234",
     "description": "Perruque bouclé marron 13x4 16 pouces 200%",
     "nom": "Emilienne",
     "prixVente": 90,
@@ -101,6 +119,8 @@
   {
     "id": "10",
     "date": "2025-05-09",
+    "datePaiement": "2025-07-31",
+    "phone": "+262 692 012 345",
     "description": "Perruque bouclé court marron",
     "nom": "Touky st Louis",
     "prixVente": 50,
@@ -112,6 +132,8 @@
   {
     "id": "11",
     "date": "2025-05-09",
+    "datePaiement": "2025-07-31",
+    "phone": "+262 692 123 456",
     "description": "Perruque lisse court noir 13x4",
     "nom": "Emilienne",
     "prixVente": 50,
@@ -123,6 +145,8 @@
   {
     "id": "12",
     "date": "2025-05-13",
+    "datePaiement": "2025-05-23",
+    "phone": "+262 692 234 567",
     "description": "Tissages lisse noir 30 pouces",
     "nom": "lalao Elisabeth",
     "prixVente": 200,
@@ -134,6 +158,8 @@
   {
     "id": "13",
     "date": "2025-05-13",
+    "datePaiement": "2025-05-23",
+    "phone": "+262 692 345 678",
     "description": "Perruque blonde miel 30 pouces",
     "nom": "Cya Météo",
     "prixVente": 200,
@@ -144,6 +170,8 @@
   {
     "id": "14",
     "date": "2025-06-12",
+    "datePaiement": "2025-07-15",
+    "phone": "+262 692 456 789",
     "description": "Perruque blonde blanche 26 pouces",
     "nom": "Lalao Elisabeth",
     "prixVente": 200,
@@ -155,12 +183,14 @@
   {
     "id": "15",
     "date": "2025-06-24",
+    "datePaiement": "2025-07-07",
+    "phone": "+262 692 567 890",
     "description": "Tissages lisse 20 pouces 12A",
     "nom": "shauna Briana",
     "prixVente": 120,
-    "avanceRecue": 0,
-    "reste": 120,
-    "estPaye": false,
+    "avanceRecue": 120,
+    "reste": 0,
+    "estPaye": true,
     "productId": "1745935490944"
   }
 ]
