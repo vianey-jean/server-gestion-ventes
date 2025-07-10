@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -14,30 +13,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration CORS spécifique pour EventSource
+// Configuration CORS simplifiée pour le développement
 const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'http://localhost:3000', 
-      'http://localhost:8080',
-      'https://riziky-gestion-ventes.vercel.app',
-      'https://server-gestion-ventes.onrender.com'
-    ];
-    
-    // Allow requests with no origin (comme les apps mobiles)
-    if (!origin) return callback(null, true);
-    
-    // Vérifier les domaines autorisés
-    if (allowedOrigins.includes(origin) || 
-        origin.match(/^https:\/\/.*\.lovableproject\.com$/) ||
-        origin.match(/^https:\/\/.*\.lovable\.app$/)) {
-      return callback(null, true);
-    }
-    
-    console.log('CORS blocked origin:', origin);
-    return callback(null, false);
-  },
+  origin: true, // Permet toutes les origines en développement
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
@@ -51,14 +29,8 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-// Middleware CORS global SAUF pour les SSE
-app.use((req, res, next) => {
-  // Ne pas appliquer CORS automatique pour les SSE
-  if (req.path === '/api/sync/events') {
-    return next();
-  }
-  cors(corsOptions)(req, res, next);
-});
+// Middleware CORS global
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -159,6 +131,7 @@ const pretFamillesRoutes = require('./routes/pretfamilles');
 const pretProduitsRoutes = require('./routes/pretproduits');
 const depensesRoutes = require('./routes/depenses');
 const syncRoutes = require('./routes/sync');
+const beneficesRoutes = require('./routes/benefices');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -168,6 +141,7 @@ app.use('/api/pretfamilles', pretFamillesRoutes);
 app.use('/api/pretproduits', pretProduitsRoutes);
 app.use('/api/depenses', depensesRoutes);
 app.use('/api/sync', syncRoutes);
+app.use('/api/benefices', beneficesRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -185,6 +159,6 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`CORS enabled for EventSource`);
+  console.log(`CORS enabled for all origins in development`);
   console.log(`Sync events available at http://localhost:${PORT}/api/sync/events`);
 });

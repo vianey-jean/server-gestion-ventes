@@ -1,0 +1,18 @@
+[
+  {
+    "id": "7dcef388-20a9-4eac-8b8d-cda3ce2211c5",
+    "productId": "3",
+    "productDescription": "Tissages bouclé noir 22 pouces",
+    "prixAchat": 17.18,
+    "taxeDouane": 0,
+    "tva": 20,
+    "autresFrais": 0,
+    "coutTotal": 20.616,
+    "margeDesire": 191,
+    "prixVenteRecommande": 59.992560000000005,
+    "beneficeNet": 39.376560000000005,
+    "tauxMarge": 191.00000000000003,
+    "createdAt": "2025-07-10T08:33:33.356Z",
+    "updatedAt": "2025-07-10T08:33:33.357Z"
+  }
+]
