@@ -527,6 +527,35 @@
     "sellingPrice": 170.01,
     "quantitySold": 3,
     "purchasePrice": 50.400000000000006,
-    "profit": 119.61
+    "profit": 119.61,
+    "clientName": "laetitia roann",
+    "clientAddress": "542 rue mille roches saint andré",
+    "clientPhone": "0692443186"
+  },
+  {
+    "id": "1752162968022",
+    "date": "2025-07-10",
+    "productId": "1745935106995",
+    "description": "Perruque bouclé frange 12 pouces blonde miel",
+    "sellingPrice": 80,
+    "quantitySold": 1,
+    "purchasePrice": 43.62,
+    "profit": 36.38,
+    "clientName": "Marie José",
+    "clientAddress": "le port",
+    "clientPhone": "0693610648"
+  },
+  {
+    "id": "1752163111402",
+    "date": "2025-07-10",
+    "productId": "2",
+    "description": "Perruque bouclé noir 26 pouces",
+    "sellingPrice": 160,
+    "quantitySold": 1,
+    "purchasePrice": 49,
+    "profit": 111,
+    "clientName": "mayli",
+    "clientAddress": "saint paul",
+    "clientPhone": "0693603252"
   }
 ]

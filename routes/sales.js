@@ -48,7 +48,8 @@ router.post('/', authMiddleware, async (req, res) => {
     
     const { 
       date, productId, description, sellingPrice, 
-      quantitySold, purchasePrice, profit 
+      quantitySold, purchasePrice, profit,
+      clientName, clientAddress, clientPhone
     } = req.body;
     
     // Validation des champs obligatoires
@@ -136,7 +137,10 @@ router.post('/', authMiddleware, async (req, res) => {
       sellingPrice: numericSellingPrice,
       quantitySold: finalQuantitySold,
       purchasePrice: numericPurchasePrice,
-      profit: numericProfit
+      profit: numericProfit,
+      clientName: clientName || null,
+      clientAddress: clientAddress || null,
+      clientPhone: clientPhone || null
     };
     
     console.log('💾 Données de vente à créer:', JSON.stringify(saleData, null, 2));
@@ -166,7 +170,8 @@ router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { 
       date, productId, description, sellingPrice, 
-      quantitySold, purchasePrice, profit 
+      quantitySold, purchasePrice, profit,
+      clientName, clientAddress, clientPhone
     } = req.body;
     
     if (!date || !productId || !description || !sellingPrice || purchasePrice === undefined) {
@@ -187,7 +192,10 @@ router.put('/:id', authMiddleware, async (req, res) => {
       sellingPrice: Number(sellingPrice),
       quantitySold: finalQuantitySold,
       purchasePrice: Number(purchasePrice),
-      profit: Number(profit) // Use the profit directly from frontend calculation
+      profit: Number(profit), // Use the profit directly from frontend calculation
+      clientName: clientName || null,
+      clientAddress: clientAddress || null,
+      clientPhone: clientPhone || null
     };
     
     const updatedSale = Sale.update(req.params.id, saleData);
