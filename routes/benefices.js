@@ -7,25 +7,33 @@ const authMiddleware = require('../middleware/auth');
 // Get all benefit calculations
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const benefices = Benefice.getAll();
+    console.log('🔍 GET /api/benefices - Récupération des bénéfices');
+    const benefices = await Benefice.getAll();
+    console.log('✅ Bénéfices récupérés:', benefices);
     res.json(benefices);
   } catch (error) {
-    console.error('Error getting all benefit calculations:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('❌ Erreur lors de la récupération des bénéfices:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 });
 
 // Get benefit calculation by product ID
 router.get('/product/:productId', authMiddleware, async (req, res) => {
   try {
-    const benefice = Benefice.getByProductId(req.params.productId);
+    const { productId } = req.params;
+    console.log('🔍 GET /api/benefices/product/' + productId);
+    
+    const benefice = await Benefice.getByProductId(productId);
     if (!benefice) {
-      return res.status(404).json({ message: 'Benefit calculation not found' });
+      console.log('❌ Aucun bénéfice trouvé pour le produit:', productId);
+      return res.status(404).json({ message: 'Bénéfice non trouvé' });
     }
+    
+    console.log('✅ Bénéfice trouvé:', benefice);
     res.json(benefice);
   } catch (error) {
-    console.error('Error getting benefit calculation by product ID:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('❌ Erreur lors de la récupération du bénéfice:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 });
 
@@ -70,7 +78,7 @@ router.post('/', authMiddleware, async (req, res) => {
     
     console.log('💾 Benefit calculation data to create:', JSON.stringify(beneficeData, null, 2));
     
-    const newBenefice = Benefice.create(beneficeData);
+    const newBenefice = await Benefice.create(beneficeData);
     
     if (!newBenefice) {
       console.log('❌ Error creating benefit calculation');
@@ -102,7 +110,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
       tauxMarge: Number(req.body.tauxMarge)
     };
     
-    const updatedBenefice = Benefice.update(req.params.id, beneficeData);
+    const updatedBenefice = await Benefice.update(req.params.id, beneficeData);
     
     if (!updatedBenefice) {
       return res.status(404).json({ message: 'Benefit calculation not found' });
@@ -118,7 +126,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // Delete benefit calculation
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
-    const success = Benefice.delete(req.params.id);
+    const success = await Benefice.delete(req.params.id);
     
     if (!success) {
       return res.status(404).json({ message: 'Benefit calculation not found' });

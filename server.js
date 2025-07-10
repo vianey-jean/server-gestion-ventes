@@ -123,6 +123,11 @@ if (!fs.existsSync(depenseFixePath)) {
   }, null, 2));
 }
 
+const beneficePath = path.join(dbPath, 'benefice.json');
+if (!fs.existsSync(beneficePath)) {
+  fs.writeFileSync(beneficePath, JSON.stringify([], null, 2));
+}
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
