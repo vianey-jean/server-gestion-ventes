@@ -25,9 +25,9 @@
   },
   {
     "id": "5",
-    "description": "Tissages bouclé noir 20 pouces",
+    "description": "Tissages bouclé noir 20 pouces 12 A",
     "purchasePrice": 14.91,
-    "quantity": 2
+    "quantity": 6
   },
   {
     "id": "6",
@@ -267,7 +267,7 @@
     "id": "1745935490944",
     "description": "Tissages lisse 20 pouces 12A",
     "purchasePrice": 17.9,
-    "quantity": 3
+    "quantity": 2
   },
   {
     "id": "1745935530399",
@@ -327,7 +327,7 @@
     "id": "1747145372539",
     "description": "Tissages lisse noir 30 pouces",
     "purchasePrice": 23.71,
-    "quantity": 3
+    "quantity": 2
   },
   {
     "id": "1748111374048",
@@ -424,5 +424,17 @@
     "description": "tissages lisse ondulé blonde miel 22 pouces",
     "purchasePrice": 16.8,
     "quantity": 0
+  },
+  {
+    "id": "1752143851109",
+    "description": "tissages lisse mèche blonde 22 pouces",
+    "purchasePrice": 32.2,
+    "quantity": 2
+  },
+  {
+    "id": "1752143907546",
+    "description": "tissages lisse mèche blonde 20 pouces",
+    "purchasePrice": 25.053,
+    "quantity": 2
   }
 ]
