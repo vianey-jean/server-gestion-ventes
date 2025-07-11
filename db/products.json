@@ -156,12 +156,6 @@
     "quantity": 1
   },
   {
-    "id": "1745934199543",
-    "description": "Perruque lisse 13x4 marron 20pouces",
-    "purchasePrice": 51.42,
-    "quantity": 1
-  },
-  {
     "id": "1745934613426",
     "description": "Perruque lisse noir rouge frange 18 pouces",
     "purchasePrice": 24.72,
@@ -436,5 +430,11 @@
     "description": "tissages lisse mèche blonde 20 pouces",
     "purchasePrice": 25.053,
     "quantity": 2
+  },
+  {
+    "id": "1752213159276",
+    "description": "Perruque lisse marron 20 pouces",
+    "purchasePrice": 51.42,
+    "quantity": 0
   }
 ]

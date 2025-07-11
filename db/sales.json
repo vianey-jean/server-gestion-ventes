@@ -557,5 +557,18 @@
     "clientName": "mayli",
     "clientAddress": "saint paul",
     "clientPhone": "0693603252"
+  },
+  {
+    "id": "1752213406261",
+    "date": "2025-07-11",
+    "productId": "1752213159276",
+    "description": "Perruque lisse marron 20 pouces",
+    "sellingPrice": 130,
+    "quantitySold": 1,
+    "purchasePrice": 51.42,
+    "profit": 78.58,
+    "clientName": "Gogou Mp",
+    "clientAddress": "Eglise saint Marie",
+    "clientPhone": "06"
   }
 ]

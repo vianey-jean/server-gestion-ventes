@@ -13,79 +13,27 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration CORS améliorée pour production et développement
+// Configuration CORS simplifiée pour le développement
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Autoriser les requêtes sans origine (mobile apps, postman, etc.)
-    if (!origin) return callback(null, true);
-    
-    // Liste des origines autorisées
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'http://localhost:3000',
-      'http://127.0.0.1:5173',
-      'http://127.0.0.1:3000',
-      'https://lovable.dev',
-      process.env.FRONTEND_URL,
-      // Ajouter d'autres domaines selon vos besoins
-    ].filter(Boolean);
-    
-    // En développement, autoriser toutes les origines localhost
-    if (process.env.NODE_ENV === 'development') {
-      if (origin.includes('localhost') || origin.includes('127.0.0.1') || origin.includes('lovable.dev')) {
-        return callback(null, true);
-      }
-    }
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log('CORS: Origine non autorisée:', origin);
-      callback(null, true); // Temporairement permissif pour le développement
-    }
-  },
+  origin: true, // Permet toutes les origines en développement
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
     'Content-Type', 
     'Authorization', 
     'Cache-Control',
     'X-Requested-With',
     'Accept',
-    'Origin',
-    'Access-Control-Request-Method',
-    'Access-Control-Request-Headers'
+    'Origin'
   ],
-  exposedHeaders: [
-    'Content-Length',
-    'Content-Type',
-    'Authorization'
-  ],
-  optionsSuccessStatus: 200,
-  maxAge: 86400 // 24 heures
+  optionsSuccessStatus: 200
 };
 
-// Middleware CORS global avec gestion préflight
+// Middleware CORS global
 app.use(cors(corsOptions));
 
-// Middleware pour gérer les requêtes preflight OPTIONS
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin');
-  res.header('Access-Control-Max-Age', '86400');
-  res.sendStatus(200);
-});
-
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-
-// Middleware de logging pour debug CORS
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path} from ${req.headers.origin || 'no-origin'}`);
-  next();
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Create db directory if it doesn't exist
 const dbPath = path.join(__dirname, 'db');
@@ -137,7 +85,7 @@ if (!fs.existsSync(salesPath)) {
 // Créer les nouveaux fichiers JSON s'ils n'existent pas
 const pretFamillesPath = path.join(dbPath, 'pretfamilles.json');
 if (!fs.existsSync(pretFamillesPath)) {
-  fs.writeFileSync(pretfamillesPath, JSON.stringify([
+  fs.writeFileSync(pretFamillesPath, JSON.stringify([
     { id: "1", nom: "Famille Martin", pretTotal: 2000, soldeRestant: 1500, dernierRemboursement: 500, dateRemboursement: "2024-04-15" },
     { id: "2", nom: "Famille Dupont", pretTotal: 1000, soldeRestant: 500, dernierRemboursement: 200, dateRemboursement: "2024-04-10" },
     { id: "3", nom: "Famille Bernard", pretTotal: 3000, soldeRestant: 2000, dernierRemboursement: 1000, dateRemboursement: "2024-04-05" }
@@ -203,34 +151,19 @@ app.use('/api/benefices', beneficesRoutes);
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Middleware de gestion d'erreur amélioré
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  
-  // Gestion CORS pour les erreurs
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
-  res.status(err.status || 500).json({ 
+  console.error('Server error:', err.stack);
+  res.status(500).json({ 
     error: 'Something broke!', 
     message: err.message,
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 });
 
-// Route de santé
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📡 CORS enabled for development origins`);
-  console.log(`🔄 Sync events available at http://localhost:${PORT}/api/sync/events`);
-  console.log(`💻 Environment: ${process.env.NODE_ENV || 'development'}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`CORS enabled for all origins in development`);
+  console.log(`Sync events available at http://localhost:${PORT}/api/sync/events`);
 });
