@@ -14,5 +14,37 @@
     "tauxMarge": 191.00000000000003,
     "createdAt": "2025-07-10T08:33:33.356Z",
     "updatedAt": "2025-07-10T08:33:33.357Z"
+  },
+  {
+    "id": "5affd28c-faf6-4709-9052-dbc829a62fd3",
+    "productId": "1752297135636",
+    "productDescription": "Perruque bouclé blonde miel 28 pouces",
+    "prixAchat": 58.41,
+    "taxeDouane": 0,
+    "tva": 20,
+    "autresFrais": 0,
+    "coutTotal": 70.092,
+    "margeDesire": 171.1,
+    "prixVenteRecommande": 190.019412,
+    "beneficeNet": 119.92741199999999,
+    "tauxMarge": 171.1,
+    "createdAt": "2025-07-12T05:39:22.605Z",
+    "updatedAt": "2025-07-12T05:39:22.605Z"
+  },
+  {
+    "id": "f45d77a5-e04e-4098-8429-7774b0f213cb",
+    "productId": "1752296948463",
+    "productDescription": "Perruque lisse gris 24 pouces",
+    "prixAchat": 50.32,
+    "taxeDouane": 0,
+    "tva": 20,
+    "autresFrais": 0,
+    "coutTotal": 60.384,
+    "margeDesire": 181.6,
+    "prixVenteRecommande": 170.04134399999998,
+    "beneficeNet": 109.65734399999998,
+    "tauxMarge": 181.59999999999997,
+    "createdAt": "2025-07-12T05:40:12.763Z",
+    "updatedAt": "2025-07-12T05:40:12.763Z"
   }
 ]

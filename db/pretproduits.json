@@ -209,13 +209,13 @@
   {
     "id": "17",
     "date": "2025-07-11",
-    "datePaiement": "2025-07-29",
+    "datePaiement": "2025-07-30",
     "description": "Perruque lisse noir mèche blonde 22 pouces",
     "nom": "Emilienne",
     "phone": "0693326932",
-    "prixVente": 62.46,
+    "prixVente": 150,
     "avanceRecue": 0,
-    "reste": 62.46,
+    "reste": 150,
     "estPaye": false,
     "productId": "1752296734516"
   }
