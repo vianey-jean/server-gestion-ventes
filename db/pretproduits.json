@@ -46,9 +46,9 @@
     "description": "Perruque bouclé orange 20 pouces",
     "nom": "Cliente Naomie Vaubon",
     "prixVente": 130,
-    "avanceRecue": 100,
-    "reste": 30,
-    "estPaye": false,
+    "avanceRecue": 130,
+    "reste": 0,
+    "estPaye": true,
     "productId": "1745415432141"
   },
   {
@@ -98,8 +98,8 @@
     "description": "Perruque bouclé noir 20 pouces Vendu",
     "nom": "Soeur Naomie Vaubon ",
     "prixVente": 140,
-    "avanceRecue": 0,
-    "reste": 140,
+    "avanceRecue": 70,
+    "reste": 70,
     "estPaye": false,
     "productId": "1745415935938"
   },
@@ -205,5 +205,18 @@
     "reste": 30,
     "estPaye": false,
     "productId": "1745935106995"
+  },
+  {
+    "id": "17",
+    "date": "2025-07-11",
+    "datePaiement": "2025-07-29",
+    "description": "Perruque lisse noir mèche blonde 22 pouces",
+    "nom": "Emilienne",
+    "phone": "0693326932",
+    "prixVente": 62.46,
+    "avanceRecue": 0,
+    "reste": 62.46,
+    "estPaye": false,
+    "productId": "1752296734516"
   }
 ]

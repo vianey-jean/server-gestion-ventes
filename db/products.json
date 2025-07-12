@@ -436,5 +436,53 @@
     "description": "Perruque lisse marron 20 pouces",
     "purchasePrice": 51.42,
     "quantity": 0
+  },
+  {
+    "id": "1752296734516",
+    "description": "Perruque lisse noir mèche blonde 22 pouces",
+    "purchasePrice": 62.46,
+    "quantity": 1
+  },
+  {
+    "id": "1752296760584",
+    "description": "Perruque lisse rouge mèche blonde 22 pouces",
+    "purchasePrice": 62.46,
+    "quantity": 1
+  },
+  {
+    "id": "1752296948463",
+    "description": "Perruque lisse gris 24 pouces",
+    "purchasePrice": 50.32,
+    "quantity": 1
+  },
+  {
+    "id": "1752297030706",
+    "description": "Perruque lisse ondulé noir mèche blonde 22 pouces",
+    "purchasePrice": 66.38,
+    "quantity": 1
+  },
+  {
+    "id": "1752297055358",
+    "description": "Perruque lisse ondulé noir mèche marron 22 pouces",
+    "purchasePrice": 66.22,
+    "quantity": 1
+  },
+  {
+    "id": "1752297135636",
+    "description": "Perruque bouclé blonde miel 28 pouces",
+    "purchasePrice": 58.41,
+    "quantity": 1
+  },
+  {
+    "id": "1752297157536",
+    "description": "Perruque bouclé blonde miel 18 pouces",
+    "purchasePrice": 31.35,
+    "quantity": 1
+  },
+  {
+    "id": "1752297246613",
+    "description": "Tissages bouclé mèche blonde miel 20 pouces",
+    "purchasePrice": 18.75,
+    "quantity": 3
   }
 ]
