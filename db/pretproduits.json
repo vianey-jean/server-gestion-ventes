@@ -175,9 +175,9 @@
     "description": "Perruque blonde blanche 26 pouces",
     "nom": "Lalao Elisabeth",
     "prixVente": 200,
-    "avanceRecue": 0,
-    "reste": 200,
-    "estPaye": false,
+    "avanceRecue": 200,
+    "reste": 0,
+    "estPaye": true,
     "productId": "1749734681713"
   },
   {

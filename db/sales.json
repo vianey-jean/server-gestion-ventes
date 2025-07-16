@@ -570,5 +570,31 @@
     "clientName": "Gogou Mp",
     "clientAddress": "Eglise saint Marie",
     "clientPhone": "06"
+  },
+  {
+    "id": "1752676180369",
+    "date": "2025-07-15",
+    "productId": "1746811570529",
+    "description": "Avance Perruque ou Tissages",
+    "sellingPrice": 110,
+    "quantitySold": 0,
+    "purchasePrice": 1,
+    "profit": 109,
+    "clientName": "Lalao Elisabeth",
+    "clientAddress": "Chaudron",
+    "clientPhone": "06"
+  },
+  {
+    "id": "1752676059574",
+    "date": "2025-07-16",
+    "productId": "1752675976940",
+    "description": "Perruque bouclé frisé mèche blonde marron 12 pouces",
+    "sellingPrice": 90,
+    "quantitySold": 1,
+    "purchasePrice": 26.32,
+    "profit": 63.68,
+    "clientName": "Patty Rgm",
+    "clientAddress": "22 Allée des poudrières Appt 13 97410 st pierre",
+    "clientPhone": "0692157371"
   }
 ]
