@@ -596,5 +596,18 @@
     "clientName": "Patty Rgm",
     "clientAddress": "22 Allée des poudrières Appt 13 97410 st pierre",
     "clientPhone": "0692157371"
+  },
+  {
+    "id": "1752764352209",
+    "date": "2025-07-17",
+    "productId": "1752764210701",
+    "description": "Perruque lisse bleu 26 pouces",
+    "sellingPrice": 210,
+    "quantitySold": 1,
+    "purchasePrice": 80.94,
+    "profit": 129.06,
+    "clientName": "Hayrlito la Cremeuse",
+    "clientAddress": "4 Rue Sarda Garriga le Port",
+    "clientPhone": "0693544541"
   }
 ]

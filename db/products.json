@@ -490,5 +490,11 @@
     "description": "Perruque bouclé frisé mèche blonde marron 12 pouces",
     "purchasePrice": 26.32,
     "quantity": 2
+  },
+  {
+    "id": "1752764210701",
+    "description": "Perruque lisse bleu 26 pouces",
+    "purchasePrice": 80.94,
+    "quantity": 0
   }
 ]
