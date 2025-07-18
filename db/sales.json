@@ -609,5 +609,18 @@
     "clientName": "Hayrlito la Cremeuse",
     "clientAddress": "4 Rue Sarda Garriga le Port",
     "clientPhone": "0693544541"
+  },
+  {
+    "id": "1752856706316",
+    "date": "2025-07-18",
+    "productId": "1750688735646",
+    "description": "Tissages bouclé noir 24 pouces",
+    "sellingPrice": 120,
+    "quantitySold": 2,
+    "purchasePrice": 38.92,
+    "profit": 81.08,
+    "clientName": "AfroWw",
+    "clientAddress": "3 chemin dioré st suzanne",
+    "clientPhone": "06"
   }
 ]
