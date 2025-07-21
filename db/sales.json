@@ -622,5 +622,31 @@
     "clientName": "AfroWw",
     "clientAddress": "3 chemin dioré st suzanne",
     "clientPhone": "06"
+  },
+  {
+    "id": "1753102512651",
+    "date": "2025-07-21",
+    "productId": "11",
+    "description": "Tissages blonde meil 22 pouces",
+    "sellingPrice": 170.01,
+    "quantitySold": 3,
+    "purchasePrice": 61.349999999999994,
+    "profit": 108.66,
+    "clientName": "Siname Anne Marie",
+    "clientAddress": "30 rue de la Bourgogne Apt 27 Moufia",
+    "clientPhone": "0693026371"
+  },
+  {
+    "id": "1753102705935",
+    "date": "2025-07-21",
+    "productId": "1751132283454",
+    "description": "perruque bouclé blonde miel 12 pouces",
+    "sellingPrice": 90,
+    "quantitySold": 1,
+    "purchasePrice": 25.96,
+    "profit": 64.04,
+    "clientName": "Gogou  Mg",
+    "clientAddress": "0692554358",
+    "clientPhone": null
   }
 ]
