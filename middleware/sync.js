@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const path = require('path');
 
@@ -55,8 +54,6 @@ class SyncManager {
       return;
     }
 
-    console.log(`Démarrage surveillance du fichier: ${filePath}`);
-
     try {
       const watcher = fs.watch(filePath, { persistent: true }, (eventType, filename) => {
         if (eventType === 'change') {
@@ -77,14 +74,11 @@ class SyncManager {
                 
                 // Vérifier si les données ont réellement changé
                 if (this.hasDataChanged(filePath, processedData)) {
-                  console.log(`🔄 Changement détecté dans ${dataType} - Synchronisation nécessaire`);
                   callback(filePath, processedData);
-                } else {
-                  console.log(`⏭️ Pas de changement réel dans ${dataType} - Synchronisation ignorée`);
                 }
               }
             } catch (error) {
-              console.error('Erreur lors de la vérification des changements:', error);
+              // Erreur silencieuse
             }
           }, 100);
         }
@@ -93,7 +87,7 @@ class SyncManager {
       this.watchers.set(filePath, watcher);
       
     } catch (error) {
-      console.error('Erreur création watcher:', error);
+      // Erreur silencieuse
     }
   }
 
@@ -113,7 +107,6 @@ class SyncManager {
   addClient(clientId, notifyCallback) {
     const client = { id: clientId, notify: notifyCallback, lastPing: Date.now() };
     this.clients.add(client);
-    console.log(`Client SSE ajouté: ${clientId}, total: ${this.clients.size}`);
     
     // Envoyer les données actuelles immédiatement
     this.sendCurrentData(client);
@@ -124,7 +117,6 @@ class SyncManager {
         notifyCallback('heartbeat', { timestamp: Date.now() });
         client.lastPing = Date.now();
       } catch (error) {
-        console.error('Client déconnecté:', clientId);
         this.removeClient(clientId);
         clearInterval(heartbeat);
       }
@@ -163,7 +155,7 @@ class SyncManager {
           });
           
         } catch (error) {
-          console.error(`Erreur lecture ${fileName}:`, error);
+          // Erreur silencieuse
         }
       }
     });
@@ -177,7 +169,6 @@ class SyncManager {
           clearInterval(client.heartbeat);
         }
         this.clients.delete(client);
-        console.log(`Client SSE supprimé: ${clientId}, restants: ${this.clients.size}`);
         break;
       }
     }
@@ -185,15 +176,12 @@ class SyncManager {
 
   // Notifier tous les clients avec données (seulement si changement réel)
   notifyClients(event, data) {
-    console.log(`📡 Notification à ${this.clients.size} clients:`, event, data.type);
-    
     const clientsToRemove = [];
     
     this.clients.forEach(client => {
       try {
         client.notify(event, data);
       } catch (error) {
-        console.error('Erreur notification client:', client.id, error);
         clientsToRemove.push(client.id);
       }
     });
@@ -219,15 +207,11 @@ const filesToWatch = [
   'depensefixe.json'
 ];
 
-console.log('Initialisation des watchers de fichiers optimisés...');
-
 filesToWatch.forEach(fileName => {
   const filePath = path.join(syncManager.dbPath, fileName);
   if (fs.existsSync(filePath)) {
-    console.log(`Configuration surveillance: ${fileName}`);
     syncManager.watchFile(filePath, (changedFile, processedData) => {
       const dataType = path.basename(changedFile, '.json');
-      console.log(`🔄 CHANGEMENT RÉEL DÉTECTÉ: ${dataType}`);
       
       // Notification immédiate avec données déjà traitées
       syncManager.notifyClients('data-changed', {
@@ -237,14 +221,11 @@ filesToWatch.forEach(fileName => {
         file: changedFile
       });
     });
-  } else {
-    console.warn(`Fichier non trouvé: ${filePath}`);
   }
 });
 
 // Nettoyage à l'arrêt
 process.on('SIGINT', () => {
-  console.log('Arrêt du gestionnaire de synchronisation...');
   process.exit(0);
 });
 

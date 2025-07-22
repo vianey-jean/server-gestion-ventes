@@ -1,44 +1,59 @@
+
 const express = require('express');
 const router = express.Router();
 const syncManager = require('../middleware/sync');
 const authMiddleware = require('../middleware/auth');
 
-// Endpoint pour Server-Sent Events avec configuration CORS simplifiée
-router.get('/events', (req, res) => {
-  console.log('Nouvelle connexion SSE demandée depuis:', req.get('Origin') || 'localhost');
+// Middleware CORS spécifique pour SSE avec gestion des origines multiples
+const setCORSHeaders = (req, res) => {
+  const origin = req.get('Origin');
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:8080',
+    'https://loving-river-0c35b7710.5.azurestaticapps.net',
+    'https://server-gestion-ventes.onrender.com'
+  ];
   
-  // Configuration SSE avec headers CORS simplifiés
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
+  
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Max-Age', '86400');
+};
+
+// Endpoint pour Server-Sent Events avec configuration CORS améliorée
+router.get('/events', (req, res) => {
+  // Configuration des headers CORS pour SSE
+  setCORSHeaders(req, res);
+  
   const headers = {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache, no-store, must-revalidate',
     'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Credentials': 'true',
-    'Access-Control-Allow-Headers': 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Max-Age': '86400'
+    'X-Accel-Buffering': 'no'
   };
   
   res.writeHead(200, headers);
 
   const clientId = `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  console.log(`Client SSE connecté: ${clientId} depuis ${req.get('Origin') || 'localhost'}`);
   
   // Fonction pour envoyer des événements au client avec gestion d'erreurs
   const sendEvent = (event, data) => {
     try {
       if (res.writableEnded || res.destroyed) {
-        console.log(`Connexion fermée pour ${clientId}, arrêt envoi événement`);
         return false;
       }
       
       const message = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
       res.write(message);
-      console.log(`Événement envoyé à ${clientId}:`, event, data.type || 'no-type');
       return true;
     } catch (error) {
-      console.error(`Erreur envoi événement à ${clientId}:`, error);
       syncManager.removeClient(clientId);
       return false;
     }
@@ -56,56 +71,34 @@ router.get('/events', (req, res) => {
 
   // Gérer la fermeture de connexion proprement
   const cleanup = () => {
-    console.log(`Nettoyage connexion ${clientId}`);
     syncManager.removeClient(clientId);
     if (!res.writableEnded) {
       try {
         res.end();
       } catch (error) {
-        console.log(`Connexion déjà fermée pour ${clientId}`);
+        // Connexion déjà fermée
       }
     }
   };
 
-  req.on('close', () => {
-    console.log(`Client ${clientId} déconnecté (close)`);
-    cleanup();
-  });
-
-  req.on('end', () => {
-    console.log(`Client ${clientId} déconnecté (end)`);
-    cleanup();
-  });
-
-  req.on('error', (error) => {
-    console.error(`Erreur client ${clientId}:`, error.code || error.message);
-    cleanup();
-  });
+  req.on('close', cleanup);
+  req.on('end', cleanup);
+  req.on('error', cleanup);
 
   // Timeout de sécurité pour éviter les connexions fantômes
-  const timeout = setTimeout(() => {
-    console.log(`Timeout connexion ${clientId}`);
-    cleanup();
-  }, 300000); // 5 minutes
-
+  const timeout = setTimeout(cleanup, 300000); // 5 minutes
   req.on('close', () => clearTimeout(timeout));
 });
 
 // Middleware OPTIONS pour préflight CORS sur SSE
 router.options('/events', (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin');
-  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.header('Access-Control-Max-Age', '86400');
+  setCORSHeaders(req, res);
   res.status(200).send();
 });
 
 // Endpoint pour forcer la synchronisation
 router.post('/force-sync', authMiddleware, (req, res) => {
   try {
-    console.log('Synchronisation forcée demandée');
-    
     syncManager.notifyClients('force-sync', {
       timestamp: new Date(),
       source: 'manual',
@@ -118,7 +111,6 @@ router.post('/force-sync', authMiddleware, (req, res) => {
       clients: syncManager.clients.size 
     });
   } catch (error) {
-    console.error('Erreur force sync:', error);
     res.status(500).json({ error: 'Erreur lors de la synchronisation' });
   }
 });
@@ -133,10 +125,8 @@ router.get('/status', (req, res) => {
       isRunning: true
     };
     
-    console.log('Statut synchronisation demandé:', status);
     res.json(status);
   } catch (error) {
-    console.error('Erreur statut sync:', error);
     res.status(500).json({ error: 'Erreur lors de la récupération du statut' });
   }
 });
