@@ -381,7 +381,7 @@
     "id": "1750688735646",
     "description": "Tissages bouclé noir 24 pouces",
     "purchasePrice": 19.46,
-    "quantity": 4
+    "quantity": 1
   },
   {
     "id": "1751132172336",
@@ -399,7 +399,7 @@
     "id": "1751641563836",
     "description": "tissages bouclé blonde miel 20 pouces",
     "purchasePrice": 13.88,
-    "quantity": 0
+    "quantity": 3
   },
   {
     "id": "1751721764807",
@@ -496,5 +496,29 @@
     "description": "Perruque lisse bleu 26 pouces",
     "purchasePrice": 80.94,
     "quantity": 0
+  },
+  {
+    "id": "1753186907720",
+    "description": "Tissages bouclé noir 16 poucess",
+    "purchasePrice": 11.02,
+    "quantity": 3
+  },
+  {
+    "id": "1753187017537",
+    "description": "tissages bouclé noir 22 pouces",
+    "purchasePrice": 17.19,
+    "quantity": 3
+  },
+  {
+    "id": "1753187184839",
+    "description": "Tissages blonde miel 18 pouces",
+    "purchasePrice": 14.03,
+    "quantity": 3
+  },
+  {
+    "id": "1753187277230",
+    "description": "tissages lisse noir 24 pouces",
+    "purchasePrice": 18.22,
+    "quantity": 3
   }
 ]

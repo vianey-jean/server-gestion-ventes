@@ -648,5 +648,18 @@
     "clientName": "Gogou  Mg",
     "clientAddress": "0692554358",
     "clientPhone": null
+  },
+  {
+    "id": "1753186093237",
+    "date": "2025-07-22",
+    "productId": "1750688735646",
+    "description": "Tissages bouclé noir 24 pouces",
+    "sellingPrice": 170.01,
+    "quantitySold": 3,
+    "purchasePrice": 58.38,
+    "profit": 111.63,
+    "clientName": "Mj K'Tda",
+    "clientAddress": "Parking carrefour saint-Suzanne",
+    "clientPhone": "0692221241"
   }
 ]
