@@ -661,5 +661,18 @@
     "clientName": "Mj K'Tda",
     "clientAddress": "Parking carrefour saint-Suzanne",
     "clientPhone": "0692221241"
+  },
+  {
+    "id": "1753355468604",
+    "date": "2025-07-24",
+    "productId": "1753187277230",
+    "description": "tissages lisse noir 24 pouces",
+    "sellingPrice": 60,
+    "quantitySold": 1,
+    "purchasePrice": 18.22,
+    "profit": 41.78,
+    "clientName": "Laetitia Roann",
+    "clientAddress": "542 rue milles Roches st André",
+    "clientPhone": "0692443186"
   }
 ]
