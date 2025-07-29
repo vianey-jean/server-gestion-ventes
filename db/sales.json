@@ -674,5 +674,18 @@
     "clientName": "Laetitia Roann",
     "clientAddress": "542 rue milles Roches st André",
     "clientPhone": "0692443186"
+  },
+  {
+    "id": "1753815345399",
+    "date": "2025-07-29",
+    "productId": "5",
+    "description": "Tissages bouclé noir 20 pouces 12 A",
+    "sellingPrice": 100,
+    "quantitySold": 2,
+    "purchasePrice": 29.82,
+    "profit": 70.18,
+    "clientName": "Valériane Phileas",
+    "clientAddress": "St Bénoit",
+    "clientPhone": null
   }
 ]
