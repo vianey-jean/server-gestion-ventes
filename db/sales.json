@@ -687,5 +687,44 @@
     "clientName": "Valériane Phileas",
     "clientAddress": "St Bénoit",
     "clientPhone": null
+  },
+  {
+    "id": "1753967566679",
+    "date": "2025-07-31",
+    "productId": "1750688735646",
+    "description": "Tissages bouclé noir 24 pouces",
+    "sellingPrice": 50,
+    "quantitySold": 1,
+    "purchasePrice": 19.46,
+    "profit": 30.54,
+    "clientName": "Dalia Moussa",
+    "clientAddress": "12 allée montplaisir",
+    "clientPhone": "0693551913"
+  },
+  {
+    "id": "1753967611170",
+    "date": "2025-07-31",
+    "productId": "1753187017537",
+    "description": "Tissages bouclé noir 22 pouces",
+    "sellingPrice": 100,
+    "quantitySold": 2,
+    "purchasePrice": 34.38,
+    "profit": 65.62,
+    "clientName": "Dalia Moussa",
+    "clientAddress": "12 allée montplaisir",
+    "clientPhone": "0693551913"
+  },
+  {
+    "id": "1753967789098",
+    "date": "2025-07-31",
+    "productId": "1753967687912",
+    "description": "Perruque bouclé frange blonde miel 14 pouces",
+    "sellingPrice": 80,
+    "quantitySold": 1,
+    "purchasePrice": 28.75,
+    "profit": 51.25,
+    "clientName": "Mounette Harisoa Miranville",
+    "clientAddress": "20 bis chemin finette saint Clotilde",
+    "clientPhone": null
   }
 ]

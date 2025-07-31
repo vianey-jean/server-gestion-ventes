@@ -12,12 +12,6 @@
     "quantity": 0
   },
   {
-    "id": "3",
-    "description": "Tissages bouclé noir 22 pouces",
-    "purchasePrice": 17.18,
-    "quantity": 3
-  },
-  {
     "id": "4",
     "description": "Perruque lisse frange noir 26 pouces",
     "purchasePrice": 50,
@@ -259,9 +253,9 @@
   },
   {
     "id": "1745935490944",
-    "description": "Tissages lisse 20 pouces 12A",
+    "description": "Tissages lisse noir 20 pouces 12A",
     "purchasePrice": 17.9,
-    "quantity": 2
+    "quantity": 5
   },
   {
     "id": "1745935530399",
@@ -381,7 +375,7 @@
     "id": "1750688735646",
     "description": "Tissages bouclé noir 24 pouces",
     "purchasePrice": 19.46,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1751132172336",
@@ -507,7 +501,7 @@
     "id": "1753187017537",
     "description": "Tissages bouclé noir 22 pouces",
     "purchasePrice": 17.19,
-    "quantity": 3
+    "quantity": 1
   },
   {
     "id": "1753187277230",
@@ -538,5 +532,11 @@
     "description": "Perruque lisse frange noir 20 pouces",
     "purchasePrice": 25.78,
     "quantity": 1
+  },
+  {
+    "id": "1753967687912",
+    "description": "Perruque bouclé frange blonde miel 14 pouces",
+    "purchasePrice": 28.75,
+    "quantity": 0
   }
 ]
