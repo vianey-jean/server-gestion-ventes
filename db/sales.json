@@ -726,5 +726,31 @@
     "clientName": "Mounette Harisoa Miranville",
     "clientAddress": "20 bis chemin finette saint Clotilde",
     "clientPhone": null
+  },
+  {
+    "id": "1754486729409",
+    "date": "2025-08-06",
+    "productId": "1748490364800",
+    "description": "Perruque bouclé noir 30 pouces",
+    "sellingPrice": 180,
+    "quantitySold": 1,
+    "purchasePrice": 53.85,
+    "profit": 126.15,
+    "clientName": "Dalie Mn",
+    "clientAddress": "super U St Paul",
+    "clientPhone": "0693656467"
+  },
+  {
+    "id": "1754487066319",
+    "date": "2025-08-06",
+    "productId": "1745934022973",
+    "description": "Perruque lisse noir mèche blonde ou rouge marron de 22 pouces",
+    "sellingPrice": 170,
+    "quantitySold": 1,
+    "purchasePrice": 70.82,
+    "profit": 99.18,
+    "clientName": "Nanou Soula",
+    "clientAddress": "203 Rue Leopold Martin Saint-André",
+    "clientPhone": "0693869772"
   }
 ]
