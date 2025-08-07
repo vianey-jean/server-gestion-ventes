@@ -3,18 +3,36 @@
     "id": "1",
     "description": "RSA",
     "categorie": "Autres",
-    "date": "2025-07-05",
+    "date": "2025-08-07",
     "debit": "",
     "credit": "1822",
     "solde": 1822
   },
   {
     "id": "2",
+    "description": "Fourniture Ecole",
+    "categorie": "Autres",
+    "date": "2025-08-07",
+    "debit": "",
+    "credit": "882",
+    "solde": 2704
+  },
+  {
+    "id": "3",
     "description": "Charge fixe",
     "categorie": "chargeFixe",
-    "date": "2025-07-10",
+    "date": "2025-08-07",
     "debit": "352.96",
     "credit": "",
-    "solde": 1469.04
+    "solde": 2351.04
+  },
+  {
+    "id": "4",
+    "description": "Retrait",
+    "categorie": "Autres",
+    "date": "2025-08-07",
+    "debit": "1000",
+    "credit": "",
+    "solde": 1351.04
   }
 ]

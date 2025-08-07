@@ -752,5 +752,18 @@
     "clientName": "Nanou Soula",
     "clientAddress": "203 Rue Leopold Martin Saint-André",
     "clientPhone": "0693869772"
+  },
+  {
+    "id": "1754546499741",
+    "date": "2025-08-07",
+    "productId": "1745935490944",
+    "description": "Tissages lisse noir 20 pouces 12A",
+    "sellingPrice": 150,
+    "quantitySold": 3,
+    "purchasePrice": 53.699999999999996,
+    "profit": 96.3,
+    "clientName": "Sinama Anne Marie ",
+    "clientAddress": "30 rue de la Bourgogne apt 27",
+    "clientPhone": "0693026371"
   }
 ]
