@@ -778,5 +778,18 @@
     "clientName": "Doifré Béné",
     "clientAddress": "1 rue champ Fleuri Saint-Denis",
     "clientPhone": "0693510111"
+  },
+  {
+    "id": "1754650471692",
+    "date": "2025-08-08",
+    "productId": "1754650401633",
+    "description": "Perruque lisse blonde blanche 24 pouces",
+    "sellingPrice": 150,
+    "quantitySold": 1,
+    "purchasePrice": 53.09,
+    "profit": 96.91,
+    "clientName": "Mary MBTS",
+    "clientAddress": "4 bis rue aime lebon les Jacques 97480 St Joseph",
+    "clientPhone": "0693701880"
   }
 ]
