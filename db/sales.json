@@ -765,5 +765,18 @@
     "clientName": "Sinama Anne Marie ",
     "clientAddress": "30 rue de la Bourgogne apt 27",
     "clientPhone": "0693026371"
+  },
+  {
+    "id": "1754627799647",
+    "date": "2025-08-08",
+    "productId": "5",
+    "description": "Tissages bouclé noir 20 pouces 12 A",
+    "sellingPrice": 150,
+    "quantitySold": 3,
+    "purchasePrice": 44.730000000000004,
+    "profit": 105.27,
+    "clientName": "Doifré Béné",
+    "clientAddress": "1 rue champ Fleuri Saint-Denis",
+    "clientPhone": "0693510111"
   }
 ]
