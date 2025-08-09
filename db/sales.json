@@ -791,5 +791,18 @@
     "clientName": "Mary MBTS",
     "clientAddress": "4 bis rue aime lebon les Jacques 97480 St Joseph",
     "clientPhone": "0693701880"
+  },
+  {
+    "id": "1754743384247",
+    "date": "2025-08-09",
+    "productId": "1754743316683",
+    "description": "Perruque lisse noir lace T 18 pouces",
+    "sellingPrice": 90,
+    "quantitySold": 1,
+    "purchasePrice": 30.52,
+    "profit": 59.48,
+    "clientName": "Princesse Princesse",
+    "clientAddress": "18 avenue Raymond Vergès, La Possession",
+    "clientPhone": "0692782974"
   }
 ]

@@ -544,5 +544,11 @@
     "description": "Perruque lisse blonde blanche 24 pouces",
     "purchasePrice": 53.09,
     "quantity": 0
+  },
+  {
+    "id": "1754743316683",
+    "description": "Perruque lisse noir lace T 18 pouces",
+    "purchasePrice": 30.52,
+    "quantity": 0
   }
 ]
