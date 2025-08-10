@@ -804,5 +804,18 @@
     "clientName": "Princesse Princesse",
     "clientAddress": "18 avenue Raymond Vergès, La Possession",
     "clientPhone": "0692782974"
+  },
+  {
+    "id": "1754816414032",
+    "date": "2025-08-10",
+    "productId": "1745933824476",
+    "description": "Perruque blonde miel lisse 18 pouces 13x4 lace frontale",
+    "sellingPrice": 110,
+    "quantitySold": 1,
+    "purchasePrice": 38.4,
+    "profit": 71.6,
+    "clientName": "Arisoa Miranville Monette",
+    "clientAddress": "12 rue Pitel Saint-Clotilde",
+    "clientPhone": "0692603490"
   }
 ]
