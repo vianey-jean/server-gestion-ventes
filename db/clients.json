@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "id": "1754909707450",
+    "nom": "Arisoa Miranville Monette",
+    "phone": "0692603490",
+    "adresse": "12 rue Pitel Saint-Clotilde",
+    "dateCreation": "2025-08-11T10:55:07.450Z"
+  },
+  {
+    "id": "1754909723845",
+    "nom": "Princesse Princesse",
+    "phone": "0692782974",
+    "adresse": "18 avenue Raymond Vergès, La Possession",
+    "dateCreation": "2025-08-11T10:55:23.845Z"
+  },
+  {
+    "id": "1754909745234",
+    "nom": "Mary MBTS",
+    "phone": "0693701880",
+    "adresse": "4 bis rue aime lebon les Jacques 97480 St Joseph",
+    "dateCreation": "2025-08-11T10:55:45.234Z"
+  },
+  {
+    "id": "1754909760167",
+    "nom": "Doifré Béné",
+    "phone": "0693510111",
+    "adresse": "1 rue champ Fleuri Saint-Denis",
+    "dateCreation": "2025-08-11T10:56:00.167Z"
+  },
+  {
+    "id": "1754909764773",
+    "nom": "Nanou Soula",
+    "phone": "0693869772",
+    "adresse": "203 Rue Leopold Martin Saint-André",
+    "dateCreation": "2025-08-11T10:56:04.773Z"
+  },
+  {
+    "id": "1754910039635",
+    "nom": "Dalie Mn",
+    "phone": "0693656467",
+    "adresse": "super U St Paul",
+    "dateCreation": "2025-08-11T11:00:39.635Z"
+  }
+]
