@@ -1,3 +1,4 @@
+
 const fs = require('fs');
 const path = require('path');
 
@@ -69,7 +70,7 @@ class SyncManager {
                 const rawData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 const dataType = path.basename(filePath, '.json');
                 
-                // Filtrer les ventes pour le mois en cours
+                // Filtrer les ventes pour le mois en cours, garder les autres données telles quelles
                 let processedData = dataType === 'sales' ? this.filterCurrentMonthSales(rawData) : rawData;
                 
                 // Vérifier si les données ont réellement changé
@@ -133,7 +134,8 @@ class SyncManager {
       'pretfamilles.json',
       'pretproduits.json',
       'depensedumois.json',
-      'depensefixe.json'
+      'depensefixe.json',
+      'clients.json'
     ];
 
     filesToWatch.forEach(fileName => {
@@ -197,14 +199,15 @@ class SyncManager {
 
 const syncManager = new SyncManager();
 
-// Surveiller les fichiers de données
+// Surveiller les fichiers de données (inclut maintenant clients.json)
 const filesToWatch = [
   'products.json',
   'sales.json',
   'pretfamilles.json',
   'pretproduits.json',
   'depensedumois.json',
-  'depensefixe.json'
+  'depensefixe.json',
+  'clients.json'
 ];
 
 filesToWatch.forEach(fileName => {
