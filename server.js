@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -82,6 +83,27 @@ if (!fs.existsSync(salesPath)) {
   fs.writeFileSync(salesPath, JSON.stringify([], null, 2));
 }
 
+// Créer le fichier clients.json s'il n'existe pas
+const clientsPath = path.join(dbPath, 'clients.json');
+if (!fs.existsSync(clientsPath)) {
+  fs.writeFileSync(clientsPath, JSON.stringify([
+    {
+      id: "1",
+      nom: "Marie Dupont",
+      phone: "0692123456",
+      adresse: "123 Rue de la Paix, Saint-Denis",
+      dateCreation: "2024-01-15T10:30:00.000Z"
+    },
+    {
+      id: "2", 
+      nom: "Jean Martin",
+      phone: "0693987654",
+      adresse: "45 Avenue des Palmiers, Saint-Paul",
+      dateCreation: "2024-01-20T14:15:00.000Z"
+    }
+  ], null, 2));
+}
+
 // Créer les nouveaux fichiers JSON s'ils n'existent pas
 const pretFamillesPath = path.join(dbPath, 'pretfamilles.json');
 if (!fs.existsSync(pretFamillesPath)) {
@@ -132,6 +154,7 @@ if (!fs.existsSync(beneficePath)) {
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const salesRoutes = require('./routes/sales');
+const clientRoutes = require('./routes/clients');
 const pretFamillesRoutes = require('./routes/pretfamilles');
 const pretProduitsRoutes = require('./routes/pretproduits');
 const depensesRoutes = require('./routes/depenses');
@@ -142,6 +165,7 @@ const beneficesRoutes = require('./routes/benefices');
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/sales', salesRoutes);
+app.use('/api/clients', clientRoutes);
 app.use('/api/pretfamilles', pretFamillesRoutes);
 app.use('/api/pretproduits', pretProduitsRoutes);
 app.use('/api/depenses', depensesRoutes);
