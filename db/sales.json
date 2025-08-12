@@ -817,5 +817,18 @@
     "clientName": "Arisoa Miranville Monette",
     "clientAddress": "12 rue Pitel Saint-Clotilde",
     "clientPhone": "0692603490"
+  },
+  {
+    "id": "1755006332868",
+    "date": "2025-08-12",
+    "productId": "1751132283454",
+    "description": "Perruque bouclé blonde miel 12 pouces",
+    "sellingPrice": 90,
+    "quantitySold": 1,
+    "purchasePrice": 25.96,
+    "profit": 64.04,
+    "clientName": "Toufahat Gharibe Chaibati",
+    "clientAddress": "250D Route Montgaillard, Res Terrass, St Denis",
+    "clientPhone": "0693835958"
   }
 ]
