@@ -135,7 +135,7 @@
     "id": "1745934022973",
     "description": "Perruque lisse noir mèche blonde ou rouge marron de 22 pouces",
     "purchasePrice": 70.82,
-    "quantity": 2
+    "quantity": 1
   },
   {
     "id": "1745934086516",
@@ -345,7 +345,7 @@
     "id": "1749141425560",
     "description": "Perruque bouclé gasy ",
     "purchasePrice": 19.79,
-    "quantity": 4
+    "quantity": 2
   },
   {
     "id": "1749141528437",
@@ -495,7 +495,7 @@
     "id": "1753186907720",
     "description": "Tissages bouclé noir 16 poucess",
     "purchasePrice": 11.02,
-    "quantity": 3
+    "quantity": 2
   },
   {
     "id": "1753187017537",
@@ -519,7 +519,7 @@
     "id": "1753356496899",
     "description": "Tissages bouclé blonde miel 16 pouces",
     "purchasePrice": 10.9,
-    "quantity": 3
+    "quantity": 2
   },
   {
     "id": "1753356640667",
@@ -549,6 +549,18 @@
     "id": "1754743316683",
     "description": "Perruque lisse noir lace T 18 pouces",
     "purchasePrice": 30.52,
+    "quantity": 0
+  },
+  {
+    "id": "1755098575570",
+    "description": "Perruque bouclé blonde miel de 28 pouces",
+    "purchasePrice": 59.46,
+    "quantity": 0
+  },
+  {
+    "id": "1755098673877",
+    "description": "Perruque lisse noir et rouge de 22 pouces",
+    "purchasePrice": 71.53,
     "quantity": 0
   }
 ]

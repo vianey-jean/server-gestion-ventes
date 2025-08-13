@@ -830,5 +830,61 @@
     "clientName": "Toufahat Gharibe Chaibati",
     "clientAddress": "250D Route Montgaillard, Res Terrass, St Denis",
     "clientPhone": "0693835958"
+  },
+  {
+    "id": "1755098945560",
+    "date": "2025-08-13",
+    "products": [
+      {
+        "productId": "1755098575570",
+        "description": "Perruque bouclé blonde miel de 28 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 59.46,
+        "sellingPrice": 180,
+        "profit": 120.54
+      },
+      {
+        "productId": "1745934022973",
+        "description": "Perruque lisse noir mèche blonde ou rouge marron de 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 70.82,
+        "sellingPrice": 140,
+        "profit": 69.18
+      },
+      {
+        "productId": "1755098673877",
+        "description": "Perruque lisse noir et rouge de 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 71.53,
+        "sellingPrice": 160,
+        "profit": 88.47
+      }
+    ],
+    "totalPurchasePrice": 201.81,
+    "totalSellingPrice": 480,
+    "totalProfit": 278.19000000000005,
+    "clientName": "kia Ra Cla",
+    "clientAddress": "34 rue du saint alexis st Gilles",
+    "clientPhone": "0693440795"
+  },
+  {
+    "id": "1755099052384",
+    "date": "2025-08-13",
+    "products": [
+      {
+        "productId": "1749141425560",
+        "description": "Perruque bouclé gasy ",
+        "quantitySold": 1,
+        "purchasePrice": 19.79,
+        "sellingPrice": 60,
+        "profit": 40.21
+      }
+    ],
+    "totalPurchasePrice": 19.79,
+    "totalSellingPrice": 60,
+    "totalProfit": 40.21,
+    "clientName": "Bell Dia",
+    "clientAddress": "Devant la mairie St Suzanne",
+    "clientPhone": "0692578440"
   }
 ]

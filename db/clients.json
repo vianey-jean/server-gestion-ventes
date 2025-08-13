@@ -54,5 +54,19 @@
     "phone": "0693835958",
     "adresse": "250D Route Montgaillard, Res Terrass, St Denis",
     "dateCreation": "2025-08-12T13:45:32.849Z"
+  },
+  {
+    "id": "1755098945532",
+    "nom": "kia Ra Cla",
+    "phone": "0693440795",
+    "adresse": "34 rue du saint alexis st Gilles",
+    "dateCreation": "2025-08-13T15:29:05.532Z"
+  },
+  {
+    "id": "1755099052362",
+    "nom": "Bell Dia",
+    "phone": "0692578440",
+    "adresse": "Devant la mairie St Suzanne",
+    "dateCreation": "2025-08-13T15:30:52.362Z"
   }
 ]
