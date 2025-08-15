@@ -135,7 +135,8 @@ class SyncManager {
       'pretproduits.json',
       'depensedumois.json',
       'depensefixe.json',
-      'clients.json'
+      'clients.json',
+      'messages.json'
     ];
 
     filesToWatch.forEach(fileName => {
@@ -199,7 +200,7 @@ class SyncManager {
 
 const syncManager = new SyncManager();
 
-// Surveiller les fichiers de données (inclut maintenant clients.json)
+// Surveiller les fichiers de données (inclut maintenant messages.json)
 const filesToWatch = [
   'products.json',
   'sales.json',
@@ -207,7 +208,8 @@ const filesToWatch = [
   'pretproduits.json',
   'depensedumois.json',
   'depensefixe.json',
-  'clients.json'
+  'clients.json',
+  'messages.json'
 ];
 
 filesToWatch.forEach(fileName => {
