@@ -562,5 +562,11 @@
     "description": "Perruque lisse noir et rouge de 22 pouces",
     "purchasePrice": 71.53,
     "quantity": 0
+  },
+  {
+    "id": "1755342766044",
+    "description": "Perruque bouclé blonde miel de 24 pouces",
+    "purchasePrice": 54.26,
+    "quantity": 0
   }
 ]
