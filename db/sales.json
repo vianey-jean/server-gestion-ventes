@@ -906,5 +906,25 @@
     "clientName": "kia Ra Cla",
     "clientAddress": "34 rue du saint alexis st Gilles",
     "clientPhone": "0693440795"
+  },
+  {
+    "id": "1756487180325",
+    "date": "2025-08-27",
+    "products": [
+      {
+        "productId": "1756486622500",
+        "description": "Perruque bouclé blonde miel blanche 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 64.84,
+        "sellingPrice": 150,
+        "profit": 85.16
+      }
+    ],
+    "totalPurchasePrice": 64.84,
+    "totalSellingPrice": 150,
+    "totalProfit": 85.16,
+    "clientName": "Sarah Dbt",
+    "clientAddress": "16 rue de la compagnie des indes St Paul",
+    "clientPhone": "0692542957"
   }
 ]

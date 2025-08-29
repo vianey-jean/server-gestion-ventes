@@ -568,5 +568,11 @@
     "description": "Perruque bouclé blonde miel de 24 pouces",
     "purchasePrice": 54.26,
     "quantity": 0
+  },
+  {
+    "id": "1756486622500",
+    "description": "Perruque bouclé blonde miel blanche 24 pouces",
+    "purchasePrice": 64.84,
+    "quantity": 1
   }
 ]
