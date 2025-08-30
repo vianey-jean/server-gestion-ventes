@@ -68,26 +68,5 @@
     "phone": "0692578440",
     "adresse": "Devant la mairie St Suzanne",
     "dateCreation": "2025-08-13T15:30:52.362Z"
-  },
-  {
-    "id": "1756487180301",
-    "nom": "Sarah Dbt",
-    "phone": "0692542957",
-    "adresse": "16 rue de la compagnie des indes St Paul",
-    "dateCreation": "2025-08-29T17:06:20.301Z"
-  },
-  {
-    "id": "1756657626560",
-    "nom": "Laetitia Roan",
-    "phone": "0692443186",
-    "adresse": "542 rue mille roches st André",
-    "dateCreation": "2025-08-31T16:27:06.560Z"
-  },
-  {
-    "id": "1756657773972",
-    "nom": "Hayrlito La crameuse",
-    "phone": "0693544541",
-    "adresse": "4 rue Sarda garriga le Port",
-    "dateCreation": "2025-08-31T16:29:33.972Z"
   }
 ]
