@@ -568,5 +568,23 @@
     "description": "Perruque bouclé blonde miel de 24 pouces",
     "purchasePrice": 54.26,
     "quantity": 0
+  },
+  {
+    "id": "1756486622500",
+    "description": "Perruque bouclé blonde miel blanche 24 pouces",
+    "purchasePrice": 64.84,
+    "quantity": 1
+  },
+  {
+    "id": "1756657529781",
+    "description": "Perruque bouclé frange noir 14 pouces",
+    "purchasePrice": 33.7,
+    "quantity": 0
+  },
+  {
+    "id": "1756657678071",
+    "description": "Perruque lisse rose de 26 pouces",
+    "purchasePrice": 96.09,
+    "quantity": 0
   }
 ]
