@@ -926,5 +926,45 @@
     "clientName": "Sarah Dbt",
     "clientAddress": "16 rue de la compagnie des indes St Paul",
     "clientPhone": "0692542957"
+  },
+  {
+    "id": "1756657626586",
+    "date": "2025-08-30",
+    "products": [
+      {
+        "productId": "1756657529781",
+        "description": "Perruque bouclé frange noir 14 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 33.7,
+        "sellingPrice": 90,
+        "profit": 56.3
+      }
+    ],
+    "totalPurchasePrice": 33.7,
+    "totalSellingPrice": 90,
+    "totalProfit": 56.3,
+    "clientName": "Laetitia Roan",
+    "clientAddress": "542 rue mille roches st André",
+    "clientPhone": "0692443186"
+  },
+  {
+    "id": "1756657773992",
+    "date": "2025-08-30",
+    "products": [
+      {
+        "productId": "1756657678071",
+        "description": "Perruque lisse rose de 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 96.09,
+        "sellingPrice": 220,
+        "profit": 123.91
+      }
+    ],
+    "totalPurchasePrice": 96.09,
+    "totalSellingPrice": 220,
+    "totalProfit": 123.91,
+    "clientName": "Hayrlito La crameuse",
+    "clientAddress": "4 rue Sarda garriga le Port",
+    "clientPhone": "0693544541"
   }
 ]
