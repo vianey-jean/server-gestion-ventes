@@ -966,5 +966,93 @@
     "clientName": "Hayrlito La crameuse",
     "clientAddress": "4 rue Sarda garriga le Port",
     "clientPhone": "0693544541"
+  },
+  {
+    "id": "1757002864656",
+    "date": "2025-09-02",
+    "products": [
+      {
+        "productId": "1751132172336",
+        "description": "Tissages bouclé blonde miel 22 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 36.48,
+        "sellingPrice": 120,
+        "profit": 83.52
+      },
+      {
+        "productId": "1753356496899",
+        "description": "Tissages bouclé blonde miel 16 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 10.9,
+        "sellingPrice": 30,
+        "profit": 19.1
+      }
+    ],
+    "totalPurchasePrice": 47.379999999999995,
+    "totalSellingPrice": 150,
+    "totalProfit": 102.62,
+    "clientName": "Rycka D'Lice",
+    "clientAddress": "parking en face super U St-paul",
+    "clientPhone": "0693313452"
+  },
+  {
+    "id": "1757003039522",
+    "date": "2025-09-02",
+    "products": [
+      {
+        "productId": "1757002987569",
+        "description": "Perruque bouclé frange noir 14 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 39.24,
+        "sellingPrice": 90,
+        "profit": 50.76
+      }
+    ],
+    "totalPurchasePrice": 39.24,
+    "totalSellingPrice": 90,
+    "totalProfit": 50.76,
+    "clientName": "Laetitia Roan",
+    "clientAddress": "542 rue mille roches st André",
+    "clientPhone": "0692443186"
+  },
+  {
+    "id": "1757003118227",
+    "date": "2025-09-04",
+    "products": [
+      {
+        "productId": "1757003082891",
+        "description": "Perruque bouclé frange blonde miel 14 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 39.24,
+        "sellingPrice": 90,
+        "profit": 50.76
+      }
+    ],
+    "totalPurchasePrice": 39.24,
+    "totalSellingPrice": 90,
+    "totalProfit": 50.76,
+    "clientName": "Laetitia Roan",
+    "clientAddress": "542 rue mille roches st André",
+    "clientPhone": "0692443186"
+  },
+  {
+    "id": "1757003331452",
+    "date": "2025-09-04",
+    "products": [
+      {
+        "productId": "1757003183899",
+        "description": "Perruque ondulé blonde miel de 20 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 43.18,
+        "sellingPrice": 100,
+        "profit": 56.82
+      }
+    ],
+    "totalPurchasePrice": 43.18,
+    "totalSellingPrice": 100,
+    "totalProfit": 56.82,
+    "clientName": "Milly Marie Sisahaye Sshye",
+    "clientAddress": "St Francois",
+    "clientPhone": "0693902963"
   }
 ]

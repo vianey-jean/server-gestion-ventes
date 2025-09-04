@@ -381,7 +381,7 @@
     "id": "1751132172336",
     "description": "Tissages bouclé blonde miel 22 pouces",
     "purchasePrice": 18.24,
-    "quantity": 6
+    "quantity": 4
   },
   {
     "id": "1751132283454",
@@ -519,7 +519,7 @@
     "id": "1753356496899",
     "description": "Tissages bouclé blonde miel 16 pouces",
     "purchasePrice": 10.9,
-    "quantity": 2
+    "quantity": 1
   },
   {
     "id": "1753356640667",
@@ -585,6 +585,24 @@
     "id": "1756657678071",
     "description": "Perruque lisse rose de 26 pouces",
     "purchasePrice": 96.09,
+    "quantity": 0
+  },
+  {
+    "id": "1757002987569",
+    "description": "Perruque bouclé frange noir 14 pouces",
+    "purchasePrice": 39.24,
+    "quantity": 0
+  },
+  {
+    "id": "1757003082891",
+    "description": "Perruque bouclé frange blonde miel 14 pouces",
+    "purchasePrice": 39.24,
+    "quantity": 1
+  },
+  {
+    "id": "1757003183899",
+    "description": "Perruque ondulé blonde miel de 20 pouces",
+    "purchasePrice": 43.18,
     "quantity": 0
   }
 ]
