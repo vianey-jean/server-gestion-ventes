@@ -1064,13 +1064,13 @@
         "description": "Tissages lisse ondulé noir 26 pouces",
         "quantitySold": 4,
         "purchasePrice": 97.84,
-        "sellingPrice": 280,
-        "profit": 182.16
+        "sellingPrice": 270,
+        "profit": 172.16
       }
     ],
     "totalPurchasePrice": 97.84,
-    "totalSellingPrice": 280,
-    "totalProfit": 182.16,
+    "totalSellingPrice": 270,
+    "totalProfit": 172.16,
     "clientName": "Dayanah Latchimy",
     "clientAddress": "22 rue des aéronefs savannah Saint-paul",
     "clientPhone": "0693628874"
@@ -1094,5 +1094,25 @@
     "clientName": "Mary RBTS",
     "clientAddress": "4 bis rue aime lebon les Jacques 97480 St Joseph",
     "clientPhone": "0693701880"
+  },
+  {
+    "id": "1757178790788",
+    "date": "2025-09-06",
+    "products": [
+      {
+        "productId": "1745935314013",
+        "description": "Tissages bouclé noir 18 pouces 12A",
+        "quantitySold": 2,
+        "purchasePrice": 33.48,
+        "sellingPrice": 100,
+        "profit": 66.52
+      }
+    ],
+    "totalPurchasePrice": 33.48,
+    "totalSellingPrice": 100,
+    "totalProfit": 66.52,
+    "clientName": "Angelica Kiz",
+    "clientAddress": "5 rue Jean Cocteau saint-denis",
+    "clientPhone": "0693433386"
   }
 ]
