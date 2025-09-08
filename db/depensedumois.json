@@ -3,36 +3,27 @@
     "id": "1",
     "description": "RSA",
     "categorie": "Autres",
-    "date": "2025-08-07",
+    "date": "2025-09-08",
     "debit": "",
-    "credit": "1822",
-    "solde": 1822
+    "credit": "1844",
+    "solde": 1844
   },
   {
     "id": "2",
-    "description": "Fourniture Ecole",
-    "categorie": "Autres",
-    "date": "2025-08-07",
-    "debit": "",
-    "credit": "882",
-    "solde": 2704
+    "description": "Charge fixe",
+    "categorie": "chargeFixe",
+    "date": "2025-09-08",
+    "debit": "352.96",
+    "credit": "",
+    "solde": 1491.04
   },
   {
     "id": "3",
-    "description": "Charge fixe",
-    "categorie": "chargeFixe",
-    "date": "2025-08-07",
-    "debit": "352.96",
-    "credit": "",
-    "solde": 2351.04
-  },
-  {
-    "id": "4",
-    "description": "Retrait",
+    "description": "Sokoa",
     "categorie": "Autres",
-    "date": "2025-08-07",
-    "debit": "1000",
+    "date": "2025-09-08",
+    "debit": "750",
     "credit": "",
-    "solde": 1351.04
+    "solde": 741.04
   }
 ]

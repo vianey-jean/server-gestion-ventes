@@ -1114,5 +1114,25 @@
     "clientName": "Angelica Kiz",
     "clientAddress": "5 rue Jean Cocteau saint-denis",
     "clientPhone": "0693433386"
+  },
+  {
+    "id": "1757332865848",
+    "date": "2025-09-08",
+    "products": [
+      {
+        "productId": "1751641563836",
+        "description": "Tissages bouclé blonde miel 20 pouces",
+        "quantitySold": 3,
+        "purchasePrice": 46.29,
+        "sellingPrice": 150,
+        "profit": 103.71
+      }
+    ],
+    "totalPurchasePrice": 46.29,
+    "totalSellingPrice": 150,
+    "totalProfit": 103.71,
+    "clientName": "Dania Cernot",
+    "clientAddress": "13 rue cimendef Le Port",
+    "clientPhone": "0692453867"
   }
 ]
