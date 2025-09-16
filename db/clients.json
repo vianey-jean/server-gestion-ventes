@@ -124,5 +124,54 @@
     "phone": "0692453867",
     "adresse": "13 rue cimendef Le Port",
     "dateCreation": "2025-09-08T12:01:05.823Z"
+  },
+  {
+    "id": "1758025199978",
+    "nom": "Christ Manentana",
+    "phone": "06",
+    "adresse": "La Mairie Saint-André",
+    "dateCreation": "2025-09-16T12:19:59.978Z"
+  },
+  {
+    "id": "1758025252091",
+    "nom": "Niny",
+    "phone": "06",
+    "adresse": "Saint-Denis deux cannons",
+    "dateCreation": "2025-09-16T12:20:52.091Z"
+  },
+  {
+    "id": "1758025430685",
+    "nom": "Laurelle Silotia",
+    "phone": "0692057129",
+    "adresse": "Sacré Coeur La Possession",
+    "dateCreation": "2025-09-16T12:23:50.685Z"
+  },
+  {
+    "id": "1758025776503",
+    "nom": "Kilamtrou Na Bahati yahe",
+    "phone": "0693868061",
+    "adresse": "La poste La source",
+    "dateCreation": "2025-09-16T12:29:36.503Z"
+  },
+  {
+    "id": "1758025850144",
+    "nom": "<vanessa cady",
+    "phone": "0693855499",
+    "adresse": "Arret bus Buttor",
+    "dateCreation": "2025-09-16T12:30:50.144Z"
+  },
+  {
+    "id": "1758025959910",
+    "nom": "Channel Charnelle",
+    "phone": "0692569227",
+    "adresse": "Leader price Saint Jacques saint denis",
+    "dateCreation": "2025-09-16T12:32:39.910Z"
+  },
+  {
+    "id": "1758026088862",
+    "nom": "AfroWw Coiff",
+    "phone": "0693319203",
+    "adresse": "3 ter chemin dioré saint Suzanne",
+    "dateCreation": "2025-09-16T12:34:48.862Z"
   }
 ]

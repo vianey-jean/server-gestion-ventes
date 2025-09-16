@@ -1134,5 +1134,145 @@
     "clientName": "Dania Cernot",
     "clientAddress": "13 rue cimendef Le Port",
     "clientPhone": "0692453867"
+  },
+  {
+    "id": "1758025200003",
+    "date": "2025-09-13",
+    "products": [
+      {
+        "productId": "1752297157536",
+        "description": "Perruque bouclé blonde miel 18 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 38.6,
+        "sellingPrice": 100,
+        "profit": 61.4
+      }
+    ],
+    "totalPurchasePrice": 38.6,
+    "totalSellingPrice": 100,
+    "totalProfit": 61.4,
+    "clientName": "Christ Manentana",
+    "clientAddress": "La Mairie Saint-André",
+    "clientPhone": "06"
+  },
+  {
+    "id": "1758025252107",
+    "date": "2025-09-13",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 1,
+        "sellingPrice": 60,
+        "profit": 59
+      }
+    ],
+    "totalPurchasePrice": 1,
+    "totalSellingPrice": 60,
+    "totalProfit": 59,
+    "clientName": "Niny",
+    "clientAddress": "Saint-Denis deux cannons",
+    "clientPhone": "06"
+  },
+  {
+    "id": "1758025430703",
+    "date": "2025-09-13",
+    "products": [
+      {
+        "productId": "1757003082891",
+        "description": "Perruque bouclé frange blonde miel 14 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 39.24,
+        "sellingPrice": 80,
+        "profit": 40.76
+      }
+    ],
+    "totalPurchasePrice": 39.24,
+    "totalSellingPrice": 80,
+    "totalProfit": 40.76,
+    "clientName": "Laurelle Silotia",
+    "clientAddress": "Sacré Coeur La Possession",
+    "clientPhone": "0692057129"
+  },
+  {
+    "id": "1758025776521",
+    "date": "2025-09-14",
+    "products": [
+      {
+        "productId": "1746197176031",
+        "description": "Colle et disolvant",
+        "quantitySold": 1,
+        "purchasePrice": 5,
+        "sellingPrice": 15,
+        "profit": 10
+      }
+    ],
+    "totalPurchasePrice": 5,
+    "totalSellingPrice": 15,
+    "totalProfit": 10,
+    "clientName": "Kilamtrou Na Bahati yahe",
+    "clientAddress": "La poste La source",
+    "clientPhone": "0693868061"
+  },
+  {
+    "id": "1758025850165",
+    "date": "2025-09-14",
+    "products": [
+      {
+        "productId": "1758025491344",
+        "description": "Colle",
+        "quantitySold": 1,
+        "purchasePrice": 3,
+        "sellingPrice": 10,
+        "profit": 7
+      }
+    ],
+    "totalPurchasePrice": 3,
+    "totalSellingPrice": 10,
+    "totalProfit": 7,
+    "clientName": "<vanessa cady",
+    "clientAddress": "Arret bus Buttor",
+    "clientPhone": "0693855499"
+  },
+  {
+    "id": "1758025959929",
+    "date": "2025-09-16",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 1,
+        "sellingPrice": 200,
+        "profit": 199
+      }
+    ],
+    "totalPurchasePrice": 1,
+    "totalSellingPrice": 200,
+    "totalProfit": 199,
+    "clientName": "Channel Charnelle",
+    "clientAddress": "Leader price Saint Jacques saint denis",
+    "clientPhone": "0692569227"
+  },
+  {
+    "id": "1758026088881",
+    "date": "2025-09-16",
+    "products": [
+      {
+        "productId": "1745414593633",
+        "description": "Perruque lisse blonde miel 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 47,
+        "sellingPrice": 120,
+        "profit": 73
+      }
+    ],
+    "totalPurchasePrice": 47,
+    "totalSellingPrice": 120,
+    "totalProfit": 73,
+    "clientName": "AfroWw Coiff",
+    "clientAddress": "3 ter chemin dioré saint Suzanne",
+    "clientPhone": "0693319203"
   }
 ]
