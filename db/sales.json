@@ -1231,7 +1231,7 @@
     "totalPurchasePrice": 3,
     "totalSellingPrice": 10,
     "totalProfit": 7,
-    "clientName": "<vanessa cady",
+    "clientName": "Vanessa Cady",
     "clientAddress": "Arret bus Buttor",
     "clientPhone": "0693855499"
   },
@@ -1274,5 +1274,25 @@
     "clientName": "AfroWw Coiff",
     "clientAddress": "3 ter chemin dioré saint Suzanne",
     "clientPhone": "0693319203"
+  },
+  {
+    "id": "1758189907779",
+    "date": "2025-09-18",
+    "products": [
+      {
+        "productId": "1750688735646",
+        "description": "Tissages bouclé noir 24 pouces",
+        "quantitySold": 6,
+        "purchasePrice": 116.76,
+        "sellingPrice": 280.02,
+        "profit": 163.26
+      }
+    ],
+    "totalPurchasePrice": 116.76,
+    "totalSellingPrice": 280.02,
+    "totalProfit": 163.26,
+    "clientName": "Kelly  Volcey",
+    "clientAddress": "Parking carrefour St Suzanne",
+    "clientPhone": "0692643602"
   }
 ]
