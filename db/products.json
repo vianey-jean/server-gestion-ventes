@@ -363,7 +363,7 @@
     "id": "1749734708720",
     "description": "Perruque bouclé blonde miel 360°",
     "purchasePrice": 69.99,
-    "quantity": 2
+    "quantity": 1
   },
   {
     "id": "1749871256406",
@@ -417,7 +417,7 @@
     "id": "1752143851109",
     "description": "Tissages lisse mèche blonde 22 pouces",
     "purchasePrice": 32.2,
-    "quantity": 2
+    "quantity": 0
   },
   {
     "id": "1752143907546",
@@ -622,5 +622,11 @@
     "description": "Disolvant",
     "purchasePrice": 1,
     "quantity": 9
+  },
+  {
+    "id": "1758614048851",
+    "description": "Perruque bouclé frange rouge bordeau 14 pouces",
+    "purchasePrice": 24.7,
+    "quantity": 0
   }
 ]

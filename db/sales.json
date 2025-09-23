@@ -1294,5 +1294,65 @@
     "clientName": "Kelly  Volcey",
     "clientAddress": "Parking carrefour St Suzanne",
     "clientPhone": "0692643602"
+  },
+  {
+    "id": "1758613755084",
+    "date": "2025-09-23",
+    "products": [
+      {
+        "productId": "1752143851109",
+        "description": "Tissages lisse mèche blonde 22 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 64.4,
+        "sellingPrice": 150,
+        "profit": 85.6
+      }
+    ],
+    "totalPurchasePrice": 64.4,
+    "totalSellingPrice": 150,
+    "totalProfit": 85.6,
+    "clientName": "Jenny Paris",
+    "clientAddress": "Saint Leu (La mairie Annexe Bellepierre)",
+    "clientPhone": "0693"
+  },
+  {
+    "id": "1758614200203",
+    "date": "2025-09-23",
+    "products": [
+      {
+        "productId": "1758614048851",
+        "description": "Perruque bouclé frange rouge bordeau 14 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 24.7,
+        "sellingPrice": 60,
+        "profit": 35.3
+      }
+    ],
+    "totalPurchasePrice": 24.7,
+    "totalSellingPrice": 60,
+    "totalProfit": 35.3,
+    "clientName": "Ali-sson Baret",
+    "clientAddress": "Cliniques des orchidées Le port",
+    "clientPhone": "069"
+  },
+  {
+    "id": "1758614306451",
+    "date": "2025-09-23",
+    "products": [
+      {
+        "productId": "1749734708720",
+        "description": "Perruque bouclé blonde miel 360°",
+        "quantitySold": 1,
+        "purchasePrice": 69.99,
+        "sellingPrice": 180,
+        "profit": 110.01
+      }
+    ],
+    "totalPurchasePrice": 69.99,
+    "totalSellingPrice": 180,
+    "totalProfit": 110.01,
+    "clientName": "Rangy Dragnahary Irene",
+    "clientAddress": "Hotel Tulin Pin Chaudron",
+    "clientPhone": "0692777933"
   }
 ]
