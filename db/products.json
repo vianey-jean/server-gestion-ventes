@@ -411,7 +411,7 @@
     "id": "1751980607991",
     "description": "Tissages lisse ondulé blonde miel 22 pouces",
     "purchasePrice": 16.8,
-    "quantity": 0
+    "quantity": 1
   },
   {
     "id": "1752143851109",
@@ -628,5 +628,17 @@
     "description": "Perruque bouclé frange rouge bordeau 14 pouces",
     "purchasePrice": 24.7,
     "quantity": 0
+  },
+  {
+    "id": "1758992742299",
+    "description": "Tissages lisse ondulé blonde miel 20 pouces",
+    "purchasePrice": 15.31,
+    "quantity": 2
+  },
+  {
+    "id": "1758992925484",
+    "description": "Adhésive pour perruque",
+    "purchasePrice": 4.71,
+    "quantity": 1
   }
 ]

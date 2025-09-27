@@ -1354,5 +1354,45 @@
     "clientName": "Rangy Dragnahary Irene",
     "clientAddress": "Hotel Tulin Pin Chaudron",
     "clientPhone": "0692777933"
+  },
+  {
+    "id": "1758992824547",
+    "date": "2025-09-27",
+    "products": [
+      {
+        "productId": "1758992742299",
+        "description": "Tissages lisse ondulé blonde miel 20 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 15.31,
+        "sellingPrice": 45,
+        "profit": 29.69
+      }
+    ],
+    "totalPurchasePrice": 15.31,
+    "totalSellingPrice": 45,
+    "totalProfit": 29.69,
+    "clientName": "Fatma Said",
+    "clientAddress": "Saint Marie",
+    "clientPhone": "0693409164"
+  },
+  {
+    "id": "1758992998232",
+    "date": "2025-09-27",
+    "products": [
+      {
+        "productId": "1758992925484",
+        "description": "Adhésive pour perruque",
+        "quantitySold": 1,
+        "purchasePrice": 4.71,
+        "sellingPrice": 25,
+        "profit": 20.29
+      }
+    ],
+    "totalPurchasePrice": 4.71,
+    "totalSellingPrice": 25,
+    "totalProfit": 20.29,
+    "clientName": "Blaeck Diamond",
+    "clientAddress": "Leader price sr denis",
+    "clientPhone": "06"
   }
 ]
