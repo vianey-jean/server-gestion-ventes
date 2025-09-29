@@ -21,7 +21,7 @@
     "id": "5",
     "description": "Tissages bouclé noir 20 pouces 12 A",
     "purchasePrice": 14.91,
-    "quantity": 0
+    "quantity": 5
   },
   {
     "id": "6",
@@ -231,7 +231,7 @@
     "id": "1745935314013",
     "description": "Tissages bouclé noir 18 pouces 12A",
     "purchasePrice": 16.74,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1745935345067",
@@ -639,7 +639,7 @@
     "id": "1758992925484",
     "description": "Adhésive pour perruque",
     "purchasePrice": 4.71,
-    "quantity": 1
+    "quantity": 2
   },
   {
     "id": "1759114982725",

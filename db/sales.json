@@ -1376,26 +1376,6 @@
     "clientPhone": "0693409164"
   },
   {
-    "id": "1758992998232",
-    "date": "2025-09-27",
-    "products": [
-      {
-        "productId": "1758992925484",
-        "description": "Adhésive pour perruque",
-        "quantitySold": 1,
-        "purchasePrice": 4.71,
-        "sellingPrice": 25,
-        "profit": 20.29
-      }
-    ],
-    "totalPurchasePrice": 4.71,
-    "totalSellingPrice": 25,
-    "totalProfit": 20.29,
-    "clientName": "Blaeck Diamond",
-    "clientAddress": "Leader price sr denis",
-    "clientPhone": "06"
-  },
-  {
     "id": "1759114903711",
     "date": "2025-09-29",
     "products": [
@@ -1422,5 +1402,33 @@
     "clientName": "Elsa Songolo",
     "clientAddress": "24 rue claude monet st clotilde st denis",
     "clientPhone": "0693327456"
+  },
+  {
+    "id": "1759157043030",
+    "date": "2025-09-29",
+    "products": [
+      {
+        "productId": "1745935314013",
+        "description": "Tissages bouclé noir 18 pouces 12A",
+        "quantitySold": 1,
+        "purchasePrice": 16.74,
+        "sellingPrice": 50,
+        "profit": 33.26
+      },
+      {
+        "productId": "5",
+        "description": "Tissages bouclé noir 20 pouces 12 A",
+        "quantitySold": 1,
+        "purchasePrice": 14.91,
+        "sellingPrice": 55,
+        "profit": 40.09
+      }
+    ],
+    "totalPurchasePrice": 31.65,
+    "totalSellingPrice": 105,
+    "totalProfit": 73.35,
+    "clientName": "Natacha Isis Mohini",
+    "clientAddress": "7 rue Manidon Saint Suzanne",
+    "clientPhone": "0693811284"
   }
 ]
