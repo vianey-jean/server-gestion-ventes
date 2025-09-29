@@ -279,7 +279,7 @@
     "id": "1746197176031",
     "description": "Colle et disolvant",
     "purchasePrice": 5,
-    "quantity": 8
+    "quantity": 6
   },
   {
     "id": "1746811388842",
@@ -639,6 +639,12 @@
     "id": "1758992925484",
     "description": "Adhésive pour perruque",
     "purchasePrice": 4.71,
+    "quantity": 1
+  },
+  {
+    "id": "1759114982725",
+    "description": "Perruque bouclé noir 20 pouces 200%",
+    "purchasePrice": 46.75,
     "quantity": 1
   }
 ]

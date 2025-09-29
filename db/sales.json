@@ -1394,5 +1394,33 @@
     "clientName": "Blaeck Diamond",
     "clientAddress": "Leader price sr denis",
     "clientPhone": "06"
+  },
+  {
+    "id": "1759114903711",
+    "date": "2025-09-29",
+    "products": [
+      {
+        "productId": "1746197176031",
+        "description": "Colle et disolvant",
+        "quantitySold": 2,
+        "purchasePrice": 10,
+        "sellingPrice": 20,
+        "profit": 10
+      },
+      {
+        "productId": "1759114982725",
+        "description": "Perruque bouclé noir 20 pouces 200%",
+        "quantitySold": 1,
+        "purchasePrice": 46.75,
+        "sellingPrice": 120,
+        "profit": 73.25
+      }
+    ],
+    "totalPurchasePrice": 56.75,
+    "totalSellingPrice": 140,
+    "totalProfit": 83.25,
+    "clientName": "Elsa Songolo",
+    "clientAddress": "24 rue claude monet st clotilde st denis",
+    "clientPhone": "0693327456"
   }
 ]
