@@ -1490,5 +1490,25 @@
     "clientName": "Nellya Wa Nass Sb",
     "clientAddress": "Shoppy saint clotilde",
     "clientPhone": "0693602936"
+  },
+  {
+    "id": "1759596277923",
+    "date": "2025-10-04",
+    "products": [
+      {
+        "productId": "1759596180584",
+        "description": "Perruque lisse couleur marron de 18 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 38.23,
+        "sellingPrice": 100,
+        "profit": 61.77
+      }
+    ],
+    "totalPurchasePrice": 38.23,
+    "totalSellingPrice": 100,
+    "totalProfit": 61.77,
+    "clientName": "Maman Yasmina",
+    "clientAddress": "38 bis chemin de la source saint-denis",
+    "clientPhone": "0693603606"
   }
 ]

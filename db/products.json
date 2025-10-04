@@ -646,5 +646,11 @@
     "description": "Perruque bouclé noir 20 pouces 200%",
     "purchasePrice": 46.75,
     "quantity": 1
+  },
+  {
+    "id": "1759596180584",
+    "description": "Perruque lisse couleur marron de 18 pouces",
+    "purchasePrice": 38.23,
+    "quantity": 0
   }
 ]
