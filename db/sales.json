@@ -1430,5 +1430,65 @@
     "clientName": "Natacha Isis Mohini",
     "clientAddress": "7 rue Manidon Saint Suzanne",
     "clientPhone": "0693811284"
+  },
+  {
+    "id": "1759551742650",
+    "date": "2025-10-02",
+    "products": [
+      {
+        "productId": "6",
+        "description": "Perruque lisse blonde miel 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 81.84,
+        "sellingPrice": 190,
+        "profit": 108.16
+      }
+    ],
+    "totalPurchasePrice": 81.84,
+    "totalSellingPrice": 190,
+    "totalProfit": 108.16,
+    "clientName": "Orchidée Angela",
+    "clientAddress": "22 rue du génértal de gaulle saint louis",
+    "clientPhone": "0693818015"
+  },
+  {
+    "id": "1759551829340",
+    "date": "2025-10-02",
+    "products": [
+      {
+        "productId": "1746197176031",
+        "description": "Colle et disolvant",
+        "quantitySold": 2,
+        "purchasePrice": 10,
+        "sellingPrice": 20,
+        "profit": 10
+      }
+    ],
+    "totalPurchasePrice": 10,
+    "totalSellingPrice": 20,
+    "totalProfit": 10,
+    "clientName": "Punarva Nestor",
+    "clientAddress": "70 ruez d'eden saint Paul",
+    "clientPhone": "0693327535"
+  },
+  {
+    "id": "1759551921247",
+    "date": "2025-10-03",
+    "products": [
+      {
+        "productId": "1746197176031",
+        "description": "Colle et disolvant",
+        "quantitySold": 1,
+        "purchasePrice": 5,
+        "sellingPrice": 10,
+        "profit": 5
+      }
+    ],
+    "totalPurchasePrice": 5,
+    "totalSellingPrice": 10,
+    "totalProfit": 5,
+    "clientName": "Nellya Wa Nass Sb",
+    "clientAddress": "Shoppy saint clotilde",
+    "clientPhone": "0693602936"
   }
 ]
