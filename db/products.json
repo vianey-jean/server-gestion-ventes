@@ -381,7 +381,7 @@
     "id": "1751132172336",
     "description": "Tissages bouclé blonde miel 22 pouces",
     "purchasePrice": 18.24,
-    "quantity": 4
+    "quantity": 3
   },
   {
     "id": "1751132283454",
@@ -652,5 +652,11 @@
     "description": "Perruque lisse couleur marron de 18 pouces",
     "purchasePrice": 38.23,
     "quantity": 0
+  },
+  {
+    "id": "1759741962425",
+    "description": "Tissages bouclé blonde miel crépus 20 pouces",
+    "purchasePrice": 18.97,
+    "quantity": 1
   }
 ]

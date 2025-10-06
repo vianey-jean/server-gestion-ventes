@@ -1510,5 +1510,33 @@
     "clientName": "Maman Yasmina",
     "clientAddress": "38 bis chemin de la source saint-denis",
     "clientPhone": "0693603606"
+  },
+  {
+    "id": "1759743539088",
+    "date": "2025-10-06",
+    "products": [
+      {
+        "productId": "1759741962425",
+        "description": "Tissages bouclé blonde miel crépus 20 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 37.94,
+        "sellingPrice": 100,
+        "profit": 62.06
+      },
+      {
+        "productId": "1751132172336",
+        "description": "Tissages bouclé blonde miel 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 18.24,
+        "sellingPrice": 60,
+        "profit": 41.76
+      }
+    ],
+    "totalPurchasePrice": 56.17999999999999,
+    "totalSellingPrice": 160,
+    "totalProfit": 103.82,
+    "clientName": "Anaelle Aveam",
+    "clientAddress": "Gare routière St Paul",
+    "clientPhone": "0693401505"
   }
 ]
