@@ -1538,5 +1538,45 @@
     "clientName": "Anaelle Aveam",
     "clientAddress": "Gare routière St Paul",
     "clientPhone": "0693401505"
+  },
+  {
+    "id": "1759821569695",
+    "date": "2025-10-07",
+    "products": [
+      {
+        "productId": "1745934815562",
+        "description": "Perruque bouclé rouge bordeau 13x4 26 pouces et 210%",
+        "quantitySold": 1,
+        "purchasePrice": 69.53,
+        "sellingPrice": 170,
+        "profit": 100.47
+      }
+    ],
+    "totalPurchasePrice": 69.53,
+    "totalSellingPrice": 170,
+    "totalProfit": 100.47,
+    "clientName": "Anne-Laure Calpetard",
+    "clientAddress": "Gare rouytière st Paul",
+    "clientPhone": "0692557201"
+  },
+  {
+    "id": "1759821600448",
+    "date": "2025-10-07",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 1,
+        "sellingPrice": 120,
+        "profit": 119
+      }
+    ],
+    "totalPurchasePrice": 1,
+    "totalSellingPrice": 120,
+    "totalProfit": 119,
+    "clientName": "Channel Charnelle",
+    "clientAddress": "Leader price Saint Jacques saint denis",
+    "clientPhone": "0692569227"
   }
 ]
