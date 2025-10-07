@@ -1578,5 +1578,85 @@
     "clientName": "Channel Charnelle",
     "clientAddress": "Leader price Saint Jacques saint denis",
     "clientPhone": "0692569227"
+  },
+  {
+    "id": "1759857862639",
+    "date": "2025-10-07",
+    "products": [
+      {
+        "productId": "1749734708720",
+        "description": "Perruque bouclé blonde miel 360°",
+        "quantitySold": 1,
+        "purchasePrice": 69.99,
+        "sellingPrice": 170,
+        "profit": 100.01
+      }
+    ],
+    "totalPurchasePrice": 69.99,
+    "totalSellingPrice": 170,
+    "totalProfit": 100.01,
+    "clientName": "Mirranda Delcy",
+    "clientAddress": "9 rue Pitel résidence du Pac saint denis",
+    "clientPhone": "0693541351"
+  },
+  {
+    "id": "1759857952853",
+    "date": "2025-10-07",
+    "products": [
+      {
+        "productId": "1745934022973",
+        "description": "Perruque lisse noir mèche blonde ou rouge marron de 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 70.82,
+        "sellingPrice": 150,
+        "profit": 79.18
+      }
+    ],
+    "totalPurchasePrice": 70.82,
+    "totalSellingPrice": 150,
+    "totalProfit": 79.18,
+    "clientName": "Maman Yasmina",
+    "clientAddress": "38 bis chemin de la source saint-denis",
+    "clientPhone": "0693603606"
+  },
+  {
+    "id": "1759857997068",
+    "date": "2025-10-07",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 1,
+        "sellingPrice": 70,
+        "profit": 69
+      }
+    ],
+    "totalPurchasePrice": 1,
+    "totalSellingPrice": 70,
+    "totalProfit": 69,
+    "clientName": "Niny",
+    "clientAddress": "Saint-Denis deux cannons",
+    "clientPhone": "06"
+  },
+  {
+    "id": "1759858185792",
+    "date": "2025-10-07",
+    "products": [
+      {
+        "productId": "11",
+        "description": "Tissages lisse blonde miel 22 pouces",
+        "quantitySold": 3,
+        "purchasePrice": 61.349999999999994,
+        "sellingPrice": 170.10000000000002,
+        "profit": 108.75
+      }
+    ],
+    "totalPurchasePrice": 61.349999999999994,
+    "totalSellingPrice": 170.10000000000002,
+    "totalProfit": 108.75,
+    "clientName": "Virginie Kichenin",
+    "clientAddress": "Le relais parfait st leu",
+    "clientPhone": "0693418185"
   }
 ]
