@@ -1658,5 +1658,25 @@
     "clientName": "Virginie Kichenin",
     "clientAddress": "Le relais parfait st leu",
     "clientPhone": "0693418185"
+  },
+  {
+    "id": "1759942036488",
+    "date": "2025-10-08",
+    "products": [
+      {
+        "productId": "1759942008796",
+        "description": "Perruque bouclé rouge bordeaux 200% 16 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 39.63,
+        "sellingPrice": 110,
+        "profit": 70.37
+      }
+    ],
+    "totalPurchasePrice": 39.63,
+    "totalSellingPrice": 110,
+    "totalProfit": 70.37,
+    "clientName": "Princesse Princesse",
+    "clientAddress": "18 avenue Raymond Vergès, La Possession",
+    "clientPhone": "0692782974"
   }
 ]
