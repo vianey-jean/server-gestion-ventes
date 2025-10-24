@@ -1678,5 +1678,133 @@
     "clientName": "Princesse Princesse",
     "clientAddress": "18 avenue Raymond Vergès, La Possession",
     "clientPhone": "0692782974"
+  },
+  {
+    "id": "1761308298763",
+    "date": "2025-10-09",
+    "products": [
+      {
+        "productId": "1758025491344",
+        "description": "Colle",
+        "quantitySold": 1,
+        "purchasePrice": 3,
+        "sellingPrice": 10,
+        "profit": 7
+      }
+    ],
+    "totalPurchasePrice": 3,
+    "totalSellingPrice": 10,
+    "totalProfit": 7,
+    "clientName": "fabuleuse Lifting",
+    "clientAddress": "parking run market st andré",
+    "clientPhone": "0692525065"
+  },
+  {
+    "id": "1761308570862",
+    "date": "2025-10-19",
+    "products": [
+      {
+        "productId": "1745935314013",
+        "description": "Tissages bouclé noir 18 pouces 12A",
+        "quantitySold": 2,
+        "purchasePrice": 33.48,
+        "sellingPrice": 100,
+        "profit": 66.52
+      }
+    ],
+    "totalPurchasePrice": 33.48,
+    "totalSellingPrice": 100,
+    "totalProfit": 66.52,
+    "clientName": "Emiline Larissa Maibrouck",
+    "clientAddress": "247 rue du Maréchal leclerc saint-denis",
+    "clientPhone": "0692525065"
+  },
+  {
+    "id": "1761309170519",
+    "date": "2025-10-20",
+    "products": [
+      {
+        "productId": "1746197176031",
+        "description": "Colle et disolvant",
+        "quantitySold": 2,
+        "purchasePrice": 10,
+        "sellingPrice": 20,
+        "profit": 10
+      }
+    ],
+    "totalPurchasePrice": 10,
+    "totalSellingPrice": 20,
+    "totalProfit": 10,
+    "clientName": "Maman Yasmina",
+    "clientAddress": "38 bis chemin de la source saint-denis",
+    "clientPhone": "0693603606"
+  },
+  {
+    "id": "1761309345385",
+    "date": "2025-10-24",
+    "products": [
+      {
+        "productId": "1761309279911",
+        "description": "Perruque lisse tefy gasy 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 60,
+        "sellingPrice": 130,
+        "profit": 70
+      }
+    ],
+    "totalPurchasePrice": 60,
+    "totalSellingPrice": 130,
+    "totalProfit": 70,
+    "clientName": "Rose Bela",
+    "clientAddress": "Parking super u Saint andré",
+    "clientPhone": "0692944471"
+  },
+  {
+    "id": "1761309521408",
+    "date": "2025-10-22",
+    "products": [
+      {
+        "productId": "1745935490944",
+        "description": "Tissages lisse noir 20 pouces 12A",
+        "quantitySold": 2,
+        "purchasePrice": 35.8,
+        "sellingPrice": 80,
+        "profit": 44.2
+      },
+      {
+        "productId": "1753187277230",
+        "description": "Tissages lisse noir 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 18.22,
+        "sellingPrice": 50,
+        "profit": 31.78
+      }
+    ],
+    "totalPurchasePrice": 54.019999999999996,
+    "totalSellingPrice": 130,
+    "totalProfit": 75.98,
+    "clientName": "Copine Emilienne",
+    "clientAddress": "Vaubon",
+    "clientPhone": "06"
+  },
+  {
+    "id": "1761309725757",
+    "date": "2025-10-23",
+    "products": [
+      {
+        "productId": "1745934973005",
+        "description": "Perruque lisse rouge bordeau 13x4 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 66.99,
+        "sellingPrice": 160,
+        "profit": 93.01
+      }
+    ],
+    "totalPurchasePrice": 66.99,
+    "totalSellingPrice": 160,
+    "totalProfit": 93.01,
+    "clientName": "Cya Bea",
+    "clientAddress": "A coté météo Caudron saint-denis",
+    "clientPhone": "0693535338"
   }
 ]

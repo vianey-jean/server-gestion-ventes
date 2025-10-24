@@ -195,7 +195,7 @@
     "id": "1745934973005",
     "description": "Perruque lisse rouge bordeau 13x4 26 pouces",
     "purchasePrice": 66.99,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1745935024364",
@@ -255,7 +255,7 @@
     "id": "1745935490944",
     "description": "Tissages lisse noir 20 pouces 12A",
     "purchasePrice": 17.9,
-    "quantity": 2
+    "quantity": 0
   },
   {
     "id": "1745935530399",
@@ -279,7 +279,7 @@
     "id": "1746197176031",
     "description": "Colle et disolvant",
     "purchasePrice": 5,
-    "quantity": 3
+    "quantity": 1
   },
   {
     "id": "1746811388842",
@@ -507,7 +507,7 @@
     "id": "1753187277230",
     "description": "Tissages lisse noir 24 pouces",
     "purchasePrice": 18.22,
-    "quantity": 2
+    "quantity": 1
   },
   {
     "id": "1753356444320",
@@ -615,7 +615,7 @@
     "id": "1758025491344",
     "description": "Colle",
     "purchasePrice": 3,
-    "quantity": 8
+    "quantity": 7
   },
   {
     "id": "1758025563599",
@@ -664,5 +664,11 @@
     "description": "Perruque bouclé rouge bordeaux 200% 16 pouces",
     "purchasePrice": 39.63,
     "quantity": 0
+  },
+  {
+    "id": "1761309279911",
+    "description": "Perruque lisse tefy gasy 22 pouces",
+    "purchasePrice": 60,
+    "quantity": 1
   }
 ]

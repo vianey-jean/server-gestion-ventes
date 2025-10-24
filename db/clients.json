@@ -285,5 +285,40 @@
     "phone": "0693418185",
     "adresse": "Le relais parfait st leu",
     "dateCreation": "2025-10-07T17:29:45.771Z"
+  },
+  {
+    "id": "1761308298737",
+    "nom": "fabuleuse Lifting",
+    "phone": "0692525065",
+    "adresse": "parking run market st andré",
+    "dateCreation": "2025-10-24T12:18:18.737Z"
+  },
+  {
+    "id": "1761308570840",
+    "nom": "Emiline Larissa Maibrouck",
+    "phone": "0692525065",
+    "adresse": "247 rue du Maréchal leclerc saint-denis",
+    "dateCreation": "2025-10-24T12:22:50.840Z"
+  },
+  {
+    "id": "1761309345360",
+    "nom": "Rose Bela",
+    "phone": "0692944471",
+    "adresse": "Parking super u Saint andré",
+    "dateCreation": "2025-10-24T12:35:45.360Z"
+  },
+  {
+    "id": "1761309521386",
+    "nom": "Copine Emilienne",
+    "phone": "06",
+    "adresse": "Vaubon",
+    "dateCreation": "2025-10-24T12:38:41.386Z"
+  },
+  {
+    "id": "1761309725734",
+    "nom": "Cya Bea",
+    "phone": "0693535338",
+    "adresse": "A coté météo Caudron saint-denis",
+    "dateCreation": "2025-10-24T12:42:05.734Z"
   }
 ]
