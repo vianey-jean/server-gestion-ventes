@@ -214,8 +214,8 @@
     "nom": "Emilienne",
     "phone": "0693326932",
     "prixVente": 150,
-    "avanceRecue": 0,
-    "reste": 150,
+    "avanceRecue": 50,
+    "reste": 100,
     "estPaye": false,
     "productId": "1752296734516"
   },

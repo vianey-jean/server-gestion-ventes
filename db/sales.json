@@ -1806,5 +1806,25 @@
     "clientName": "Cya Bea",
     "clientAddress": "A coté météo Caudron saint-denis",
     "clientPhone": "0693535338"
+  },
+  {
+    "id": "1761556891408",
+    "date": "2025-10-27",
+    "products": [
+      {
+        "productId": "1751132172336",
+        "description": "Tissages bouclé blonde miel 22 pouces",
+        "quantitySold": 3,
+        "purchasePrice": 54.72,
+        "sellingPrice": 150,
+        "profit": 95.28
+      }
+    ],
+    "totalPurchasePrice": 54.72,
+    "totalSellingPrice": 150,
+    "totalProfit": 95.28,
+    "clientName": "Admée Narsimoulou",
+    "clientAddress": "7 Allée Jean Albany Le Port",
+    "clientPhone": "0692851888"
   }
 ]
