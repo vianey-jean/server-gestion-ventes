@@ -83,4 +83,25 @@ router.delete('/:id', auth, (req, res) => {
   }
 });
 
+// Route pour transférer les prêts d'une personne vers une autre
+router.post('/transfer', auth, (req, res) => {
+  try {
+    const { fromName, toName, pretIds } = req.body;
+    
+    if (!fromName || !toName || !pretIds || !Array.isArray(pretIds)) {
+      return res.status(400).json({ message: 'Les paramètres fromName, toName et pretIds sont requis' });
+    }
+    
+    if (fromName === toName) {
+      return res.status(400).json({ message: 'Les noms source et destination doivent être différents' });
+    }
+    
+    const result = PretProduit.transferPrets(fromName, toName, pretIds);
+    res.json({ message: 'Prêts transférés avec succès', transferred: result });
+  } catch (error) {
+    console.error('Erreur lors du transfert des prêts produits:', error);
+    res.status(500).json({ message: error.message || 'Erreur serveur' });
+  }
+});
+
 module.exports = router;

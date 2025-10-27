@@ -94,10 +94,50 @@ const deletePretProduit = (id) => {
   }
 };
 
+// Fonction pour transférer des prêts d'une personne vers une autre
+const transferPrets = (fromName, toName, pretIds) => {
+  try {
+    let pretProduits = getAllPretProduits();
+    
+    // Trouver les prêts à transférer
+    const pretsToTransfer = pretProduits.filter(pret => 
+      pretIds.includes(pret.id) && pret.nom === fromName
+    );
+    
+    if (pretsToTransfer.length === 0) {
+      throw new Error('Aucun prêt trouvé pour le transfert');
+    }
+    
+    // Mettre à jour le nom et le téléphone pour tous les prêts transférés
+    // On prend le téléphone du premier prêt de la personne cible si elle existe
+    const targetPret = pretProduits.find(pret => pret.nom === toName);
+    const targetPhone = targetPret ? targetPret.phone : '';
+    
+    pretProduits = pretProduits.map(pret => {
+      if (pretIds.includes(pret.id) && pret.nom === fromName) {
+        return {
+          ...pret,
+          nom: toName,
+          phone: targetPhone || pret.phone
+        };
+      }
+      return pret;
+    });
+    
+    fs.writeFileSync(pretProduitsPath, JSON.stringify(pretProduits, null, 2));
+    
+    return pretsToTransfer.length;
+  } catch (error) {
+    console.error('Erreur lors du transfert des prêts produits:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   getAllPretProduits,
   getPretProduitById,
   createPretProduit,
   updatePretProduit,
-  deletePretProduit
+  deletePretProduit,
+  transferPrets
 };
