@@ -161,6 +161,7 @@ const depensesRoutes = require('./routes/depenses');
 const syncRoutes = require('./routes/sync');
 const beneficesRoutes = require('./routes/benefices');
 const messagesRoutes = require('./routes/messages');
+const marketingRoutes = require('./routes/marketing');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -173,6 +174,7 @@ app.use('/api/depenses', depensesRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/benefices', beneficesRoutes);
 app.use('/api/messages', messagesRoutes);
+app.use('/api/marketing', marketingRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
