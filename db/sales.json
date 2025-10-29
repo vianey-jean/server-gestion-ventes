@@ -1826,5 +1826,33 @@
     "clientName": "Admée Narsimoulou",
     "clientAddress": "7 Allée Jean Albany Le Port",
     "clientPhone": "0692851888"
+  },
+  {
+    "id": "1761737146463",
+    "date": "2025-10-29",
+    "products": [
+      {
+        "productId": "1745935024364",
+        "description": "Perruque bouclé noir 12 pouces lace T ",
+        "quantitySold": 1,
+        "purchasePrice": 30.19,
+        "sellingPrice": 75,
+        "profit": 44.81
+      },
+      {
+        "productId": "1752675976940",
+        "description": "Perruque bouclé frisé mèche blonde marron 12 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 26.32,
+        "sellingPrice": 75,
+        "profit": 48.68
+      }
+    ],
+    "totalPurchasePrice": 56.510000000000005,
+    "totalSellingPrice": 150,
+    "totalProfit": 93.49000000000001,
+    "clientName": "Nicole Payet",
+    "clientAddress": "Super U étang-Salé",
+    "clientPhone": "0692930856"
   }
 ]
