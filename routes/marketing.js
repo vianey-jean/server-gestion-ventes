@@ -43,31 +43,72 @@ router.post('/generate-description', authMiddleware, async (req, res) => {
   }
 });
 
-// Fonction pour générer du texte marketing professionnel ultra-vendable et UNIQUE
+// Fonction pour générer du texte marketing professionnel ultra-vendable et UNIQUE à chaque appel
 function generateMarketingText(description, price, stock, margin) {
-  // Créer un hash unique basé sur la description pour garantir l'unicité
-  const descHash = description.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const uniqueSeed = descHash % 5; // Pour sélectionner des templates différents
+  // Générer un seed ALÉATOIRE pour avoir une description DIFFÉRENTE à chaque appel
+  const randomSeed = Math.floor(Math.random() * 1000000);
   
   // Analyser intelligemment le produit pour personnaliser la description
   const isExpensive = price && price > 100;
+  const isMidRange = price && price >= 50 && price <= 100;
+  const isAffordable = price && price < 50;
   const hasGoodMargin = margin && parseFloat(margin) > 30;
+  const hasExcellentMargin = margin && parseFloat(margin) > 50;
   const isLowStock = stock && stock <= 10;
+  const isVeryLowStock = stock && stock <= 5;
+  const isHighStock = stock && stock > 50;
   const productWords = description.toLowerCase();
   
-  // Détecter le type de produit pour une description intelligente
-  const isElectronic = productWords.includes('électronique') || productWords.includes('tech') || productWords.includes('digital');
-  const isClothing = productWords.includes('vêtement') || productWords.includes('textile') || productWords.includes('mode');
-  const isFood = productWords.includes('alimentaire') || productWords.includes('nourriture') || productWords.includes('bio');
-  const isFurniture = productWords.includes('meuble') || productWords.includes('décoration') || productWords.includes('maison');
+  // Extraire les mots-clés importants de la description pour personnalisation maximale
+  const keywords = description.split(' ').filter(word => word.length > 4).slice(0, 4);
   
-  // Templates d'introduction premium personnalisés selon le produit
+  // Détecter le type de produit pour une description ULTRA-INTELLIGENTE et CIBLÉE
+  const isElectronic = productWords.includes('électronique') || productWords.includes('tech') || productWords.includes('digital') || 
+                       productWords.includes('ordinateur') || productWords.includes('téléphone') || productWords.includes('écran') ||
+                       productWords.includes('smart') || productWords.includes('connecté') || productWords.includes('bluetooth');
+  const isClothing = productWords.includes('vêtement') || productWords.includes('textile') || productWords.includes('mode') ||
+                     productWords.includes('chemise') || productWords.includes('pantalon') || productWords.includes('robe') ||
+                     productWords.includes('jean') || productWords.includes('pull') || productWords.includes('chaussure');
+  const isFood = productWords.includes('alimentaire') || productWords.includes('nourriture') || productWords.includes('bio') ||
+                 productWords.includes('cuisine') || productWords.includes('gourmet') || productWords.includes('saveur') ||
+                 productWords.includes('gastronomie') || productWords.includes('épice') || productWords.includes('chocolat');
+  const isFurniture = productWords.includes('meuble') || productWords.includes('décoration') || productWords.includes('maison') ||
+                      productWords.includes('table') || productWords.includes('chaise') || productWords.includes('canapé') ||
+                      productWords.includes('lit') || productWords.includes('bureau') || productWords.includes('armoire');
+  const isBeauty = productWords.includes('beauté') || productWords.includes('cosmétique') || productWords.includes('soin') ||
+                   productWords.includes('parfum') || productWords.includes('maquillage') || productWords.includes('crème') ||
+                   productWords.includes('sérum') || productWords.includes('shampoing') || productWords.includes('huile');
+  const isSport = productWords.includes('sport') || productWords.includes('fitness') || productWords.includes('athlétique') ||
+                  productWords.includes('entraînement') || productWords.includes('yoga') || productWords.includes('musculation') ||
+                  productWords.includes('running') || productWords.includes('gym') || productWords.includes('cardio');
+  const isJewelry = productWords.includes('bijou') || productWords.includes('or') || productWords.includes('argent') ||
+                    productWords.includes('diamant') || productWords.includes('collier') || productWords.includes('bracelet') ||
+                    productWords.includes('bague') || productWords.includes('montre') || productWords.includes('pierre');
+  const isBook = productWords.includes('livre') || productWords.includes('roman') || productWords.includes('guide') ||
+                 productWords.includes('manuel') || productWords.includes('lecture') || productWords.includes('auteur');
+  
+  // Templates d'introduction ULTRA-PREMIUM avec ÉNORME variété (20 templates)
   const intros = [
-    `✨ EXCLUSIVITÉ RARE ✨\n${description} - L'excellence incarnée. Un chef-d'œuvre d'innovation qui redéfinit les standards du luxe accessible. Chaque détail a été conçu pour sublimer votre quotidien d'une manière que vous n'avez jamais imaginée.`,
-    `🌟 COLLECTION PRESTIGE 🌟\n${description} représente le summum de l'artisanat moderne. Une fusion parfaite entre élégance intemporelle et technologie de pointe. Ce n'est pas simplement un produit, c'est une déclaration de style, un symbole de raffinement.`,
-    `💎 ÉDITION PREMIUM 💎\n${description} - Là où le luxe rencontre l'accessibilité. Conçu pour les connaisseurs exigeants qui refusent les compromis. Une pièce d'exception qui éveillera l'envie et l'admiration partout où vous irez.`,
-    `👑 EXCELLENCE SUPRÊME 👑\n${description} transcende l'ordinaire. Fruit d'années de recherche et développement, ce produit incarne la perfection absolue. Une acquisition rare qui transformera votre perception même du luxe.`,
-    `🎯 PIÈCE MAÎTRESSE 🎯\n${description} - L'investissement intelligent pour ceux qui savent reconnaître la vraie valeur. Un produit si remarquable qu'il deviendra instantanément le joyau de votre collection. Sophistication, performance, prestige.`
+    `✨ Découvrez ${description} - L'excellence incarnée qui transforme votre quotidien en expérience luxueuse et inoubliable.`,
+    `🌟 ${description} : La fusion parfaite entre innovation révolutionnaire et design raffiné qui redéfinit tous les standards du marché.`,
+    `💎 Entrez dans l'univers exclusif de ${description} - Où performance exceptionnelle et élégance intemporelle se rencontrent harmonieusement.`,
+    `🎯 ${description} représente le summum absolu de la qualité - Conçu méticuleusement pour les connaisseurs exigeants qui ne transigent jamais sur l'excellence.`,
+    `⚡ Révolutionnez totalement votre expérience avec ${description} - L'innovation ultime pensée pour les visionnaires d'aujourd'hui et de demain.`,
+    `🏆 ${description} : Le chef-d'œuvre tant attendu par les passionnés d'excellence, d'authenticité et de raffinement premium absolu.`,
+    `🌈 Sublimez radicalement votre style de vie avec ${description} - L'alliance magistrale du savoir-faire ancestral et de la modernité futuriste.`,
+    `🔥 ${description} incarne brillamment la nouvelle génération du luxe accessible - Performance inégalée, style impeccable et raffinement absolu.`,
+    `💫 Plongez corps et âme dans l'univers raffiné de ${description} - Une création exceptionnelle pour les esprits distingués et les âmes sensibles.`,
+    `🎨 ${description} : L'œuvre d'art fonctionnelle qui transcende magistralement les attentes et inspire l'excellence au quotidien.`,
+    `🚀 Propulsez instantanément votre quotidien vers de nouveaux sommets inexplorés avec ${description} - L'innovation qui change absolument tout.`,
+    `👑 ${description} s'impose naturellement comme LA référence incontournable - Luxe suprême, prestige ultime et performance maximale réunis.`,
+    `🌺 Offrez-vous le privilège rare de ${description} - Une expérience sensorielle unique, profonde et absolument mémorable.`,
+    `⭐ ${description} : Le moment magique où l'artisanat d'exception rencontre brillamment la technologie de demain et d'après-demain.`,
+    `🎁 ${description} représente infiniment plus qu'un simple produit - C'est un véritable investissement dans votre bien-être et votre réussite future.`,
+    `💠 Laissez-vous séduire par ${description} - Le produit emblématique qui marie audacieusement tradition millénaire et innovation disruptive.`,
+    `🌟 ${description} définit une nouvelle ère d'excellence - Qualité superlative, design visionnaire et satisfaction garantie à 100%.`,
+    `🎭 ${description} : L'expression ultime du raffinement contemporain qui captive instantanément tous les regards et éveille toutes les convoitises.`,
+    `🦋 Transformez radicalement votre réalité avec ${description} - Le compagnon d'exception qui ne cessera jamais de vous émerveiller jour après jour.`,
+    `🔮 ${description} anticipe brillamment vos moindres désirs - Une intelligence de conception qui vous devance et sublime chaque instant de votre vie.`
   ];
 
   // Templates de caractéristiques ultra-premium
@@ -129,37 +170,111 @@ function generateMarketingText(description, price, stock, margin) {
     marginInfo = `\n\n⭐ POTENTIEL COMMERCIAL EXCEPTIONNEL ⭐\nMarge généreuse de ${margin}% ! Produit à fort potentiel de revente. Rotation rapide garantie vu la demande explosive. Excellent pour booster votre chiffre d'affaires. Les clients redemandent et recommandent massivement ce produit.`;
   }
 
-  // Construire la description marketing complète ultra-persuasive et UNIQUE
-  // Utiliser le seed unique pour chaque produit
-  const intro = intros[uniqueSeed % intros.length];
-  const feature = features[(uniqueSeed + 1) % features.length];
-  const benefit = benefits[(uniqueSeed + 2) % benefits.length];
-  const cta = ctas[uniqueSeed % ctas.length];
+  // Construire la description marketing complète ultra-persuasive et UNIQUE à chaque fois
+  // Utiliser le randomSeed pour sélectionner aléatoirement parmi les templates
+  const intro = intros[randomSeed % intros.length];
+  const feature = features[(randomSeed + 7) % features.length];
+  const benefit = benefits[(randomSeed + 13) % benefits.length];
+  const cta = ctas[(randomSeed + 19) % ctas.length];
   
-  // Ajouter un préfixe intelligent selon le type de produit détecté
+  // Ajouter un préfixe ULTRA-INTELLIGENT selon le type de produit détecté
   let smartPrefix = '';
   if (isElectronic) {
-    smartPrefix = '⚡ TECHNOLOGIE DE POINTE ⚡\n';
+    const electronicPrefixes = [
+      '⚡ TECHNOLOGIE DE POINTE ⚡\n',
+      '🔌 INNOVATION ÉLECTRONIQUE 🔌\n',
+      '💻 HIGH-TECH PREMIUM 💻\n',
+      '🎮 DIGITAL EXCELLENCE 🎮\n'
+    ];
+    smartPrefix = electronicPrefixes[randomSeed % electronicPrefixes.length];
   } else if (isClothing) {
-    smartPrefix = '👗 MODE & ÉLÉGANCE 👗\n';
+    const clothingPrefixes = [
+      '👗 MODE & ÉLÉGANCE 👗\n',
+      '✨ STYLE RAFFINÉ ✨\n',
+      '🎨 FASHION PREMIUM 🎨\n',
+      '👔 HAUTE COUTURE 👔\n'
+    ];
+    smartPrefix = clothingPrefixes[randomSeed % clothingPrefixes.length];
   } else if (isFood) {
-    smartPrefix = '🌿 QUALITÉ PREMIUM 🌿\n';
+    const foodPrefixes = [
+      '🌿 QUALITÉ PREMIUM 🌿\n',
+      '🍽️ GASTRONOMIE D\'EXCEPTION 🍽️\n',
+      '🌱 SAVEURS AUTHENTIQUES 🌱\n',
+      '👨‍🍳 EXCELLENCE CULINAIRE 👨‍🍳\n'
+    ];
+    smartPrefix = foodPrefixes[randomSeed % foodPrefixes.length];
   } else if (isFurniture) {
-    smartPrefix = '🏡 DESIGN EXCEPTIONNEL 🏡\n';
+    const furniturePrefixes = [
+      '🏡 DESIGN EXCEPTIONNEL 🏡\n',
+      '🛋️ DÉCORATION PREMIUM 🛋️\n',
+      '🏠 ÉLÉGANCE INTÉRIEURE 🏠\n',
+      '🎨 AMEUBLEMENT LUXE 🎨\n'
+    ];
+    smartPrefix = furniturePrefixes[randomSeed % furniturePrefixes.length];
+  } else if (isBeauty) {
+    const beautyPrefixes = [
+      '💄 BEAUTÉ PREMIUM 💄\n',
+      '✨ COSMÉTIQUE D\'EXCELLENCE ✨\n',
+      '🌸 SOIN LUXUEUX 🌸\n',
+      '💅 GLAMOUR ABSOLU 💅\n'
+    ];
+    smartPrefix = beautyPrefixes[randomSeed % beautyPrefixes.length];
+  } else if (isSport) {
+    const sportPrefixes = [
+      '💪 PERFORMANCE ATHLÉTIQUE 💪\n',
+      '🏃 FITNESS EXCELLENCE 🏃\n',
+      '⚡ SPORT DE HAUT NIVEAU ⚡\n',
+      '🎯 ENTRAÎNEMENT PREMIUM 🎯\n'
+    ];
+    smartPrefix = sportPrefixes[randomSeed % sportPrefixes.length];
+  } else if (isJewelry) {
+    const jewelryPrefixes = [
+      '💎 BIJOUTERIE PRESTIGE 💎\n',
+      '👑 JOAILLERIE LUXE 👑\n',
+      '✨ ÉCLAT PRÉCIEUX ✨\n',
+      '⭐ ÉLÉGANCE ÉTERNELLE ⭐\n'
+    ];
+    smartPrefix = jewelryPrefixes[randomSeed % jewelryPrefixes.length];
+  } else if (isBook) {
+    const bookPrefixes = [
+      '📚 LITTÉRATURE D\'EXCEPTION 📚\n',
+      '📖 LECTURE PREMIUM 📖\n',
+      '✍️ OUVRAGE DE RÉFÉRENCE ✍️\n',
+      '🎓 SAVOIR ÉCLAIRÉ 🎓\n'
+    ];
+    smartPrefix = bookPrefixes[randomSeed % bookPrefixes.length];
   }
   
-  // Ajouter des insights intelligents selon les données
-  let smartInsights = '\n\n💡 POINTS FORTS ANALYSÉS:\n';
+  // Ajouter des insights ULTRA-INTELLIGENTS selon les données du produit
+  let smartInsights = '\n\n💡 ANALYSE INTELLIGENTE DU PRODUIT:\n';
   if (isExpensive) {
-    smartInsights += '✓ Produit haut de gamme - Investissement de qualité\n';
+    smartInsights += '✓ Produit haut de gamme - Investissement de qualité supérieure pour un usage prolongé\n';
+  } else if (isMidRange) {
+    smartInsights += '✓ Rapport qualité-prix optimal - Le meilleur compromis entre qualité et accessibilité\n';
+  } else if (isAffordable) {
+    smartInsights += '✓ Prix accessible - Qualité exceptionnelle sans compromettre votre budget\n';
   }
-  if (hasGoodMargin) {
-    smartInsights += '✓ Rapport qualité-prix exceptionnel - Valeur optimale\n';
+  
+  if (hasExcellentMargin) {
+    smartInsights += '✓ Valeur exceptionnelle - Qualité premium à prix révolutionnaire\n';
+  } else if (hasGoodMargin) {
+    smartInsights += '✓ Excellent rapport qualité-prix - Économisez sans sacrifier la qualité\n';
   }
-  if (isLowStock) {
-    smartInsights += '✓ Disponibilité limitée - Opportunité rare\n';
+  
+  if (isVeryLowStock) {
+    smartInsights += '✓ STOCK CRITIQUE - Dernières pièces disponibles, opportunité unique\n';
+  } else if (isLowStock) {
+    smartInsights += '✓ Disponibilité limitée - Agissez rapidement pour sécuriser votre exemplaire\n';
+  } else if (isHighStock) {
+    smartInsights += '✓ Disponibilité immédiate - Livraison express garantie sous 48h\n';
   }
-  smartInsights += `✓ "${description}" - Référence unique dans sa catégorie\n`;
+  
+  smartInsights += `✓ "${description}" - Référence unique dans sa catégorie, produit exclusif\n`;
+  
+  // Ajouter des caractéristiques spécifiques selon le type de produit
+  if (keywords.length > 0) {
+    smartInsights += `✓ Caractéristiques clés : ${keywords.join(', ')} - Conception premium\n`;
+  }
 
   // Ajout de garanties et témoignages pour renforcer la crédibilité
   const guarantees = `\n\n🛡️ VOS GARANTIES ABSOLUES 🛡️
