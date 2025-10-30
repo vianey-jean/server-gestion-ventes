@@ -1874,5 +1874,25 @@
     "clientName": "Mounya Fleur",
     "clientAddress": "Leader Price centre ville saint denis",
     "clientPhone": "0639967890"
+  },
+  {
+    "id": "1761840500653",
+    "date": "2025-10-30",
+    "products": [
+      {
+        "productId": "1758025491344",
+        "description": "Colle",
+        "quantitySold": 1,
+        "purchasePrice": 3,
+        "sellingPrice": 10,
+        "profit": 7
+      }
+    ],
+    "totalPurchasePrice": 3,
+    "totalSellingPrice": 10,
+    "totalProfit": 7,
+    "clientName": "Latifa Olga",
+    "clientAddress": "Parking Gymnase Cazal Saint Denis",
+    "clientPhone": "0693497257"
   }
 ]
