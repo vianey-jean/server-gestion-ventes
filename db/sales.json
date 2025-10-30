@@ -1854,5 +1854,25 @@
     "clientName": "Nicole Payet",
     "clientAddress": "Super U étang-Salé",
     "clientPhone": "0692930856"
+  },
+  {
+    "id": "1761828204425",
+    "date": "2025-10-30",
+    "products": [
+      {
+        "productId": "1753187017537",
+        "description": "Tissages bouclé noir 22 pouces",
+        "quantitySold": 3,
+        "purchasePrice": 51.57000000000001,
+        "sellingPrice": 160.02,
+        "profit": 108.45
+      }
+    ],
+    "totalPurchasePrice": 51.57000000000001,
+    "totalSellingPrice": 160.02,
+    "totalProfit": 108.45,
+    "clientName": "Mounya Fleur",
+    "clientAddress": "Leader Price centre ville saint denis",
+    "clientPhone": "0639967890"
   }
 ]
