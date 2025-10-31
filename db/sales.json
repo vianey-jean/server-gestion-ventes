@@ -1567,14 +1567,14 @@
         "productId": "1746811570529",
         "description": "Avance Perruque ou Tissages",
         "quantitySold": 0,
-        "purchasePrice": 1,
+        "purchasePrice": 0,
         "sellingPrice": 120,
-        "profit": 119
+        "profit": 120
       }
     ],
-    "totalPurchasePrice": 1,
+    "totalPurchasePrice": 0,
     "totalSellingPrice": 120,
-    "totalProfit": 119,
+    "totalProfit": 120,
     "clientName": "Channel Charnelle",
     "clientAddress": "Leader price Saint Jacques saint denis",
     "clientPhone": "0692569227"
@@ -1627,14 +1627,14 @@
         "productId": "1746811570529",
         "description": "Avance Perruque ou Tissages",
         "quantitySold": 0,
-        "purchasePrice": 1,
+        "purchasePrice": 0,
         "sellingPrice": 70,
-        "profit": 69
+        "profit": 70
       }
     ],
-    "totalPurchasePrice": 1,
+    "totalPurchasePrice": 0,
     "totalSellingPrice": 70,
-    "totalProfit": 69,
+    "totalProfit": 70,
     "clientName": "Niny",
     "clientAddress": "Saint-Denis deux cannons",
     "clientPhone": "06"
@@ -1894,5 +1894,25 @@
     "clientName": "Latifa Olga",
     "clientAddress": "Parking Gymnase Cazal Saint Denis",
     "clientPhone": "0693497257"
+  },
+  {
+    "id": "1761920057807",
+    "date": "2025-10-31",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 50,
+        "profit": 50
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 50,
+    "totalProfit": 50,
+    "clientName": "Emilienne Nomenjanahary",
+    "clientAddress": "Vaubon saint denis",
+    "clientPhone": "0693326932"
   }
 ]
