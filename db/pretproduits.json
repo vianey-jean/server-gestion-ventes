@@ -137,10 +137,16 @@
     "description": "Perruque lisse court noir 13x4",
     "nom": "Emilienne",
     "prixVente": 50,
-    "avanceRecue": 50,
-    "reste": 0,
-    "estPaye": true,
-    "productId": "1746811388842"
+    "avanceRecue": 0,
+    "reste": 50,
+    "estPaye": false,
+    "productId": "1746811388842",
+    "paiements": [
+      {
+        "date": "2025-05-09",
+        "montant": 50
+      }
+    ]
   },
   {
     "id": "12",
@@ -214,10 +220,20 @@
     "nom": "Emilienne",
     "phone": "0693326932",
     "prixVente": 150,
-    "avanceRecue": 50,
-    "reste": 100,
+    "avanceRecue": 100,
+    "reste": 50,
     "estPaye": false,
-    "productId": "1752296734516"
+    "productId": "1752296734516",
+    "paiements": [
+      {
+        "date": "2025-07-11",
+        "montant": 50
+      },
+      {
+        "date": "2025-10-31",
+        "montant": 50
+      }
+    ]
   },
   {
     "id": "18",
