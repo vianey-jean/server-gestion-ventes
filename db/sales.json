@@ -1934,5 +1934,25 @@
     "clientName": "Analia Adrien",
     "clientAddress": "2 Allée Viencent d'Indy",
     "clientPhone": "0692226220"
+  },
+  {
+    "id": "1762013160570",
+    "date": "2025-11-01",
+    "products": [
+      {
+        "productId": "1753356444320",
+        "description": "Tissages bouclé blonde miel 18 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 28.06,
+        "sellingPrice": 80,
+        "profit": 51.94
+      }
+    ],
+    "totalPurchasePrice": 28.06,
+    "totalSellingPrice": 80,
+    "totalProfit": 51.94,
+    "clientName": "Nathalie Amsing",
+    "clientAddress": "Parking Jardein d'état Saint denis",
+    "clientPhone": "0692537318"
   }
 ]
