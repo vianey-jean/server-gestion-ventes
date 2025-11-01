@@ -1914,5 +1914,25 @@
     "clientName": "Emilienne Nomenjanahary",
     "clientAddress": "Vaubon saint denis",
     "clientPhone": "0693326932"
+  },
+  {
+    "id": "1761974888915",
+    "date": "2025-11-01",
+    "products": [
+      {
+        "productId": "1750688735646",
+        "description": "Tissages bouclé noir 24 pouces",
+        "quantitySold": 3,
+        "purchasePrice": 58.38,
+        "sellingPrice": 170.01,
+        "profit": 111.63
+      }
+    ],
+    "totalPurchasePrice": 58.38,
+    "totalSellingPrice": 170.01,
+    "totalProfit": 111.63,
+    "clientName": "Analia Adrien",
+    "clientAddress": "2 Allée Viencent d'Indy",
+    "clientPhone": "0692226220"
   }
 ]
