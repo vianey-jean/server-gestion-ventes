@@ -1954,5 +1954,45 @@
     "clientName": "Nathalie Amsing",
     "clientAddress": "Parking Jardein d'état Saint denis",
     "clientPhone": "0692537318"
+  },
+  {
+    "id": "1762354749063",
+    "date": "2025-11-05",
+    "products": [
+      {
+        "productId": "1751721921151",
+        "description": "Perruque bouclé blonde miel 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 42.24,
+        "sellingPrice": 170,
+        "profit": 127.76
+      }
+    ],
+    "totalPurchasePrice": 42.24,
+    "totalSellingPrice": 170,
+    "totalProfit": 127.76,
+    "clientName": "Vina Tiven",
+    "clientAddress": "Gifi saint André",
+    "clientPhone": "0693 861544"
+  },
+  {
+    "id": "1762354924080",
+    "date": "2025-11-05",
+    "products": [
+      {
+        "productId": "1762354827313",
+        "description": "Perruques lisse marron 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 57.34,
+        "sellingPrice": 170,
+        "profit": 112.66
+      }
+    ],
+    "totalPurchasePrice": 57.34,
+    "totalSellingPrice": 170,
+    "totalProfit": 112.66,
+    "clientName": "Milly Marie Sisahaye Sshye",
+    "clientAddress": "St Francois",
+    "clientPhone": "0693902963"
   }
 ]

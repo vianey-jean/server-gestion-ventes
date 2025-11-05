@@ -670,5 +670,11 @@
     "description": "Perruque lisse tefy gasy 22 pouces",
     "purchasePrice": 60,
     "quantity": 1
+  },
+  {
+    "id": "1762354827313",
+    "description": "Perruques lisse marron 30 pouces",
+    "purchasePrice": 57.34,
+    "quantity": 0
   }
 ]
