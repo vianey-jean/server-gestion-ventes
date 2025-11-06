@@ -676,5 +676,35 @@
     "description": "Perruques lisse marron 30 pouces",
     "purchasePrice": 57.34,
     "quantity": 0
+  },
+  {
+    "id": "1762440976769",
+    "description": "Perruque bouclé noir 26 pouces",
+    "purchasePrice": 84.4,
+    "quantity": 1
+  },
+  {
+    "id": "1762441204565",
+    "description": "perruque bouclé frange blonde jaune 14 pouces",
+    "purchasePrice": 40.12,
+    "quantity": 0
+  },
+  {
+    "id": "1762441224606",
+    "description": "perruque bouclé frange noir14 pouces",
+    "purchasePrice": 40.12,
+    "quantity": 0
+  },
+  {
+    "id": "1762441237630",
+    "description": "perruque bouclé frange blonde miel14 pouces",
+    "purchasePrice": 40.12,
+    "quantity": 1
+  },
+  {
+    "id": "1762441427899",
+    "description": "Perruque lisse noir 24 pouces",
+    "purchasePrice": 50.46,
+    "quantity": 0
   }
 ]

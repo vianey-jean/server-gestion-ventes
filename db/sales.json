@@ -1994,5 +1994,73 @@
     "clientName": "Milly Marie Sisahaye Sshye",
     "clientAddress": "St Francois",
     "clientPhone": "0693902963"
+  },
+  {
+    "id": "1762441057121",
+    "date": "2025-11-06",
+    "products": [
+      {
+        "productId": "1762440976769",
+        "description": "Perruque bouclé noir 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 84.4,
+        "sellingPrice": 170,
+        "profit": 85.6
+      }
+    ],
+    "totalPurchasePrice": 84.4,
+    "totalSellingPrice": 170,
+    "totalProfit": 85.6,
+    "clientName": "Naellyah Bgd",
+    "clientAddress": "La banque postale le port",
+    "clientPhone": "0692509767"
+  },
+  {
+    "id": "1762441289913",
+    "date": "2025-11-06",
+    "products": [
+      {
+        "productId": "1762441204565",
+        "description": "perruque bouclé frange blonde jaune 14 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 40.12,
+        "sellingPrice": 80,
+        "profit": 39.88
+      },
+      {
+        "productId": "1762441224606",
+        "description": "perruque bouclé frange noir14 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 40.12,
+        "sellingPrice": 90,
+        "profit": 49.88
+      }
+    ],
+    "totalPurchasePrice": 80.24,
+    "totalSellingPrice": 170,
+    "totalProfit": 89.76,
+    "clientName": "Latifa Olga",
+    "clientAddress": "Parking Gymnase Cazal Saint Denis",
+    "clientPhone": "0693497257"
+  },
+  {
+    "id": "1762441466227",
+    "date": "2025-11-06",
+    "products": [
+      {
+        "productId": "1762441427899",
+        "description": "Perruque lisse noir 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 50.46,
+        "sellingPrice": 140,
+        "profit": 89.54
+      }
+    ],
+    "totalPurchasePrice": 50.46,
+    "totalSellingPrice": 140,
+    "totalProfit": 89.54,
+    "clientName": "Maman Yasmina",
+    "clientAddress": "38 bis chemin de la source saint-denis",
+    "clientPhone": "0693603606"
   }
 ]
