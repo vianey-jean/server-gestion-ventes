@@ -54,7 +54,9 @@ router.post('/', authMiddleware, async (req, res) => {
       // Nouveau format
       products, totalPurchasePrice, totalSellingPrice, totalProfit,
       // Client info
-      clientName, clientAddress, clientPhone
+      clientName, clientAddress, clientPhone,
+      // Données d'avance
+      reste, nextPaymentDate
     } = req.body;
     
     // Validation des champs obligatoires
@@ -140,7 +142,9 @@ router.post('/', authMiddleware, async (req, res) => {
         totalProfit: Number(totalProfit),
         clientName: clientName || null,
         clientAddress: clientAddress || null,
-        clientPhone: clientPhone || null
+        clientPhone: clientPhone || null,
+        reste: reste ? Number(reste) : 0,
+        nextPaymentDate: nextPaymentDate || null
       };
       
       console.log('💾 Données de vente multi-produits à créer:', JSON.stringify(saleData, null, 2));
@@ -211,7 +215,9 @@ router.post('/', authMiddleware, async (req, res) => {
         profit: numericProfit,
         clientName: clientName || null,
         clientAddress: clientAddress || null,
-        clientPhone: clientPhone || null
+        clientPhone: clientPhone || null,
+        reste: reste ? Number(reste) : 0,
+        nextPaymentDate: nextPaymentDate || null
       };
       
       console.log('💾 Données de vente à créer:', JSON.stringify(saleData, null, 2));
@@ -242,6 +248,15 @@ router.put('/:id', authMiddleware, async (req, res) => {
     console.log('📝 SALES API - Mise à jour d\'une vente');
     console.log('📝 Données reçues:', JSON.stringify(req.body, null, 2));
     
+    // Récupérer la vente originale avant mise à jour
+    const sales = Sale.getAll();
+    const originalSale = sales.find(s => s.id === req.params.id);
+    
+    if (!originalSale) {
+      console.log('❌ Vente non trouvée:', req.params.id);
+      return res.status(404).json({ message: 'Sale not found' });
+    }
+    
     const { 
       // Ancien format
       date, productId, description, sellingPrice, 
@@ -249,7 +264,9 @@ router.put('/:id', authMiddleware, async (req, res) => {
       // Nouveau format multi-produits
       products, totalPurchasePrice, totalSellingPrice, totalProfit,
       // Client info
-      clientName, clientAddress, clientPhone
+      clientName, clientAddress, clientPhone,
+      // Données d'avance
+      reste, nextPaymentDate
     } = req.body;
     
     if (!date) {
@@ -280,7 +297,9 @@ router.put('/:id', authMiddleware, async (req, res) => {
         totalProfit: Number(totalProfit),
         clientName: clientName || null,
         clientAddress: clientAddress || null,
-        clientPhone: clientPhone || null
+        clientPhone: clientPhone || null,
+        reste: reste ? Number(reste) : 0,
+        nextPaymentDate: nextPaymentDate || null
       };
     } else {
       console.log('🛍️ Mise à jour vente single-produit');
@@ -307,7 +326,9 @@ router.put('/:id', authMiddleware, async (req, res) => {
         profit: Number(profit), // Use the profit directly from frontend calculation
         clientName: clientName || null,
         clientAddress: clientAddress || null,
-        clientPhone: clientPhone || null
+        clientPhone: clientPhone || null,
+        reste: reste ? Number(reste) : 0,
+        nextPaymentDate: nextPaymentDate || null
       };
     }
     
@@ -324,6 +345,84 @@ router.put('/:id', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: updatedSale.error });
     }
     
+    // Gérer le prêt produit associé si reste > 0
+    if (updatedSale.reste && updatedSale.reste > 0 && updatedSale.clientName) {
+      try {
+        const PretProduit = require('../models/PretProduit');
+        const pretProduits = PretProduit.getAllPretProduits();
+        
+        // Chercher le prêt produit correspondant à cette vente (même client, même date originale)
+        const existingPretProduit = pretProduits.find(p => 
+          p.nom === originalSale.clientName && p.date === originalSale.date
+        );
+        
+        if (existingPretProduit) {
+          // METTRE À JOUR le prêt produit existant
+          console.log('🔄 Mise à jour du prêt produit existant:', existingPretProduit.id);
+          
+          let description = '';
+          if (isMultiProduct && products && products.length > 0) {
+            description = products.map(p => p.description).join(', ');
+          } else {
+            description = updatedSale.description || '';
+          }
+          
+          PretProduit.updatePretProduit(existingPretProduit.id, {
+            nom: updatedSale.clientName,
+            phone: updatedSale.clientPhone || '',
+            date: updatedSale.date,
+            description: description,
+            prixVente: isMultiProduct ? updatedSale.totalSellingPrice : updatedSale.sellingPrice,
+            reste: updatedSale.reste,
+            dateProchaineVente: updatedSale.nextPaymentDate || null
+          });
+          
+          console.log('✅ Prêt produit mis à jour avec succès');
+        } else {
+          // Créer un nouveau prêt produit seulement si aucun prêt correspondant n'existe
+          console.log('➕ Création d\'un nouveau prêt produit');
+          
+          let description = '';
+          if (isMultiProduct && products && products.length > 0) {
+            description = products.map(p => p.description).join(', ');
+          } else {
+            description = updatedSale.description || '';
+          }
+          
+          PretProduit.createPretProduit({
+            nom: updatedSale.clientName,
+            phone: updatedSale.clientPhone || '',
+            date: updatedSale.date,
+            description: description,
+            prixVente: isMultiProduct ? updatedSale.totalSellingPrice : updatedSale.sellingPrice,
+            reste: updatedSale.reste,
+            dateProchaineVente: updatedSale.nextPaymentDate || null
+          });
+          
+          console.log('✅ Nouveau prêt produit créé');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la gestion du prêt produit:', error);
+      }
+    } else if (originalSale.reste && originalSale.reste > 0 && (!updatedSale.reste || updatedSale.reste === 0)) {
+      // Si la vente avait un reste mais plus maintenant, supprimer le prêt produit
+      try {
+        const PretProduit = require('../models/PretProduit');
+        const pretProduits = PretProduit.getAllPretProduits();
+        
+        const pretProduit = pretProduits.find(p => 
+          p.nom === originalSale.clientName && p.date === originalSale.date
+        );
+        
+        if (pretProduit) {
+          PretProduit.deletePretProduit(pretProduit.id);
+          console.log('✅ Prêt produit supprimé car reste = 0');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression du prêt produit:', error);
+      }
+    }
+    
     console.log('✅ Vente mise à jour avec succès:', updatedSale);
     res.json(updatedSale);
   } catch (error) {
@@ -335,10 +434,39 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // Delete sale
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
+    // Récupérer la vente avant de la supprimer
+    const sales = Sale.getAll();
+    const sale = sales.find(s => s.id === req.params.id);
+    
+    if (!sale) {
+      return res.status(404).json({ message: 'Sale not found' });
+    }
+    
+    // Supprimer la vente
     const success = Sale.delete(req.params.id);
     
     if (!success) {
-      return res.status(404).json({ message: 'Sale not found' });
+      return res.status(404).json({ message: 'Error deleting sale' });
+    }
+    
+    // Si la vente avait un reste (avance), supprimer aussi dans pretproduits
+    if (sale.reste && sale.reste > 0 && sale.clientName) {
+      try {
+        const PretProduit = require('../models/PretProduit');
+        const pretProduits = PretProduit.getAllPretProduits();
+        
+        // Chercher le pretproduit correspondant
+        const pretProduit = pretProduits.find(p => 
+          p.nom === sale.clientName && p.date === sale.date
+        );
+        
+        if (pretProduit) {
+          PretProduit.deletePretProduit(pretProduit.id);
+          console.log('✅ Prêt produit supprimé avec la vente');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression du prêt produit:', error);
+      }
     }
     
     res.json({ success: true });
