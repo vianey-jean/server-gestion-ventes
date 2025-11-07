@@ -2062,5 +2062,93 @@
     "clientName": "Maman Yasmina",
     "clientAddress": "38 bis chemin de la source saint-denis",
     "clientPhone": "0693603606"
+  },
+  {
+    "id": "1762513820389",
+    "date": "2025-11-07",
+    "products": [
+      {
+        "productId": "1752297157536",
+        "description": "Perruque bouclé blonde miel 18 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 38.6,
+        "sellingPrice": 110,
+        "profit": 71.4
+      }
+    ],
+    "totalPurchasePrice": 38.6,
+    "totalSellingPrice": 110,
+    "totalProfit": 71.4,
+    "clientName": "Vina Tiven",
+    "clientAddress": "Gifi saint André",
+    "clientPhone": "0693 861544",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1762515989987",
+    "date": "2025-11-07",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 150,
+        "profit": 0
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 150,
+    "totalProfit": 0,
+    "clientName": "Ma Warren Chaudron",
+    "clientAddress": "Mail Chaudron",
+    "clientPhone": "0693647609",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1762516050225",
+    "date": "2025-11-07",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 100,
+        "profit": 0
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 100,
+    "totalProfit": 0,
+    "clientName": "Channel Charnelle",
+    "clientAddress": "Leader price Saint Jacques saint denis",
+    "clientPhone": "0692569227",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1762516236439",
+    "date": "2025-11-07",
+    "products": [
+      {
+        "productId": "1762516167800",
+        "description": "Perruque lisse ondulé noir 16 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 40.19,
+        "sellingPrice": 100,
+        "profit": 59.81
+      }
+    ],
+    "totalPurchasePrice": 40.19,
+    "totalSellingPrice": 100,
+    "totalProfit": 59.81,
+    "clientName": "Pascale Legrand",
+    "clientAddress": "Eglise plateau caillou st Paul",
+    "clientPhone": "0693421204",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

@@ -471,7 +471,7 @@
     "id": "1752297157536",
     "description": "Perruque bouclé blonde miel 18 pouces",
     "purchasePrice": 38.6,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1752297246613",
@@ -705,6 +705,12 @@
     "id": "1762441427899",
     "description": "Perruque lisse noir 24 pouces",
     "purchasePrice": 50.46,
+    "quantity": 0
+  },
+  {
+    "id": "1762516167800",
+    "description": "Perruque lisse ondulé noir 16 pouces",
+    "purchasePrice": 40.19,
     "quantity": 0
   }
 ]
