@@ -72,10 +72,16 @@
     "description": "Perruque Frisé lisse 20 pouces",
     "nom": "Cliente Ma warren Chaudron",
     "prixVente": 130,
-    "avanceRecue": 0,
-    "reste": 130,
-    "estPaye": false,
-    "productId": "1745415671664"
+    "avanceRecue": 130,
+    "reste": 0,
+    "estPaye": true,
+    "productId": "1745415671664",
+    "paiements": [
+      {
+        "date": "2025-11-07",
+        "montant": 140
+      }
+    ]
   },
   {
     "id": "7",
@@ -85,10 +91,20 @@
     "description": "Perruque bouclé marron 22 pouces",
     "nom": "Cliente Ma warren Chaudron",
     "prixVente": 160,
-    "avanceRecue": 100,
-    "reste": 60,
+    "avanceRecue": 120,
+    "reste": 40,
     "estPaye": false,
-    "productId": "1745415790700"
+    "productId": "1745415790700",
+    "paiements": [
+      {
+        "date": "2024-10-21",
+        "montant": 100
+      },
+      {
+        "date": "2025-11-07",
+        "montant": 20
+      }
+    ]
   },
   {
     "id": "8",
@@ -243,8 +259,8 @@
     "nom": "Charnelle",
     "phone": "0692569227",
     "prixVente": 620,
-    "avanceRecue": 320,
-    "reste": 300,
+    "avanceRecue": 470,
+    "reste": 150,
     "estPaye": false,
     "paiements": [
       {
@@ -254,6 +270,10 @@
       {
         "date": "2025-10-6",
         "montant": 120
+      },
+      {
+        "date": "2025-11-07",
+        "montant": 150
       }
     ]
   },
@@ -286,5 +306,19 @@
         "montant": 70
       }
     ]
+  },
+  {
+    "id": "21",
+    "date": "2024-12-07",
+    "datePaiement": "2025-12-24",
+    "description": "Perruque lisse noir 24 pouces",
+    "nom": "Cliente Ma warren Chaudron",
+    "phone": "+262 692 678 901",
+    "prixVente": 110,
+    "avanceRecue": 0,
+    "reste": 110,
+    "estPaye": false,
+    "productId": "1762441427899",
+    "paiements": []
   }
 ]
