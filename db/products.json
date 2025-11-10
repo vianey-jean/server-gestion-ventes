@@ -315,7 +315,7 @@
     "id": "1747145372539",
     "description": "Tissages lisse noir 30 pouces",
     "purchasePrice": 23.71,
-    "quantity": 2
+    "quantity": 0
   },
   {
     "id": "1748111374048",
@@ -711,6 +711,12 @@
     "id": "1762516167800",
     "description": "Perruque lisse ondulé noir 16 pouces",
     "purchasePrice": 40.19,
+    "quantity": 0
+  },
+  {
+    "id": "1762794791168",
+    "description": "Perruque lisse ondulé marron 26 pouces 230%",
+    "purchasePrice": 45.46,
     "quantity": 0
   }
 ]

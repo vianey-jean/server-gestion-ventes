@@ -2150,5 +2150,49 @@
     "clientPhone": "0693421204",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1762794707466",
+    "date": "2025-11-10",
+    "products": [
+      {
+        "productId": "1747145372539",
+        "description": "Tissages lisse noir 30 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 47.42,
+        "sellingPrice": 130,
+        "profit": 82.58
+      }
+    ],
+    "totalPurchasePrice": 47.42,
+    "totalSellingPrice": 130,
+    "totalProfit": 82.58,
+    "clientName": "Laetitia Roan",
+    "clientAddress": "542 rue mille roches st André",
+    "clientPhone": "0692443186",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1762794907642",
+    "date": "2025-11-10",
+    "products": [
+      {
+        "productId": "1762794791168",
+        "description": "Perruque lisse ondulé marron 26 pouces 230%",
+        "quantitySold": 1,
+        "purchasePrice": 45.46,
+        "sellingPrice": 150,
+        "profit": 104.54
+      }
+    ],
+    "totalPurchasePrice": 45.46,
+    "totalSellingPrice": 150,
+    "totalProfit": 104.54,
+    "clientName": "jacqueline Rousseau",
+    "clientAddress": "Super U saint Paul",
+    "clientPhone": "0692082109",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
