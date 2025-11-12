@@ -2194,5 +2194,27 @@
     "clientPhone": "0692082109",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1762916577399",
+    "date": "2025-11-12",
+    "products": [
+      {
+        "productId": "1762916485690",
+        "description": "Perruque bouclé orange de 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 67.43,
+        "sellingPrice": 150,
+        "profit": 82.57
+      }
+    ],
+    "totalPurchasePrice": 67.43,
+    "totalSellingPrice": 150,
+    "totalProfit": 82.57,
+    "clientName": "Enna Mayl",
+    "clientAddress": "43 rue Eugene Dayot Sainbt André",
+    "clientPhone": "0693484601",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

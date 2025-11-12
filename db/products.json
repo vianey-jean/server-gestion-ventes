@@ -718,5 +718,11 @@
     "description": "Perruque lisse ondulé marron 26 pouces 230%",
     "purchasePrice": 45.46,
     "quantity": 0
+  },
+  {
+    "id": "1762916485690",
+    "description": "Perruque bouclé orange de 24 pouces",
+    "purchasePrice": 67.43,
+    "quantity": 0
   }
 ]
