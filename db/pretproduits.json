@@ -285,9 +285,19 @@
     "nom": "Cya Météo",
     "phone": "+262 692 345 678",
     "prixVente": 160,
-    "avanceRecue": 70,
-    "reste": 90,
-    "estPaye": false
+    "avanceRecue": 160,
+    "reste": 0,
+    "estPaye": true,
+    "paiements": [
+      {
+        "date": "2025-10-20",
+        "montant": 70
+      },
+      {
+        "date": "2025-11-12",
+        "montant": 90
+      }
+    ]
   },
   {
     "id": "20",

@@ -2216,5 +2216,27 @@
     "clientPhone": "0693484601",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1762957076343",
+    "date": "2025-11-12",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 90,
+        "profit": 0
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 90,
+    "totalProfit": 0,
+    "clientName": "Cya Bea",
+    "clientAddress": "A coté météo Caudron saint-denis",
+    "clientPhone": "0693535338",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
