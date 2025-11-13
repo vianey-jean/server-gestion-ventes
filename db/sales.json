@@ -2238,5 +2238,49 @@
     "clientPhone": "0693535338",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1763048856683",
+    "date": "2025-11-13",
+    "products": [
+      {
+        "productId": "1753356496899",
+        "description": "Tissages bouclé blonde miel 16 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 21.8,
+        "sellingPrice": 70,
+        "profit": 48.2
+      }
+    ],
+    "totalPurchasePrice": 21.8,
+    "totalSellingPrice": 70,
+    "totalProfit": 48.2,
+    "clientName": "Davina Métissa",
+    "clientAddress": "Devant Atlas",
+    "clientPhone": "0693601522",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1763048938194",
+    "date": "2025-11-13",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 120,
+        "profit": 0
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 120,
+    "totalProfit": 0,
+    "clientName": "Toufahat Gharibe Chaibati",
+    "clientAddress": "250D Route Montgaillard, Res Terrass, St Denis",
+    "clientPhone": "0693835958",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
