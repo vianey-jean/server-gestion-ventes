@@ -2282,5 +2282,27 @@
     "clientPhone": "0693835958",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1763131521251",
+    "date": "2025-11-14",
+    "products": [
+      {
+        "productId": "1753186907720",
+        "description": "Tissages bouclé noir 16 poucess",
+        "quantitySold": 3,
+        "purchasePrice": 33.06,
+        "sellingPrice": 100.02000000000001,
+        "profit": 66.96
+      }
+    ],
+    "totalPurchasePrice": 33.06,
+    "totalSellingPrice": 100.02000000000001,
+    "totalProfit": 66.96,
+    "clientName": "Annah Annah",
+    "clientAddress": "125 Allée des spinelles Bellepierre",
+    "clientPhone": "0693321689",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
