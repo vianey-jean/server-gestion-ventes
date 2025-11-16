@@ -2304,5 +2304,27 @@
     "clientPhone": "0693321689",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1763310256050",
+    "date": "2025-11-16",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 60,
+        "profit": 0
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 60,
+    "totalProfit": 0,
+    "clientName": "Copine Emilienne",
+    "clientAddress": "Vaubon",
+    "clientPhone": "06",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
