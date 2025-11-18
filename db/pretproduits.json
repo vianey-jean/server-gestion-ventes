@@ -307,13 +307,17 @@
     "nom": "Copine Emilienne Vaubon",
     "phone": "",
     "prixVente": 130,
-    "avanceRecue": 70,
-    "reste": 60,
-    "estPaye": false,
+    "avanceRecue": 130,
+    "reste": 0,
+    "estPaye": true,
     "paiements": [
       {
         "date": "2025-10-21",
         "montant": 70
+      },
+      {
+        "date": "2025-11-18",
+        "montant": 60
       }
     ]
   },
