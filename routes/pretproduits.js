@@ -15,6 +15,30 @@ router.get('/', auth, (req, res) => {
   }
 });
 
+// Route pour rechercher des prêts produits par nom
+router.get('/search', auth, (req, res) => {
+  try {
+    const { nom } = req.query;
+    
+    if (!nom || nom.length < 3) {
+      return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
+    }
+    
+    const allPretProduits = PretProduit.getAllPretProduits();
+    const searchTerm = nom.toLowerCase();
+    
+    // Filtrer les prêts par nom (recherche partielle, insensible à la casse)
+    const filteredPrets = allPretProduits.filter(pret => 
+      pret.nom && pret.nom.toLowerCase().includes(searchTerm) && pret.reste > 0
+    );
+    
+    res.json(filteredPrets);
+  } catch (error) {
+    console.error('Erreur lors de la recherche des prêts produits:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
 // Route pour obtenir un prêt produit par ID
 router.get('/:id', auth, (req, res) => {
   try {

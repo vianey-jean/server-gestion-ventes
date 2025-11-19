@@ -117,9 +117,9 @@ if (!fs.existsSync(pretFamillesPath)) {
 const pretProduitsPath = path.join(dbPath, 'pretproduits.json');
 if (!fs.existsSync(pretProduitsPath)) {
   fs.writeFileSync(pretProduitsPath, JSON.stringify([
-    { id: "1", date: "2023-04-10", description: "Perruque Blonde", prixVente: 450, avanceRecue: 200, reste: 250, estPaye: false },
-    { id: "2", date: "2023-04-15", description: "Perruque Brune", prixVente: 300, avanceRecue: 300, reste: 0, estPaye: true },
-    { id: "3", date: "2023-04-20", description: "Perruque Rousse", prixVente: 500, avanceRecue: 250, reste: 250, estPaye: false }
+    { id: "1", nom: "Marie Dupont", phone: "0692123456", date: "2023-04-10", description: "Perruque Blonde", prixVente: 450, avanceRecue: 200, reste: 250, estPaye: false, dateProchaineVente: null },
+    { id: "2", nom: "Jean Martin", phone: "0693987654", date: "2023-04-15", description: "Perruque Brune", prixVente: 300, avanceRecue: 300, reste: 0, estPaye: true, dateProchaineVente: null },
+    { id: "3", nom: "Marie Dupont", phone: "0692123456", date: "2023-04-20", description: "Perruque Rousse", prixVente: 500, avanceRecue: 250, reste: 250, estPaye: false, dateProchaineVente: null }
   ], null, 2));
 }
 
