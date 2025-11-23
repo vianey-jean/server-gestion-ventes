@@ -2326,5 +2326,35 @@
     "clientPhone": "06",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1763861952620",
+    "date": "2025-11-22",
+    "products": [
+      {
+        "productId": "5",
+        "description": "Tissages bouclé noir 20 pouces 12 A",
+        "quantitySold": 2,
+        "purchasePrice": 29.82,
+        "sellingPrice": 110,
+        "profit": 80.18
+      },
+      {
+        "productId": "1752297246613",
+        "description": "Tissages bouclé mèche blonde miel 20 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 37.5,
+        "sellingPrice": 110,
+        "profit": 72.5
+      }
+    ],
+    "totalPurchasePrice": 67.32,
+    "totalSellingPrice": 220,
+    "totalProfit": 152.68,
+    "clientName": "Anfou Pamal",
+    "clientAddress": "79 rue de la gare",
+    "clientPhone": "0693870610",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
