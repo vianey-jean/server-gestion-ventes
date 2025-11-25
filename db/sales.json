@@ -2396,5 +2396,29 @@
     "clientPhone": "0693818716",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1764078620957",
+    "date": "2025-11-23",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 30,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 30,
+    "totalProfit": 0,
+    "clientName": "Ma Warren Chaudron",
+    "clientAddress": "Mail Chaudron",
+    "clientPhone": "0693647609",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
