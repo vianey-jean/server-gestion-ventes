@@ -2356,5 +2356,27 @@
     "clientPhone": "0693870610",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1764070400406",
+    "date": "2025-11-25",
+    "products": [
+      {
+        "productId": "1749141142855",
+        "description": "Perruque bouclé marron et noir court 8 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 16.92,
+        "sellingPrice": 60,
+        "profit": 43.08
+      }
+    ],
+    "totalPurchasePrice": 16.92,
+    "totalSellingPrice": 60,
+    "totalProfit": 43.08,
+    "clientName": "Clara Miandry",
+    "clientAddress": "La Marie Saint-André",
+    "clientPhone": "0693818716",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
