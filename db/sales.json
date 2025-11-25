@@ -1925,7 +1925,9 @@
         "quantitySold": 3,
         "purchasePrice": 58.38,
         "sellingPrice": 170.01,
-        "profit": 111.63
+        "profit": 111.63,
+        "deliveryFee": 0,
+        "deliveryLocation": "Le Port"
       }
     ],
     "totalPurchasePrice": 58.38,
@@ -1933,7 +1935,9 @@
     "totalProfit": 111.63,
     "clientName": "Analia Adrien",
     "clientAddress": "2 Allée Viencent d'Indy",
-    "clientPhone": "0692226220"
+    "clientPhone": "0692226220",
+    "reste": 0,
+    "nextPaymentDate": null
   },
   {
     "id": "1762013160570",
@@ -1965,7 +1969,9 @@
         "quantitySold": 1,
         "purchasePrice": 42.24,
         "sellingPrice": 170,
-        "profit": 127.76
+        "profit": 127.76,
+        "deliveryFee": 0,
+        "deliveryLocation": "Autres"
       }
     ],
     "totalPurchasePrice": 42.24,
@@ -1973,7 +1979,9 @@
     "totalProfit": 127.76,
     "clientName": "Vina Tiven",
     "clientAddress": "Gifi saint André",
-    "clientPhone": "0693 861544"
+    "clientPhone": "0693 861544",
+    "reste": 0,
+    "nextPaymentDate": null
   },
   {
     "id": "1762354924080",
@@ -2005,7 +2013,9 @@
         "quantitySold": 1,
         "purchasePrice": 84.4,
         "sellingPrice": 170,
-        "profit": 85.6
+        "profit": 85.6,
+        "deliveryFee": 0,
+        "deliveryLocation": "Le Port"
       }
     ],
     "totalPurchasePrice": 84.4,
@@ -2013,7 +2023,9 @@
     "totalProfit": 85.6,
     "clientName": "Naellyah Bgd",
     "clientAddress": "La banque postale le port",
-    "clientPhone": "0692509767"
+    "clientPhone": "0692509767",
+    "reste": 0,
+    "nextPaymentDate": null
   },
   {
     "id": "1762441289913",
@@ -2072,13 +2084,15 @@
         "description": "Perruque bouclé blonde miel 18 pouces",
         "quantitySold": 1,
         "purchasePrice": 38.6,
-        "sellingPrice": 110,
-        "profit": 71.4
+        "sellingPrice": 100,
+        "profit": 61.4,
+        "deliveryFee": 10,
+        "deliveryLocation": "Saint-André"
       }
     ],
     "totalPurchasePrice": 38.6,
     "totalSellingPrice": 110,
-    "totalProfit": 71.4,
+    "totalProfit": 61.4,
     "clientName": "Vina Tiven",
     "clientAddress": "Gifi saint André",
     "clientPhone": "0693 861544",
@@ -2205,7 +2219,9 @@
         "quantitySold": 1,
         "purchasePrice": 67.43,
         "sellingPrice": 150,
-        "profit": 82.57
+        "profit": 82.57,
+        "deliveryFee": 0,
+        "deliveryLocation": "Autres"
       }
     ],
     "totalPurchasePrice": 67.43,
@@ -2366,13 +2382,15 @@
         "description": "Perruque bouclé marron et noir court 8 pouces",
         "quantitySold": 1,
         "purchasePrice": 16.92,
-        "sellingPrice": 60,
-        "profit": 43.08
+        "sellingPrice": 50,
+        "profit": 33.08,
+        "deliveryFee": 10,
+        "deliveryLocation": "Saint-André"
       }
     ],
     "totalPurchasePrice": 16.92,
     "totalSellingPrice": 60,
-    "totalProfit": 43.08,
+    "totalProfit": 33.08,
     "clientName": "Clara Miandry",
     "clientAddress": "La Marie Saint-André",
     "clientPhone": "0693818716",
