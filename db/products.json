@@ -724,5 +724,29 @@
     "description": "Perruque bouclé orange de 24 pouces",
     "purchasePrice": 67.43,
     "quantity": 0
+  },
+  {
+    "id": "1764131911050",
+    "description": "Perruque lisse gris 20 pouces",
+    "purchasePrice": 37.06,
+    "quantity": 1
+  },
+  {
+    "id": "1764132092383",
+    "description": "Perruque bouclé blonde miel blanche 20 pouces",
+    "purchasePrice": 43.16,
+    "quantity": 1
+  },
+  {
+    "id": "1764132619962",
+    "description": "Tissages bouclé marron 22 pouces",
+    "purchasePrice": 23.44,
+    "quantity": 3
+  },
+  {
+    "id": "1764132773740",
+    "description": "perruque lisse noir 26 pouces",
+    "purchasePrice": 44.59,
+    "quantity": 1
   }
 ]

@@ -1,1 +1,84 @@
-[]
+[
+  {
+    "id": "1764131911080",
+    "clientNom": "Ma Warren Chaudron",
+    "clientPhone": "0693647609",
+    "clientAddress": "Mail Chaudron",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque lisse gris 20 pouces",
+        "prixUnitaire": 37.06,
+        "quantite": 1,
+        "prixVente": 130
+      }
+    ],
+    "dateCommande": "2025-11-26T04:38:30.955Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-08",
+    "createdAt": "2025-11-26T04:38:31.080Z"
+  },
+  {
+    "id": "1764132402668",
+    "clientNom": "Latifa Olga",
+    "clientPhone": "0693497257",
+    "clientAddress": "Parking Gymnase Cazal Saint Denis",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé blonde miel blanche 20 pouces",
+        "prixUnitaire": 43.16,
+        "quantite": 1,
+        "prixVente": 130
+      },
+      {
+        "nom": "Colle et disolvant",
+        "prixUnitaire": 5,
+        "quantite": 1,
+        "prixVente": 10
+      }
+    ],
+    "dateCommande": "2025-11-26T04:46:42.629Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-11-27",
+    "createdAt": "2025-11-26T04:46:42.668Z"
+  },
+  {
+    "id": "1764132619998",
+    "clientNom": "Mona Lifzaa",
+    "clientPhone": "06",
+    "clientAddress": "Le Port",
+    "type": "commande",
+    "produits": [
+      {
+        "nom": "Tissages bouclé marron 22 pouces",
+        "prixUnitaire": 23.44,
+        "quantite": 3,
+        "prixVente": 180
+      }
+    ],
+    "dateCommande": "2025-11-26T04:50:19.917Z",
+    "statut": "en_route",
+    "dateArrivagePrevue": "2025-12-20",
+    "createdAt": "2025-11-26T04:50:19.998Z"
+  },
+  {
+    "id": "1764132773772",
+    "clientNom": "Copine Emilienne",
+    "clientPhone": "06",
+    "clientAddress": "Vaubon",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "perruque lisse noir 26 pouces",
+        "prixUnitaire": 44.59,
+        "quantite": 1,
+        "prixVente": 160
+      }
+    ],
+    "dateCommande": "2025-11-26T04:52:53.723Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-11-26",
+    "createdAt": "2025-11-26T04:52:53.772Z"
+  }
+]
