@@ -77,8 +77,9 @@
       }
     ],
     "dateCommande": "2025-11-26T04:52:53.723Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2025-11-26",
-    "createdAt": "2025-11-26T04:52:53.772Z"
+    "createdAt": "2025-11-26T04:52:53.772Z",
+    "updatedAt": "2025-11-26T15:02:04.872Z"
   }
 ]
