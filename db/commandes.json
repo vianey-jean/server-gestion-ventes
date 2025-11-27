@@ -39,9 +39,10 @@
       }
     ],
     "dateCommande": "2025-11-26T04:46:42.629Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2025-11-27",
-    "createdAt": "2025-11-26T04:46:42.668Z"
+    "createdAt": "2025-11-26T04:46:42.668Z",
+    "updatedAt": "2025-11-27T18:34:31.949Z"
   },
   {
     "id": "1764132619998",

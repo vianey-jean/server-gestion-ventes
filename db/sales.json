@@ -2444,5 +2444,39 @@
     "clientPhone": "06",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1764268471974",
+    "date": "2025-11-27",
+    "products": [
+      {
+        "productId": "1764132092383",
+        "description": "Perruque bouclé blonde miel blanche 20 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 43.16,
+        "sellingPrice": 130,
+        "profit": 86.84,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      },
+      {
+        "productId": "1746197176031",
+        "description": "Colle et disolvant",
+        "quantitySold": 1,
+        "purchasePrice": 5,
+        "sellingPrice": 10,
+        "profit": 5,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 48.16,
+    "totalSellingPrice": 140,
+    "totalProfit": 91.84,
+    "clientName": "Latifa Olga",
+    "clientAddress": "Parking Gymnase Cazal Saint Denis",
+    "clientPhone": "0693497257",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
