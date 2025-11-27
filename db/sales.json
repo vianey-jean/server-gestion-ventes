@@ -2420,5 +2420,29 @@
     "clientPhone": "0693647609",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1764238903943",
+    "date": "2025-11-27",
+    "products": [
+      {
+        "productId": "1764132773740",
+        "description": "Prêt - perruque lisse noir 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 44.59,
+        "sellingPrice": 0,
+        "profit": 115.41,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 44.59,
+    "totalSellingPrice": 0,
+    "totalProfit": 115.41,
+    "clientName": "Copine Emilienne",
+    "clientAddress": "Vaubon",
+    "clientPhone": "06",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

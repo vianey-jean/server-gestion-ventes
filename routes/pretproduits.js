@@ -18,23 +18,32 @@ router.get('/', auth, (req, res) => {
 // Route pour rechercher des prêts produits par nom
 router.get('/search', auth, (req, res) => {
   try {
-    const { nom } = req.query;
+    const { nom, includeAll } = req.query;
+    
+    console.log('🔍 Recherche prêts produits - nom:', nom, 'includeAll:', includeAll);
     
     if (!nom || nom.length < 3) {
       return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
     }
     
     const allPretProduits = PretProduit.getAllPretProduits();
+    console.log('📦 Total prêts produits en base:', allPretProduits.length);
+    
     const searchTerm = nom.toLowerCase();
     
     // Filtrer les prêts par nom (recherche partielle, insensible à la casse)
-    const filteredPrets = allPretProduits.filter(pret => 
-      pret.nom && pret.nom.toLowerCase().includes(searchTerm) && pret.reste > 0
-    );
+    // Si includeAll=true, retourner tous les prêts (même payés) pour la recherche de clients
+    const filteredPrets = allPretProduits.filter(pret => {
+      const matchesName = pret.nom && pret.nom.toLowerCase().includes(searchTerm);
+      // Par défaut, inclure tous les prêts pour la recherche de clients existants
+      return matchesName;
+    });
+    
+    console.log('✅ Prêts trouvés:', filteredPrets.length);
     
     res.json(filteredPrets);
   } catch (error) {
-    console.error('Erreur lors de la recherche des prêts produits:', error);
+    console.error('❌ Erreur lors de la recherche des prêts produits:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });

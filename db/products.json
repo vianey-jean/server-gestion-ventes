@@ -747,6 +747,12 @@
     "id": "1764132773740",
     "description": "perruque lisse noir 26 pouces",
     "purchasePrice": 44.59,
-    "quantity": 1
+    "quantity": 0
+  },
+  {
+    "id": "1764234850371",
+    "description": "pret de Produit",
+    "purchasePrice": 0.1,
+    "quantity": 1000000000
   }
 ]

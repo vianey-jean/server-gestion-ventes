@@ -355,16 +355,15 @@
   },
   {
     "id": "23",
-    "date": "2025-11-26",
+    "date": "2025-11-27",
     "datePaiement": "2025-12-07",
+    "phone": "",
     "description": "perruque lisse noir 26 pouces",
     "nom": "Copine Emilienne Vaubon",
-    "phone": "",
     "prixVente": 160,
     "avanceRecue": 0,
     "reste": 160,
     "estPaye": false,
-    "productId": "1764132773740",
-    "paiements": []
+    "productId": "1764132773740"
   }
 ]
