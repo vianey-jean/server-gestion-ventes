@@ -754,5 +754,17 @@
     "description": "pret de Produit",
     "purchasePrice": 0.1,
     "quantity": 1000000000
+  },
+  {
+    "id": "1764299613440",
+    "description": "Tissages bouclé blonde miel 24 pouces",
+    "purchasePrice": 26.43,
+    "quantity": 3
+  },
+  {
+    "id": "1764299822840",
+    "description": "Perruque lisse noir ondulé de 20 pouces",
+    "purchasePrice": 40.1,
+    "quantity": 1
   }
 ]

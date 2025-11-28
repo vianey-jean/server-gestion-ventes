@@ -82,5 +82,63 @@
     "dateEcheance": "2025-11-26",
     "createdAt": "2025-11-26T04:52:53.772Z",
     "updatedAt": "2025-11-26T15:02:04.872Z"
+  },
+  {
+    "id": "1764299314428",
+    "clientNom": "Mary RBTS",
+    "clientPhone": "0693701880",
+    "clientAddress": "4 bis rue aime lebon les Jacques 97480 St Joseph",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque lisse blonde blanche 24 pouces",
+        "prixUnitaire": 53.09,
+        "quantite": 1,
+        "prixVente": 130
+      }
+    ],
+    "dateCommande": "2025-11-28T03:08:34.282Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-07",
+    "createdAt": "2025-11-28T03:08:34.428Z"
+  },
+  {
+    "id": "1764299659511",
+    "clientNom": "Claudia Furia ",
+    "clientPhone": "06 ",
+    "clientAddress": "Sainte Marie",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Tissages bouclé blonde miel 24 pouces",
+        "prixUnitaire": 26.43,
+        "quantite": 3,
+        "prixVente": 60
+      }
+    ],
+    "dateCommande": "2025-11-28T03:18:41.908Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-11-29",
+    "createdAt": "2025-11-28T03:14:19.511Z",
+    "updatedAt": "2025-11-28T03:18:41.956Z"
+  },
+  {
+    "id": "1764299866391",
+    "clientNom": "Dv Cr ",
+    "clientPhone": "06",
+    "clientAddress": "St",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque lisse noir ondulé de 20 pouces",
+        "prixUnitaire": 40.1,
+        "quantite": 1,
+        "prixVente": 130
+      }
+    ],
+    "dateCommande": "2025-11-28T03:17:46.346Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-01",
+    "createdAt": "2025-11-28T03:17:46.391Z"
   }
 ]
