@@ -766,5 +766,11 @@
     "description": "Perruque lisse noir ondulé de 20 pouces",
     "purchasePrice": 40.1,
     "quantity": 1
+  },
+  {
+    "id": "1764325660019",
+    "description": "Perruque bouclé marron 28 pouces",
+    "purchasePrice": 62.81,
+    "quantity": 1
   }
 ]

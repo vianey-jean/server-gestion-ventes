@@ -140,5 +140,30 @@
     "statut": "en_attente",
     "dateEcheance": "2025-12-01",
     "createdAt": "2025-11-28T03:17:46.391Z"
+  },
+  {
+    "id": "1764325730164",
+    "clientNom": "Anjali Chhavvi",
+    "clientPhone": "0693120626",
+    "clientAddress": "Parking super U saint-Paul",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé marron 28 pouces",
+        "prixUnitaire": 62.81,
+        "quantite": 1,
+        "prixVente": 170
+      },
+      {
+        "nom": "Colle",
+        "prixUnitaire": 3,
+        "quantite": 1,
+        "prixVente": 10
+      }
+    ],
+    "dateCommande": "2025-11-28T10:28:50.117Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-11",
+    "createdAt": "2025-11-28T10:28:50.164Z"
   }
 ]
