@@ -2502,5 +2502,29 @@
     "clientPhone": "0693326932",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1764600228095",
+    "date": "2025-12-01",
+    "products": [
+      {
+        "productId": "1764600030338",
+        "description": "Extension crépus 20 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 80,
+        "sellingPrice": 180,
+        "profit": 100,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 80,
+    "totalSellingPrice": 180,
+    "totalProfit": 100,
+    "clientName": "Arboristie Elargueur",
+    "clientAddress": "La mairie Annexe Bellepierre",
+    "clientPhone": "0692940502",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

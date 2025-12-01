@@ -778,5 +778,11 @@
     "description": "Tissages lisse ondulé mèche blache 20 pouces",
     "purchasePrice": 26.21,
     "quantity": 2
+  },
+  {
+    "id": "1764600030338",
+    "description": "Extension crépus 20 pouces",
+    "purchasePrice": 80,
+    "quantity": 0
   }
 ]

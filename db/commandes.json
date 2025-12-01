@@ -183,9 +183,10 @@
       }
     ],
     "dateCommande": "2025-12-01T04:29:39.603Z",
-    "statut": "en_attente",
+    "statut": "annule",
     "dateEcheance": "2025-12-02",
     "horaire": "09:00",
-    "createdAt": "2025-12-01T04:29:39.673Z"
+    "createdAt": "2025-12-01T04:29:39.673Z",
+    "updatedAt": "2025-12-01T14:46:23.417Z"
   }
 ]
