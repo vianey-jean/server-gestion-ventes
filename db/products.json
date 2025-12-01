@@ -772,5 +772,11 @@
     "description": "Perruque bouclé marron 28 pouces",
     "purchasePrice": 62.81,
     "quantity": 1
+  },
+  {
+    "id": "1764563281155",
+    "description": "Tissages lisse ondulé mèche blache 20 pouces",
+    "purchasePrice": 26.21,
+    "quantity": 2
   }
 ]
