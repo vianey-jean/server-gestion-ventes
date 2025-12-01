@@ -2478,5 +2478,29 @@
     "clientPhone": "0693497257",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1764574025019",
+    "date": "2025-12-01",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 100,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 100,
+    "totalProfit": 0,
+    "clientName": "Emilienne Nomenjanahary",
+    "clientAddress": "Vaubon saint denis",
+    "clientPhone": "0693326932",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
