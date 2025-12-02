@@ -3,7 +3,7 @@
     "id": "1",
     "description": "Charge fixe",
     "categorie": "chargeFixe",
-    "date": "2025-11-12",
+    "date": "2025-12-02",
     "debit": "352.96",
     "credit": "",
     "solde": -352.96
@@ -12,36 +12,9 @@
     "id": "2",
     "description": "RSA",
     "categorie": "Autres",
-    "date": "2025-11-06",
+    "date": "2025-12-02",
     "debit": "",
-    "credit": "1840",
-    "solde": 1487.04
-  },
-  {
-    "id": "3",
-    "description": "Chèque",
-    "categorie": "Autres",
-    "date": "2025-11-12",
-    "debit": "",
-    "credit": "300",
-    "solde": 1787.04
-  },
-  {
-    "id": "4",
-    "description": "Pension",
-    "categorie": "Autres",
-    "date": "2025-11-10",
-    "debit": "",
-    "credit": "200",
-    "solde": 1987.04
-  },
-  {
-    "id": "5",
-    "description": "Aliexpress",
-    "categorie": "Autres",
-    "date": "2025-11-12",
-    "debit": "380",
-    "credit": "",
-    "solde": 1607.04
+    "credit": "1701",
+    "solde": 1348.04
   }
 ]
