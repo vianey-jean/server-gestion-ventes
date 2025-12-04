@@ -42,7 +42,8 @@
     "statut": "valide",
     "dateEcheance": "2025-11-27",
     "createdAt": "2025-11-26T04:46:42.668Z",
-    "updatedAt": "2025-11-27T18:34:31.949Z"
+    "updatedAt": "2025-12-04T12:40:37.659Z",
+    "notificationEnvoyee": true
   },
   {
     "id": "1764132619998",
@@ -102,7 +103,8 @@
     "dateEcheance": "2025-12-06",
     "createdAt": "2025-11-28T03:08:34.428Z",
     "horaire": "12:00",
-    "updatedAt": "2025-12-04T07:30:59.454Z"
+    "updatedAt": "2025-12-04T12:32:51.624Z",
+    "saleId": null
   },
   {
     "id": "1764299659511",
@@ -143,7 +145,8 @@
     "dateEcheance": "2025-12-03",
     "createdAt": "2025-11-28T03:17:46.391Z",
     "horaire": "09:00",
-    "updatedAt": "2025-12-04T07:30:32.840Z"
+    "updatedAt": "2025-12-04T12:40:37.673Z",
+    "notificationEnvoyee": true
   },
   {
     "id": "1764325730164",
