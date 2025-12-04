@@ -128,7 +128,7 @@
   {
     "id": "1758025199978",
     "nom": "Christ Manentana",
-    "phone": "06",
+    "phone": "0692789721",
     "adresse": "La Mairie Saint-André",
     "dateCreation": "2025-09-16T12:19:59.978Z"
   },
@@ -488,5 +488,26 @@
     "phone": "0692931972",
     "adresse": "Collège mascareingnes domenjo saint denis",
     "dateCreation": "2025-12-02T16:13:49.199Z"
+  },
+  {
+    "id": "1764833615695",
+    "nom": "Eri Ka",
+    "phone": "0692 30 48 93",
+    "adresse": "19 bis chemin des Rosiers Vincendo  St Joseph",
+    "dateCreation": "2025-12-04T07:33:35.695Z"
+  },
+  {
+    "id": "1764833790184",
+    "nom": "Gaelle gado Epse Orban",
+    "phone": "0692226486",
+    "adresse": "18 rue Vincent caderby appt 14 bat D résidence les Bengalis. 97450 St louis ",
+    "dateCreation": "2025-12-04T07:36:30.184Z"
+  },
+  {
+    "id": "1764834042599",
+    "nom": "Fabienne Pallas",
+    "phone": "0692745800",
+    "adresse": "Parking super U saint-Paul",
+    "dateCreation": "2025-12-04T07:40:42.599Z"
   }
 ]

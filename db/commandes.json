@@ -97,10 +97,12 @@
         "prixVente": 130
       }
     ],
-    "dateCommande": "2025-11-28T03:08:34.282Z",
+    "dateCommande": "2025-12-04T07:30:59.424Z",
     "statut": "en_attente",
-    "dateEcheance": "2025-12-07",
-    "createdAt": "2025-11-28T03:08:34.428Z"
+    "dateEcheance": "2025-12-06",
+    "createdAt": "2025-11-28T03:08:34.428Z",
+    "horaire": "12:00",
+    "updatedAt": "2025-12-04T07:30:59.454Z"
   },
   {
     "id": "1764299659511",
@@ -137,11 +139,11 @@
       }
     ],
     "dateCommande": "2025-12-01T04:23:00.201Z",
-    "statut": "en_attente",
+    "statut": "annule",
     "dateEcheance": "2025-12-03",
     "createdAt": "2025-11-28T03:17:46.391Z",
     "horaire": "09:00",
-    "updatedAt": "2025-12-01T04:23:00.246Z"
+    "updatedAt": "2025-12-04T07:30:32.840Z"
   },
   {
     "id": "1764325730164",
@@ -188,5 +190,85 @@
     "horaire": "09:00",
     "createdAt": "2025-12-01T04:29:39.673Z",
     "updatedAt": "2025-12-01T14:46:23.417Z"
+  },
+  {
+    "id": "1764833535386",
+    "clientNom": "Christ Manentana",
+    "clientPhone": "0692789721",
+    "clientAddress": "La Mairie Saint-André",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé blonde miel 24 pouces",
+        "prixUnitaire": 42.24,
+        "quantite": 1,
+        "prixVente": 160
+      }
+    ],
+    "dateCommande": "2025-12-04T07:32:15.345Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-06",
+    "horaire": "14:00",
+    "createdAt": "2025-12-04T07:32:15.386Z"
+  },
+  {
+    "id": "1764833693155",
+    "clientNom": "Eri Ka",
+    "clientPhone": "0692 30 48 93",
+    "clientAddress": "19 bis chemin des Rosiers Vincendo  St Joseph",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé noir 12 pouces lace T ",
+        "prixUnitaire": 30.19,
+        "quantite": 1,
+        "prixVente": 80
+      }
+    ],
+    "dateCommande": "2025-12-04T07:34:53.106Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-06",
+    "horaire": "10:00",
+    "createdAt": "2025-12-04T07:34:53.155Z"
+  },
+  {
+    "id": "1764833841788",
+    "clientNom": "Gaelle gado Epse Orban",
+    "clientPhone": "0692226486",
+    "clientAddress": "18 rue Vincent caderby appt 14 bat D résidence les Bengalis. 97450 St louis ",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé mèche blonde 12 pouces 200%",
+        "prixUnitaire": 30.19,
+        "quantite": 1,
+        "prixVente": 80
+      }
+    ],
+    "dateCommande": "2025-12-04T07:37:21.748Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-06",
+    "horaire": "09:00",
+    "createdAt": "2025-12-04T07:37:21.788Z"
+  },
+  {
+    "id": "1764834124754",
+    "clientNom": "Fabienne Pallas",
+    "clientPhone": "0692745800",
+    "clientAddress": "Parking super U saint-Paul",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Tissages bouclé blonde miel 18 pouces",
+        "prixUnitaire": 14.03,
+        "quantite": 3,
+        "prixVente": 50
+      }
+    ],
+    "dateCommande": "2025-12-04T07:42:04.706Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-05",
+    "horaire": "09:00",
+    "createdAt": "2025-12-04T07:42:04.754Z"
   }
 ]
