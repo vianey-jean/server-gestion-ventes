@@ -2550,5 +2550,29 @@
     "clientPhone": "0692931972",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1764938389243",
+    "date": "2025-12-05",
+    "products": [
+      {
+        "productId": "1753356444320",
+        "description": "Tissages bouclé blonde miel 18 pouces",
+        "quantitySold": 3,
+        "purchasePrice": 42.089999999999996,
+        "sellingPrice": 150,
+        "profit": 107.91,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 42.089999999999996,
+    "totalSellingPrice": 150,
+    "totalProfit": 107.91,
+    "clientName": "Fabienne Pallas",
+    "clientAddress": "Parking super U saint-Paul",
+    "clientPhone": "0692745800",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
