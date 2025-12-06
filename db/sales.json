@@ -2574,5 +2574,125 @@
     "clientPhone": "0692745800",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1765042161135",
+    "date": "2025-12-06",
+    "products": [
+      {
+        "productId": "1745935063486",
+        "description": "Perruque bouclé mèche blonde 12 pouces 200%",
+        "quantitySold": 1,
+        "purchasePrice": 30.19,
+        "sellingPrice": 80,
+        "profit": 49.81,
+        "deliveryFee": 15,
+        "deliveryLocation": "Autres"
+      }
+    ],
+    "totalPurchasePrice": 30.19,
+    "totalSellingPrice": 95,
+    "totalProfit": 49.81,
+    "clientName": "Gaelle gado Epse Orban",
+    "clientAddress": "18 rue Vincent caderby appt 14 bat D résidence les Bengalis. 97450 St louis ",
+    "clientPhone": "0692226486",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1765042242142",
+    "date": "2025-12-06",
+    "products": [
+      {
+        "productId": "1745935024364",
+        "description": "Perruque bouclé noir 12 pouces lace T ",
+        "quantitySold": 1,
+        "purchasePrice": 30.19,
+        "sellingPrice": 80,
+        "profit": 49.81,
+        "deliveryFee": 20,
+        "deliveryLocation": "Saint-Joseph"
+      }
+    ],
+    "totalPurchasePrice": 30.19,
+    "totalSellingPrice": 100,
+    "totalProfit": 49.81,
+    "clientName": "Eri Ka",
+    "clientAddress": "19 bis chemin des Rosiers Vincendo  St Joseph",
+    "clientPhone": "0692 30 48 93",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1765042271759",
+    "date": "2025-12-06",
+    "products": [
+      {
+        "productId": "1751721921151",
+        "description": "Perruque bouclé blonde miel 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 42.24,
+        "sellingPrice": 160,
+        "profit": 117.75999999999999,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 42.24,
+    "totalSellingPrice": 160,
+    "totalProfit": 117.75999999999999,
+    "clientName": "Christ Manentana",
+    "clientAddress": "La Mairie Saint-André",
+    "clientPhone": "0692789721",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1765042400191",
+    "date": "2025-12-06",
+    "products": [
+      {
+        "productId": "1764325660019",
+        "description": "Perruque bouclé marron 28 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 62.81,
+        "sellingPrice": 180,
+        "profit": 117.19,
+        "deliveryFee": 0,
+        "deliveryLocation": "Exonération"
+      }
+    ],
+    "totalPurchasePrice": 62.81,
+    "totalSellingPrice": 180,
+    "totalProfit": 117.19,
+    "clientName": "Naellyah Bgd",
+    "clientAddress": "La banque postale le port",
+    "clientPhone": "0692509767",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1765042448604",
+    "date": "2025-12-06",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 80,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 80,
+    "totalProfit": 0,
+    "clientName": "Copine Emilienne",
+    "clientAddress": "Vaubon",
+    "clientPhone": "06",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
