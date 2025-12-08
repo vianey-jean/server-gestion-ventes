@@ -523,5 +523,12 @@
     "phone": "06",
     "adresse": "Bellepierre",
     "dateCreation": "2025-12-04T10:01:16.475Z"
+  },
+  {
+    "id": "1765211932266",
+    "nom": "Cliente Naomie Vaubon",
+    "phone": "0693406686",
+    "adresse": "Vaubon",
+    "dateCreation": "2025-12-08T16:38:52.266Z"
   }
 ]

@@ -118,10 +118,16 @@
     "description": "Perruque bouclé noir 20 pouces Vendu",
     "nom": "Cliente Naomie Vaubon",
     "prixVente": 140,
-    "avanceRecue": 70,
-    "reste": 70,
+    "avanceRecue": 120,
+    "reste": 20,
     "estPaye": false,
-    "productId": "1745415935938"
+    "productId": "1745415935938",
+    "paiements": [
+      {
+        "date": "2025-12-08",
+        "montant": 50
+      }
+    ]
   },
   {
     "id": "9",

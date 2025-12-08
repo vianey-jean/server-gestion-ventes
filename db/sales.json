@@ -2718,5 +2718,29 @@
     "clientPhone": "0692569227",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1765211932288",
+    "date": "2025-12-08",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 50,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 50,
+    "totalProfit": 0,
+    "clientName": "Cliente Naomie Vaubon",
+    "clientAddress": "Vaubon",
+    "clientPhone": "0693406686",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
