@@ -2694,5 +2694,29 @@
     "clientPhone": "06",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1765190224391",
+    "date": "2025-12-08",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 100,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 100,
+    "totalProfit": 0,
+    "clientName": "Channel Charnelle",
+    "clientAddress": "Leader price Saint Jacques saint denis",
+    "clientPhone": "0692569227",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

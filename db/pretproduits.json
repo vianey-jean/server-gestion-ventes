@@ -271,8 +271,8 @@
     "nom": "Charnelle",
     "phone": "0692569227",
     "prixVente": 620,
-    "avanceRecue": 420,
-    "reste": 200,
+    "avanceRecue": 520,
+    "reste": 100,
     "estPaye": false,
     "paiements": [
       {
@@ -285,6 +285,10 @@
       },
       {
         "date": "2025-11-07",
+        "montant": 100
+      },
+      {
+        "date": "2025-12-07",
         "montant": 100
       }
     ]
@@ -377,6 +381,24 @@
       {
         "date": "2025-12-06",
         "montant": 80
+      }
+    ]
+  },
+  {
+    "id": "24",
+    "date": "2025-11-12",
+    "description": "Extension crépus 20 pouces",
+    "nom": "Toufahat Gharibe Chaibati ",
+    "phone": "06",
+    "prixVente": 180,
+    "avanceRecue": 150,
+    "reste": 30,
+    "estPaye": false,
+    "productId": "1764600030338",
+    "paiements": [
+      {
+        "date": "2025-12-08",
+        "montant": 150
       }
     ]
   }

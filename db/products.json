@@ -784,5 +784,11 @@
     "description": "Extension crépus 20 pouces",
     "purchasePrice": 80,
     "quantity": 0
+  },
+  {
+    "id": "1765190468819",
+    "description": "Extension crépus 20 pouces",
+    "purchasePrice": 80,
+    "quantity": 1
   }
 ]
