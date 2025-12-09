@@ -790,5 +790,17 @@
     "description": "Extension crépus 20 pouces",
     "purchasePrice": 80,
     "quantity": 1
+  },
+  {
+    "id": "1765297459521",
+    "description": "Perruque lisse mèche blonde devant 12 pouces",
+    "purchasePrice": 19,
+    "quantity": 0
+  },
+  {
+    "id": "1765297481777",
+    "description": "perruque lisse noir 10 pouces",
+    "purchasePrice": 10,
+    "quantity": 0
   }
 ]

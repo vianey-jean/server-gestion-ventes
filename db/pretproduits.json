@@ -407,5 +407,17 @@
         "montant": 150
       }
     ]
+  },
+  {
+    "id": "25",
+    "date": "2025-12-09",
+    "datePaiement": "2025-12-14",
+    "phone": "0692019459",
+    "description": "perruque lisse noir 10 pouces, Perruque lisse mèche blonde devant 12 pouces",
+    "nom": "Cliente maido Bellepierre",
+    "prixVente": 100,
+    "avanceRecue": 70,
+    "reste": 30,
+    "estPaye": false
   }
 ]

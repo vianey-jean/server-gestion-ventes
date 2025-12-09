@@ -2742,5 +2742,39 @@
     "clientPhone": "0693406686",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1765297696524",
+    "date": "2025-12-09",
+    "products": [
+      {
+        "productId": "1765297481777",
+        "description": "perruque lisse noir 10 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 10,
+        "sellingPrice": 40,
+        "profit": 30,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      },
+      {
+        "productId": "1765297459521",
+        "description": "Perruque lisse mèche blonde devant 12 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 19,
+        "sellingPrice": 60,
+        "profit": 41,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 29,
+    "totalSellingPrice": 70,
+    "totalProfit": 71,
+    "clientName": "Cliente maido Bellepierre",
+    "clientAddress": "Maido Bellepierre Saint Denis",
+    "clientPhone": "0692019459",
+    "reste": 30,
+    "nextPaymentDate": "2025-12-14"
   }
 ]
