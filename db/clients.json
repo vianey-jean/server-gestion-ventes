@@ -537,5 +537,19 @@
     "phone": "0692019459",
     "adresse": "Maido Bellepierre Saint Denis",
     "dateCreation": "2025-12-09T16:28:16.493Z"
+  },
+  {
+    "id": "1765468995655",
+    "nom": "Chakila techer",
+    "phone": "0692503571",
+    "adresse": "5 allée Émile cohl le port",
+    "dateCreation": "2025-12-11T16:03:15.655Z"
+  },
+  {
+    "id": "1765469116743",
+    "nom": "sucreer d'or",
+    "phone": "06",
+    "adresse": "La mairie Annexe Bellepierre",
+    "dateCreation": "2025-12-11T16:05:16.743Z"
   }
 ]

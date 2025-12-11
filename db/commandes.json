@@ -14,11 +14,12 @@
       }
     ],
     "dateCommande": "2025-12-07T13:39:24.980Z",
-    "statut": "reporter",
+    "statut": "annule",
     "dateEcheance": "2025-12-10",
     "createdAt": "2025-11-26T04:38:31.080Z",
     "horaire": "14:00",
-    "updatedAt": "2025-12-08T10:38:08.674Z"
+    "updatedAt": "2025-12-11T16:01:59.317Z",
+    "saleId": null
   },
   {
     "id": "1764132402668",
@@ -171,9 +172,11 @@
       }
     ],
     "dateCommande": "2025-11-28T10:28:50.117Z",
-    "statut": "en_attente",
+    "statut": "annule",
     "dateEcheance": "2025-12-11",
-    "createdAt": "2025-11-28T10:28:50.164Z"
+    "createdAt": "2025-11-28T10:28:50.164Z",
+    "saleId": null,
+    "updatedAt": "2025-12-11T16:02:04.031Z"
   },
   {
     "id": "1764563379673",
@@ -327,5 +330,25 @@
     "createdAt": "2025-12-04T10:16:23.122Z",
     "saleId": null,
     "updatedAt": "2025-12-05T12:40:17.309Z"
+  },
+  {
+    "id": "1765469056495",
+    "clientNom": "Chakila techer",
+    "clientPhone": "0692503571",
+    "clientAddress": "5 allée Émile cohl le port",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Tissages bouclé blonde miel 18 pouces",
+        "prixUnitaire": 14.03,
+        "quantite": 2,
+        "prixVente": 40
+      }
+    ],
+    "dateCommande": "2025-12-11T16:04:16.458Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-13",
+    "horaire": "09:00",
+    "createdAt": "2025-12-11T16:04:16.495Z"
   }
 ]
