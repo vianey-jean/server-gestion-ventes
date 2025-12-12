@@ -802,5 +802,11 @@
     "description": "perruque lisse noir 10 pouces",
     "purchasePrice": 10,
     "quantity": 0
+  },
+  {
+    "id": "1765543134962",
+    "description": "Perruque lisse blonde blanche 28 pouces ",
+    "purchasePrice": 57.89,
+    "quantity": 1
   }
 ]
