@@ -347,10 +347,12 @@
       }
     ],
     "dateCommande": "2025-12-11T16:04:16.458Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2025-12-13",
     "horaire": "09:00",
-    "createdAt": "2025-12-11T16:04:16.495Z"
+    "createdAt": "2025-12-11T16:04:16.495Z",
+    "saleId": "1765610308607",
+    "updatedAt": "2025-12-13T07:18:28.627Z"
   },
   {
     "id": "1765542897403",
@@ -367,10 +369,12 @@
       }
     ],
     "dateCommande": "2025-12-12T12:34:57.228Z",
-    "statut": "en_attente",
+    "statut": "annule",
     "dateEcheance": "2025-12-13",
     "horaire": "09:30",
-    "createdAt": "2025-12-12T12:34:57.403Z"
+    "createdAt": "2025-12-12T12:34:57.403Z",
+    "saleId": null,
+    "updatedAt": "2025-12-13T07:18:21.272Z"
   },
   {
     "id": "1765543188691",
@@ -387,9 +391,11 @@
       }
     ],
     "dateCommande": "2025-12-12T12:39:48.572Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2025-12-13",
     "horaire": "10:00",
-    "createdAt": "2025-12-12T12:39:48.691Z"
+    "createdAt": "2025-12-12T12:39:48.691Z",
+    "saleId": "1765610312416",
+    "updatedAt": "2025-12-13T07:18:32.436Z"
   }
 ]

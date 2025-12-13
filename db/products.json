@@ -513,7 +513,7 @@
     "id": "1753356444320",
     "description": "Tissages bouclé blonde miel 18 pouces",
     "purchasePrice": 14.03,
-    "quantity": 3
+    "quantity": 1
   },
   {
     "id": "1753356496899",
@@ -729,7 +729,7 @@
     "id": "1764131911050",
     "description": "Perruque lisse gris 20 pouces",
     "purchasePrice": 37.06,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1764132092383",
@@ -807,6 +807,6 @@
     "id": "1765543134962",
     "description": "Perruque lisse blonde blanche 28 pouces ",
     "purchasePrice": 57.89,
-    "quantity": 1
+    "quantity": 0
   }
 ]

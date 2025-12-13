@@ -91,9 +91,9 @@
     "description": "Perruque bouclé marron 22 pouces",
     "nom": "Cliente Ma warren Chaudron",
     "prixVente": 160,
-    "avanceRecue": 150,
-    "reste": 10,
-    "estPaye": false,
+    "avanceRecue": 160,
+    "reste": 0,
+    "estPaye": true,
     "productId": "1745415790700",
     "paiements": [
       {
@@ -107,6 +107,10 @@
       {
         "date": "2025-11-23",
         "montant": 30
+      },
+      {
+        "date": "2025-12-13",
+        "montant": 10
       }
     ]
   },
@@ -351,11 +355,16 @@
     "nom": "Cliente Ma warren Chaudron",
     "phone": "+262 692 678 901",
     "prixVente": 110,
-    "avanceRecue": 0,
-    "reste": 110,
+    "avanceRecue": 60,
+    "reste": 50,
     "estPaye": false,
     "productId": "1762441427899",
-    "paiements": []
+    "paiements": [
+      {
+        "date": "2025-12-13",
+        "montant": 60
+      }
+    ]
   },
   {
     "id": "22",
