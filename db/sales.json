@@ -2882,5 +2882,29 @@
     "clientPhone": "0693647609",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1765884767178",
+    "date": "2025-12-16",
+    "products": [
+      {
+        "productId": "1745935314013",
+        "description": "Tissages bouclé noir 18 pouces 12A",
+        "quantitySold": 3,
+        "purchasePrice": 50.22,
+        "sellingPrice": 150,
+        "profit": 99.78,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Suzanne"
+      }
+    ],
+    "totalPurchasePrice": 50.22,
+    "totalSellingPrice": 150,
+    "totalProfit": 99.78,
+    "clientName": "Doriane Gosse",
+    "clientAddress": "Parking carrefour st Suzanne",
+    "clientPhone": "0692792306",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

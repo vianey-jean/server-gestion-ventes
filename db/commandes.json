@@ -397,5 +397,25 @@
     "createdAt": "2025-12-12T12:39:48.691Z",
     "saleId": "1765610312416",
     "updatedAt": "2025-12-13T07:18:32.436Z"
+  },
+  {
+    "id": "1765885085223",
+    "clientNom": "Wendy Mola",
+    "clientPhone": "0692063833",
+    "clientAddress": "parking Super U St Paul",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé noir 26 pouces",
+        "prixUnitaire": 49,
+        "quantite": 1,
+        "prixVente": 180
+      }
+    ],
+    "dateCommande": "2025-12-16T11:38:04.654Z",
+    "statut": "en_attente",
+    "dateEcheance": "2025-12-20",
+    "horaire": "09:00",
+    "createdAt": "2025-12-16T11:38:05.223Z"
   }
 ]
