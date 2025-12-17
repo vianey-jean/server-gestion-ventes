@@ -2906,5 +2906,29 @@
     "clientPhone": "0692792306",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1765971337818",
+    "date": "2025-12-17",
+    "products": [
+      {
+        "productId": "1753186907720",
+        "description": "Tissages bouclé noir 16 poucess",
+        "quantitySold": 2,
+        "purchasePrice": 22.04,
+        "sellingPrice": 80,
+        "profit": 57.96,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 22.04,
+    "totalSellingPrice": 80,
+    "totalProfit": 57.96,
+    "clientName": "Kilian Tip",
+    "clientAddress": "22 bis rue Evariste de parny la possession",
+    "clientPhone": "0692060921",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
