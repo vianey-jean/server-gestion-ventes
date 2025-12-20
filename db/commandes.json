@@ -403,7 +403,7 @@
     "id": "1765885085223",
     "clientNom": "Wendy Mola",
     "clientPhone": "0692063833",
-    "clientAddress": "parking Super U St Paul",
+    "clientAddress": "52 chemin duguet Saint leu 97436 ",
     "type": "reservation",
     "produits": [
       {
@@ -413,11 +413,12 @@
         "prixVente": 180
       }
     ],
-    "dateCommande": "2025-12-16T11:38:04.654Z",
+    "dateCommande": "2025-12-20T03:44:53.460Z",
     "statut": "en_attente",
     "dateEcheance": "2025-12-20",
     "horaire": "09:00",
-    "createdAt": "2025-12-16T11:38:05.223Z"
+    "createdAt": "2025-12-16T11:38:05.223Z",
+    "updatedAt": "2025-12-20T03:44:53.498Z"
   },
   {
     "id": "1765971548586",
@@ -434,9 +435,11 @@
       }
     ],
     "dateCommande": "2025-12-17T11:39:08.499Z",
-    "statut": "en_attente",
+    "statut": "annule",
     "dateEcheance": "2025-12-19",
     "horaire": "13:00",
-    "createdAt": "2025-12-17T11:39:08.586Z"
+    "createdAt": "2025-12-17T11:39:08.586Z",
+    "saleId": null,
+    "updatedAt": "2025-12-20T03:39:40.832Z"
   }
 ]
