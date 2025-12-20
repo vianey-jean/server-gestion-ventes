@@ -12,6 +12,7 @@ const setCORSHeaders = (req, res) => {
     'http://localhost:8080',
     'https://server-gestion-ventes.onrender.com',
     'https://riziky-gestion-ventes.vercel.app'
+  ]
   
   // Si l'origine est dans la liste, utiliser cette origine spécifique
   if (origin && allowedOrigins.includes(origin)) {
