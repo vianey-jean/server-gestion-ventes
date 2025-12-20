@@ -414,11 +414,12 @@
       }
     ],
     "dateCommande": "2025-12-20T03:44:53.460Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2025-12-20",
     "horaire": "09:00",
     "createdAt": "2025-12-16T11:38:05.223Z",
-    "updatedAt": "2025-12-20T03:44:53.498Z"
+    "updatedAt": "2025-12-20T10:24:17.434Z",
+    "saleId": "1766226257413"
   },
   {
     "id": "1765971548586",

@@ -9,7 +9,7 @@
     "id": "2",
     "description": "Perruque bouclé noir 26 pouces",
     "purchasePrice": 49,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "4",
@@ -807,6 +807,12 @@
     "id": "1765543134962",
     "description": "Perruque lisse blonde blanche 28 pouces ",
     "purchasePrice": 57.89,
+    "quantity": 0
+  },
+  {
+    "id": "1766226403095",
+    "description": "Perruque crépus lisse noir 24 pouces",
+    "purchasePrice": 55.87,
     "quantity": 0
   }
 ]

@@ -2930,5 +2930,53 @@
     "clientPhone": "0692060921",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1766226257413",
+    "date": "2025-12-20",
+    "products": [
+      {
+        "productId": "2",
+        "description": "Perruque bouclé noir 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 49,
+        "sellingPrice": 180,
+        "profit": 131,
+        "deliveryFee": 0,
+        "deliveryLocation": "Exonération"
+      }
+    ],
+    "totalPurchasePrice": 49,
+    "totalSellingPrice": 180,
+    "totalProfit": 131,
+    "clientName": "Wendy Mola",
+    "clientAddress": "52 chemin duguet Saint leu 97436 ",
+    "clientPhone": "0692063833",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1766226448238",
+    "date": "2025-12-20",
+    "products": [
+      {
+        "productId": "1766226403095",
+        "description": "Perruque crépus lisse noir 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 55.87,
+        "sellingPrice": 150,
+        "profit": 94.13,
+        "deliveryFee": 0,
+        "deliveryLocation": "Exonération"
+      }
+    ],
+    "totalPurchasePrice": 55.87,
+    "totalSellingPrice": 150,
+    "totalProfit": 94.13,
+    "clientName": "jacqueline Rousseau",
+    "clientAddress": "43 rue de Bruxelles saint louis",
+    "clientPhone": "0692082109",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
