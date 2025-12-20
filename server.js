@@ -14,11 +14,34 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuration CORS simplifiée pour le développement
+// Configuration CORS avec toutes les origines autorisées
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:8080',
+  'https://server-gestion-ventes.onrender.com',
+  'https://riziky-gestion-ventes.vercel.app'
+];
+
 const corsOptions = {
-  origin: true, // Permet toutes les origines en développement
+  origin: function (origin, callback) {
+    // Permettre les requêtes sans origine (comme les apps mobiles ou curl)
+    if (!origin) return callback(null, true);
+    
+    // Permettre toutes les origines Lovable preview
+    if (origin.includes('lovable.app') || origin.includes('lovableproject.com')) {
+      return callback(null, true);
+    }
+    
+    // Permettre les origines dans la liste
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // Permettre toutes les origines en développement
+    return callback(null, true);
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: [
     'Content-Type', 
     'Authorization', 

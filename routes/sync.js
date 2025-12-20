@@ -9,13 +9,15 @@ const setCORSHeaders = (req, res) => {
   const origin = req.get('Origin');
   const allowedOrigins = [
     'http://localhost:3000',
-    'http://localhost:5173',
     'http://localhost:8080',
-    'https://loving-river-0c35b7710.5.azurestaticapps.net',
-    'https://server-gestion-ventes.onrender.com'
-  ];
+    'https://server-gestion-ventes.onrender.com',
+    'https://riziky-gestion-ventes.vercel.app'
   
+  // Si l'origine est dans la liste, utiliser cette origine spécifique
   if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else if (origin) {
+    // Permettre toutes les origines en développement/preview (Lovable, Vercel, etc.)
     res.header('Access-Control-Allow-Origin', origin);
   } else {
     res.header('Access-Control-Allow-Origin', '*');
