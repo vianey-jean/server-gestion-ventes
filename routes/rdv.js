@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Rdv = require('../models/Rdv');
 const Client = require('../models/Client');
+const RdvNotification = require('../models/RdvNotification');
 const authMiddleware = require('../middleware/auth');
 
 // Get all rdvs
@@ -111,6 +112,9 @@ router.post('/', authMiddleware, async (req, res) => {
     if (!newRdv) {
       return res.status(500).json({ message: 'Error creating rdv' });
     }
+    
+    // Créer automatiquement une notification pour ce nouveau RDV
+    RdvNotification.create(newRdv);
     
     res.status(201).json(newRdv);
   } catch (error) {
