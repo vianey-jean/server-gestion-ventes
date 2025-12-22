@@ -1,35 +1,35 @@
-
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { rateLimitMiddleware, validateRequest } = require('../middleware/security');
+const validationSchemas = require('../middleware/validation');
 
-// Login route
-router.post('/login', (req, res) => {
+// Rate limiting strict pour auth
+router.use(rateLimitMiddleware('auth'));
+
+// Login route avec validation
+router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
   try {
     const { email, password } = req.body;
-    
-    // Validate input
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Please provide email and password' });
-    }
     
     // Check if user exists
     const user = User.getByEmail(email);
     if (!user) {
-      return res.status(400).json({ message: 'User does not exist' });
+      // Message générique pour éviter l'énumération des utilisateurs
+      return res.status(401).json({ message: 'Identifiants invalides' });
     }
     
     // Check password with bcrypt compare
     if (!User.comparePassword(password, user.password)) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Identifiants invalides' });
     }
     
-    // Create and sign JWT token
+    // Create and sign JWT token avec expiration courte
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET || 'defaultsecretkey',
-      { expiresIn: '1d' }
+      { expiresIn: '8h' } // Réduit à 8h pour plus de sécurité
     );
     
     // Return user data and token without password
@@ -39,8 +39,8 @@ router.post('/login', (req, res) => {
       token
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Internal server error during login' });
+    console.error('Login error:', error.message);
+    res.status(500).json({ message: 'Erreur lors de la connexion' });
   }
 });
 
@@ -74,31 +74,31 @@ router.post('/check-email', (req, res) => {
   }
 });
 
-// Register route
-router.post('/register', (req, res) => {
+// Register route avec validation stricte
+router.post('/register', validateRequest(validationSchemas.register), (req, res) => {
   try {
     const { 
       email, password, confirmPassword, firstName, lastName, 
       gender, address, phone, acceptTerms 
     } = req.body;
     
-    // Validate input
-    if (!email || !password || !firstName || !lastName || !gender || !address || !phone) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
-    
     if (password !== confirmPassword) {
-      return res.status(400).json({ message: 'Passwords do not match' });
+      return res.status(400).json({ message: 'Les mots de passe ne correspondent pas' });
     }
     
     if (!acceptTerms) {
-      return res.status(400).json({ message: 'You must accept the terms' });
+      return res.status(400).json({ message: 'Vous devez accepter les conditions' });
+    }
+    
+    // Vérification de la force du mot de passe
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 6 caractères' });
     }
     
     // Check if email is already registered
     const existingUser = User.getByEmail(email);
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already registered' });
+      return res.status(400).json({ message: 'Cet email est déjà utilisé' });
     }
     
     // Create user with hashed password (handled in User.create)
@@ -115,14 +115,14 @@ router.post('/register', (req, res) => {
     const newUser = User.create(userData);
     
     if (!newUser) {
-      return res.status(500).json({ message: 'Error creating user' });
+      return res.status(500).json({ message: 'Erreur lors de la création du compte' });
     }
     
     // Create and sign JWT token
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1d' }
+      { expiresIn: '8h' }
     );
     
     // Return user data and token
@@ -131,8 +131,8 @@ router.post('/register', (req, res) => {
       token
     });
   } catch (error) {
-    console.error('Register error:', error);
-    res.status(500).json({ message: 'Internal server error during registration' });
+    console.error('Register error:', error.message);
+    res.status(500).json({ message: 'Erreur lors de l\'inscription' });
   }
 });
 

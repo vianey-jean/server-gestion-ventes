@@ -6,6 +6,15 @@ const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
+const compression = require('compression');
+
+// Middleware de sécurité
+const {
+  rateLimitMiddleware,
+  sanitizeMiddleware,
+  securityHeadersMiddleware,
+  suspiciousActivityLogger
+} = require('./middleware/security');
 
 // Load environment variables
 dotenv.config();
@@ -14,12 +23,30 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+// ===================
+// SECURITY MIDDLEWARE
+// ===================
+
+// Compression pour performance
+app.use(compression());
+
+// Security headers
+app.use(securityHeadersMiddleware);
+
+// Rate limiting global
+app.use(rateLimitMiddleware('general'));
+
+// Détection d'activités suspectes
+app.use(suspiciousActivityLogger);
+
 // Configuration CORS avec toutes les origines autorisées
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:8080',
+  'http://localhost:8081',
   'https://server-gestion-ventes.onrender.com',
-  'https://riziky-gestion-ventes.vercel.app'
+  'https://riziky-gestion-ventes.vercel.app',
+  'https://riziky-boutic.vercel.app'
 ];
 
 const corsOptions = {
@@ -56,8 +83,12 @@ const corsOptions = {
 // Middleware CORS global
 app.use(cors(corsOptions));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Body parsing avec limites de taille
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+
+// Sanitization de tous les inputs
+app.use(sanitizeMiddleware);
 
 // Create db directory if it doesn't exist
 const dbPath = path.join(__dirname, 'db');
@@ -213,19 +244,44 @@ app.use('/api/rdv-notifications', rdvNotificationsRoutes);
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Error handling middleware
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route non trouvée' });
+});
+
+// Error handling middleware avec sécurité
 app.use((err, req, res, next) => {
-  console.error('Server error:', err.stack);
-  res.status(500).json({ 
-    error: 'Something broke!', 
-    message: err.message,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  // Log l'erreur en interne
+  console.error('Server error:', err.message);
+  
+  // Ne jamais exposer les stack traces en production
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  res.status(err.status || 500).json({ 
+    error: 'Une erreur est survenue', 
+    message: isProduction ? 'Erreur serveur interne' : err.message,
+    ...(isProduction ? {} : { stack: err.stack })
   });
+});
+
+// Gestion gracieuse de l'arrêt
+process.on('SIGTERM', () => {
+  console.log('SIGTERM reçu, arrêt gracieux...');
+  process.exit(0);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Exception non capturée:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Promesse rejetée non gérée:', reason);
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`CORS enabled for all origins in development`);
-  console.log(`Sync events available at http://localhost:${PORT}/api/sync/events`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🔒 Security middleware enabled`);
+  console.log(`📡 Sync events available at /api/sync/events`);
 });
