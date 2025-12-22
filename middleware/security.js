@@ -44,7 +44,7 @@ class RateLimiter {
 }
 
 // Instances de rate limiter
-const generalLimiter = new RateLimiter(60000, 100); // 100 req/min
+const generalLimiter = new RateLimiter(60000, 500); // 500 req/min (évite les blocages en frontend)
 const authLimiter = new RateLimiter(60000, 10); // 10 req/min pour auth
 const strictLimiter = new RateLimiter(60000, 5); // 5 req/min pour opérations sensibles
 
@@ -140,11 +140,16 @@ const rateLimitMiddleware = (limiterType = 'general') => {
   const limiter = limiters[limiterType] || generalLimiter;
   
   return (req, res, next) => {
+    // Ne pas rate-limit les préflights CORS
+    if (req.method === 'OPTIONS') {
+      return next();
+    }
+
     const ip = req.ip || req.connection.remoteAddress || 'unknown';
     const result = limiter.isAllowed(ip);
-    
+
     res.setHeader('X-RateLimit-Remaining', result.remaining);
-    
+
     if (!result.allowed) {
       res.setHeader('Retry-After', result.retryAfter);
       return res.status(429).json({
@@ -153,7 +158,7 @@ const rateLimitMiddleware = (limiterType = 'general') => {
         retryAfter: result.retryAfter
       });
     }
-    
+
     next();
   };
 };

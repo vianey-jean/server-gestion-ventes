@@ -33,11 +33,9 @@ app.use(compression());
 // Security headers
 app.use(securityHeadersMiddleware);
 
-// Rate limiting global
-app.use(rateLimitMiddleware('general'));
-
-// Détection d'activités suspectes
-app.use(suspiciousActivityLogger);
+// ===================
+// CORS (DOIT ÊTRE AVANT LE RATE LIMIT)
+// ===================
 
 // Configuration CORS avec toutes les origines autorisées
 const allowedOrigins = [
@@ -53,25 +51,25 @@ const corsOptions = {
   origin: function (origin, callback) {
     // Permettre les requêtes sans origine (comme les apps mobiles ou curl)
     if (!origin) return callback(null, true);
-    
+
     // Permettre toutes les origines Lovable preview
     if (origin.includes('lovable.app') || origin.includes('lovableproject.com')) {
       return callback(null, true);
     }
-    
+
     // Permettre les origines dans la liste
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-    
-    // Permettre toutes les origines en développement
+
+    // Par défaut, autoriser (évite les blocages preview)
     return callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: [
-    'Content-Type', 
-    'Authorization', 
+    'Content-Type',
+    'Authorization',
     'Cache-Control',
     'X-Requested-With',
     'Accept',
@@ -82,6 +80,21 @@ const corsOptions = {
 
 // Middleware CORS global
 app.use(cors(corsOptions));
+
+// ===================
+// RATE LIMIT (APRÈS CORS)
+// ===================
+
+// Ne pas bloquer SSE (connexion longue) avec le rate-limit global
+app.use((req, res, next) => {
+  if (req.path === '/api/sync/events') {
+    return next();
+  }
+  return rateLimitMiddleware('general')(req, res, next);
+});
+
+// Détection d'activités suspectes
+app.use(suspiciousActivityLogger);
 
 // Body parsing avec limites de taille
 app.use(bodyParser.json({ limit: '10mb' }));
