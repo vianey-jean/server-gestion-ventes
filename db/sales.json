@@ -2978,5 +2978,169 @@
     "clientPhone": "0692082109",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1766516872242",
+    "date": "2025-12-23",
+    "products": [
+      {
+        "productId": "1753356444320",
+        "description": "Tissages bouclé blonde miel 18 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 14.03,
+        "sellingPrice": 50,
+        "profit": 35.97,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      },
+      {
+        "productId": "1751641563836",
+        "description": "Tissages bouclé blonde miel 20 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 15.43,
+        "sellingPrice": 50,
+        "profit": 34.57,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 29.46,
+    "totalSellingPrice": 100,
+    "totalProfit": 70.53999999999999,
+    "clientName": "Laurence Longlade",
+    "clientAddress": "Parking la mairie annexe bellepierre",
+    "clientPhone": "0692418079",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1766517056168",
+    "date": "2025-12-23",
+    "products": [
+      {
+        "productId": "1752143907546",
+        "description": "Tissages lisse mèche blonde 20 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 50.106,
+        "sellingPrice": 130,
+        "profit": 79.89,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 50.106,
+    "totalSellingPrice": 130,
+    "totalProfit": 79.89,
+    "clientName": "Wendy Hnrn",
+    "clientAddress": "Parking la mairie annexe bellepierre",
+    "clientPhone": "0692726271",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1766517152838",
+    "date": "2025-12-23",
+    "products": [
+      {
+        "productId": "1758025491344",
+        "description": "Colle",
+        "quantitySold": 1,
+        "purchasePrice": 3,
+        "sellingPrice": 10,
+        "profit": 7,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      },
+      {
+        "productId": "1758025563599",
+        "description": "Disolvant",
+        "quantitySold": 1,
+        "purchasePrice": 1,
+        "sellingPrice": 10,
+        "profit": 9,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 4,
+    "totalSellingPrice": 20,
+    "totalProfit": 16,
+    "clientName": "Lasainte",
+    "clientAddress": "9 Avenue cocotiers",
+    "clientPhone": "0693637560",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1766517251204",
+    "date": "2025-12-23",
+    "products": [
+      {
+        "productId": "1764132619962",
+        "description": "Tissages bouclé marron 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 23.44,
+        "sellingPrice": 60,
+        "profit": 36.56,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 23.44,
+    "totalSellingPrice": 60,
+    "totalProfit": 36.56,
+    "clientName": "Vanessa Cady",
+    "clientAddress": "Arret bus Buttor",
+    "clientPhone": "0693855499",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1766517321002",
+    "date": "2025-12-23",
+    "products": [
+      {
+        "productId": "1764132619962",
+        "description": "Tissages bouclé marron 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 23.44,
+        "sellingPrice": 60,
+        "profit": 36.56,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 23.44,
+    "totalSellingPrice": 60,
+    "totalProfit": 36.56,
+    "clientName": "Ashra Gamba",
+    "clientAddress": "Parking petit Marché st denis",
+    "clientPhone": "06",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1766517418392",
+    "date": "2025-12-23",
+    "products": [
+      {
+        "productId": "1762441427899",
+        "description": "Perruque lisse noir 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 50.46,
+        "sellingPrice": 160,
+        "profit": 109.54,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 50.46,
+    "totalSellingPrice": 160,
+    "totalProfit": 109.54,
+    "clientName": "Mum Angie",
+    "clientAddress": "Parking la mairie annexe bellepierre",
+    "clientPhone": "06",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

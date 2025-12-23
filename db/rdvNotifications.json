@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "1766517672478",
+    "rdvId": "1766517672477",
+    "rdvTitre": "Livraison pour essayage beaucoup perruque",
+    "rdvClientNom": "Fatii Maah",
+    "rdvClientTelephone": "0693463938",
+    "rdvDate": "2025-12-24",
+    "rdvHeureDebut": "07:15",
+    "rdvHeureFin": "08:15",
+    "rdvLieu": "191 rue Léopold Martin St André",
+    "message": "Rendez-vous dans moins de 24h: Livraison pour essayage beaucoup perruque",
+    "read": false,
+    "createdAt": "2025-12-23T19:21:12.478Z"
+  }
+]
