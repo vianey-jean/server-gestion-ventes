@@ -2,5 +2,70 @@
   "objectif": 4000,
   "totalVentesMois": 3245,
   "mois": 12,
-  "annee": 2025
+  "annee": 2025,
+  "historique": [
+    {
+      "mois": 4,
+      "annee": 2025,
+      "totalVentesMois": 72,
+      "objectif": 2000,
+      "pourcentage": 4
+    },
+    {
+      "mois": 5,
+      "annee": 2025,
+      "totalVentesMois": 1732,
+      "objectif": 2000,
+      "pourcentage": 87
+    },
+    {
+      "mois": 6,
+      "annee": 2025,
+      "totalVentesMois": 2024,
+      "objectif": 2000,
+      "pourcentage": 101
+    },
+    {
+      "mois": 7,
+      "annee": 2025,
+      "totalVentesMois": 2870.0300000000007,
+      "objectif": 2000,
+      "pourcentage": 144
+    },
+    {
+      "mois": 8,
+      "annee": 2025,
+      "totalVentesMois": 2260,
+      "objectif": 2000,
+      "pourcentage": 113
+    },
+    {
+      "mois": 9,
+      "annee": 2025,
+      "totalVentesMois": 2655.02,
+      "objectif": 2000,
+      "pourcentage": 133
+    },
+    {
+      "mois": 10,
+      "annee": 2025,
+      "totalVentesMois": 2510.12,
+      "objectif": 2000,
+      "pourcentage": 126
+    },
+    {
+      "mois": 11,
+      "annee": 2025,
+      "totalVentesMois": 2850.03,
+      "objectif": 2000,
+      "pourcentage": 143
+    },
+    {
+      "mois": 12,
+      "annee": 2025,
+      "totalVentesMois": 3245,
+      "objectif": 4000,
+      "pourcentage": 81
+    }
+  ]
 }
