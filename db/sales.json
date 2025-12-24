@@ -3142,5 +3142,53 @@
     "clientPhone": "06",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1766556490183",
+    "date": "2025-12-24",
+    "products": [
+      {
+        "productId": "1766556445480",
+        "description": "Perruque bouclé marron 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 43.05,
+        "sellingPrice": 140,
+        "profit": 96.95,
+        "deliveryFee": 0,
+        "deliveryLocation": "Exonération"
+      }
+    ],
+    "totalPurchasePrice": 43.05,
+    "totalSellingPrice": 140,
+    "totalProfit": 96.95,
+    "clientName": "Fatii Maah",
+    "clientAddress": "191 rue Léopold Martin St André",
+    "clientPhone": "0693463938",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1766556565005",
+    "date": "2025-12-24",
+    "products": [
+      {
+        "productId": "1748490364800",
+        "description": "Perruque bouclé noir 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 53.85,
+        "sellingPrice": 200,
+        "profit": 146.15,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 53.85,
+    "totalSellingPrice": 200,
+    "totalProfit": 146.15,
+    "clientName": "Nom Muslmim",
+    "clientAddress": "9 rue des saphirs , plateau cailloux Saint-Paul",
+    "clientPhone": "0693862618",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

@@ -10,13 +10,13 @@
     "heureDebut": "07:15",
     "heureFin": "08:15",
     "lieu": "191 rue Léopold Martin St André",
-    "statut": "planifie",
+    "statut": "termine",
     "notes": "",
     "produits": [],
     "commandeId": null,
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2025-12-23T19:21:12.477Z",
-    "updatedAt": "2025-12-23T19:21:12.477Z"
+    "updatedAt": "2025-12-24T06:06:18.435Z"
   }
 ]
