@@ -91,4 +91,47 @@ router.get('/by-rdv/:rdvId', authMiddleware, async (req, res) => {
   }
 });
 
+// Update notification status (for rdv validation/cancellation/report)
+router.put('/status/:rdvId', authMiddleware, async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({ message: 'Status is required' });
+    }
+    const success = RdvNotification.updateStatus(req.params.rdvId, status);
+    if (!success) {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error updating notification status:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update notification by rdv ID (for rdv reschedule)
+router.put('/by-rdv/:rdvId', authMiddleware, async (req, res) => {
+  try {
+    const notification = RdvNotification.updateByRdvId(req.params.rdvId, req.body);
+    if (!notification) {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
+    res.json(notification);
+  } catch (error) {
+    console.error('Error updating notification by rdv ID:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete notification by rdv ID
+router.delete('/by-rdv/:rdvId', authMiddleware, async (req, res) => {
+  try {
+    const success = RdvNotification.deleteByRdvId(req.params.rdvId);
+    res.json({ success });
+  } catch (error) {
+    console.error('Error deleting notification by rdv ID:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;

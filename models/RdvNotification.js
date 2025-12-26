@@ -77,7 +77,9 @@ const RdvNotification = {
         rdvLieu: rdvData.lieu || '',
         message: `Rendez-vous dans moins de 24h: ${rdvData.titre}`,
         read: false,
-        createdAt: now
+        statut: 'actif', // actif, reporte, valide, annule
+        createdAt: now,
+        updatedAt: now
       };
       
       notifications.push(newNotification);
@@ -101,12 +103,74 @@ const RdvNotification = {
       }
       
       notifications[index].read = true;
+      notifications[index].updatedAt = new Date().toISOString();
       fs.writeFileSync(notificationsPath, JSON.stringify(notifications, null, 2));
       
       return true;
     } catch (error) {
       console.error("Error marking notification as read:", error);
       return false;
+    }
+  },
+
+  // Update notification status (reporte, valide, annule)
+  updateStatus: (rdvId, newStatus) => {
+    try {
+      let notifications = JSON.parse(fs.readFileSync(notificationsPath, 'utf8'));
+      
+      const index = notifications.findIndex(n => n.rdvId === rdvId);
+      if (index === -1) {
+        return false;
+      }
+      
+      notifications[index].statut = newStatus;
+      notifications[index].updatedAt = new Date().toISOString();
+      
+      // Si validé ou annulé, on marque comme lu pour ne plus afficher
+      if (newStatus === 'valide' || newStatus === 'annule') {
+        notifications[index].read = true;
+      }
+      
+      fs.writeFileSync(notificationsPath, JSON.stringify(notifications, null, 2));
+      
+      return true;
+    } catch (error) {
+      console.error("Error updating notification status:", error);
+      return false;
+    }
+  },
+
+  // Update notification data when RDV is updated (especially for report)
+  updateByRdvId: (rdvId, rdvData) => {
+    try {
+      let notifications = JSON.parse(fs.readFileSync(notificationsPath, 'utf8'));
+      
+      const index = notifications.findIndex(n => n.rdvId === rdvId);
+      if (index === -1) {
+        return null;
+      }
+      
+      notifications[index] = {
+        ...notifications[index],
+        rdvTitre: rdvData.titre || notifications[index].rdvTitre,
+        rdvClientNom: rdvData.clientNom || notifications[index].rdvClientNom,
+        rdvClientTelephone: rdvData.clientTelephone || notifications[index].rdvClientTelephone,
+        rdvDate: rdvData.date || notifications[index].rdvDate,
+        rdvHeureDebut: rdvData.heureDebut || notifications[index].rdvHeureDebut,
+        rdvHeureFin: rdvData.heureFin || notifications[index].rdvHeureFin,
+        rdvLieu: rdvData.lieu || notifications[index].rdvLieu,
+        message: `Rendez-vous ${rdvData.statut === 'reporte' ? 'reporté' : ''}: ${rdvData.titre || notifications[index].rdvTitre}`,
+        statut: rdvData.statut === 'reporte' ? 'reporte' : notifications[index].statut,
+        read: false, // Remettre en non lu pour réafficher dans notifications
+        updatedAt: new Date().toISOString()
+      };
+      
+      fs.writeFileSync(notificationsPath, JSON.stringify(notifications, null, 2));
+      
+      return notifications[index];
+    } catch (error) {
+      console.error("Error updating notification by rdv ID:", error);
+      return null;
     }
   },
 
@@ -154,7 +218,7 @@ const RdvNotification = {
       const createdNotifications = [];
       
       rdvs.forEach(rdv => {
-        if (rdv.statut === 'annule' || rdv.statut === 'termine') return;
+        if (rdv.statut === 'annule' || rdv.statut === 'termine' || rdv.statut === 'valide') return;
         
         const rdvDateTime = new Date(`${rdv.date}T${rdv.heureDebut}`);
         

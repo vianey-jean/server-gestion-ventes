@@ -12,10 +12,12 @@ const readData = () => {
   } catch (error) {
     return { 
       objectif: DEFAULT_OBJECTIF, 
+      objectifMax: DEFAULT_OBJECTIF, // Objectif maximum atteint
       totalVentesMois: 0, 
       mois: new Date().getMonth() + 1, 
       annee: new Date().getFullYear(),
-      historique: []
+      historique: [],
+      objectifChanges: [] // Historique des changements d'objectif
     };
   }
 };
@@ -42,7 +44,7 @@ const Objectif = {
         );
         
         // Use the actual objectif that was set for that month
-        const monthObjectif = data.objectif || DEFAULT_OBJECTIF;
+        const monthObjectif = data.objectifMax || data.objectif || DEFAULT_OBJECTIF;
         const pourcentage = monthObjectif > 0 
           ? Math.round((data.totalVentesMois / monthObjectif) * 100) 
           : 0;
@@ -65,12 +67,17 @@ const Objectif = {
       data.totalVentesMois = 0;
       data.mois = currentMonth;
       data.annee = currentYear;
-      // Reset objectif to DEFAULT for new month only
+      // Reset objectif to DEFAULT for new month
       data.objectif = DEFAULT_OBJECTIF;
+      data.objectifMax = DEFAULT_OBJECTIF;
       writeData(data);
     }
     
-    return data;
+    // Toujours retourner l'objectif max
+    return {
+      ...data,
+      objectif: data.objectifMax || data.objectif || DEFAULT_OBJECTIF
+    };
   },
   
   updateObjectif: (newObjectif, targetMonth = null, targetYear = null) => {
@@ -88,9 +95,28 @@ const Objectif = {
       throw new Error('Cannot modify objectif for past months');
     }
     
+    const newValue = Number(newObjectif);
+    const currentMax = data.objectifMax || data.objectif || DEFAULT_OBJECTIF;
+    
+    // RÈGLE: Interdire la diminution - seul un objectif supérieur est autorisé
+    if (newValue <= currentMax) {
+      throw new Error('OBJECTIF_MUST_INCREASE');
+    }
+    
+    // Enregistrer le changement dans l'historique des changements
+    if (!data.objectifChanges) data.objectifChanges = [];
+    data.objectifChanges.push({
+      date: now.toISOString(),
+      ancienObjectif: currentMax,
+      nouveauObjectif: newValue,
+      mois: monthToUpdate,
+      annee: yearToUpdate
+    });
+    
     // Update main objectif only if it's the current month
     if (monthToUpdate === currentMonth && yearToUpdate === currentYear) {
-      data.objectif = Number(newObjectif);
+      data.objectif = newValue;
+      data.objectifMax = newValue; // Mettre à jour le max
     }
     
     // Also update in historique
@@ -101,26 +127,31 @@ const Objectif = {
     );
     
     if (existingIndex >= 0) {
-      data.historique[existingIndex].objectif = Number(newObjectif);
-      data.historique[existingIndex].pourcentage = Number(newObjectif) > 0 
-        ? Math.round((data.historique[existingIndex].totalVentesMois / Number(newObjectif)) * 100)
+      data.historique[existingIndex].objectif = newValue;
+      data.historique[existingIndex].pourcentage = newValue > 0 
+        ? Math.round((data.historique[existingIndex].totalVentesMois / newValue) * 100)
         : 0;
     } else {
       // Create new entry for current month if it doesn't exist
-      const pourcentage = Number(newObjectif) > 0 
-        ? Math.round((data.totalVentesMois / Number(newObjectif)) * 100)
+      const pourcentage = newValue > 0 
+        ? Math.round((data.totalVentesMois / newValue) * 100)
         : 0;
       data.historique.push({
         mois: monthToUpdate,
         annee: yearToUpdate,
         totalVentesMois: data.totalVentesMois || 0,
-        objectif: Number(newObjectif),
+        objectif: newValue,
         pourcentage
       });
     }
     
     writeData(data);
-    return data;
+    
+    // Retourner avec l'objectif max
+    return {
+      ...data,
+      objectif: data.objectifMax || data.objectif
+    };
   },
   
   updateTotalVentes: (newTotal) => {
@@ -211,9 +242,13 @@ const Objectif = {
     data.totalVentesMois = currentMonthTotal;
     data.mois = currentMonth;
     data.annee = currentYear;
-    // PRESERVE existing objectif - don't reset to DEFAULT
+    
+    // PRESERVE existing objectif and objectifMax - don't reset
     if (!data.objectif || data.objectif === 0) {
       data.objectif = DEFAULT_OBJECTIF;
+    }
+    if (!data.objectifMax || data.objectifMax === 0) {
+      data.objectifMax = data.objectif || DEFAULT_OBJECTIF;
     }
     
     // Sort historique by month
@@ -224,7 +259,11 @@ const Objectif = {
     
     writeData(data);
     
-    return data;
+    // Retourner avec l'objectif max
+    return {
+      ...data,
+      objectif: data.objectifMax || data.objectif
+    };
   },
 
   getHistorique: () => {

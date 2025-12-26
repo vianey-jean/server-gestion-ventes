@@ -32,7 +32,7 @@ router.get('/historique', authMiddleware, async (req, res) => {
   }
 });
 
-// Update objectif value - only current month allowed
+// Update objectif value - only current month allowed, only increase allowed
 router.put('/objectif', authMiddleware, async (req, res) => {
   try {
     const { objectif, month, year } = req.body;
@@ -47,6 +47,12 @@ router.put('/objectif', authMiddleware, async (req, res) => {
     console.error('Error updating objectif:', error);
     if (error.message === 'Cannot modify objectif for past months') {
       return res.status(403).json({ message: 'Les objectifs des mois passés sont verrouillés' });
+    }
+    if (error.message === 'OBJECTIF_MUST_INCREASE') {
+      return res.status(400).json({ 
+        message: 'OBJECTIF_MUST_INCREASE',
+        description: 'Le nouvel objectif doit être strictement supérieur à l\'objectif actuel'
+      });
     }
     res.status(500).json({ message: 'Server error' });
   }
