@@ -67,5 +67,62 @@
       "objectif": 4000,
       "pourcentage": 84
     }
+  ],
+  "objectifMax": 4000,
+  "beneficesHistorique": [
+    {
+      "mois": 4,
+      "annee": 2025,
+      "totalBenefice": 12,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 5,
+      "annee": 2025,
+      "totalBenefice": 1010.2900000000001,
+      "updatedAt": "2025-12-27T03:36:15.420Z"
+    },
+    {
+      "mois": 6,
+      "annee": 2025,
+      "totalBenefice": 1326.6499999999999,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 7,
+      "annee": 2025,
+      "totalBenefice": 1962.1999999999998,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 8,
+      "annee": 2025,
+      "totalBenefice": 1418.44,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 9,
+      "annee": 2025,
+      "totalBenefice": 1740.8799999999999,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 10,
+      "annee": 2025,
+      "totalBenefice": 1614.2600000000002,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 11,
+      "annee": 2025,
+      "totalBenefice": 1977.9599999999998,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 12,
+      "annee": 2025,
+      "totalBenefice": 2401.754,
+      "updatedAt": "2025-12-27T03:36:15.421Z"
+    }
   ]
 }

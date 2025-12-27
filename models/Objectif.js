@@ -12,12 +12,13 @@ const readData = () => {
   } catch (error) {
     return { 
       objectif: DEFAULT_OBJECTIF, 
-      objectifMax: DEFAULT_OBJECTIF, // Objectif maximum atteint
+      objectifMax: DEFAULT_OBJECTIF,
       totalVentesMois: 0, 
       mois: new Date().getMonth() + 1, 
       annee: new Date().getFullYear(),
       historique: [],
-      objectifChanges: [] // Historique des changements d'objectif
+      objectifChanges: [],
+      beneficesHistorique: [] // Historique des bénéfices mensuels
     };
   }
 };
@@ -276,14 +277,26 @@ const Objectif = {
       .filter(h => h.annee === currentYear)
       .sort((a, b) => a.mois - b.mois);
     
+    // Filter objectifChanges for current year only
+    const yearObjectifChanges = (data.objectifChanges || [])
+      .filter(c => c.annee === currentYear)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    
+    // Filter beneficesHistorique for current year only
+    const yearBeneficesHistorique = (data.beneficesHistorique || [])
+      .filter(b => b.annee === currentYear)
+      .sort((a, b) => a.mois - b.mois);
+    
     return {
       currentData: {
-        objectif: data.objectif || DEFAULT_OBJECTIF,
+        objectif: data.objectifMax || data.objectif || DEFAULT_OBJECTIF,
         totalVentesMois: data.totalVentesMois,
         mois: data.mois,
         annee: data.annee
       },
       historique: yearHistorique,
+      objectifChanges: yearObjectifChanges,
+      beneficesHistorique: yearBeneficesHistorique,
       annee: currentYear
     };
   },
@@ -291,6 +304,101 @@ const Objectif = {
   saveMonthlyData: (sales) => {
     const data = Objectif.recalculateFromSales(sales);
     return Objectif.getHistorique();
+  },
+
+  // Mettre à jour les bénéfices mensuels
+  updateBeneficesMensuels: (beneficesData) => {
+    const data = readData();
+    if (!data.beneficesHistorique) data.beneficesHistorique = [];
+    
+    const { mois, annee, totalBenefice } = beneficesData;
+    
+    const existingIndex = data.beneficesHistorique.findIndex(
+      b => b.mois === mois && b.annee === annee
+    );
+    
+    const beneficeEntry = {
+      mois,
+      annee,
+      totalBenefice: Number(totalBenefice),
+      updatedAt: new Date().toISOString()
+    };
+    
+    if (existingIndex >= 0) {
+      data.beneficesHistorique[existingIndex] = beneficeEntry;
+    } else {
+      data.beneficesHistorique.push(beneficeEntry);
+    }
+    
+    // Sort by month
+    data.beneficesHistorique.sort((a, b) => {
+      if (a.annee !== b.annee) return a.annee - b.annee;
+      return a.mois - b.mois;
+    });
+    
+    writeData(data);
+    return data.beneficesHistorique;
+  },
+
+  // Calculer les bénéfices à partir des ventes
+  calculateBeneficesFromSales: (sales) => {
+    const data = readData();
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    
+    if (!data.beneficesHistorique) data.beneficesHistorique = [];
+    
+    // Calculate monthly benefices
+    const monthlyBenefices = {};
+    
+    sales.forEach(sale => {
+      const saleDate = new Date(sale.date);
+      const month = saleDate.getMonth() + 1;
+      const year = saleDate.getFullYear();
+      
+      if (year === currentYear) {
+        const key = `${year}-${month}`;
+        if (!monthlyBenefices[key]) {
+          monthlyBenefices[key] = { month, year, total: 0 };
+        }
+        
+        // Calculate profit from sale
+        const sellingPrice = sale.totalSellingPrice || sale.sellingPrice || 0;
+        const purchasePrice = sale.totalPurchasePrice || sale.purchasePrice || 0;
+        const profit = Number(sellingPrice) - Number(purchasePrice);
+        
+        monthlyBenefices[key].total += profit;
+      }
+    });
+    
+    // Update beneficesHistorique
+    Object.values(monthlyBenefices).forEach(({ month, year, total }) => {
+      const existingIndex = data.beneficesHistorique.findIndex(
+        b => b.mois === month && b.annee === year
+      );
+      
+      const beneficeEntry = {
+        mois: month,
+        annee: year,
+        totalBenefice: total,
+        updatedAt: new Date().toISOString()
+      };
+      
+      if (existingIndex >= 0) {
+        data.beneficesHistorique[existingIndex] = beneficeEntry;
+      } else {
+        data.beneficesHistorique.push(beneficeEntry);
+      }
+    });
+    
+    // Sort by month
+    data.beneficesHistorique.sort((a, b) => {
+      if (a.annee !== b.annee) return a.annee - b.annee;
+      return a.mois - b.mois;
+    });
+    
+    writeData(data);
+    return data.beneficesHistorique;
   }
 };
 

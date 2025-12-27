@@ -17,12 +17,15 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// Get historique data
+// Get historique data with objectifChanges and beneficesHistorique
 router.get('/historique', authMiddleware, async (req, res) => {
   try {
     // First recalculate to ensure current month is up to date
     const sales = Sale.getAll();
     Objectif.recalculateFromSales(sales);
+    
+    // Also calculate benefices from sales
+    Objectif.calculateBeneficesFromSales(sales);
     
     const data = Objectif.getHistorique();
     res.json(data);
