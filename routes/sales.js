@@ -40,6 +40,43 @@ router.get('/by-month', authMiddleware, async (req, res) => {
   }
 });
 
+// Get sales by year only
+router.get('/by-year', authMiddleware, async (req, res) => {
+  try {
+    const { year } = req.query;
+    
+    if (!year) {
+      return res.status(400).json({ message: 'Year is required' });
+    }
+    
+    console.log(`Fetching sales for year: ${year}`);
+    
+    const yearNum = Number(year);
+    const sales = Sale.getByYear(yearNum);
+    console.log(`Found ${sales.length} sales for ${yearNum}`);
+    
+    res.json(sales);
+  } catch (error) {
+    console.error('Error getting sales by year:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get yearly statistics for all years
+router.get('/yearly-stats', authMiddleware, async (req, res) => {
+  try {
+    console.log('Fetching yearly statistics');
+    
+    const yearlyStats = Sale.getYearlyStats();
+    console.log(`Found stats for ${yearlyStats.length} years`);
+    
+    res.json(yearlyStats);
+  } catch (error) {
+    console.error('Error getting yearly stats:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Create new sale
 router.post('/', authMiddleware, async (req, res) => {
   try {

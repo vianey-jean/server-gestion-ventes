@@ -43,6 +43,76 @@ const Sale = {
     }
   },
 
+  // Get sales by year only
+  getByYear: (year) => {
+    try {
+      const sales = JSON.parse(fs.readFileSync(salesPath, 'utf8'));
+      
+      if (year === undefined) {
+        return sales;
+      }
+      
+      const yearNum = Number(year);
+
+      return sales.filter(sale => {
+        const saleDate = new Date(sale.date);
+        return saleDate.getFullYear() === yearNum;
+      });
+    } catch (error) {
+      console.error("Error filtering sales by year:", error);
+      return [];
+    }
+  },
+
+  // Get yearly statistics for all years
+  getYearlyStats: () => {
+    try {
+      const sales = JSON.parse(fs.readFileSync(salesPath, 'utf8'));
+      const yearlyData = new Map();
+
+      sales.forEach(sale => {
+        const saleDate = new Date(sale.date);
+        const year = saleDate.getFullYear();
+
+        if (!yearlyData.has(year)) {
+          yearlyData.set(year, {
+            year,
+            totalRevenue: 0,
+            totalProfit: 0,
+            totalCost: 0,
+            salesCount: 0,
+            quantitySold: 0
+          });
+        }
+
+        const data = yearlyData.get(year);
+        
+        // Multi-product format
+        if (sale.products && Array.isArray(sale.products) && sale.products.length > 0) {
+          data.totalRevenue += sale.totalSellingPrice || sale.products.reduce((sum, p) => sum + (p.sellingPrice * p.quantitySold), 0);
+          data.totalCost += sale.totalPurchasePrice || sale.products.reduce((sum, p) => sum + (p.purchasePrice * p.quantitySold), 0);
+          data.totalProfit += sale.totalProfit || sale.products.reduce((sum, p) => sum + p.profit, 0);
+          data.quantitySold += sale.products.reduce((sum, p) => sum + p.quantitySold, 0);
+        } 
+        // Single-product format
+        else if (sale.sellingPrice !== undefined) {
+          data.totalRevenue += sale.sellingPrice || 0;
+          data.totalCost += sale.purchasePrice || 0;
+          data.totalProfit += sale.profit || 0;
+          data.quantitySold += sale.quantitySold || 0;
+        }
+        
+        data.salesCount += 1;
+      });
+
+      // Convert to array and sort by year
+      return Array.from(yearlyData.values()).sort((a, b) => a.year - b.year);
+    } catch (error) {
+      console.error("Error getting yearly stats:", error);
+      return [];
+    }
+  },
+
   // Create new sale
   create: (saleData) => {
     try {
