@@ -65,12 +65,29 @@ const Objectif = {
         }
       }
       
+      // Reset to DEFAULT for new month
       data.totalVentesMois = 0;
       data.mois = currentMonth;
       data.annee = currentYear;
-      // Reset objectif to DEFAULT for new month
       data.objectif = DEFAULT_OBJECTIF;
       data.objectifMax = DEFAULT_OBJECTIF;
+      
+      // Créer immédiatement une entrée pour le nouveau mois dans l'historique
+      if (!data.historique) data.historique = [];
+      const newMonthIndex = data.historique.findIndex(
+        h => h.mois === currentMonth && h.annee === currentYear
+      );
+      
+      if (newMonthIndex < 0) {
+        data.historique.push({
+          mois: currentMonth,
+          annee: currentYear,
+          totalVentesMois: 0,
+          objectif: DEFAULT_OBJECTIF,
+          pourcentage: 0
+        });
+      }
+      
       writeData(data);
     }
     
@@ -205,6 +222,9 @@ const Objectif = {
     const data = readData();
     if (!data.historique) data.historique = [];
     
+    // DÉTECTION DU CHANGEMENT DE MOIS - Réinitialiser si nouveau mois
+    const isNewMonth = data.mois !== currentMonth || data.annee !== currentYear;
+    
     // Update historique for all months with data - PRESERVE existing objectif values
     Object.values(monthlyTotals).forEach(({ month, year, total }) => {
       const existingIndex = data.historique.findIndex(
@@ -236,7 +256,7 @@ const Objectif = {
       }
     });
     
-    // Update current month data - PRESERVE current objectif if set
+    // Update current month data
     const currentMonthKey = `${currentYear}-${currentMonth}`;
     const currentMonthTotal = monthlyTotals[currentMonthKey]?.total || 0;
     
@@ -244,12 +264,36 @@ const Objectif = {
     data.mois = currentMonth;
     data.annee = currentYear;
     
-    // PRESERVE existing objectif and objectifMax - don't reset
-    if (!data.objectif || data.objectif === 0) {
+    // SI NOUVEAU MOIS: Réinitialiser objectif à 2000
+    if (isNewMonth) {
       data.objectif = DEFAULT_OBJECTIF;
-    }
-    if (!data.objectifMax || data.objectifMax === 0) {
-      data.objectifMax = data.objectif || DEFAULT_OBJECTIF;
+      data.objectifMax = DEFAULT_OBJECTIF;
+      
+      // Créer entrée pour le nouveau mois si elle n'existe pas
+      const newMonthIndex = data.historique.findIndex(
+        h => h.mois === currentMonth && h.annee === currentYear
+      );
+      
+      if (newMonthIndex < 0) {
+        data.historique.push({
+          mois: currentMonth,
+          annee: currentYear,
+          totalVentesMois: currentMonthTotal,
+          objectif: DEFAULT_OBJECTIF,
+          pourcentage: 0
+        });
+      } else {
+        // Mettre à jour l'entrée existante avec l'objectif par défaut
+        data.historique[newMonthIndex].objectif = DEFAULT_OBJECTIF;
+      }
+    } else {
+      // Mois actuel: préserver l'objectif existant
+      if (!data.objectif || data.objectif === 0) {
+        data.objectif = DEFAULT_OBJECTIF;
+      }
+      if (!data.objectifMax || data.objectifMax === 0) {
+        data.objectifMax = data.objectif || DEFAULT_OBJECTIF;
+      }
     }
     
     // Sort historique by month
