@@ -429,8 +429,14 @@
     "description": "perruque lisse noir 10 pouces, Perruque lisse mèche blonde devant 12 pouces",
     "nom": "Cliente maido Bellepierre",
     "prixVente": 100,
-    "avanceRecue": 70,
-    "reste": 30,
-    "estPaye": false
+    "avanceRecue": 100,
+    "reste": 0,
+    "estPaye": true,
+    "paiements": [
+      {
+        "date": "2025-12-26",
+        "montant": 30
+      }
+    ]
   }
 ]

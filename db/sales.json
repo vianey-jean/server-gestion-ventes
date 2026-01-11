@@ -3310,5 +3310,29 @@
     "clientPhone": "0692569227",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1768105922195",
+    "date": "2025-12-26",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 30,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 30,
+    "totalProfit": 0,
+    "clientName": "Cliente maido Bellepierre",
+    "clientAddress": "Maido Bellepierre Saint Denis",
+    "clientPhone": "0692019459",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
