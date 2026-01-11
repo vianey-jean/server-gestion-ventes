@@ -3214,5 +3214,101 @@
     "clientPhone": "0693628744",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1768104628004",
+    "date": "2025-12-31",
+    "products": [
+      {
+        "productId": "1768104520049",
+        "description": "Perruque lisse blonde miel 4x4",
+        "quantitySold": 1,
+        "purchasePrice": 49.88,
+        "sellingPrice": 120,
+        "profit": 70.12,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 49.88,
+    "totalSellingPrice": 120,
+    "totalProfit": 70.12,
+    "clientName": "Mirranda Delcy",
+    "clientAddress": "9 rue Pitel résidence du Pac saint denis",
+    "clientPhone": "0693541351",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1768104786625",
+    "date": "2026-01-09",
+    "products": [
+      {
+        "productId": "1764132773740",
+        "description": "perruque lisse noir 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 44.59,
+        "sellingPrice": 190,
+        "profit": 145.41,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 44.59,
+    "totalSellingPrice": 190,
+    "totalProfit": 145.41,
+    "clientName": "Evelyne Luvar",
+    "clientAddress": "Gare routière Saint-Denis",
+    "clientPhone": "0693531738",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1768104984128",
+    "date": "2026-01-10",
+    "products": [
+      {
+        "productId": "1768104913793",
+        "description": "Perruque bouclé rouge bordeaux 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 57.06,
+        "sellingPrice": 170,
+        "profit": 112.94,
+        "deliveryFee": 0,
+        "deliveryLocation": "Le Port"
+      }
+    ],
+    "totalPurchasePrice": 57.06,
+    "totalSellingPrice": 170,
+    "totalProfit": 112.94,
+    "clientName": "Naellyah Bgd",
+    "clientAddress": "La banque postale le port",
+    "clientPhone": "0692509767",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1768105040761",
+    "date": "2026-01-10",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 100,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 100,
+    "totalProfit": 0,
+    "clientName": "Channel Charnelle",
+    "clientAddress": "Leader price Saint Jacques saint denis",
+    "clientPhone": "0692569227",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

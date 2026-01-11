@@ -820,5 +820,17 @@
     "description": "Perruque bouclé marron 26 pouces",
     "purchasePrice": 43.05,
     "quantity": 0
+  },
+  {
+    "id": "1768104520049",
+    "description": "Perruque lisse blonde miel 4x4",
+    "purchasePrice": 49.88,
+    "quantity": 0
+  },
+  {
+    "id": "1768104913793",
+    "description": "Perruque bouclé rouge bordeaux 24 pouces",
+    "purchasePrice": 57.06,
+    "quantity": 0
   }
 ]
