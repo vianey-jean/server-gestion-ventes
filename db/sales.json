@@ -3334,5 +3334,29 @@
     "clientPhone": "0692019459",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1768151513833",
+    "date": "2026-01-11",
+    "products": [
+      {
+        "productId": "1762441427899",
+        "description": "Perruque lisse noir 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 50.46,
+        "sellingPrice": 170,
+        "profit": 119.54,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 50.46,
+    "totalSellingPrice": 170,
+    "totalProfit": 119.54,
+    "clientName": "Lou Lou",
+    "clientAddress": "23 rue des caramboles res brain saint clotilde",
+    "clientPhone": "0693421305",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
