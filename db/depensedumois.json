@@ -1,20 +1,33 @@
 [
   {
     "id": "1",
-    "description": "Charge fixe",
-    "categorie": "chargeFixe",
-    "date": "2025-12-02",
-    "debit": "352.96",
-    "credit": "",
-    "solde": -352.96
+    "mois": "12",
+    "annee": "2025",
+    "mouvements": [
+      {
+        "id": "1",
+        "description": "Charge fixe",
+        "categorie": "chargeFixe",
+        "date": "2025-12-02",
+        "debit": "352.96",
+        "credit": "",
+        "solde": -352.96
+      },
+      {
+        "id": "2",
+        "description": "RSA",
+        "categorie": "Autres",
+        "date": "2025-12-02",
+        "debit": "",
+        "credit": "1701",
+        "solde": 1348.04
+      }
+    ]
   },
   {
     "id": "2",
-    "description": "RSA",
-    "categorie": "Autres",
-    "date": "2025-12-02",
-    "debit": "",
-    "credit": "1701",
-    "solde": 1348.04
+    "mois": "01",
+    "annee": "2026",
+    "mouvements": []
   }
 ]

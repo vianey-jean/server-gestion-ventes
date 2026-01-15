@@ -5,34 +5,109 @@ const path = require('path');
 const depenseDuMoisPath = path.join(__dirname, '../db/depensedumois.json');
 const depenseFixePath = path.join(__dirname, '../db/depensefixe.json');
 
-// Fonction pour lire tous les mouvements du mois
-const getAllMouvements = () => {
+// Fonction pour lire toutes les données de la base
+const getAllData = () => {
   try {
     if (!fs.existsSync(depenseDuMoisPath)) {
+      fs.writeFileSync(depenseDuMoisPath, JSON.stringify([], null, 2));
       return [];
     }
     const data = fs.readFileSync(depenseDuMoisPath, 'utf8');
     return JSON.parse(data);
   } catch (error) {
-    console.error('Erreur lors de la lecture des mouvements:', error);
+    console.error('Erreur lors de la lecture des données:', error);
     return [];
   }
 };
 
-// Fonction pour obtenir un mouvement par ID
+// Fonction pour sauvegarder toutes les données
+const saveAllData = (data) => {
+  try {
+    fs.writeFileSync(depenseDuMoisPath, JSON.stringify(data, null, 2));
+    return true;
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde des données:', error);
+    return false;
+  }
+};
+
+// Fonction pour obtenir l'entrée du mois en cours (ou la créer si elle n'existe pas)
+const getOrCreateCurrentMonthEntry = () => {
+  const now = new Date();
+  const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+  const currentYear = now.getFullYear().toString();
+  
+  const allData = getAllData();
+  
+  // Chercher une entrée pour le mois et année en cours
+  let currentEntry = allData.find(entry => 
+    entry.mois === currentMonth && entry.annee === currentYear
+  );
+  
+  if (!currentEntry) {
+    // Créer une nouvelle entrée pour le mois en cours
+    const newId = allData.length > 0 
+      ? (Math.max(...allData.map(e => parseInt(e.id) || 0)) + 1).toString()
+      : '1';
+    
+    currentEntry = {
+      id: newId,
+      mois: currentMonth,
+      annee: currentYear,
+      mouvements: []
+    };
+    
+    allData.push(currentEntry);
+    saveAllData(allData);
+  }
+  
+  return currentEntry;
+};
+
+// Fonction pour lire tous les mouvements du mois en cours
+const getAllMouvements = () => {
+  const currentEntry = getOrCreateCurrentMonthEntry();
+  return currentEntry.mouvements || [];
+};
+
+// Fonction pour obtenir un mouvement par ID (dans le mois en cours)
 const getMouvementById = (id) => {
   const mouvements = getAllMouvements();
   return mouvements.find(mouvement => mouvement.id === id);
 };
 
-// Fonction pour créer un nouveau mouvement
+// Fonction pour créer un nouveau mouvement (dans le mois en cours)
 const createMouvement = (mouvement) => {
   try {
-    const mouvements = getAllMouvements();
+    const now = new Date();
+    const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+    const currentYear = now.getFullYear().toString();
     
-    // Générer un nouvel ID
-    const newId = mouvements.length > 0 
-      ? (Math.max(...mouvements.map(m => parseInt(m.id))) + 1).toString() 
+    const allData = getAllData();
+    let currentEntryIndex = allData.findIndex(entry => 
+      entry.mois === currentMonth && entry.annee === currentYear
+    );
+    
+    if (currentEntryIndex === -1) {
+      // Créer l'entrée du mois si elle n'existe pas
+      const newId = allData.length > 0 
+        ? (Math.max(...allData.map(e => parseInt(e.id) || 0)) + 1).toString()
+        : '1';
+      
+      allData.push({
+        id: newId,
+        mois: currentMonth,
+        annee: currentYear,
+        mouvements: []
+      });
+      currentEntryIndex = allData.length - 1;
+    }
+    
+    const mouvements = allData[currentEntryIndex].mouvements || [];
+    
+    // Générer un nouvel ID pour le mouvement
+    const newMouvementId = mouvements.length > 0 
+      ? (Math.max(...mouvements.map(m => parseInt(m.id) || 0)) + 1).toString() 
       : '1';
     
     // Calculer le nouveau solde
@@ -42,13 +117,14 @@ const createMouvement = (mouvement) => {
     const newSolde = lastSolde + (mouvement.credit ? parseFloat(mouvement.credit) || 0 : 0) - (mouvement.debit ? parseFloat(mouvement.debit) || 0 : 0);
     
     const newMouvement = {
-      id: newId,
+      id: newMouvementId,
       ...mouvement,
       solde: newSolde
     };
     
     mouvements.push(newMouvement);
-    fs.writeFileSync(depenseDuMoisPath, JSON.stringify(mouvements, null, 2));
+    allData[currentEntryIndex].mouvements = mouvements;
+    saveAllData(allData);
     
     return newMouvement;
   } catch (error) {
@@ -57,10 +133,23 @@ const createMouvement = (mouvement) => {
   }
 };
 
-// Fonction pour mettre à jour un mouvement
+// Fonction pour mettre à jour un mouvement (dans le mois en cours)
 const updateMouvement = (id, updatedMouvement) => {
   try {
-    let mouvements = getAllMouvements();
+    const now = new Date();
+    const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+    const currentYear = now.getFullYear().toString();
+    
+    const allData = getAllData();
+    const currentEntryIndex = allData.findIndex(entry => 
+      entry.mois === currentMonth && entry.annee === currentYear
+    );
+    
+    if (currentEntryIndex === -1) {
+      throw new Error('Aucune entrée pour le mois en cours');
+    }
+    
+    let mouvements = allData[currentEntryIndex].mouvements || [];
     const index = mouvements.findIndex(mouvement => mouvement.id === id);
     
     if (index === -1) {
@@ -79,15 +168,14 @@ const updateMouvement = (id, updatedMouvement) => {
     // Recalculer tous les soldes après l'élément modifié
     for (let i = index; i < mouvements.length; i++) {
       if (i === 0) {
-        // Premier élément: le solde est simplement crédit - débit
         mouvements[i].solde = (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       } else {
-        // Autres éléments: solde précédent + crédit - débit
         mouvements[i].solde = mouvements[i-1].solde + (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       }
     }
     
-    fs.writeFileSync(depenseDuMoisPath, JSON.stringify(mouvements, null, 2));
+    allData[currentEntryIndex].mouvements = mouvements;
+    saveAllData(allData);
     
     return mouvements[index];
   } catch (error) {
@@ -96,10 +184,23 @@ const updateMouvement = (id, updatedMouvement) => {
   }
 };
 
-// Fonction pour supprimer un mouvement
+// Fonction pour supprimer un mouvement (dans le mois en cours)
 const deleteMouvement = (id) => {
   try {
-    let mouvements = getAllMouvements();
+    const now = new Date();
+    const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+    const currentYear = now.getFullYear().toString();
+    
+    const allData = getAllData();
+    const currentEntryIndex = allData.findIndex(entry => 
+      entry.mois === currentMonth && entry.annee === currentYear
+    );
+    
+    if (currentEntryIndex === -1) {
+      throw new Error('Aucune entrée pour le mois en cours');
+    }
+    
+    let mouvements = allData[currentEntryIndex].mouvements || [];
     const index = mouvements.findIndex(mouvement => mouvement.id === id);
     
     if (index === -1) {
@@ -111,15 +212,14 @@ const deleteMouvement = (id) => {
     // Recalculer tous les soldes après la suppression
     for (let i = 0; i < mouvements.length; i++) {
       if (i === 0) {
-        // Premier élément: le solde est simplement crédit - débit
         mouvements[i].solde = (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       } else {
-        // Autres éléments: solde précédent + crédit - débit
         mouvements[i].solde = mouvements[i-1].solde + (mouvements[i].credit ? parseFloat(mouvements[i].credit) || 0 : 0) - (mouvements[i].debit ? parseFloat(mouvements[i].debit) || 0 : 0);
       }
     }
     
-    fs.writeFileSync(depenseDuMoisPath, JSON.stringify(mouvements, null, 2));
+    allData[currentEntryIndex].mouvements = mouvements;
+    saveAllData(allData);
     
     return true;
   } catch (error) {
@@ -132,7 +232,6 @@ const deleteMouvement = (id) => {
 const getDepensesFixe = () => {
   try {
     if (!fs.existsSync(depenseFixePath)) {
-      // Valeurs par défaut
       const defaultDepensesFixe = {
         free: 19.99,
         internetZeop: 39.99,
@@ -155,7 +254,6 @@ const getDepensesFixe = () => {
 // Fonction pour mettre à jour les dépenses fixes
 const updateDepensesFixe = (depensesFixe) => {
   try {
-    // Calculer le total
     const total = 
       parseFloat(depensesFixe.free || 0) + 
       parseFloat(depensesFixe.internetZeop || 0) + 
@@ -177,13 +275,74 @@ const updateDepensesFixe = (depensesFixe) => {
   }
 };
 
-// Fonction pour réinitialiser tous les mouvements
+// Fonction pour réinitialiser les mouvements du mois en cours uniquement
 const resetAllMouvements = () => {
   try {
-    fs.writeFileSync(depenseDuMoisPath, JSON.stringify([], null, 2));
+    const now = new Date();
+    const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+    const currentYear = now.getFullYear().toString();
+    
+    const allData = getAllData();
+    const currentEntryIndex = allData.findIndex(entry => 
+      entry.mois === currentMonth && entry.annee === currentYear
+    );
+    
+    if (currentEntryIndex !== -1) {
+      allData[currentEntryIndex].mouvements = [];
+      saveAllData(allData);
+    }
+    
     return true;
   } catch (error) {
     console.error('Erreur lors de la réinitialisation des mouvements:', error);
+    throw error;
+  }
+};
+
+// Fonction pour vérifier et créer l'entrée du mois si nécessaire
+const checkAndCreateMonthEntry = () => {
+  try {
+    const now = new Date();
+    const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+    const currentYear = now.getFullYear().toString();
+    
+    const allData = getAllData();
+    
+    // Chercher une entrée pour le mois et année en cours
+    const existingEntry = allData.find(entry => 
+      entry.mois === currentMonth && entry.annee === currentYear
+    );
+    
+    if (existingEntry) {
+      return { 
+        created: false, 
+        message: 'Entrée existante pour le mois en cours',
+        entry: existingEntry
+      };
+    }
+    
+    // Créer une nouvelle entrée vide pour le mois en cours
+    const newId = allData.length > 0 
+      ? (Math.max(...allData.map(e => parseInt(e.id) || 0)) + 1).toString()
+      : '1';
+    
+    const newEntry = {
+      id: newId,
+      mois: currentMonth,
+      annee: currentYear,
+      mouvements: []
+    };
+    
+    allData.push(newEntry);
+    saveAllData(allData);
+    
+    return { 
+      created: true, 
+      message: 'Nouvelle entrée créée pour le mois en cours',
+      entry: newEntry
+    };
+  } catch (error) {
+    console.error('Erreur lors de la vérification/création de l\'entrée mensuelle:', error);
     throw error;
   }
 };
@@ -196,5 +355,7 @@ module.exports = {
   deleteMouvement,
   getDepensesFixe,
   updateDepensesFixe,
-  resetAllMouvements
+  resetAllMouvements,
+  checkAndCreateMonthEntry,
+  getOrCreateCurrentMonthEntry
 };

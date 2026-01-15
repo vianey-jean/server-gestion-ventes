@@ -120,27 +120,13 @@ router.post('/reset', auth, (req, res) => {
   }
 });
 
-// Route pour vérifier si c'est la fin du mois et réinitialiser si nécessaire
-router.get('/check-month-end', auth, (req, res) => {
+// Route pour vérifier et créer l'entrée du mois si nécessaire (sans supprimer les données précédentes)
+router.get('/check-month', auth, (req, res) => {
   try {
-    const today = new Date();
-    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-    
-    // Vérifie si c'est le dernier jour du mois
-    if (today.getDate() === lastDayOfMonth) {
-      DepenseDuMois.resetAllMouvements();
-      res.json({ 
-        reset: true, 
-        message: 'Fin du mois détectée, les dépenses ont été réinitialisées' 
-      });
-    } else {
-      res.json({ 
-        reset: false, 
-        message: 'Ce n\'est pas la fin du mois, aucune réinitialisation effectuée' 
-      });
-    }
+    const result = DepenseDuMois.checkAndCreateMonthEntry();
+    res.json(result);
   } catch (error) {
-    console.error('Erreur lors de la vérification de fin de mois:', error);
+    console.error('Erreur lors de la vérification du mois:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
