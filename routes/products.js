@@ -79,19 +79,21 @@ router.post('/', authMiddleware, async (req, res) => {
 });
 
 // Update product (requires authentication)
+// Cette route accepte des mises à jour partielles - seuls les champs fournis seront mis à jour
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { description, purchasePrice, quantity } = req.body;
     
-    if (!description || purchasePrice === undefined || quantity === undefined) {
-      return res.status(400).json({ message: 'All fields are required' });
+    // Vérifier qu'au moins un champ est fourni pour la mise à jour
+    if (description === undefined && purchasePrice === undefined && quantity === undefined) {
+      return res.status(400).json({ message: 'At least one field is required for update' });
     }
     
-    const productData = {
-      description,
-      purchasePrice: Number(purchasePrice),
-      quantity: Number(quantity)
-    };
+    // Construire l'objet de mise à jour avec seulement les champs fournis
+    const productData = {};
+    if (description !== undefined) productData.description = description;
+    if (purchasePrice !== undefined) productData.purchasePrice = Number(purchasePrice);
+    if (quantity !== undefined) productData.quantity = Number(quantity);
     
     const updatedProduct = Product.update(req.params.id, productData);
     
