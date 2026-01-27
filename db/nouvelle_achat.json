@@ -1,3 +1,14 @@
 [
-   
+  {
+    "id": "1769502102000",
+    "date": "2026-01-27T08:21:41.993Z",
+    "productId": "1762441237630",
+    "productDescription": "perruque bouclé frange blonde miel14 pouces",
+    "purchasePrice": 36.79,
+    "quantity": 1,
+    "fournisseur": "Black Pearl",
+    "caracteristiques": "perruque bouclé frange blonde miel14 pouces",
+    "totalCost": 36.79,
+    "type": "achat_produit"
+  }
 ]

@@ -442,5 +442,25 @@
     "createdAt": "2025-12-17T11:39:08.586Z",
     "saleId": null,
     "updatedAt": "2025-12-20T03:39:40.832Z"
+  },
+  {
+    "id": "1769502151122",
+    "clientNom": "Clara Miandry",
+    "clientPhone": "0693818716",
+    "clientAddress": "La Marie Saint-André",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "perruque bouclé frange blonde miel14 pouces",
+        "prixUnitaire": 36.79,
+        "quantite": 1,
+        "prixVente": 90
+      }
+    ],
+    "dateCommande": "2026-01-27T08:22:31.074Z",
+    "statut": "en_attente",
+    "dateEcheance": "2026-01-28",
+    "horaire": "10:00",
+    "createdAt": "2026-01-27T08:22:31.122Z"
   }
 ]
