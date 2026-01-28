@@ -130,6 +130,12 @@
       "annee": 2025,
       "totalBenefice": 2401.754,
       "updatedAt": "2025-12-27T03:36:15.421Z"
+    },
+    {
+      "mois": 1,
+      "annee": 2026,
+      "totalBenefice": 477.89,
+      "updatedAt": "2026-01-28T15:23:02.732Z"
     }
   ]
 }

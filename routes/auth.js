@@ -8,6 +8,60 @@ const validationSchemas = require('../middleware/validation');
 // Rate limiting strict pour auth
 router.use(rateLimitMiddleware('auth'));
 
+// Verify token and user exists in database - FAST verification endpoint
+router.get('/verify', (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({ valid: false, message: 'No token provided' });
+    }
+    
+    // Verify JWT token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultsecretkey');
+    
+    // CRITICAL: Verify user exists in database
+    const user = User.getById(decoded.id);
+    
+    if (!user) {
+      return res.status(401).json({ 
+        valid: false, 
+        message: 'User account not found in database' 
+      });
+    }
+    
+    // Verify user profile is complete
+    if (!user.email || !user.firstName || !user.lastName) {
+      return res.status(401).json({ 
+        valid: false, 
+        message: 'User profile incomplete in database' 
+      });
+    }
+    
+    // Return user without password
+    const { password: _, ...userWithoutPassword } = user;
+    
+    res.json({ 
+      valid: true, 
+      user: userWithoutPassword,
+      verified: true,
+      verifiedAt: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Token verification error:', error.message);
+    res.status(401).json({ valid: false, message: 'Invalid or expired token' });
+  }
+});
+
+// Fast health check for connection status
+router.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: Date.now(),
+    serverTime: new Date().toISOString()
+  });
+});
+
 // Login route avec validation
 router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
   try {
@@ -18,6 +72,13 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
     if (!user) {
       // Message générique pour éviter l'énumération des utilisateurs
       return res.status(401).json({ message: 'Identifiants invalides' });
+    }
+    
+    // CRITICAL: Verify user profile exists and is complete
+    if (!user.id || !user.email || !user.firstName || !user.lastName) {
+      return res.status(401).json({ 
+        message: 'Profil utilisateur incomplet dans la base de données' 
+      });
     }
     
     // Check password with bcrypt compare
@@ -36,7 +97,9 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
     const { password: _, ...userWithoutPassword } = user;
     res.json({
       user: userWithoutPassword,
-      token
+      token,
+      verified: true,
+      loginTime: new Date().toISOString()
     });
   } catch (error) {
     console.error('Login error:', error.message);
@@ -128,7 +191,9 @@ router.post('/register', validateRequest(validationSchemas.register), (req, res)
     // Return user data and token
     res.status(201).json({
       user: newUser,
-      token
+      token,
+      verified: true,
+      registeredAt: new Date().toISOString()
     });
   } catch (error) {
     console.error('Register error:', error.message);
