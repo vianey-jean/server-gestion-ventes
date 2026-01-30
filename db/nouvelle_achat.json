@@ -10,5 +10,21 @@
     "caracteristiques": "perruque bouclé frange blonde miel14 pouces",
     "totalCost": 36.79,
     "type": "achat_produit"
+  },
+  {
+    "id": "1769748442397",
+    "date": "2026-01-30T04:47:22.395Z",
+    "description": "Paiement taxe douanes fedex pour colis 1 du 26/01/26",
+    "totalCost": 10,
+    "type": "taxes",
+    "categorie": "divers"
+  },
+  {
+    "id": "1769748469952",
+    "date": "2026-01-30T04:47:49.951Z",
+    "description": "paiement taxe douanes fedex du colis 2 du 26/01/26",
+    "totalCost": 10,
+    "type": "taxes",
+    "categorie": "divers"
   }
 ]

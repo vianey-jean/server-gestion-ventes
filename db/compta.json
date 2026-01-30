@@ -3,18 +3,18 @@
     "id": "2026-01",
     "month": 1,
     "year": 2026,
-    "updatedAt": "2026-01-28T15:22:39.233Z",
+    "updatedAt": "2026-01-30T04:47:50.173Z",
     "salesTotal": 630,
     "salesCost": 152.11,
     "salesProfit": 377.89000000000004,
     "salesCount": 4,
     "achatsTotal": 36.79,
-    "depensesTotal": 0,
-    "beneficeReel": 341.1,
+    "depensesTotal": 20,
+    "beneficeReel": 321.1,
     "totalCredit": 630,
-    "totalDebit": 36.79,
-    "soldeNet": 593.21,
+    "totalDebit": 56.79,
+    "soldeNet": 573.21,
     "achatsCount": 1,
-    "depensesCount": 0
+    "depensesCount": 2
   }
 ]
