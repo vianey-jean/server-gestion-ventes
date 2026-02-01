@@ -26,5 +26,17 @@
     "totalCost": 10,
     "type": "taxes",
     "categorie": "divers"
+  },
+  {
+    "id": "1769940145476",
+    "date": "2026-01-31",
+    "productId": "1769940145473",
+    "productDescription": "Perruque lisse vert noir 24 pouces 220 Densité",
+    "purchasePrice": 115.2,
+    "quantity": 1,
+    "fournisseur": "Agairl Official Store",
+    "caracteristiques": "Perruque lisse vert noir 24 pouces 220 Densité",
+    "totalCost": 115.2,
+    "type": "achat_produit"
   }
 ]

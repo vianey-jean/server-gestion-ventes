@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-02",
+    "month": 2,
+    "year": 2026,
+    "updatedAt": "2026-02-01T10:02:25.933Z",
+    "salesTotal": 170,
+    "salesCost": 64.84,
+    "salesProfit": 105.16,
+    "salesCount": 1,
+    "achatsTotal": 0,
+    "depensesTotal": 0,
+    "beneficeReel": 105.16,
+    "totalCredit": 170,
+    "totalDebit": 0,
+    "soldeNet": 170,
+    "achatsCount": 0,
+    "depensesCount": 0
+  },
+  {
     "id": "2026-01",
     "month": 1,
     "year": 2026,

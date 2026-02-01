@@ -573,7 +573,7 @@
     "id": "1756486622500",
     "description": "Perruque bouclé blonde miel blanche 24 pouces",
     "purchasePrice": 64.84,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": "1756657529781",
@@ -615,7 +615,7 @@
     "id": "1758025491344",
     "description": "Colle",
     "purchasePrice": 3,
-    "quantity": 4
+    "quantity": 1
   },
   {
     "id": "1758025563599",
@@ -832,5 +832,12 @@
     "description": "Perruque bouclé rouge bordeaux 24 pouces",
     "purchasePrice": 57.06,
     "quantity": 0
+  },
+  {
+    "id": "1769940145473",
+    "description": "Perruque lisse vert noir 24 pouces 220 Densité",
+    "purchasePrice": 115.2,
+    "quantity": 1,
+    "sellingPrice": 0
   }
 ]

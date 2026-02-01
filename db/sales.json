@@ -3358,5 +3358,53 @@
     "clientPhone": "0693421305",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1769939891221",
+    "date": "2026-02-01",
+    "products": [
+      {
+        "productId": "1756486622500",
+        "description": "Perruque bouclé blonde miel blanche 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 64.84,
+        "sellingPrice": 170,
+        "profit": 105.16,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 64.84,
+    "totalSellingPrice": 170,
+    "totalProfit": 105.16,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1769940034642",
+    "date": "2026-01-31",
+    "products": [
+      {
+        "productId": "1758025491344",
+        "description": "Colle",
+        "quantitySold": 3,
+        "purchasePrice": 9,
+        "sellingPrice": 30,
+        "profit": 21,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 9,
+    "totalSellingPrice": 30,
+    "totalProfit": 21,
+    "clientName": "Cha Mallow Perle d'ocean",
+    "clientAddress": "24 rue du verger Camélias saint Denis",
+    "clientPhone": "06",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
