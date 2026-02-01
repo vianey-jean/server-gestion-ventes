@@ -30,7 +30,7 @@
     "heureDebut": "10:00",
     "heureFin": "11:00",
     "lieu": "La Marie Saint-André",
-    "statut": "planifie",
+    "statut": "annule",
     "notes": "Créé depuis une réservation",
     "produits": [
       {
@@ -44,6 +44,60 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-01-27T08:22:46.555Z",
-    "updatedAt": "2026-01-27T08:22:46.555Z"
+    "updatedAt": "2026-02-01T12:52:58.966Z"
+  },
+  {
+    "id": "1769951357921",
+    "titre": "Livraison perruque blonde miel cliente au port",
+    "description": "Livraison perruque blonde miel cliente au port",
+    "clientNom": "Naellyah Bgd",
+    "clientTelephone": "0692509767",
+    "clientAdresse": "La banque postale le port",
+    "date": "2026-02-06",
+    "heureDebut": "10:00",
+    "heureFin": "11:00",
+    "lieu": "La banque postale le port",
+    "statut": "planifie",
+    "notes": "Créé depuis une réservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé blonde miel 26 pouces",
+        "quantite": 1,
+        "prixUnitaire": 60.6,
+        "prixVente": 170
+      }
+    ],
+    "commandeId": "1769951334071",
+    "notificationEnvoyee": false,
+    "rappelEnvoye": false,
+    "createdAt": "2026-02-01T13:09:17.921Z",
+    "updatedAt": "2026-02-01T13:09:17.921Z"
+  },
+  {
+    "id": "1769951513648",
+    "titre": "Livraison de reservation perruque bleu de ma warren",
+    "description": "Livraison de reservation perruque bleu de ma warren",
+    "clientNom": "Ma Warren Chaudron",
+    "clientTelephone": "0693647609",
+    "clientAdresse": "Mail Chaudron",
+    "date": "2026-02-06",
+    "heureDebut": "11:00",
+    "heureFin": "12:00",
+    "lieu": "Mail Chaudron",
+    "statut": "planifie",
+    "notes": "Créé depuis une réservation",
+    "produits": [
+      {
+        "nom": "Perruque lisse bleu 24 pouces",
+        "quantite": 1,
+        "prixUnitaire": 62.61,
+        "prixVente": 170
+      }
+    ],
+    "commandeId": "1769951490361",
+    "notificationEnvoyee": false,
+    "rappelEnvoye": false,
+    "createdAt": "2026-02-01T13:11:53.648Z",
+    "updatedAt": "2026-02-01T13:11:53.648Z"
   }
 ]

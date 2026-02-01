@@ -123,7 +123,7 @@
     "id": "1745933865809",
     "description": "Perruque lisse noir en frange de 26 pouces",
     "purchasePrice": 48.39,
-    "quantity": 1
+    "quantity": 2
   },
   {
     "id": "1745933978887",
@@ -326,8 +326,8 @@
   {
     "id": "1748490364800",
     "description": "Perruque bouclé noir 30 pouces",
-    "purchasePrice": 53.85,
-    "quantity": 0
+    "purchasePrice": 56.52,
+    "quantity": 2
   },
   {
     "id": "1748527396369",
@@ -566,8 +566,8 @@
   {
     "id": "1755342766044",
     "description": "Perruque bouclé blonde miel de 24 pouces",
-    "purchasePrice": 54.26,
-    "quantity": 0
+    "purchasePrice": 70.4,
+    "quantity": 1
   },
   {
     "id": "1756486622500",
@@ -704,8 +704,8 @@
   {
     "id": "1762441427899",
     "description": "Perruque lisse noir 24 pouces",
-    "purchasePrice": 50.46,
-    "quantity": 0
+    "purchasePrice": 44.99,
+    "quantity": 1
   },
   {
     "id": "1762516167800",
@@ -830,8 +830,8 @@
   {
     "id": "1768104913793",
     "description": "Perruque bouclé rouge bordeaux 24 pouces",
-    "purchasePrice": 57.06,
-    "quantity": 0
+    "purchasePrice": 47.61,
+    "quantity": 1
   },
   {
     "id": "1769940145473",
@@ -839,5 +839,47 @@
     "purchasePrice": 115.2,
     "quantity": 1,
     "sellingPrice": 0
+  },
+  {
+    "id": "1769950675673",
+    "description": "Perruque bouclé blonde miel 20 pouces",
+    "purchasePrice": 47.13,
+    "quantity": 1
+  },
+  {
+    "id": "1769950715068",
+    "description": "Perruque bouclé blonde miel 26 pouces",
+    "purchasePrice": 60.6,
+    "quantity": 1
+  },
+  {
+    "id": "1769950767834",
+    "description": "Perruque bouclé blonde miel 30 pouces",
+    "purchasePrice": 74.91,
+    "quantity": 1
+  },
+  {
+    "id": "1769950834094",
+    "description": "Perruque bouclé blonde marron 30 pouces",
+    "purchasePrice": 56.9,
+    "quantity": 1
+  },
+  {
+    "id": "1769951092414",
+    "description": "Perruque bouclé rouge bordeaux 30 pouces",
+    "purchasePrice": 69.67,
+    "quantity": 1
+  },
+  {
+    "id": "1769951171201",
+    "description": "Perruque bouclé marron 24 pouces",
+    "purchasePrice": 45.84,
+    "quantity": 1
+  },
+  {
+    "id": "1769951447383",
+    "description": "Perruque lisse bleu 24 pouces",
+    "purchasePrice": 62.61,
+    "quantity": 2
   }
 ]

@@ -10,8 +10,9 @@
     "rdvHeureFin": "08:15",
     "rdvLieu": "191 rue Léopold Martin St André",
     "message": "Rendez-vous dans moins de 24h: Livraison pour essayage beaucoup perruque",
-    "read": false,
-    "createdAt": "2025-12-23T19:21:12.478Z"
+    "read": true,
+    "createdAt": "2025-12-23T19:21:12.478Z",
+    "updatedAt": "2026-02-01T13:13:13.804Z"
   },
   {
     "id": "1769502166557",
@@ -24,9 +25,41 @@
     "rdvHeureFin": "11:00",
     "rdvLieu": "La Marie Saint-André",
     "message": "Rendez-vous dans moins de 24h: Livraison pour Clara Miandry St André",
+    "read": true,
+    "statut": "annule",
+    "createdAt": "2026-01-27T08:22:46.557Z",
+    "updatedAt": "2026-02-01T12:52:58.970Z"
+  },
+  {
+    "id": "1769951357925",
+    "rdvId": "1769951357921",
+    "rdvTitre": "Livraison perruque blonde miel cliente au port",
+    "rdvClientNom": "Naellyah Bgd",
+    "rdvClientTelephone": "0692509767",
+    "rdvDate": "2026-02-06",
+    "rdvHeureDebut": "10:00",
+    "rdvHeureFin": "11:00",
+    "rdvLieu": "La banque postale le port",
+    "message": "Rendez-vous dans moins de 24h: Livraison perruque blonde miel cliente au port",
     "read": false,
     "statut": "actif",
-    "createdAt": "2026-01-27T08:22:46.557Z",
-    "updatedAt": "2026-01-27T08:22:46.557Z"
+    "createdAt": "2026-02-01T13:09:17.925Z",
+    "updatedAt": "2026-02-01T13:09:17.925Z"
+  },
+  {
+    "id": "1769951513650",
+    "rdvId": "1769951513648",
+    "rdvTitre": "Livraison de reservation perruque bleu de ma warren",
+    "rdvClientNom": "Ma Warren Chaudron",
+    "rdvClientTelephone": "0693647609",
+    "rdvDate": "2026-02-06",
+    "rdvHeureDebut": "11:00",
+    "rdvHeureFin": "12:00",
+    "rdvLieu": "Mail Chaudron",
+    "message": "Rendez-vous dans moins de 24h: Livraison de reservation perruque bleu de ma warren",
+    "read": false,
+    "statut": "actif",
+    "createdAt": "2026-02-01T13:11:53.649Z",
+    "updatedAt": "2026-02-01T13:11:53.649Z"
   }
 ]
