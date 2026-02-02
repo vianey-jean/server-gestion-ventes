@@ -881,5 +881,11 @@
     "description": "Perruque lisse bleu 24 pouces",
     "purchasePrice": 62.61,
     "quantity": 2
+  },
+  {
+    "id": "1770051156904",
+    "description": "Perruque lisse gris 24 pouces",
+    "purchasePrice": 52.17,
+    "quantity": 0
   }
 ]

@@ -48,30 +48,36 @@
   },
   {
     "id": "1769951357921",
-    "titre": "Livraison perruque blonde miel cliente au port",
-    "description": "Livraison perruque blonde miel cliente au port",
+    "titre": "Réservation: Perruque bouclé blonde miel 26 pouces, Colle",
+    "description": "Produits réservés:\n- Perruque bouclé blonde miel 26 pouces x1 (170 Ar)\n- Colle x1 (10 Ar)",
     "clientNom": "Naellyah Bgd",
     "clientTelephone": "0692509767",
     "clientAdresse": "La banque postale le port",
     "date": "2026-02-06",
-    "heureDebut": "10:00",
-    "heureFin": "11:00",
+    "heureDebut": "08:30",
+    "heureFin": "09:30",
     "lieu": "La banque postale le port",
     "statut": "planifie",
-    "notes": "Créé depuis une réservation",
+    "notes": "Créé automatiquement depuis une réservation",
     "produits": [
       {
         "nom": "Perruque bouclé blonde miel 26 pouces",
         "quantite": 1,
         "prixUnitaire": 60.6,
         "prixVente": 170
+      },
+      {
+        "nom": "Colle",
+        "quantite": 1,
+        "prixUnitaire": 3,
+        "prixVente": 10
       }
     ],
     "commandeId": "1769951334071",
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-01T13:09:17.921Z",
-    "updatedAt": "2026-02-01T13:09:17.921Z"
+    "updatedAt": "2026-02-02T16:56:52.024Z"
   },
   {
     "id": "1769951513648",

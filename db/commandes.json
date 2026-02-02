@@ -477,13 +477,20 @@
         "prixUnitaire": 60.6,
         "quantite": 1,
         "prixVente": 170
+      },
+      {
+        "nom": "Colle",
+        "prixUnitaire": 3,
+        "quantite": 1,
+        "prixVente": 10
       }
     ],
-    "dateCommande": "2026-02-01T13:08:53.976Z",
+    "dateCommande": "2026-02-02T16:56:51.720Z",
     "statut": "en_attente",
     "dateEcheance": "2026-02-06",
-    "horaire": "10:00",
-    "createdAt": "2026-02-01T13:08:54.071Z"
+    "horaire": "08:30",
+    "createdAt": "2026-02-01T13:08:54.071Z",
+    "updatedAt": "2026-02-02T16:56:51.822Z"
   },
   {
     "id": "1769951490361",

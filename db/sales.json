@@ -3406,5 +3406,29 @@
     "clientPhone": "06",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1770051220185",
+    "date": "2026-02-02",
+    "products": [
+      {
+        "productId": "1770051156904",
+        "description": "Perruque lisse gris 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 52.17,
+        "sellingPrice": 170,
+        "profit": 117.83,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 52.17,
+    "totalSellingPrice": 170,
+    "totalProfit": 117.83,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
