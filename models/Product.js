@@ -47,20 +47,24 @@ if (descLower.includes('perruque')) {
   let attempts = 0;
   const maxAttempts = 100;
   
-  do {
-    // Commencer avec la première lettre (P, T , E ou X)
-    code = firstChar;
-    
-    // Ajouter les chiffres si présents
-    code += numberPart;
-    
-    // Compléter avec des lettres aléatoires jusqu'à 7 caractères
-    while (code.length < 9) {
-      code += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-    }
-    
-    attempts++;
-  } while (existingCodes.includes(code) && attempts < maxAttempts);
+ do {
+  // Partie 1 : lettre initiale (P, T, E ou X)
+  const part1 = firstChar;
+
+  // Partie 2 : nombre ou "XC" si vide
+  const part2 = numberPart && numberPart.length > 0 ? numberPart : "XC";
+
+  // Partie 3 : 6 lettres aléatoires
+  let part3 = "";
+  while (part3.length < 6) {
+    part3 += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+  }
+
+  // Assemblage du code final
+  code = `${part1}-${part2}-${part3}`;
+
+  attempts++;
+} while (existingCodes.includes(code) && attempts < maxAttempts);
   
   return code;
 };
