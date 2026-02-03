@@ -16,6 +16,28 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Generate codes for existing products without codes
+router.post('/generate-codes', authMiddleware, async (req, res) => {
+  try {
+    console.log('🔧 API: Generating codes for existing products...');
+    const result = Product.generateCodesForExistingProducts();
+    
+    if (result.success) {
+      console.log(`✅ API: Generated codes for ${result.updatedCount} products`);
+      res.json({ 
+        message: `Codes générés pour ${result.updatedCount} produits`,
+        updatedCount: result.updatedCount 
+      });
+    } else {
+      console.error('❌ API: Error generating codes:', result.error);
+      res.status(500).json({ message: 'Error generating codes', error: result.error });
+    }
+  } catch (error) {
+    console.error('❌ API: Error generating codes:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Search products
 router.get('/search', async (req, res) => {
   try {

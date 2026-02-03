@@ -4,6 +4,81 @@ const path = require('path');
 
 const productsPath = path.join(__dirname, '../db/products.json');
 
+// ============================================
+// FONCTION DE GÉNÉRATION DE CODE UNIQUE
+// ============================================
+/**
+ * Génère un code unique de 7 caractères pour un produit
+ * - Commence par P si c'est une perruque, T si tissage, X sinon
+ * - Inclut les chiffres trouvés dans la description (ex: 20 pouces → 20)
+ * - Complète avec des lettres majuscules aléatoires
+ * @param {string} description - Description du produit
+ * @param {string[]} existingCodes - Codes déjà utilisés pour éviter les doublons
+ * @returns {string} Code unique de 7 caractères
+ */
+const generateProductCode = (description, existingCodes = []) => {
+  const descLower = description.toLowerCase();
+  
+  // Déterminer la première lettre selon le type de produit
+  let firstChar = 'X';
+
+if (descLower.includes('perruque')) {
+  firstChar = 'P';
+} else if (descLower.includes('tissage')) {
+  firstChar = 'T';
+} else if (descLower.includes('extension')) {
+  firstChar = 'E';
+}
+
+  
+  // Extraire les chiffres de la description (ex: "20 pouces" → "20")
+  const numbers = description.match(/\d+/g);
+  let numberPart = '';
+  if (numbers && numbers.length > 0) {
+    // Prendre le premier nombre trouvé (généralement la taille en pouces)
+    numberPart = numbers[0].substring(0, 2); // Max 2 chiffres
+  }
+  
+  // Lettres pour compléter le code
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  
+  // Générer un code unique
+  let code = '';
+  let attempts = 0;
+  const maxAttempts = 100;
+  
+  do {
+    // Commencer avec la première lettre (P, T , E ou X)
+    code = firstChar;
+    
+    // Ajouter les chiffres si présents
+    code += numberPart;
+    
+    // Compléter avec des lettres aléatoires jusqu'à 7 caractères
+    while (code.length < 9) {
+      code += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    }
+    
+    attempts++;
+  } while (existingCodes.includes(code) && attempts < maxAttempts);
+  
+  return code;
+};
+
+/**
+ * Récupère tous les codes existants des produits
+ * @returns {string[]} Liste des codes existants
+ */
+const getAllExistingCodes = () => {
+  try {
+    const data = fs.readFileSync(productsPath, 'utf8');
+    const products = JSON.parse(data);
+    return products.filter(p => p.code).map(p => p.code);
+  } catch (error) {
+    return [];
+  }
+};
+
 const Product = {
   // Get all products
   getAll: () => {
@@ -59,9 +134,16 @@ const Product = {
       const data = fs.readFileSync(productsPath, 'utf8');
       const products = JSON.parse(data);
       
-      // Create new product object
+      // Récupérer les codes existants pour éviter les doublons
+      const existingCodes = products.filter(p => p.code).map(p => p.code);
+      
+      // Générer un code unique pour le nouveau produit
+      const uniqueCode = generateProductCode(productData.description || '', existingCodes);
+      
+      // Create new product object with unique code
       const newProduct = {
         id: Date.now().toString(),
+        code: uniqueCode,
         ...productData
       };
       
@@ -71,7 +153,7 @@ const Product = {
       // Write back to file with proper formatting
       fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
       
-      console.log('✅ Product created successfully:', newProduct);
+      console.log('✅ Product created successfully with code:', newProduct.code, newProduct);
       console.log(`📊 Total products in database: ${products.length}`);
       
       return newProduct;
@@ -176,6 +258,41 @@ const Product = {
     } catch (error) {
       console.error("❌ Error updating product quantity:", error);
       return null;
+    }
+  },
+
+  // Ajouter des codes uniques à tous les produits existants qui n'en ont pas
+  generateCodesForExistingProducts: () => {
+    try {
+      console.log('🔧 Generating codes for existing products without codes...');
+      
+      const data = fs.readFileSync(productsPath, 'utf8');
+      let products = JSON.parse(data);
+      
+      // Récupérer tous les codes existants
+      const existingCodes = products.filter(p => p.code).map(p => p.code);
+      let updatedCount = 0;
+      
+      // Parcourir tous les produits et générer un code pour ceux qui n'en ont pas
+      products = products.map(product => {
+        if (!product.code) {
+          const newCode = generateProductCode(product.description || '', existingCodes);
+          existingCodes.push(newCode); // Ajouter le nouveau code pour éviter les doublons
+          updatedCount++;
+          console.log(`  ✅ Generated code ${newCode} for: ${product.description}`);
+          return { ...product, code: newCode };
+        }
+        return product;
+      });
+      
+      // Sauvegarder les modifications
+      fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
+      
+      console.log(`✅ Generated codes for ${updatedCount} products`);
+      return { success: true, updatedCount, products };
+    } catch (error) {
+      console.error("❌ Error generating codes for existing products:", error);
+      return { success: false, error: error.message };
     }
   }
 };
