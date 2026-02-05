@@ -3430,5 +3430,29 @@
     "clientPhone": "0693821738",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1770282641441",
+    "date": "2026-02-05",
+    "products": [
+      {
+        "productId": "1752213159276",
+        "description": "Perruque lisse marron 20 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 49.89,
+        "sellingPrice": 130,
+        "profit": 80.11,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 49.89,
+    "totalSellingPrice": 130,
+    "totalProfit": 80.11,
+    "clientName": "Hendrick Rtr",
+    "clientAddress": "2 rue Joseph luc Résidence de l'église st Clotilde",
+    "clientPhone": "0692369609",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

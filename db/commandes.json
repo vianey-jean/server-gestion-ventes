@@ -506,10 +506,53 @@
         "prixVente": 170
       }
     ],
-    "dateCommande": "2026-02-01T13:11:30.275Z",
+    "dateCommande": "2026-02-05T09:17:26.815Z",
+    "statut": "en_attente",
+    "dateEcheance": "2026-02-07",
+    "horaire": "14:00",
+    "createdAt": "2026-02-01T13:11:30.361Z",
+    "updatedAt": "2026-02-05T09:17:26.843Z"
+  },
+  {
+    "id": "1770282595983",
+    "clientNom": "Hendrick Rtr",
+    "clientPhone": "0692369609",
+    "clientAddress": "2 rue Joseph luc Résidence de l'église st Clotilde",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque lisse marron 20 pouces",
+        "prixUnitaire": 49.89,
+        "quantite": 1,
+        "prixVente": 130
+      }
+    ],
+    "dateCommande": "2026-02-05T09:09:55.867Z",
+    "statut": "valide",
+    "dateEcheance": "2026-02-05",
+    "horaire": "10:30",
+    "createdAt": "2026-02-05T09:09:55.983Z",
+    "saleId": "1770282641441",
+    "updatedAt": "2026-02-05T09:10:41.464Z"
+  },
+  {
+    "id": "1770282977285",
+    "clientNom": "Cya Bea",
+    "clientPhone": "0693535338",
+    "clientAddress": "A coté météo Caudron saint-denis",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque crépus lisse noir 24 pouces",
+        "prixUnitaire": 54.71,
+        "quantite": 1,
+        "prixVente": 170
+      }
+    ],
+    "dateCommande": "2026-02-05T09:16:17.249Z",
     "statut": "en_attente",
     "dateEcheance": "2026-02-06",
-    "horaire": "11:00",
-    "createdAt": "2026-02-01T13:11:30.361Z"
+    "horaire": "18:00",
+    "createdAt": "2026-02-05T09:16:17.285Z"
   }
 ]

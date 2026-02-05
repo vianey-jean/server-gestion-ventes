@@ -81,17 +81,17 @@
   },
   {
     "id": "1769951513648",
-    "titre": "Livraison de reservation perruque bleu de ma warren",
-    "description": "Livraison de reservation perruque bleu de ma warren",
+    "titre": "Réservation: Perruque lisse bleu 24 pouces",
+    "description": "Produits réservés:\n- Perruque lisse bleu 24 pouces x1 (170 Ar)",
     "clientNom": "Ma Warren Chaudron",
     "clientTelephone": "0693647609",
     "clientAdresse": "Mail Chaudron",
-    "date": "2026-02-06",
-    "heureDebut": "11:00",
-    "heureFin": "12:00",
+    "date": "2026-02-07",
+    "heureDebut": "14:00",
+    "heureFin": "15:00",
     "lieu": "Mail Chaudron",
     "statut": "planifie",
-    "notes": "Créé depuis une réservation",
+    "notes": "Créé automatiquement depuis une réservation",
     "produits": [
       {
         "nom": "Perruque lisse bleu 24 pouces",
@@ -104,6 +104,60 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-01T13:11:53.648Z",
-    "updatedAt": "2026-02-01T13:11:53.648Z"
+    "updatedAt": "2026-02-05T09:17:26.937Z"
+  },
+  {
+    "id": "1770282621644",
+    "titre": "Livraison Perruque Marron 20 pouces a St Clotilde",
+    "description": "Livraison Perruque Marron 20 pouces a St Clotilde",
+    "clientNom": "Hendrick Rtr",
+    "clientTelephone": "0692369609",
+    "clientAdresse": "2 rue Joseph luc Résidence de l'église st Clotilde",
+    "date": "2026-02-05",
+    "heureDebut": "10:30",
+    "heureFin": "11:30",
+    "lieu": "2 rue Joseph luc Résidence de l'église st Clotilde",
+    "statut": "confirme",
+    "notes": "Créé depuis une réservation",
+    "produits": [
+      {
+        "nom": "Perruque lisse marron 20 pouces",
+        "quantite": 1,
+        "prixUnitaire": 49.89,
+        "prixVente": 130
+      }
+    ],
+    "commandeId": "1770282595983",
+    "notificationEnvoyee": false,
+    "rappelEnvoye": false,
+    "createdAt": "2026-02-05T09:10:21.644Z",
+    "updatedAt": "2026-02-05T09:10:41.419Z"
+  },
+  {
+    "id": "1770282998897",
+    "titre": "Livraison pour Cya a méteo St Clotilde",
+    "description": "",
+    "clientNom": "Cya Bea",
+    "clientTelephone": "0693535338",
+    "clientAdresse": "A coté météo Caudron saint-denis",
+    "date": "2026-02-06",
+    "heureDebut": "18:00",
+    "heureFin": "19:00",
+    "lieu": "A coté météo Caudron saint-denis",
+    "statut": "planifie",
+    "notes": "Créé depuis une réservation",
+    "produits": [
+      {
+        "nom": "Perruque crépus lisse noir 24 pouces",
+        "quantite": 1,
+        "prixUnitaire": 54.71,
+        "prixVente": 170
+      }
+    ],
+    "commandeId": "1770282977285",
+    "notificationEnvoyee": false,
+    "rappelEnvoye": false,
+    "createdAt": "2026-02-05T09:16:38.897Z",
+    "updatedAt": "2026-02-05T09:16:38.897Z"
   }
 ]
