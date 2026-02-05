@@ -3454,5 +3454,29 @@
     "clientPhone": "0692369609",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1770290613028",
+    "date": "2026-02-05",
+    "products": [
+      {
+        "productId": "1769950834094",
+        "description": "Perruque bouclé blonde marron 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 56.9,
+        "sellingPrice": 160,
+        "profit": 103.1,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 56.9,
+    "totalSellingPrice": 160,
+    "totalProfit": 103.1,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
