@@ -486,11 +486,12 @@
       }
     ],
     "dateCommande": "2026-02-02T16:56:51.720Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2026-02-06",
     "horaire": "08:30",
     "createdAt": "2026-02-01T13:08:54.071Z",
-    "updatedAt": "2026-02-02T16:56:51.822Z"
+    "updatedAt": "2026-02-06T11:03:05.113Z",
+    "saleId": "1770375785091"
   },
   {
     "id": "1769951490361",

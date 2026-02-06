@@ -717,7 +717,7 @@
     "id": "1758025491344",
     "description": "Colle",
     "purchasePrice": 3,
-    "quantity": 1,
+    "quantity": 0,
     "code": "X-XC-MBQCHJ"
   },
   {
@@ -991,7 +991,7 @@
     "id": "1769950715068",
     "description": "Perruque bouclé blonde miel 26 pouces",
     "purchasePrice": 60.6,
-    "quantity": 1,
+    "quantity": 0,
     "code": "P-26-RWYWBJ"
   },
   {
@@ -1035,5 +1035,12 @@
     "purchasePrice": 52.17,
     "quantity": 0,
     "code": "P-24-GPBGLB"
+  },
+  {
+    "id": "1770376072749",
+    "code": "T-30-MMCUSI",
+    "description": "Tissages bouclé noir 30 pouces",
+    "purchasePrice": 33.89,
+    "quantity": 0
   }
 ]

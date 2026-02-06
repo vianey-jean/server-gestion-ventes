@@ -3478,5 +3478,87 @@
     "clientPhone": "0693821738",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1770375785091",
+    "date": "2026-02-06",
+    "products": [
+      {
+        "productId": "1769950715068",
+        "description": "Perruque bouclé blonde miel 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 60.6,
+        "sellingPrice": 170,
+        "profit": 109.4,
+        "deliveryFee": 0,
+        "deliveryLocation": "La Possession"
+      },
+      {
+        "productId": "1758025491344",
+        "description": "Colle",
+        "quantitySold": 1,
+        "purchasePrice": 3,
+        "sellingPrice": 10,
+        "profit": 7,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 63.6,
+    "totalSellingPrice": 180,
+    "totalProfit": 116.4,
+    "clientName": "Naellyah Bgd",
+    "clientAddress": "La banque postale le port",
+    "clientPhone": "0692509767",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1770375901911",
+    "date": "2026-02-06",
+    "products": [
+      {
+        "productId": "1746811570529",
+        "description": "Avance Perruque ou Tissages",
+        "quantitySold": 0,
+        "purchasePrice": 0,
+        "sellingPrice": 80,
+        "profit": 0,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 0,
+    "totalSellingPrice": 80,
+    "totalProfit": 0,
+    "clientName": "Copine Emilienne",
+    "clientAddress": "Vaubon",
+    "clientPhone": "06",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1770376200716",
+    "date": "2026-02-06",
+    "products": [
+      {
+        "productId": "1770376072749",
+        "description": "Tissages bouclé noir 30 pouces",
+        "quantitySold": 3,
+        "purchasePrice": 101.67,
+        "sellingPrice": 240,
+        "profit": 138.33,
+        "deliveryFee": 0,
+        "deliveryLocation": "Le Port"
+      }
+    ],
+    "totalPurchasePrice": 101.67,
+    "totalSellingPrice": 240,
+    "totalProfit": 138.33,
+    "clientName": "Loic Sabrina Mortel",
+    "clientAddress": "15  rue saint Ange doxile Le Port",
+    "clientPhone": "0692109069",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

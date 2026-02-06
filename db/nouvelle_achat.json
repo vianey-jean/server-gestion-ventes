@@ -38,5 +38,13 @@
     "caracteristiques": "Perruque lisse vert noir 24 pouces 220 Densité",
     "totalCost": 115.2,
     "type": "achat_produit"
+  },
+  {
+    "id": "1770376281817",
+    "date": "2026-02-06T00:00:00.000Z",
+    "description": "Taxes chronoposte des tissages",
+    "totalCost": 67.99,
+    "type": "taxes",
+    "categorie": "divers"
   }
 ]

@@ -57,7 +57,7 @@
     "heureDebut": "08:30",
     "heureFin": "09:30",
     "lieu": "La banque postale le port",
-    "statut": "planifie",
+    "statut": "confirme",
     "notes": "Créé automatiquement depuis une réservation",
     "produits": [
       {
@@ -77,7 +77,7 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-01T13:09:17.921Z",
-    "updatedAt": "2026-02-02T16:56:52.024Z"
+    "updatedAt": "2026-02-06T11:03:05.063Z"
   },
   {
     "id": "1769951513648",
