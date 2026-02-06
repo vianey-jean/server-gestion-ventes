@@ -228,12 +228,22 @@ const NouvelleAchat = {
         return null;
       }
       
+      const existing = achats[achatIndex];
+      const nextType = achatData.type ?? existing.type;
+      const isAchatProduit = nextType === 'achat_produit';
+
       // Calculer le nouveau totalCost
+      // - Achat produit: totalCost = purchasePrice * quantity
+      // - Dépense: totalCost = montant saisi (pas de quantity)
+      const totalCost = isAchatProduit
+        ? (Number(achatData.purchasePrice ?? existing.purchasePrice ?? 0) *
+           Number(achatData.quantity ?? existing.quantity ?? 0))
+        : Number(achatData.totalCost ?? achatData.montant ?? achatData.purchasePrice ?? existing.totalCost ?? 0);
+
       const updatedData = {
-        ...achats[achatIndex],
+        ...existing,
         ...achatData,
-        totalCost: Number(achatData.purchasePrice || achats[achatIndex].purchasePrice) * 
-                   Number(achatData.quantity || achats[achatIndex].quantity)
+        totalCost
       };
       
       achats[achatIndex] = updatedData;
