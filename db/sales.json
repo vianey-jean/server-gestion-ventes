@@ -3560,5 +3560,77 @@
     "clientPhone": "0692109069",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1770470487161",
+    "date": "2026-02-07",
+    "products": [
+      {
+        "productId": "1749734681713",
+        "description": "Perruque blonde blanche 26 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 55.29,
+        "sellingPrice": 170,
+        "profit": 114.71,
+        "deliveryFee": 0,
+        "deliveryLocation": "Exonération"
+      }
+    ],
+    "totalPurchasePrice": 55.29,
+    "totalSellingPrice": 170,
+    "totalProfit": 114.71,
+    "clientName": "Orchidée Angela",
+    "clientAddress": "22 rue du génértal de gaulle saint louis",
+    "clientPhone": "0693818015",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1770470603123",
+    "date": "2026-02-07",
+    "products": [
+      {
+        "productId": "1762354827313",
+        "description": "Perruques lisse marron 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 53.7,
+        "sellingPrice": 180,
+        "profit": 126.3,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 53.7,
+    "totalSellingPrice": 180,
+    "totalProfit": 126.3,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1770470662460",
+    "date": "2026-02-07",
+    "products": [
+      {
+        "productId": "1753356444320",
+        "description": "Tissages bouclé blonde miel 18 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 28.06,
+        "sellingPrice": 80,
+        "profit": 51.94,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 28.06,
+    "totalSellingPrice": 80,
+    "totalProfit": 51.94,
+    "clientName": "Laurence Longlade",
+    "clientAddress": "Parking la mairie annexe bellepierre",
+    "clientPhone": "0692418079",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

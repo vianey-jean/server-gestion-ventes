@@ -46,5 +46,13 @@
     "totalCost": 67.99,
     "type": "taxes",
     "categorie": "divers"
+  },
+  {
+    "id": "1770470808743",
+    "date": "2026-02-07T00:00:00.000Z",
+    "description": "Achat carburant pour livraison 07/02/26",
+    "totalCost": 20,
+    "type": "carburant",
+    "categorie": "divers"
   }
 ]
