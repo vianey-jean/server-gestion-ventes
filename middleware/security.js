@@ -122,6 +122,10 @@ const validators = {
   date: (date) => {
     const d = new Date(date);
     return !isNaN(d.getTime());
+  },
+  
+  boolean: (value) => {
+    return typeof value === 'boolean' || value === 'true' || value === 'false';
   }
 };
 
@@ -232,6 +236,9 @@ const validateRequest = (schema) => {
         }
         if (rules.type === 'date' && !validators.date(value)) {
           errors.push(`${field} doit être une date valide`);
+        }
+        if (rules.type === 'boolean' && !validators.boolean(value)) {
+          errors.push(`${field} doit être un booléen valide`);
         }
       }
     }

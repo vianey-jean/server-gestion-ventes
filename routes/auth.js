@@ -201,60 +201,77 @@ router.post('/register', validateRequest(validationSchemas.register), (req, res)
   }
 });
 
-// Reset password request route
+// Reset password request route - verify email exists
 router.post('/reset-password-request', (req, res) => {
   try {
     const { email } = req.body;
     
     if (!email) {
-      return res.status(400).json({ message: 'Email is required' });
+      return res.status(400).json({ exists: false, message: 'Email is required' });
     }
     
     const user = User.getByEmail(email);
     
     if (!user) {
-      return res.status(400).json({ message: 'Email not found' });
+      return res.status(200).json({ exists: false, message: 'Email not found' });
     }
     
-    // In a real app, send an email with a reset link
-    // Here we just return success
-    res.json({ success: true });
+    // Email exists - return success to allow password reset
+    res.json({ 
+      exists: true, 
+      success: true,
+      message: 'Email verified, proceed with password reset'
+    });
   } catch (error) {
     console.error('Reset password request error:', error);
-    res.status(500).json({ message: 'Internal server error during password reset request' });
+    res.status(500).json({ exists: false, message: 'Internal server error during password reset request' });
   }
 });
 
-// Reset password route
+// Reset password route - actually change the password
 router.post('/reset-password', (req, res) => {
   try {
     const { email, newPassword, confirmPassword } = req.body;
     
     if (!email || !newPassword || !confirmPassword) {
-      return res.status(400).json({ message: 'All fields are required' });
+      return res.status(400).json({ success: false, message: 'Tous les champs sont requis' });
     }
     
     if (newPassword !== confirmPassword) {
-      return res.status(400).json({ message: 'Passwords do not match' });
+      return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
+    }
+    
+    // Validate password strength
+    const hasLowerCase = /[a-z]/.test(newPassword);
+    const hasUpperCase = /[A-Z]/.test(newPassword);
+    const hasNumber = /[0-9]/.test(newPassword);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword);
+    const hasMinLength = newPassword.length >= 6;
+    
+    if (!hasLowerCase || !hasUpperCase || !hasNumber || !hasSpecialChar || !hasMinLength) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Le mot de passe doit contenir au moins 6 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial' 
+      });
     }
     
     // Check if user exists
     const user = User.getByEmail(email);
     if (!user) {
-      return res.status(400).json({ message: 'User not found' });
+      return res.status(400).json({ success: false, message: 'Utilisateur non trouvé' });
     }
     
     // Update password (hashing is handled in User.updatePassword)
     const success = User.updatePassword(email, newPassword);
     
     if (!success) {
-      return res.status(400).json({ message: 'New password must be different from old password' });
+      return res.status(400).json({ success: false, message: 'Le nouveau mot de passe doit être différent de l\'ancien' });
     }
     
-    res.json({ success: true });
+    res.json({ success: true, message: 'Mot de passe réinitialisé avec succès' });
   } catch (error) {
     console.error('Reset password error:', error);
-    res.status(500).json({ message: 'Internal server error during password reset' });
+    res.status(500).json({ success: false, message: 'Erreur lors de la réinitialisation du mot de passe' });
   }
 });
 

@@ -18,7 +18,8 @@ const validationSchemas = {
     lastName: { required: true, type: 'text', maxLength: 100 },
     phone: { required: true, type: 'phone' },
     address: { required: true, type: 'text', maxLength: 500 },
-    gender: { required: true, type: 'text', maxLength: 20 }
+    gender: { required: true, type: 'text', maxLength: 20 },
+    acceptTerms: { required: true, type: 'boolean' }
   },
   
   resetPassword: {
