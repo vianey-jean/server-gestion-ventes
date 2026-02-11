@@ -3666,5 +3666,39 @@
     "clientPhone": "0693821738",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1770795039706",
+    "date": "2026-02-11",
+    "products": [
+      {
+        "productId": "1770794882047",
+        "description": "Perruque bouclé blonde miel 22 pouces 350 densité",
+        "quantitySold": 1,
+        "purchasePrice": 160,
+        "sellingPrice": 260,
+        "profit": 100,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      },
+      {
+        "productId": "1758025563599",
+        "description": "Disolvant",
+        "quantitySold": 2,
+        "purchasePrice": 2,
+        "sellingPrice": 15,
+        "profit": 13,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 162,
+    "totalSellingPrice": 60,
+    "totalProfit": 113,
+    "clientName": "Emilienne Nomenjanahary",
+    "clientAddress": "Vaubon saint denis",
+    "clientPhone": "0693326932",
+    "reste": 215,
+    "nextPaymentDate": "2026-02-28"
   }
 ]

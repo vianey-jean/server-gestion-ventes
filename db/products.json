@@ -322,13 +322,6 @@
     "code": "P-13-RSNGNU"
   },
   {
-    "id": "1746197176031",
-    "description": "Colle et disolvant",
-    "purchasePrice": 5,
-    "quantity": 0,
-    "code": "X-XC-SFFEWC"
-  },
-  {
     "id": "1746811388842",
     "description": "Perruque lisse court noir 13x4",
     "purchasePrice": 14.08,
@@ -668,7 +661,7 @@
     "id": "1756486622500",
     "description": "Perruque bouclé blonde miel blanche 24 pouces",
     "purchasePrice": 64.84,
-    "quantity": 0,
+    "quantity": 1,
     "code": "P-24-ZMMMMP"
   },
   {
@@ -717,14 +710,14 @@
     "id": "1758025491344",
     "description": "Colle",
     "purchasePrice": 3,
-    "quantity": 0,
+    "quantity": 8,
     "code": "X-XC-MBQCHJ"
   },
   {
     "id": "1758025563599",
     "description": "Disolvant",
-    "purchasePrice": 1,
-    "quantity": 8,
+    "purchasePrice": 3,
+    "quantity": 0,
     "code": "X-XC-HJWRHH"
   },
   {
@@ -871,7 +864,7 @@
     "id": "1764132773740",
     "description": "perruque lisse noir 26 pouces",
     "purchasePrice": 44.59,
-    "quantity": 0,
+    "quantity": 1,
     "code": "P-26-CRRNHA"
   },
   {
@@ -1049,5 +1042,60 @@
     "description": "Tissages lisse blonde miel 20 pouces",
     "purchasePrice": 16.56,
     "quantity": 1
+  },
+  {
+    "id": "1770794882047",
+    "code": "P-22-NBGGLX",
+    "description": "Perruque bouclé blonde miel 22 pouces 350 densité",
+    "purchasePrice": 160,
+    "quantity": 0
+  },
+  {
+    "id": "1770795568715",
+    "code": "P-22-FHHIOP",
+    "description": "Perruque lisse blonde blanche 22 pouces",
+    "purchasePrice": 49.95,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1770795637093",
+    "code": "P-22-UVTHVB",
+    "description": "Perruque lisse blonde gris 22 pouces",
+    "purchasePrice": 54.64,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1770795723019",
+    "code": "P-24-TBYIIJ",
+    "description": "Perruque lisse marron 24 pouces",
+    "purchasePrice": 47.09,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1770795835198",
+    "code": "P-20-JJJJLK",
+    "description": "Perruque lisse frange blonde 20 pouces",
+    "purchasePrice": 36.24,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1770795912195",
+    "code": "T-20-RDKFLM",
+    "description": "Tissages lisse méche marron 20 pouces",
+    "purchasePrice": 17.39,
+    "quantity": 3,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1770796102705",
+    "code": "P-16-CBAQME",
+    "description": "Demi-Perruque bouclé noir 16 pouces",
+    "purchasePrice": 49.36,
+    "quantity": 1,
+    "sellingPrice": 0
   }
 ]

@@ -54,5 +54,117 @@
     "totalCost": 20,
     "type": "carburant",
     "categorie": "divers"
+  },
+  {
+    "id": "1770795470085",
+    "date": "2026-02-08T00:00:00.000Z",
+    "productId": "1764132773740",
+    "productDescription": "perruque lisse noir 26 pouces",
+    "purchasePrice": 44.59,
+    "quantity": 1,
+    "fournisseur": "Happy Friday Hair Store",
+    "caracteristiques": "perruque lisse noir 26 pouces",
+    "totalCost": 44.59,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770795568717",
+    "date": "2026-02-08T00:00:00.000Z",
+    "productId": "1770795568715",
+    "productDescription": "Perruque lisse blonde blanche 22 pouces",
+    "purchasePrice": 49.95,
+    "quantity": 1,
+    "fournisseur": "Happy Friday hair Store",
+    "caracteristiques": "Perruque lisse blonde blanche 22 pouces",
+    "totalCost": 49.95,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770795637095",
+    "date": "2026-02-08T00:00:00.000Z",
+    "productId": "1770795637093",
+    "productDescription": "Perruque lisse blonde gris 22 pouces",
+    "purchasePrice": 54.64,
+    "quantity": 1,
+    "fournisseur": "Happy Fraday Hair Store",
+    "caracteristiques": "Perruque lisse blonde gris 22 pouces",
+    "totalCost": 54.64,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770795723022",
+    "date": "2026-02-08T00:00:00.000Z",
+    "productId": "1770795723019",
+    "productDescription": "Perruque lisse marron 24 pouces",
+    "purchasePrice": 47.09,
+    "quantity": 1,
+    "fournisseur": "Happy Friday Hair Store",
+    "caracteristiques": "Perruque lisse marron 24 pouces",
+    "totalCost": 47.09,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770795775422",
+    "date": "2026-02-08T00:00:00.000Z",
+    "description": "Frais expedition fedex pour happy friday 08/02/2026",
+    "totalCost": 27.1,
+    "type": "autre_depense",
+    "categorie": "divers"
+  },
+  {
+    "id": "1770795835200",
+    "date": "2026-02-08T00:00:00.000Z",
+    "productId": "1770795835198",
+    "productDescription": "Perruque lisse frange blonde 20 pouces",
+    "purchasePrice": 36.24,
+    "quantity": 1,
+    "fournisseur": "Black Pearl",
+    "caracteristiques": "Perruque lisse frange blonde 20 pouces",
+    "totalCost": 36.24,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770795912198",
+    "date": "2026-02-09T00:00:00.000Z",
+    "productId": "1770795912195",
+    "productDescription": "Tissages lisse méche marron 20 pouces",
+    "purchasePrice": 17.39,
+    "quantity": 3,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Tissages lisse méche marron 20 pouces",
+    "totalCost": 52.17,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770796048262",
+    "date": "2026-02-09T00:00:00.000Z",
+    "productId": "1756486622500",
+    "productDescription": "Perruque bouclé blonde miel blanche 24 pouces",
+    "purchasePrice": 64.84,
+    "quantity": 1,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Perruque lisse blonde blanche 24 pouces",
+    "totalCost": 64.84,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770796102708",
+    "date": "2026-02-09T00:00:00.000Z",
+    "productId": "1770796102705",
+    "productDescription": "Demi-Perruque bouclé noir 16 pouces",
+    "purchasePrice": 49.36,
+    "quantity": 1,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Demi-Perruque bouclé noir 16 pouces",
+    "totalCost": 49.36,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1770796143670",
+    "date": "2026-02-09T00:00:00.000Z",
+    "description": "Frais fedex pour envoye perruque tissage pour sinuowei",
+    "totalCost": 32.47,
+    "type": "autre_depense",
+    "categorie": "divers"
   }
 ]
