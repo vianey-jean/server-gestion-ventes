@@ -86,11 +86,11 @@
     "clientNom": "Ma Warren Chaudron",
     "clientTelephone": "0693647609",
     "clientAdresse": "Mail Chaudron",
-    "date": "2026-02-07",
+    "date": "2026-03-06",
     "heureDebut": "14:00",
     "heureFin": "15:00",
     "lieu": "Mail Chaudron",
-    "statut": "planifie",
+    "statut": "reporte",
     "notes": "Créé automatiquement depuis une réservation",
     "produits": [
       {
@@ -104,7 +104,7 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-01T13:11:53.648Z",
-    "updatedAt": "2026-02-05T09:17:26.937Z"
+    "updatedAt": "2026-02-11T04:55:02.692Z"
   },
   {
     "id": "1770282621644",
@@ -140,11 +140,11 @@
     "clientNom": "Cya Bea",
     "clientTelephone": "0693535338",
     "clientAdresse": "A coté météo Caudron saint-denis",
-    "date": "2026-02-06",
+    "date": "2026-02-13",
     "heureDebut": "18:00",
     "heureFin": "19:00",
     "lieu": "A coté météo Caudron saint-denis",
-    "statut": "planifie",
+    "statut": "reporte",
     "notes": "Créé depuis une réservation",
     "produits": [
       {
@@ -158,6 +158,6 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-05T09:16:38.897Z",
-    "updatedAt": "2026-02-05T09:16:38.897Z"
+    "updatedAt": "2026-02-11T04:54:50.396Z"
   }
 ]

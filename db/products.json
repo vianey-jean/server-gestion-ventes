@@ -842,7 +842,7 @@
   {
     "id": "1762916485690",
     "description": "Perruque bouclé orange de 24 pouces",
-    "purchasePrice": 67.43,
+    "purchasePrice": 63.23,
     "quantity": 0,
     "code": "P-24-VRZLDS"
   },
@@ -1042,5 +1042,12 @@
     "description": "Tissages bouclé noir 30 pouces",
     "purchasePrice": 33.89,
     "quantity": 0
+  },
+  {
+    "id": "1770785586730",
+    "code": "T-20-NKDSMC",
+    "description": "Tissages lisse blonde miel 20 pouces",
+    "purchasePrice": 16.56,
+    "quantity": 1
   }
 ]

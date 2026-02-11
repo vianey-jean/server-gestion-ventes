@@ -3632,5 +3632,39 @@
     "clientPhone": "0692418079",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1770785634334",
+    "date": "2026-02-11",
+    "products": [
+      {
+        "productId": "1762916485690",
+        "description": "Perruque bouclé orange de 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 63.23,
+        "sellingPrice": 160,
+        "profit": 96.77,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      },
+      {
+        "productId": "1770785586730",
+        "description": "Tissages lisse blonde miel 20 pouces",
+        "quantitySold": 2,
+        "purchasePrice": 33.12,
+        "sellingPrice": 100,
+        "profit": 66.88,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 96.35,
+    "totalSellingPrice": 260,
+    "totalProfit": 163.64999999999998,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

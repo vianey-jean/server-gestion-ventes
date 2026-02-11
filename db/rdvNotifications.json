@@ -49,18 +49,18 @@
   {
     "id": "1769951513650",
     "rdvId": "1769951513648",
-    "rdvTitre": "Livraison de reservation perruque bleu de ma warren",
+    "rdvTitre": "Réservation: Perruque lisse bleu 24 pouces",
     "rdvClientNom": "Ma Warren Chaudron",
     "rdvClientTelephone": "0693647609",
-    "rdvDate": "2026-02-07",
+    "rdvDate": "2026-03-06",
     "rdvHeureDebut": "14:00",
     "rdvHeureFin": "15:00",
     "rdvLieu": "Mail Chaudron",
-    "message": "Rendez-vous reporté: Livraison de reservation perruque bleu de ma warren",
+    "message": "Rendez-vous reporté: Réservation: Perruque lisse bleu 24 pouces",
     "read": false,
     "statut": "reporte",
     "createdAt": "2026-02-01T13:11:53.649Z",
-    "updatedAt": "2026-02-05T09:12:32.004Z"
+    "updatedAt": "2026-02-11T04:55:02.693Z"
   },
   {
     "id": "1770282621646",
@@ -84,14 +84,14 @@
     "rdvTitre": "Livraison pour Cya a méteo St Clotilde",
     "rdvClientNom": "Cya Bea",
     "rdvClientTelephone": "0693535338",
-    "rdvDate": "2026-02-06",
+    "rdvDate": "2026-02-13",
     "rdvHeureDebut": "18:00",
     "rdvHeureFin": "19:00",
     "rdvLieu": "A coté météo Caudron saint-denis",
-    "message": "Rendez-vous dans moins de 24h: Livraison pour Cya a méteo St Clotilde",
+    "message": "Rendez-vous reporté: Livraison pour Cya a méteo St Clotilde",
     "read": false,
-    "statut": "actif",
+    "statut": "reporte",
     "createdAt": "2026-02-05T09:16:38.898Z",
-    "updatedAt": "2026-02-05T09:16:38.898Z"
+    "updatedAt": "2026-02-11T04:54:50.398Z"
   }
 ]
