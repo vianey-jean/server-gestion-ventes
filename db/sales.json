@@ -3700,5 +3700,29 @@
     "clientPhone": "0693326932",
     "reste": 215,
     "nextPaymentDate": "2026-02-28"
+  },
+  {
+    "id": "1771083426611",
+    "date": "2026-02-14",
+    "products": [
+      {
+        "productId": "1766226403095",
+        "description": "Perruque crépus lisse noir 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 54.71,
+        "sellingPrice": 170,
+        "profit": 115.29,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 54.71,
+    "totalSellingPrice": 170,
+    "totalProfit": 115.29,
+    "clientName": "Enna Mayl",
+    "clientAddress": "43 rue Eugene Dayot Sainbt André",
+    "clientPhone": "0693484601",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
