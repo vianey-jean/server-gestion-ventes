@@ -3724,5 +3724,53 @@
     "clientPhone": "0693484601",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1771176055117",
+    "date": "2026-02-15",
+    "products": [
+      {
+        "productId": "1769951092414",
+        "description": "Perruque bouclé rouge bordeaux 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 69.67,
+        "sellingPrice": 160,
+        "profit": 90.33,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 69.67,
+    "totalSellingPrice": 160,
+    "totalProfit": 90.33,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
+  },
+  {
+    "id": "1771176073810",
+    "date": "2026-02-15",
+    "products": [
+      {
+        "productId": "1758025491344",
+        "description": "Colle",
+        "quantitySold": 1,
+        "purchasePrice": 3,
+        "sellingPrice": 10,
+        "profit": 7,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 3,
+    "totalSellingPrice": 10,
+    "totalProfit": 7,
+    "clientName": "Latifa Olga",
+    "clientAddress": "Parking Gymnase Cazal Saint Denis",
+    "clientPhone": "0693497257",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
