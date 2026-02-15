@@ -1,3 +1,14 @@
+/**
+ * =============================================================================
+ * Middleware d'authentification JWT
+ * =============================================================================
+ * 
+ * Vérifie le token JWT dans le header Authorization (Bearer).
+ * Charge l'utilisateur complet depuis la BDD dans req.user.
+ * Retourne 401 si le token est absent, invalide ou l'utilisateur inexistant.
+ * 
+ * @module middleware/auth
+ */
 
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
