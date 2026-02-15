@@ -545,16 +545,16 @@
     "produits": [
       {
         "nom": "Perruque crépus lisse noir 24 pouces",
-        "prixUnitaire": 54.71,
+        "prixUnitaire": 53.94,
         "quantite": 1,
         "prixVente": 170
       }
     ],
-    "dateCommande": "2026-02-05T09:16:17.249Z",
-    "statut": "reporter",
-    "dateEcheance": "2026-02-13",
+    "dateCommande": "2026-02-15T08:53:39.349Z",
+    "statut": "en_attente",
+    "dateEcheance": "2026-02-21",
     "horaire": "18:00",
     "createdAt": "2026-02-05T09:16:17.285Z",
-    "updatedAt": "2026-02-11T04:54:50.372Z"
+    "updatedAt": "2026-02-15T08:53:39.379Z"
   }
 ]

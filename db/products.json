@@ -569,8 +569,8 @@
   {
     "id": "1753186907720",
     "description": "Tissages bouclé noir 16 poucess",
-    "purchasePrice": 11.02,
-    "quantity": 1,
+    "purchasePrice": 12.82,
+    "quantity": 4,
     "code": "T-16-VLKGOB"
   },
   {
@@ -940,9 +940,10 @@
   {
     "id": "1766226403095",
     "description": "Perruque crépus lisse noir 24 pouces",
-    "purchasePrice": 54.71,
-    "quantity": 0,
-    "code": "P-24-KPTRJN"
+    "purchasePrice": 53.94,
+    "quantity": 1,
+    "code": "P-24-KPTRJN",
+    "reserver": "oui"
   },
   {
     "id": "1766556445480",
@@ -1095,6 +1096,14 @@
     "code": "P-16-CBAQME",
     "description": "Demi-Perruque bouclé noir 16 pouces",
     "purchasePrice": 49.36,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1771145427633",
+    "code": "P-20-PEMBAS",
+    "description": "Perruque crépus lisse noir 20 pouces",
+    "purchasePrice": 43.98,
     "quantity": 1,
     "sellingPrice": 0
   }

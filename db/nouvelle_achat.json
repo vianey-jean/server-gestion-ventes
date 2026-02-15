@@ -166,5 +166,49 @@
     "totalCost": 32.47,
     "type": "autre_depense",
     "categorie": "divers"
+  },
+  {
+    "id": "1771145382240",
+    "date": "2026-02-04T00:00:00.000Z",
+    "productId": "1766226403095",
+    "productDescription": "Perruque crépus lisse noir 24 pouces",
+    "purchasePrice": 53.94,
+    "quantity": 1,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Perruque crépus lisse noir 24 pouces",
+    "totalCost": 53.94,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1771145427635",
+    "date": "2026-02-24T00:00:00.000Z",
+    "productId": "1771145427633",
+    "productDescription": "Perruque crépus lisse noir 20 pouces",
+    "purchasePrice": 43.98,
+    "quantity": 1,
+    "fournisseur": "sinuowei",
+    "caracteristiques": "Perruque crépus lisse noir 20 pouces",
+    "totalCost": 43.98,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1771145505502",
+    "date": "2026-02-14T00:00:00.000Z",
+    "productId": "1753186907720",
+    "productDescription": "Tissages bouclé noir 16 poucess",
+    "purchasePrice": 12.82,
+    "quantity": 3,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Tissages bouclé noir 16 poucess",
+    "totalCost": 38.46,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1771145545929",
+    "date": "2026-02-14T00:00:00.000Z",
+    "description": "Frais expedition Fedex",
+    "totalCost": 41,
+    "type": "autre_depense",
+    "categorie": "divers"
   }
 ]

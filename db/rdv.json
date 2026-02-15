@@ -135,22 +135,22 @@
   },
   {
     "id": "1770282998897",
-    "titre": "Livraison pour Cya a méteo St Clotilde",
-    "description": "",
+    "titre": "Réservation: Perruque crépus lisse noir 24 pouces",
+    "description": "Produits réservés:\n- Perruque crépus lisse noir 24 pouces x1 (170 Ar)",
     "clientNom": "Cya Bea",
     "clientTelephone": "0693535338",
     "clientAdresse": "A coté météo Caudron saint-denis",
-    "date": "2026-02-13",
+    "date": "2026-02-21",
     "heureDebut": "18:00",
     "heureFin": "19:00",
     "lieu": "A coté météo Caudron saint-denis",
-    "statut": "reporte",
-    "notes": "Créé depuis une réservation",
+    "statut": "planifie",
+    "notes": "Créé automatiquement depuis une réservation",
     "produits": [
       {
         "nom": "Perruque crépus lisse noir 24 pouces",
         "quantite": 1,
-        "prixUnitaire": 54.71,
+        "prixUnitaire": 53.94,
         "prixVente": 170
       }
     ],
@@ -158,6 +158,6 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-05T09:16:38.897Z",
-    "updatedAt": "2026-02-11T04:54:50.396Z"
+    "updatedAt": "2026-02-15T08:53:39.476Z"
   }
 ]
