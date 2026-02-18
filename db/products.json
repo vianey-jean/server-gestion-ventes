@@ -150,7 +150,7 @@
     "id": "1745933978887",
     "description": "Perruque cheveux gasy 16 pouces ",
     "purchasePrice": 19.79,
-    "quantity": 1,
+    "quantity": 0,
     "code": "P-16-XBIRUN"
   },
   {
@@ -878,7 +878,7 @@
     "id": "1764299613440",
     "description": "Tissages bouclé blonde miel 24 pouces",
     "purchasePrice": 26.43,
-    "quantity": 4,
+    "quantity": 2,
     "code": "T-24-HGMAOR"
   },
   {
@@ -1096,7 +1096,7 @@
     "code": "P-16-CBAQME",
     "description": "Demi-Perruque bouclé noir 16 pouces",
     "purchasePrice": 49.36,
-    "quantity": 1,
+    "quantity": 0,
     "sellingPrice": 0
   },
   {

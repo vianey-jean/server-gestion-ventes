@@ -210,5 +210,13 @@
     "totalCost": 41,
     "type": "autre_depense",
     "categorie": "divers"
+  },
+  {
+    "id": "1771423393896",
+    "date": "2026-02-18T00:00:00.000Z",
+    "description": "Taxes colis Fedex",
+    "totalCost": 10,
+    "type": "taxes",
+    "categorie": "divers"
   }
 ]
