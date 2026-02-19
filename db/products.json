@@ -1096,8 +1096,10 @@
     "code": "P-16-CBAQME",
     "description": "Demi-Perruque bouclé noir 16 pouces",
     "purchasePrice": 49.36,
-    "quantity": 0,
-    "sellingPrice": 0
+    "quantity": 1,
+    "sellingPrice": 0,
+    "photos": [],
+    "mainPhoto": null
   },
   {
     "id": "1771145427633",

@@ -4,6 +4,8 @@ const router = express.Router();
 const Product = require('../models/Product');
 const authMiddleware = require('../middleware/auth');
 const upload = require('../middleware/upload');
+const path = require('path');
+const fs = require('fs');
 
 // Get all products
 router.get('/', async (req, res) => {
@@ -209,6 +211,134 @@ router.post('/:id/image', authMiddleware, upload.single('image'), async (req, re
     res.json(updatedProduct);
   } catch (error) {
     console.error('Error uploading product image:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+});
+
+// Upload multiple photos for a product (requires authentication)
+router.post('/:id/photos', authMiddleware, upload.array('photos', 6), async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No photos uploaded' });
+    }
+
+    const product = Product.getById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const mainPhotoIndex = req.body.mainPhotoIndex !== undefined ? parseInt(req.body.mainPhotoIndex) : 0;
+    
+    // Build photo URLs
+    const newPhotoUrls = req.files.map(file => `/uploads/${file.filename}`);
+    
+    // Merge with existing photos if any
+    const existingPhotos = product.photos || [];
+    const allPhotos = [...existingPhotos, ...newPhotoUrls];
+    
+    // Determine main photo
+    let mainPhoto = req.body.mainPhotoUrl || newPhotoUrls[mainPhotoIndex] || newPhotoUrls[0];
+    if (!mainPhoto && allPhotos.length > 0) mainPhoto = allPhotos[0];
+
+    const updatedProduct = Product.update(req.params.id, { 
+      photos: allPhotos, 
+      mainPhoto 
+    });
+
+    console.log(`✅ Photos uploaded for product ${req.params.id}: ${newPhotoUrls.length} photos`);
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Error uploading product photos:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+});
+
+// Replace all photos for a product (requires authentication)
+router.put('/:id/photos', authMiddleware, upload.array('photos', 6), async (req, res) => {
+  try {
+    const product = Product.getById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const mainPhotoIndex = req.body.mainPhotoIndex !== undefined ? parseInt(req.body.mainPhotoIndex) : 0;
+    
+    // Parse kept existing photo URLs
+    let keptExistingUrls = [];
+    if (req.body.photosJson) {
+      try {
+        keptExistingUrls = JSON.parse(req.body.photosJson);
+      } catch(e) {}
+    }
+
+    // New uploaded file URLs
+    const newPhotoUrls = (req.files || []).map(file => `/uploads/${file.filename}`);
+    
+    // Combined photos: kept existing + new uploads
+    const photos = [...keptExistingUrls, ...newPhotoUrls];
+    const mainPhoto = photos[mainPhotoIndex] || photos[0] || null;
+
+    // Delete old photo files that are no longer kept
+    const oldPhotos = product.photos || [];
+    oldPhotos.forEach(oldUrl => {
+      if (!keptExistingUrls.includes(oldUrl)) {
+        try {
+          const filename = oldUrl.replace('/uploads/', '');
+          const filePath = path.join(__dirname, '../uploads', filename);
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            console.log(`🗑️ Deleted replaced photo: ${filename}`);
+          }
+        } catch (e) {
+          console.warn(`⚠️ Could not delete old photo: ${oldUrl}`);
+        }
+      }
+    });
+
+    const updatedProduct = Product.update(req.params.id, { photos, mainPhoto });
+    console.log(`✅ Photos updated for product ${req.params.id}`);
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product photos:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+});
+
+// Delete a specific photo from a product (requires authentication)
+router.delete('/:id/photos/:photoIndex', authMiddleware, async (req, res) => {
+  try {
+    const product = Product.getById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const photoIndex = parseInt(req.params.photoIndex);
+    const photos = product.photos || [];
+    
+    if (photoIndex < 0 || photoIndex >= photos.length) {
+      return res.status(400).json({ message: 'Invalid photo index' });
+    }
+
+    // Try to delete file from disk
+    const photoUrl = photos[photoIndex];
+    const filename = photoUrl.replace('/uploads/', '');
+    const filePath = path.join(__dirname, '../uploads', filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    photos.splice(photoIndex, 1);
+    
+    // Update main photo if needed
+    let mainPhoto = product.mainPhoto;
+    if (mainPhoto === photoUrl) {
+      mainPhoto = photos[0] || null;
+    }
+
+    const updatedProduct = Product.update(req.params.id, { photos, mainPhoto });
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Error deleting product photo:', error);
     res.status(500).json({ message: error.message || 'Server error' });
   }
 });

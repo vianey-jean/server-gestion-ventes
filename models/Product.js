@@ -196,7 +196,7 @@ const Product = {
     }
   },
 
-  // Delete product
+  // Delete product and its photos from disk
   delete: (id) => {
     try {
       console.log(`🗑️ Deleting product ${id}`);
@@ -213,6 +213,24 @@ const Product = {
       
       // Store product info for logging
       const deletedProduct = products[productIndex];
+      
+      // Delete all photo files from disk
+      const photos = deletedProduct.photos || [];
+      if (deletedProduct.mainPhoto && !photos.includes(deletedProduct.mainPhoto)) {
+        photos.push(deletedProduct.mainPhoto);
+      }
+      photos.forEach(photoUrl => {
+        try {
+          const filename = photoUrl.replace('/uploads/', '');
+          const filePath = path.join(__dirname, '../uploads', filename);
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            console.log(`🗑️ Deleted photo file: ${filename}`);
+          }
+        } catch (e) {
+          console.warn(`⚠️ Could not delete photo file: ${photoUrl}`, e.message);
+        }
+      });
       
       // Remove product from array
       products.splice(productIndex, 1);
