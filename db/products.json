@@ -1,17 +1,19 @@
 [
   {
-    "id": "1",
-    "description": "Perruque blanche gris 24 pouces",
-    "purchasePrice": 101,
-    "quantity": 0,
-    "code": "P-24-RNKYIE"
-  },
-  {
     "id": "2",
     "description": "Perruque bouclé noir 26 pouces",
     "purchasePrice": 49,
     "quantity": 0,
-    "code": "P-26-TKEAPJ"
+    "code": "P-26-TKEAPJ",
+    "photos": [
+      "/uploads/photos-1771586017133-2762798.jpg",
+      "/uploads/photos-1771586017136-882222416.jpg",
+      "/uploads/photos-1771586017136-894916417.jpg",
+      "/uploads/photos-1771586017139-353970214.jpg",
+      "/uploads/photos-1771586017139-509565501.jpg",
+      "/uploads/photos-1771586017140-270516827.jpg"
+    ],
+    "mainPhoto": "/uploads/photos-1771586017133-2762798.jpg"
   },
   {
     "id": "4",
@@ -513,9 +515,16 @@
   {
     "id": "1752296948463",
     "description": "Perruque lisse gris 24 pouces",
-    "purchasePrice": 50.32,
+    "purchasePrice": 54.64,
     "quantity": 1,
-    "code": "P-24-BQFXFN"
+    "code": "P-24-BQFXFN",
+    "photos": [
+      "/uploads/photos-1771585871192-997478232.jpg",
+      "/uploads/photos-1771585871196-575681980.jpg",
+      "/uploads/photos-1771585871197-883341259.jpg",
+      "/uploads/photos-1771585871199-895926425.jpg"
+    ],
+    "mainPhoto": "/uploads/photos-1771585871192-997478232.jpg"
   },
   {
     "id": "1752297030706",
@@ -871,7 +880,7 @@
     "id": "1764234850371",
     "description": "pret de Produit",
     "purchasePrice": 0.1,
-    "quantity": 1000000000,
+    "quantity": 10,
     "code": "X-XC-BOCRNT"
   },
   {
@@ -1024,13 +1033,6 @@
     "code": "P-24-SQMYHD"
   },
   {
-    "id": "1770051156904",
-    "description": "Perruque lisse gris 24 pouces",
-    "purchasePrice": 52.17,
-    "quantity": 0,
-    "code": "P-24-GPBGLB"
-  },
-  {
     "id": "1770376072749",
     "code": "T-30-MMCUSI",
     "description": "Tissages bouclé noir 30 pouces",
@@ -1108,5 +1110,22 @@
     "purchasePrice": 43.98,
     "quantity": 1,
     "sellingPrice": 0
+  },
+  {
+    "id": "1771586556790",
+    "code": "P-18-PKLRVH",
+    "description": "Perruque bouclé noir mèche marron 18 pouces",
+    "purchasePrice": 54.46,
+    "quantity": 1,
+    "photos": [
+      "/uploads/photos-1771586556813-119280530.jpg",
+      "/uploads/photos-1771586556815-458874721.jpg",
+      "/uploads/photos-1771586556816-328014400.jpg",
+      "/uploads/photos-1771586556818-702772806.jpg",
+      "/uploads/photos-1771586556819-495559647.jpg",
+      "/uploads/photos-1771586556820-180137978.jpg"
+    ],
+    "mainPhoto": "/uploads/photos-1771586556813-119280530.jpg",
+    "reserver": "oui"
   }
 ]

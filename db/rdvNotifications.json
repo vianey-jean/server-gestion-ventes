@@ -93,5 +93,21 @@
     "statut": "reporte",
     "createdAt": "2026-02-05T09:16:38.898Z",
     "updatedAt": "2026-02-11T04:54:50.398Z"
+  },
+  {
+    "id": "1771586753670",
+    "rdvId": "1771586753668",
+    "rdvTitre": "Livraison pour MCie et amène beaucoup perruque",
+    "rdvClientNom": "MCie Fortuna",
+    "rdvClientTelephone": "0692810595",
+    "rdvDate": "2026-02-21",
+    "rdvHeureDebut": "12:30",
+    "rdvHeureFin": "13:30",
+    "rdvLieu": "MacDo Saint-Pierre",
+    "message": "Rendez-vous dans moins de 24h: Livraison pour MCie et amène beaucoup perruque",
+    "read": false,
+    "statut": "actif",
+    "createdAt": "2026-02-20T11:25:53.670Z",
+    "updatedAt": "2026-02-20T11:25:53.670Z"
   }
 ]
