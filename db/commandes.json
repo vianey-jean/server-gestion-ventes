@@ -494,27 +494,6 @@
     "saleId": "1770375785091"
   },
   {
-    "id": "1769951490361",
-    "clientNom": "Ma Warren Chaudron",
-    "clientPhone": "0693647609",
-    "clientAddress": "Mail Chaudron",
-    "type": "reservation",
-    "produits": [
-      {
-        "nom": "Perruque lisse bleu 24 pouces",
-        "prixUnitaire": 62.61,
-        "quantite": 1,
-        "prixVente": 170
-      }
-    ],
-    "dateCommande": "2026-02-05T09:17:26.815Z",
-    "statut": "reporter",
-    "dateEcheance": "2026-03-06",
-    "horaire": "14:00",
-    "createdAt": "2026-02-01T13:11:30.361Z",
-    "updatedAt": "2026-02-11T04:55:02.665Z"
-  },
-  {
     "id": "1770282595983",
     "clientNom": "Hendrick Rtr",
     "clientPhone": "0692369609",
@@ -537,27 +516,6 @@
     "updatedAt": "2026-02-05T09:10:41.464Z"
   },
   {
-    "id": "1770282977285",
-    "clientNom": "Cya Bea",
-    "clientPhone": "0693535338",
-    "clientAddress": "A coté météo Caudron saint-denis",
-    "type": "reservation",
-    "produits": [
-      {
-        "nom": "Perruque crépus lisse noir 24 pouces",
-        "prixUnitaire": 53.94,
-        "quantite": 1,
-        "prixVente": 170
-      }
-    ],
-    "dateCommande": "2026-02-15T08:53:39.349Z",
-    "statut": "en_attente",
-    "dateEcheance": "2026-02-21",
-    "horaire": "18:00",
-    "createdAt": "2026-02-05T09:16:17.285Z",
-    "updatedAt": "2026-02-15T08:53:39.379Z"
-  },
-  {
     "id": "1771586696922",
     "clientNom": "MCie Fortuna",
     "clientPhone": "0692810595",
@@ -578,5 +536,25 @@
     "createdAt": "2026-02-20T11:24:56.922Z",
     "updatedAt": "2026-02-22T02:55:52.562Z",
     "saleId": "1771728952540"
+  },
+  {
+    "id": "1771754333632",
+    "clientNom": "Ma Warren Chaudron",
+    "clientPhone": "0693647609",
+    "clientAddress": "Mail Chaudron",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque lisse bleu 24 pouces",
+        "prixUnitaire": 62.61,
+        "quantite": 1,
+        "prixVente": 170
+      }
+    ],
+    "dateCommande": "2026-02-22T09:58:53.602Z",
+    "statut": "en_attente",
+    "dateEcheance": "2026-03-06",
+    "horaire": "18:00",
+    "createdAt": "2026-02-22T09:58:53.632Z"
   }
 ]
