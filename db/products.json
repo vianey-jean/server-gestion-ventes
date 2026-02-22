@@ -1127,5 +1127,13 @@
     ],
     "mainPhoto": "/uploads/photos-1771586556813-119280530.jpg",
     "reserver": "oui"
+  },
+  {
+    "id": "1771728868780",
+    "code": "P-22-JJLICS",
+    "description": "Perruque bouclé noir 22 pouces",
+    "purchasePrice": 45.46,
+    "quantity": 0,
+    "reserver": "oui"
   }
 ]

@@ -162,8 +162,8 @@
   },
   {
     "id": "1771586753668",
-    "titre": "Livraison pour MCie et amène beaucoup perruque",
-    "description": "Amène beaucoup perruque pour livraison a st Pierre au MacDo, Tel:0692810595",
+    "titre": "Réservation: Perruque bouclé noir 22 pouces",
+    "description": "Produits réservés:\n- Perruque bouclé noir 22 pouces x1 (130 Ar)",
     "clientNom": "MCie Fortuna",
     "clientTelephone": "0692810595",
     "clientAdresse": "MacDo Saint-Pierre",
@@ -171,20 +171,20 @@
     "heureDebut": "12:30",
     "heureFin": "13:30",
     "lieu": "MacDo Saint-Pierre",
-    "statut": "planifie",
-    "notes": "Créé depuis une réservation",
+    "statut": "confirme",
+    "notes": "Créé automatiquement depuis une réservation",
     "produits": [
       {
-        "nom": "Perruque bouclé noir mèche marron 18 pouces",
+        "nom": "Perruque bouclé noir 22 pouces",
         "quantite": 1,
-        "prixUnitaire": 54.46,
-        "prixVente": 140
+        "prixUnitaire": 45.46,
+        "prixVente": 130
       }
     ],
     "commandeId": "1771586696922",
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-20T11:25:53.668Z",
-    "updatedAt": "2026-02-20T11:25:53.668Z"
+    "updatedAt": "2026-02-22T02:55:52.513Z"
   }
 ]

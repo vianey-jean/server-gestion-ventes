@@ -1,6 +1,6 @@
 {
-  "objectif": 2550,
-  "totalVentesMois": 2520,
+  "objectif": 3000,
+  "totalVentesMois": 2650,
   "mois": 2,
   "annee": 2026,
   "historique": [
@@ -77,12 +77,12 @@
     {
       "mois": 2,
       "annee": 2026,
-      "totalVentesMois": 2520,
-      "objectif": 2550,
-      "pourcentage": 99
+      "totalVentesMois": 2650,
+      "objectif": 3000,
+      "pourcentage": 88
     }
   ],
-  "objectifMax": 2550,
+  "objectifMax": 3000,
   "beneficesHistorique": [
     {
       "mois": 4,
@@ -142,13 +142,13 @@
       "mois": 1,
       "annee": 2026,
       "totalBenefice": 498.89,
-      "updatedAt": "2026-02-18T14:03:40.081Z"
+      "updatedAt": "2026-02-22T02:56:44.054Z"
     },
     {
       "mois": 2,
       "annee": 2026,
-      "totalBenefice": 1486.1400000000003,
-      "updatedAt": "2026-02-18T14:03:40.081Z"
+      "totalBenefice": 1570.6800000000003,
+      "updatedAt": "2026-02-22T02:56:44.054Z"
     }
   ],
   "objectifChanges": [
@@ -163,6 +163,13 @@
       "date": "2026-02-15T17:21:40.095Z",
       "ancienObjectif": 2500,
       "nouveauObjectif": 2550,
+      "mois": 2,
+      "annee": 2026
+    },
+    {
+      "date": "2026-02-22T02:56:41.003Z",
+      "ancienObjectif": 2550,
+      "nouveauObjectif": 3000,
       "mois": 2,
       "annee": 2026
     }

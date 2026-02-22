@@ -237,6 +237,11 @@ if (!fs.existsSync(commandesPath)) {
   fs.writeFileSync(commandesPath, JSON.stringify([], null, 2));
 }
 
+const remboursementPath = path.join(dbPath, 'remboursement.json');
+if (!fs.existsSync(remboursementPath)) {
+  fs.writeFileSync(remboursementPath, JSON.stringify([], null, 2));
+}
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
@@ -255,6 +260,7 @@ const rdvNotificationsRoutes = require('./routes/rdvNotifications');
 const objectifRoutes = require('./routes/objectif');
 const nouvelleAchatRoutes = require('./routes/nouvelleAchat');
 const comptaRoutes = require('./routes/compta');
+const remboursementsRoutes = require('./routes/remboursements');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -274,6 +280,7 @@ app.use('/api/rdv-notifications', rdvNotificationsRoutes);
 app.use('/api/objectif', objectifRoutes);
 app.use('/api/nouvelle-achat', nouvelleAchatRoutes);
 app.use('/api/compta', comptaRoutes);
+app.use('/api/remboursements', remboursementsRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

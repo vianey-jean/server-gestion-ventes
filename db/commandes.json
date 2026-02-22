@@ -565,16 +565,18 @@
     "type": "reservation",
     "produits": [
       {
-        "nom": "Perruque bouclé noir mèche marron 18 pouces",
-        "prixUnitaire": 54.46,
+        "nom": "Perruque bouclé noir 22 pouces",
+        "prixUnitaire": 45.46,
         "quantite": 1,
-        "prixVente": 140
+        "prixVente": 130
       }
     ],
-    "dateCommande": "2026-02-20T11:24:56.786Z",
-    "statut": "en_attente",
+    "dateCommande": "2026-02-22T02:55:39.952Z",
+    "statut": "valide",
     "dateEcheance": "2026-02-21",
     "horaire": "12:30",
-    "createdAt": "2026-02-20T11:24:56.922Z"
+    "createdAt": "2026-02-20T11:24:56.922Z",
+    "updatedAt": "2026-02-22T02:55:52.562Z",
+    "saleId": "1771728952540"
   }
 ]

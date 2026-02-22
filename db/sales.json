@@ -3844,5 +3844,29 @@
     "clientPhone": "0692571158",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1771728952540",
+    "date": "2026-02-22",
+    "products": [
+      {
+        "productId": "1771728868780",
+        "description": "Perruque bouclé noir 22 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 45.46,
+        "sellingPrice": 130,
+        "profit": 84.53999999999999,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 45.46,
+    "totalSellingPrice": 130,
+    "totalProfit": 84.53999999999999,
+    "clientName": "MCie Fortuna",
+    "clientAddress": "MacDo Saint-Pierre",
+    "clientPhone": "0692810595",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
