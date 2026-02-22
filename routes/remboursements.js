@@ -92,17 +92,18 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 
     // 2. Create negative sale entry in sales.json
+    // Purchase price is also negative (refunded), but delivery fee stays unchanged
     const negativeSaleData = {
       date,
       products: products.map(p => ({
         ...p,
         sellingPrice: -Math.abs(p.refundPrice || p.sellingPrice),
-        purchasePrice: p.purchasePrice,
+        purchasePrice: -Math.abs(p.purchasePrice),
         profit: -Math.abs(p.profit),
-        deliveryFee: 0
+        deliveryFee: p.deliveryFee || 0
       })),
       totalSellingPrice: -Math.abs(totalRefundPrice),
-      totalPurchasePrice: totalPurchasePrice,
+      totalPurchasePrice: -Math.abs(totalPurchasePrice),
       totalProfit: -Math.abs(totalProfit),
       clientName: clientName || null,
       clientPhone: clientPhone || null,
@@ -129,10 +130,12 @@ router.post('/', authMiddleware, async (req, res) => {
         quantityRefunded: p.quantitySold,
         refundPriceUnit: p.refundPriceUnit || p.sellingPrice / p.quantitySold,
         totalRefundPrice: p.refundPrice || p.sellingPrice,
-        purchasePriceUnit: p.purchasePrice / p.quantitySold,
+        purchasePriceUnit: -Math.abs(p.purchasePrice / p.quantitySold),
+        totalPurchasePrice: -Math.abs(p.purchasePrice),
         profit: p.profit
       })),
       totalRefundPrice: Math.abs(totalRefundPrice),
+      totalPurchasePrice: -Math.abs(totalPurchasePrice),
       totalProfit: Math.abs(totalProfit),
       clientName: clientName || null,
       clientPhone: clientPhone || null,
