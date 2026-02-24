@@ -251,8 +251,12 @@ const Sale = {
       
       // Détecter le format (multi-produits ou single-produit)
       const isMultiProduct = sale.products && Array.isArray(sale.products);
-      
-      if (isMultiProduct) {
+
+      // Les remboursements sont gérés dans les routes remboursements/sales
+      // pour éviter les inversions de stock.
+      if (sale.isRefund) {
+        console.log('🧾 Suppression vente remboursement: pas de restauration stock côté Sale.delete');
+      } else if (isMultiProduct) {
         console.log('🗑️ Suppression vente multi-produits');
         
         // Pour les ventes multi-produits, restaurer le stock pour chaque produit non-avance

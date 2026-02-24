@@ -84,9 +84,10 @@ router.post('/', authMiddleware, async (req, res) => {
     // 1. Restore stock ONLY for products flagged for restoration (full refund)
     if (restoreStock && productsToRestore && productsToRestore.length > 0) {
       for (const product of products) {
-        if (product.productId && productsToRestore.includes(product.productId) && product.quantitySold > 0) {
-          console.log(`🔄 Restauration stock: ${product.description} +${product.quantitySold}`);
-          Product.updateQuantity(product.productId, product.quantitySold);
+        const quantityToRestore = Math.abs(Number(product.quantitySold) || 0);
+        if (product.productId && productsToRestore.includes(product.productId) && quantityToRestore > 0) {
+          console.log(`🔄 Restauration stock: ${product.description} +${quantityToRestore}`);
+          Product.updateQuantity(product.productId, quantityToRestore);
         }
       }
     }
@@ -124,16 +125,22 @@ router.post('/', authMiddleware, async (req, res) => {
       date,
       originalSaleId: originalSaleId || null,
       negativeSaleId: negativeSale.id,
-      products: products.map(p => ({
-        productId: p.productId,
-        description: p.description,
-        quantityRefunded: p.quantitySold,
-        refundPriceUnit: p.refundPriceUnit || p.sellingPrice / p.quantitySold,
-        totalRefundPrice: p.refundPrice || p.sellingPrice,
-        purchasePriceUnit: -Math.abs(p.purchasePrice / p.quantitySold),
-        totalPurchasePrice: -Math.abs(p.purchasePrice),
-        profit: p.profit
-      })),
+      products: products.map(p => {
+        const refundedQuantity = Number(p.quantitySold) || 0;
+        const refundedQuantityAbs = Math.abs(refundedQuantity);
+        const totalRefundPricePerProduct = Math.abs(p.refundPrice || p.sellingPrice || 0);
+
+        return {
+          productId: p.productId,
+          description: p.description,
+          quantityRefunded: refundedQuantity,
+          refundPriceUnit: p.refundPriceUnit || (refundedQuantityAbs > 0 ? totalRefundPricePerProduct / refundedQuantityAbs : 0),
+          totalRefundPrice: totalRefundPricePerProduct,
+          purchasePriceUnit: refundedQuantityAbs > 0 ? -Math.abs((p.purchasePrice || 0) / refundedQuantityAbs) : 0,
+          totalPurchasePrice: -Math.abs(p.purchasePrice || 0),
+          profit: p.profit
+        };
+      }),
       totalRefundPrice: Math.abs(totalRefundPrice),
       totalPurchasePrice: -Math.abs(totalPurchasePrice),
       totalProfit: Math.abs(totalProfit),
@@ -175,9 +182,10 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     // If stock was restored during refund, we need to decrease it back
     if (remboursement.stockRestored && remboursement.productsRestored && remboursement.productsRestored.length > 0) {
       for (const product of remboursement.products) {
-        if (product.productId && remboursement.productsRestored.includes(product.productId) && product.quantityRefunded > 0) {
-          console.log(`📦 Diminution stock après suppression remboursement: ${product.description} -${product.quantityRefunded}`);
-          Product.updateQuantity(product.productId, -product.quantityRefunded);
+        const quantityToDecrease = Math.abs(Number(product.quantityRefunded) || 0);
+        if (product.productId && remboursement.productsRestored.includes(product.productId) && quantityToDecrease > 0) {
+          console.log(`📦 Diminution stock après suppression remboursement: ${product.description} -${quantityToDecrease}`);
+          Product.updateQuantity(product.productId, -quantityToDecrease);
         }
       }
     }
