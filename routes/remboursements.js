@@ -175,7 +175,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     // If stock was restored during refund, we need to decrease it back
     if (remboursement.stockRestored && remboursement.productsRestored && remboursement.productsRestored.length > 0) {
       for (const product of remboursement.products) {
-        if (product.productId && remboursement.productsRestored.includes(product.productId)) {
+        if (product.productId && remboursement.productsRestored.includes(product.productId) && product.quantityRefunded > 0) {
           console.log(`📦 Diminution stock après suppression remboursement: ${product.description} -${product.quantityRefunded}`);
           Product.updateQuantity(product.productId, -product.quantityRefunded);
         }

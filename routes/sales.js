@@ -381,6 +381,36 @@ router.put('/:id', authMiddleware, async (req, res) => {
       console.log('❌ Erreur retournée:', updatedSale.error);
       return res.status(400).json({ message: updatedSale.error });
     }
+
+    // Si c'est un remboursement, synchroniser remboursement.json
+    if (originalSale.isRefund || updatedSale.isRefund) {
+      try {
+        const Remboursement = require('../models/Remboursement');
+        const allRemboursements = Remboursement.getAll();
+        const remboursement = allRemboursements.find(r => r.negativeSaleId === req.params.id);
+        if (remboursement) {
+          const fs = require('fs');
+          const path = require('path');
+          const remboursementPath = path.join(__dirname, '../db/remboursement.json');
+          const remboursements = JSON.parse(fs.readFileSync(remboursementPath, 'utf8'));
+          const idx = remboursements.findIndex(r => r.id === remboursement.id);
+          if (idx !== -1) {
+            // Mettre à jour les champs du remboursement avec les nouvelles données de la vente
+            remboursements[idx].date = updatedSale.date;
+            remboursements[idx].clientName = updatedSale.clientName || null;
+            remboursements[idx].clientPhone = updatedSale.clientPhone || null;
+            remboursements[idx].clientAddress = updatedSale.clientAddress || null;
+            remboursements[idx].totalRefundPrice = Math.abs(updatedSale.totalSellingPrice || updatedSale.sellingPrice || 0);
+            remboursements[idx].totalPurchasePrice = updatedSale.totalPurchasePrice || updatedSale.purchasePrice || 0;
+            remboursements[idx].totalProfit = Math.abs(updatedSale.totalProfit || updatedSale.profit || 0);
+            fs.writeFileSync(remboursementPath, JSON.stringify(remboursements, null, 2));
+            console.log('✅ Remboursement synchronisé avec la vente mise à jour');
+          }
+        }
+      } catch (error) {
+        console.error('Erreur lors de la synchronisation du remboursement:', error);
+      }
+    }
     
     // Gérer le prêt produit associé si reste > 0
     if (updatedSale.reste && updatedSale.reste > 0 && updatedSale.clientName) {
@@ -479,6 +509,30 @@ router.delete('/:id', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Sale not found' });
     }
     
+    // Si c'est un remboursement (isRefund), supprimer aussi dans remboursement.json
+    if (sale.isRefund) {
+      try {
+        const Remboursement = require('../models/Remboursement');
+        const allRemboursements = Remboursement.getAll();
+        const remboursement = allRemboursements.find(r => r.negativeSaleId === req.params.id);
+        if (remboursement) {
+          // Si le stock avait été restauré, le diminuer
+          if (remboursement.stockRestored && remboursement.productsRestored && remboursement.productsRestored.length > 0) {
+            for (const product of remboursement.products) {
+              if (product.productId && remboursement.productsRestored.includes(product.productId) && product.quantityRefunded > 0) {
+                console.log(`📦 Diminution stock après suppression remboursement via sale: ${product.description} -${product.quantityRefunded}`);
+                Product.updateQuantity(product.productId, -product.quantityRefunded);
+              }
+            }
+          }
+          Remboursement.delete(remboursement.id);
+          console.log('✅ Remboursement associé supprimé avec la vente');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression du remboursement associé:', error);
+      }
+    }
+
     // Supprimer la vente
     const success = Sale.delete(req.params.id);
     
