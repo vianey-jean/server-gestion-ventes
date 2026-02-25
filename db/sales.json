@@ -3892,5 +3892,29 @@
     "clientPhone": "0693401505",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1772040033592",
+    "date": "2026-02-25",
+    "products": [
+      {
+        "productId": "1769950767834",
+        "description": "Perruque bouclé blonde miel 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 74.91,
+        "sellingPrice": 160,
+        "profit": 85.09,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 74.91,
+    "totalSellingPrice": 160,
+    "totalProfit": 85.09,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

@@ -1,6 +1,6 @@
 {
   "objectif": 3000,
-  "totalVentesMois": 2750,
+  "totalVentesMois": 2910,
   "mois": 2,
   "annee": 2026,
   "historique": [
@@ -77,9 +77,9 @@
     {
       "mois": 2,
       "annee": 2026,
-      "totalVentesMois": 2750,
+      "totalVentesMois": 2910,
       "objectif": 3000,
-      "pourcentage": 92
+      "pourcentage": 97
     }
   ],
   "objectifMax": 3000,
@@ -142,13 +142,13 @@
       "mois": 1,
       "annee": 2026,
       "totalBenefice": 498.89,
-      "updatedAt": "2026-02-22T10:04:24.004Z"
+      "updatedAt": "2026-02-25T17:20:41.412Z"
     },
     {
       "mois": 2,
       "annee": 2026,
-      "totalBenefice": 1643.9600000000003,
-      "updatedAt": "2026-02-22T10:04:24.004Z"
+      "totalBenefice": 1729.0500000000002,
+      "updatedAt": "2026-02-25T17:20:41.412Z"
     }
   ],
   "objectifChanges": [
