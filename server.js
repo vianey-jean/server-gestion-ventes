@@ -11,7 +11,7 @@
  * - CORS configuré pour Vercel, Lovable et localhost
  * 
  * @module server
- * @version 4.0.0
+ * @version 4.2.0
  */
 
 const express = require('express');
