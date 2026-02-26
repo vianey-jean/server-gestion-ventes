@@ -3916,5 +3916,29 @@
     "clientPhone": "0693821738",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1772092367557",
+    "date": "2026-02-26",
+    "products": [
+      {
+        "productId": "1756486622500",
+        "description": "Perruque bouclé blonde miel blanche 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 64.84,
+        "sellingPrice": 170,
+        "profit": 105.16,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 64.84,
+    "totalSellingPrice": 170,
+    "totalProfit": 105.16,
+    "clientName": "Orchidée Angela",
+    "clientAddress": "22 rue du génértal de gaulle saint louis",
+    "clientPhone": "0693818015",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
