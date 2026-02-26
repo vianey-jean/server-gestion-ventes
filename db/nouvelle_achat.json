@@ -218,5 +218,73 @@
     "totalCost": 10,
     "type": "taxes",
     "categorie": "divers"
+  },
+  {
+    "id": "1772077388361",
+    "date": "2026-02-22T00:00:00.000Z",
+    "productId": "1772077388359",
+    "productDescription": "Perruque bouclé blonde blanche 24 pouces",
+    "purchasePrice": 58.92,
+    "quantity": 1,
+    "fournisseur": "Frizira",
+    "caracteristiques": "perruque 250 densité, nouvelle fournisseur",
+    "totalCost": 58.92,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772077452705",
+    "date": "2026-02-23T00:00:00.000Z",
+    "productId": "1772077452703",
+    "productDescription": "Perruque crépus lisse blonde miel 24 pouces",
+    "purchasePrice": 70.93,
+    "quantity": 1,
+    "fournisseur": "Shinexuan",
+    "caracteristiques": "Nouvelle modele",
+    "totalCost": 70.93,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772077536967",
+    "date": "2026-02-23T00:00:00.000Z",
+    "productId": "1753356496899",
+    "productDescription": "Tissages bouclé blonde miel 16 pouces",
+    "purchasePrice": 13.09,
+    "quantity": 3,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Tissages bouclé blonde miel 16 pouces",
+    "totalCost": 39.269999999999996,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772077595218",
+    "date": "2026-02-23T00:00:00.000Z",
+    "productId": "1753356444320",
+    "productDescription": "Tissages bouclé blonde miel 18 pouces",
+    "purchasePrice": 15.49,
+    "quantity": 3,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Tissages bouclé blonde miel 18 pouces",
+    "totalCost": 46.47,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772078454941",
+    "date": "2026-02-23T00:00:00.000Z",
+    "description": "frais d'envoye colis",
+    "totalCost": 9.33,
+    "type": "autre_depense",
+    "categorie": "divers"
+  },
+  {
+    "id": "1772078541402",
+    "date": "2026-02-25T00:00:00.000Z",
+    "productId": "1758025491344",
+    "productDescription": "Colle",
+    "purchasePrice": 3.62,
+    "quantity": 6,
+    "fournisseur": "urfoy",
+    "caracteristiques": "Colle",
+    "totalCost": 21.72,
+    "type": "achat_produit"
   }
 ]
