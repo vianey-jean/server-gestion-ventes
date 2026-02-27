@@ -261,6 +261,7 @@ const objectifRoutes = require('./routes/objectif');
 const nouvelleAchatRoutes = require('./routes/nouvelleAchat');
 const comptaRoutes = require('./routes/compta');
 const remboursementsRoutes = require('./routes/remboursements');
+const fournisseursRoutes = require('./routes/fournisseurs');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -281,6 +282,7 @@ app.use('/api/objectif', objectifRoutes);
 app.use('/api/nouvelle-achat', nouvelleAchatRoutes);
 app.use('/api/compta', comptaRoutes);
 app.use('/api/remboursements', remboursementsRoutes);
+app.use('/api/fournisseurs', fournisseursRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

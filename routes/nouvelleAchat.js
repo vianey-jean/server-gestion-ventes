@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const NouvelleAchat = require('../models/NouvelleAchat');
+const Fournisseur = require('../models/Fournisseur');
 const authMiddleware = require('../middleware/auth');
 
 // Récupérer tous les achats
@@ -101,6 +102,11 @@ router.post('/', authMiddleware, async (req, res) => {
     
     if (!newAchat) {
       return res.status(500).json({ message: 'Erreur lors de la création de l\'achat' });
+    }
+
+    // Auto-enregistrer le fournisseur s'il est renseigné
+    if (achatData.fournisseur && achatData.fournisseur.trim() !== '') {
+      Fournisseur.createIfNotExists(achatData.fournisseur);
     }
     
     console.log('✅ Achat created successfully:', newAchat);
