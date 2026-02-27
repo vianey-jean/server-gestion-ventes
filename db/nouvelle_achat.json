@@ -286,5 +286,49 @@
     "caracteristiques": "Colle",
     "totalCost": 21.72,
     "type": "achat_produit"
+  },
+  {
+    "id": "1772166079689",
+    "date": "2026-02-27T00:00:00.000Z",
+    "productId": "1772166079687",
+    "productDescription": "Perruque lisse ondulé marron 24 pouces",
+    "purchasePrice": 52.97,
+    "quantity": 1,
+    "fournisseur": "Happy friday",
+    "caracteristiques": "Perruque lisse ondulé marron 24 pouces",
+    "totalCost": 52.97,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772166156085",
+    "date": "2026-02-27T00:00:00.000Z",
+    "productId": "1772166156076",
+    "productDescription": "Perruque lisse ondulé noir 24 pouces",
+    "purchasePrice": 45.63,
+    "quantity": 1,
+    "fournisseur": "Happy Friday",
+    "caracteristiques": "Perruque lisse ondulé noir 24 pouces",
+    "totalCost": 45.63,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772166221950",
+    "date": "2026-02-27T00:00:00.000Z",
+    "productId": "1769951092414",
+    "productDescription": "Perruque bouclé rouge bordeaux 30 pouces",
+    "purchasePrice": 79.87,
+    "quantity": 1,
+    "fournisseur": "Happy Friday",
+    "caracteristiques": "Perruque bouclé rouge bordeaux 30 pouces",
+    "totalCost": 79.87,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772166299475",
+    "date": "2026-02-27T00:00:00.000Z",
+    "description": "Frais expedition des perruques achat 27/02/2026",
+    "totalCost": 27.41,
+    "type": "autre_depense",
+    "categorie": "divers"
   }
 ]
