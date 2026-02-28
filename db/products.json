@@ -1030,7 +1030,7 @@
     "purchasePrice": 62.61,
     "quantity": 2,
     "code": "P-24-SQMYHD",
-    "reserver": "oui"
+    "reserver": "non"
   },
   {
     "id": "1770376072749",
@@ -1174,5 +1174,13 @@
     "purchasePrice": 45.63,
     "quantity": 1,
     "sellingPrice": 0
+  },
+  {
+    "id": "1772265753721",
+    "code": "P-XC-AJQUUB",
+    "description": "Perruque bouclé mèche blonde gasy",
+    "purchasePrice": 50,
+    "quantity": 2,
+    "reserver": "oui"
   }
 ]

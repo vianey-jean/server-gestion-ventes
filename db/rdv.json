@@ -171,7 +171,7 @@
     "heureDebut": "18:00",
     "heureFin": "19:00",
     "lieu": "Mail Chaudron",
-    "statut": "planifie",
+    "statut": "annule",
     "notes": "Créé depuis une réservation",
     "produits": [
       {
@@ -185,6 +185,33 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-22T09:59:13.161Z",
-    "updatedAt": "2026-02-22T09:59:13.161Z"
+    "updatedAt": "2026-02-28T07:58:20.452Z"
+  },
+  {
+    "id": "1772265891993",
+    "titre": "Livraison a St Pierre",
+    "description": "Livraison perruque tefy gasy a St Pierre",
+    "clientNom": "Patty Rgm",
+    "clientTelephone": "0692157371",
+    "clientAdresse": "22 Allée des poudriers Appt 13 jolie Fond Saint-Pierre",
+    "date": "2026-03-03",
+    "heureDebut": "11:00",
+    "heureFin": "12:00",
+    "lieu": "22 Allée des poudriers Appt 13 jolie Fond Saint-Pierre",
+    "statut": "planifie",
+    "notes": "Créé depuis une réservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé mèche blonde gasy",
+        "quantite": 1,
+        "prixUnitaire": 50,
+        "prixVente": 100
+      }
+    ],
+    "commandeId": "1772265866308",
+    "notificationEnvoyee": false,
+    "rappelEnvoye": false,
+    "createdAt": "2026-02-28T08:04:51.993Z",
+    "updatedAt": "2026-02-28T08:04:51.993Z"
   }
 ]

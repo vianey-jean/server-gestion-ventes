@@ -105,9 +105,25 @@
     "rdvHeureFin": "19:00",
     "rdvLieu": "Mail Chaudron",
     "message": "Rendez-vous dans moins de 24h: reservation du perruque bleu pour warren",
+    "read": true,
+    "statut": "annule",
+    "createdAt": "2026-02-22T09:59:13.163Z",
+    "updatedAt": "2026-02-28T07:58:20.454Z"
+  },
+  {
+    "id": "1772265891994",
+    "rdvId": "1772265891993",
+    "rdvTitre": "Livraison a St Pierre",
+    "rdvClientNom": "Patty Rgm",
+    "rdvClientTelephone": "0692157371",
+    "rdvDate": "2026-03-03",
+    "rdvHeureDebut": "11:00",
+    "rdvHeureFin": "12:00",
+    "rdvLieu": "22 Allée des poudriers Appt 13 jolie Fond Saint-Pierre",
+    "message": "Rendez-vous dans moins de 24h: Livraison a St Pierre",
     "read": false,
     "statut": "actif",
-    "createdAt": "2026-02-22T09:59:13.163Z",
-    "updatedAt": "2026-02-22T09:59:13.163Z"
+    "createdAt": "2026-02-28T08:04:51.994Z",
+    "updatedAt": "2026-02-28T08:04:51.994Z"
   }
 ]

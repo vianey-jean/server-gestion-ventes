@@ -552,9 +552,31 @@
       }
     ],
     "dateCommande": "2026-02-22T09:58:53.602Z",
-    "statut": "en_attente",
+    "statut": "annule",
     "dateEcheance": "2026-03-06",
     "horaire": "18:00",
-    "createdAt": "2026-02-22T09:58:53.632Z"
+    "createdAt": "2026-02-22T09:58:53.632Z",
+    "saleId": null,
+    "updatedAt": "2026-02-28T07:58:20.402Z"
+  },
+  {
+    "id": "1772265866308",
+    "clientNom": "Patty Rgm",
+    "clientPhone": "0692157371",
+    "clientAddress": "22 Allée des poudriers Appt 13 jolie Fond Saint-Pierre",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Perruque bouclé mèche blonde gasy",
+        "prixUnitaire": 50,
+        "quantite": 1,
+        "prixVente": 100
+      }
+    ],
+    "dateCommande": "2026-02-28T08:04:26.219Z",
+    "statut": "en_attente",
+    "dateEcheance": "2026-03-03",
+    "horaire": "11:00",
+    "createdAt": "2026-02-28T08:04:26.308Z"
   }
 ]
