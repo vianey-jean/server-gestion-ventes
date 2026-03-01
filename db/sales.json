@@ -3940,5 +3940,29 @@
     "clientPhone": "0693818015",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1772362829991",
+    "date": "2026-03-01",
+    "products": [
+      {
+        "productId": "1753356444320",
+        "description": "Tissages bouclé blonde miel 18 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 15.49,
+        "sellingPrice": 45,
+        "profit": 29.51,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 15.49,
+    "totalSellingPrice": 45,
+    "totalProfit": 29.51,
+    "clientName": "Latifa Olga",
+    "clientAddress": "Parking Gymnase Cazal Saint Denis",
+    "clientPhone": "0693497257",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
