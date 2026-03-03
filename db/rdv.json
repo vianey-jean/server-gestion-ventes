@@ -198,7 +198,7 @@
     "heureDebut": "11:00",
     "heureFin": "12:00",
     "lieu": "22 Allée des poudriers Appt 13 jolie Fond Saint-Pierre",
-    "statut": "planifie",
+    "statut": "confirme",
     "notes": "Créé depuis une réservation",
     "produits": [
       {
@@ -212,6 +212,33 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-02-28T08:04:51.993Z",
-    "updatedAt": "2026-02-28T08:04:51.993Z"
+    "updatedAt": "2026-03-03T10:28:28.415Z"
+  },
+  {
+    "id": "1772534458640",
+    "titre": "Livraison a st Marie pour double tissages bouclé noir",
+    "description": "Livraison a st Marie pour double tissages bouclé noir",
+    "clientNom": "Mxlle Crain Pa Personne",
+    "clientTelephone": "0693510011",
+    "clientAdresse": "9 rue rose des bois Sainte-Marie",
+    "date": "2026-03-05",
+    "heureDebut": "09:00",
+    "heureFin": "10:00",
+    "lieu": "9 rue rose des bois Sainte-Marie",
+    "statut": "planifie",
+    "notes": "Créé depuis une réservation",
+    "produits": [
+      {
+        "nom": "Tissages bouclé noir 18 pouces 12A",
+        "quantite": 2,
+        "prixUnitaire": 15.69,
+        "prixVente": 50
+      }
+    ],
+    "commandeId": "1772534428517",
+    "notificationEnvoyee": false,
+    "rappelEnvoye": false,
+    "createdAt": "2026-03-03T10:40:58.640Z",
+    "updatedAt": "2026-03-03T10:40:58.640Z"
   }
 ]

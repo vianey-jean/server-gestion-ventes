@@ -574,9 +574,31 @@
       }
     ],
     "dateCommande": "2026-02-28T08:04:26.219Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2026-03-03",
     "horaire": "11:00",
-    "createdAt": "2026-02-28T08:04:26.308Z"
+    "createdAt": "2026-02-28T08:04:26.308Z",
+    "saleId": "1772533708447",
+    "updatedAt": "2026-03-03T10:28:28.473Z"
+  },
+  {
+    "id": "1772534428517",
+    "clientNom": "Mxlle Crain Pa Personne",
+    "clientPhone": "0693510011",
+    "clientAddress": "9 rue rose des bois Sainte-Marie",
+    "type": "reservation",
+    "produits": [
+      {
+        "nom": "Tissages bouclé noir 18 pouces 12A",
+        "prixUnitaire": 15.69,
+        "quantite": 2,
+        "prixVente": 50
+      }
+    ],
+    "dateCommande": "2026-03-03T10:40:28.474Z",
+    "statut": "en_attente",
+    "dateEcheance": "2026-03-05",
+    "horaire": "09:00",
+    "createdAt": "2026-03-03T10:40:28.517Z"
   }
 ]

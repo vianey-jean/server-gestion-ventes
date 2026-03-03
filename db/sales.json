@@ -3964,5 +3964,29 @@
     "clientPhone": "0693497257",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1772533708447",
+    "date": "2026-03-03",
+    "products": [
+      {
+        "productId": "1772265753721",
+        "description": "Perruque bouclé mèche blonde gasy",
+        "quantitySold": 1,
+        "purchasePrice": 50,
+        "sellingPrice": 100,
+        "profit": 50,
+        "deliveryFee": 10,
+        "deliveryLocation": "Autres"
+      }
+    ],
+    "totalPurchasePrice": 50,
+    "totalSellingPrice": 110,
+    "totalProfit": 50,
+    "clientName": "Patty Rgm",
+    "clientAddress": "22 Allée des poudriers Appt 13 jolie Fond Saint-Pierre",
+    "clientPhone": "0692157371",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
