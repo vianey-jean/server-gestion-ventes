@@ -132,14 +132,30 @@
     "rdvTitre": "Livraison a st Marie pour double tissages bouclé noir",
     "rdvClientNom": "Mxlle Crain Pa Personne",
     "rdvClientTelephone": "0693510011",
-    "rdvDate": "2026-03-05",
-    "rdvHeureDebut": "09:00",
-    "rdvHeureFin": "10:00",
+    "rdvDate": "2026-03-06",
+    "rdvHeureDebut": "14:00",
+    "rdvHeureFin": "15:00",
     "rdvLieu": "9 rue rose des bois Sainte-Marie",
-    "message": "Rendez-vous dans moins de 24h: Livraison a st Marie pour double tissages bouclé noir",
+    "message": "Rendez-vous reporté: Livraison a st Marie pour double tissages bouclé noir",
+    "read": false,
+    "statut": "reporte",
+    "createdAt": "2026-03-03T10:40:58.642Z",
+    "updatedAt": "2026-03-05T18:16:30.744Z"
+  },
+  {
+    "id": "1772734558449",
+    "rdvId": "1772734558446",
+    "rdvTitre": "livraison pour double perruque pour Princess",
+    "rdvClientNom": "Princesse Princesse",
+    "rdvClientTelephone": "0692782974",
+    "rdvDate": "2026-03-06",
+    "rdvHeureDebut": "08:00",
+    "rdvHeureFin": "09:00",
+    "rdvLieu": "18 avenue Raymond Vergès, La Possession",
+    "message": "Rendez-vous dans moins de 24h: livraison pour double perruque pour Princess",
     "read": false,
     "statut": "actif",
-    "createdAt": "2026-03-03T10:40:58.642Z",
-    "updatedAt": "2026-03-03T10:40:58.642Z"
+    "createdAt": "2026-03-05T18:15:58.449Z",
+    "updatedAt": "2026-03-05T18:15:58.449Z"
   }
 ]

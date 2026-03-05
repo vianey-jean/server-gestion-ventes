@@ -221,11 +221,11 @@
     "clientNom": "Mxlle Crain Pa Personne",
     "clientTelephone": "0693510011",
     "clientAdresse": "9 rue rose des bois Sainte-Marie",
-    "date": "2026-03-05",
-    "heureDebut": "09:00",
-    "heureFin": "10:00",
+    "date": "2026-03-06",
+    "heureDebut": "14:00",
+    "heureFin": "15:00",
     "lieu": "9 rue rose des bois Sainte-Marie",
-    "statut": "planifie",
+    "statut": "reporte",
     "notes": "Créé depuis une réservation",
     "produits": [
       {
@@ -239,6 +239,39 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-03-03T10:40:58.640Z",
-    "updatedAt": "2026-03-03T10:40:58.640Z"
+    "updatedAt": "2026-03-05T18:16:30.741Z"
+  },
+  {
+    "id": "1772734558446",
+    "titre": "livraison pour double perruque pour Princess",
+    "description": "",
+    "clientNom": "Princesse Princesse",
+    "clientTelephone": "0692782974",
+    "clientAdresse": "18 avenue Raymond Vergès, La Possession",
+    "date": "2026-03-06",
+    "heureDebut": "08:00",
+    "heureFin": "09:00",
+    "lieu": "18 avenue Raymond Vergès, La Possession",
+    "statut": "planifie",
+    "notes": "Créé depuis une réservation",
+    "produits": [
+      {
+        "nom": "perruque lisse noir 26 pouces",
+        "quantite": 1,
+        "prixUnitaire": 44.59,
+        "prixVente": 160
+      },
+      {
+        "nom": "Perruque lisse noir 24 pouces",
+        "quantite": 1,
+        "prixUnitaire": 44.99,
+        "prixVente": 150
+      }
+    ],
+    "commandeId": "1772734531044",
+    "notificationEnvoyee": false,
+    "rappelEnvoye": false,
+    "createdAt": "2026-03-05T18:15:58.446Z",
+    "updatedAt": "2026-03-05T18:15:58.446Z"
   }
 ]

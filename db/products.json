@@ -826,7 +826,8 @@
     "description": "Perruque lisse noir 24 pouces",
     "purchasePrice": 44.99,
     "quantity": 1,
-    "code": "P-24-YAHENB"
+    "code": "P-24-YAHENB",
+    "reserver": "oui"
   },
   {
     "id": "1762516167800",
@@ -875,7 +876,8 @@
     "description": "perruque lisse noir 26 pouces",
     "purchasePrice": 44.59,
     "quantity": 1,
-    "code": "P-26-CRRNHA"
+    "code": "P-26-CRRNHA",
+    "reserver": "oui"
   },
   {
     "id": "1764234850371",
