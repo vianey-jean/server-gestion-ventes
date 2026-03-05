@@ -43,7 +43,8 @@ router.post('/', (req, res) => {
   const validation = Tache.validateTimeSlot({
     date,
     heureDebut,
-    heureFin: normalizedHeureFin
+    heureFin: normalizedHeureFin,
+    travailleurNom: travailleurNom || ''
   });
 
   if (!validation.valid) {
@@ -88,12 +89,14 @@ router.put('/:id', (req, res) => {
   const nextDate = req.body.date || existing.date;
   const nextHeureDebut = req.body.heureDebut || existing.heureDebut;
   const nextHeureFin = req.body.heureFin || existing.heureFin;
+  const nextTravailleurNom = req.body.travailleurNom || existing.travailleurNom || '';
 
   const validation = Tache.validateTimeSlot({
     date: nextDate,
     heureDebut: nextHeureDebut,
     heureFin: nextHeureFin,
-    excludeId: req.params.id
+    excludeId: req.params.id,
+    travailleurNom: nextTravailleurNom
   });
 
   if (!validation.valid) {
