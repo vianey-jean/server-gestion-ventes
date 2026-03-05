@@ -265,6 +265,7 @@ const fournisseursRoutes = require('./routes/fournisseurs');
 const entrepriseRoutes = require('./routes/entreprise');
 const pointageRoutes = require('./routes/pointage');
 const travailleurRoutes = require('./routes/travailleur');
+const tacheRoutes = require('./routes/tache');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -289,6 +290,7 @@ app.use('/api/fournisseurs', fournisseursRoutes);
 app.use('/api/entreprises', entrepriseRoutes);
 app.use('/api/pointages', pointageRoutes);
 app.use('/api/travailleurs', travailleurRoutes);
+app.use('/api/taches', tacheRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
