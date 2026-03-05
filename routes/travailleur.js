@@ -27,7 +27,7 @@ router.get('/:id', authMiddleware, (req, res) => {
 
 router.post('/', authMiddleware, (req, res) => {
   try {
-    const { nom, prenom, adresse, phone, genre } = req.body;
+    const { nom, prenom, adresse, phone, genre, role } = req.body;
     if (!nom || !prenom) {
       return res.status(400).json({ message: 'Nom et prénom requis' });
     }
@@ -36,7 +36,8 @@ router.post('/', authMiddleware, (req, res) => {
       prenom: prenom.trim(),
       adresse: adresse ? adresse.trim() : '',
       phone: phone ? phone.trim() : '',
-      genre: genre || 'homme'
+      genre: genre || 'homme',
+      role: role || 'autre'
     });
     if (!newItem) return res.status(500).json({ message: 'Error creating' });
     res.status(201).json(newItem);

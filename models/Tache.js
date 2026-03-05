@@ -7,7 +7,7 @@ const rdvPath = path.join(__dirname, '../db/rdv.json');
 const DAY_START_MINUTES = 4 * 60;
 const DAY_END_MINUTES = 23 * 60 + 59;
 
-const MAIN_USER_NAME = ' Jean Marie Vianey RABEMANALINA';
+const travailleurPath = path.join(__dirname, '../db/travailleur.json');
 
 const readTaches = () => {
   try {
@@ -21,6 +21,15 @@ const readTaches = () => {
 const readRdvs = () => {
   try {
     const data = fs.readFileSync(rdvPath, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    return [];
+  }
+};
+
+const readTravailleurs = () => {
+  try {
+    const data = fs.readFileSync(travailleurPath, 'utf8');
     return JSON.parse(data);
   } catch (error) {
     return [];
@@ -45,9 +54,15 @@ const toTimeString = (minutes) => {
 
 const sortByStartTime = (items) => [...items].sort((a, b) => toMinutes(a.heureDebut) - toMinutes(b.heureDebut));
 
-const isMainUser = (name) => {
+const isAdmin = (name) => {
   if (!name) return false;
-  return name.trim().toLowerCase() === MAIN_USER_NAME.toLowerCase();
+  const travailleurs = readTravailleurs();
+  const nameLower = name.trim().toLowerCase();
+  return travailleurs.some(t => {
+    const fullName = `${t.prenom} ${t.nom}`.trim().toLowerCase();
+    const fullNameReverse = `${t.nom} ${t.prenom}`.trim().toLowerCase();
+    return (fullName === nameLower || fullNameReverse === nameLower) && t.role === 'administrateur';
+  });
 };
 
 const getRelatedTaskIds = (taskId, items) => {
@@ -128,9 +143,9 @@ const validateTimeSlot = ({ date, heureDebut, heureFin, excludeId = null, travai
     })
   );
 
-  // For main user, also get RDV slots (date+time only, no name filter)
+  // For admin users, also get RDV slots (date+time only, no name filter)
   let rdvSlots = [];
-  if (isMainUser(travailleurNom)) {
+  if (isAdmin(travailleurNom)) {
     const rdvs = readRdvs();
     rdvSlots = rdvs
       .filter(r => r.date === date && r.statut !== 'annule' && r.statut !== 'termine')
@@ -221,7 +236,7 @@ const Tache = {
     return readTaches().find(item => item.id === id) || null;
   },
 
-  isMainUser,
+  isAdmin,
   validateTimeSlot,
 
   create: (itemData) => {
