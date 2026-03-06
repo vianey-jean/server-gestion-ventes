@@ -225,7 +225,7 @@
     "heureDebut": "14:00",
     "heureFin": "15:00",
     "lieu": "9 rue rose des bois Sainte-Marie",
-    "statut": "reporte",
+    "statut": "annule",
     "notes": "Créé depuis une réservation",
     "produits": [
       {
@@ -239,7 +239,7 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-03-03T10:40:58.640Z",
-    "updatedAt": "2026-03-05T18:16:30.741Z"
+    "updatedAt": "2026-03-06T12:26:30.319Z"
   },
   {
     "id": "1772734558446",

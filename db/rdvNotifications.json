@@ -137,10 +137,10 @@
     "rdvHeureFin": "15:00",
     "rdvLieu": "9 rue rose des bois Sainte-Marie",
     "message": "Rendez-vous reporté: Livraison a st Marie pour double tissages bouclé noir",
-    "read": false,
-    "statut": "reporte",
+    "read": true,
+    "statut": "annule",
     "createdAt": "2026-03-03T10:40:58.642Z",
-    "updatedAt": "2026-03-05T18:16:30.744Z"
+    "updatedAt": "2026-03-06T12:26:30.321Z"
   },
   {
     "id": "1772734558449",

@@ -596,11 +596,12 @@
       }
     ],
     "dateCommande": "2026-03-03T10:40:28.474Z",
-    "statut": "reporter",
+    "statut": "annule",
     "dateEcheance": "2026-03-06",
     "horaire": "14:00",
     "createdAt": "2026-03-03T10:40:28.517Z",
-    "updatedAt": "2026-03-05T18:16:30.717Z"
+    "updatedAt": "2026-03-06T12:26:30.277Z",
+    "saleId": null
   },
   {
     "id": "1772734531044",
