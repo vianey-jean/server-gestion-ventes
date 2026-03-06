@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
 
 // POST create
 router.post('/', (req, res) => {
-  const { date, heureDebut, heureFin, description, importance, travailleurId, travailleurNom, parentId } = req.body;
+  const { date, heureDebut, heureFin, description, importance, travailleurId, travailleurNom, parentId, commandeId } = req.body;
   const normalizedHeureFin = heureFin || heureDebut;
 
   if (!date || !heureDebut || !description || !importance) {
@@ -63,7 +63,8 @@ router.post('/', (req, res) => {
     importance,
     travailleurId: travailleurId || '',
     travailleurNom: travailleurNom || '',
-    parentId: parentId || undefined
+    parentId: parentId || undefined,
+    commandeId: commandeId || undefined
   });
   if (!tache) return res.status(500).json({ error: 'Erreur création' });
   res.status(201).json(tache);
@@ -74,8 +75,10 @@ router.put('/:id', (req, res) => {
   const existing = Tache.getById(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Tâche non trouvée' });
 
-  if (req.body.completed !== undefined && Object.keys(req.body).length === 1) {
-    const updated = Tache.update(req.params.id, { completed: req.body.completed });
+  if (req.body.completed !== undefined && Object.keys(req.body).filter(k => k !== 'completed' && k !== 'heureFin').length === 0) {
+    const updateData = { completed: req.body.completed };
+    if (req.body.heureFin) updateData.heureFin = req.body.heureFin;
+    const updated = Tache.update(req.params.id, updateData);
     if (!updated) return res.status(500).json({ error: 'Erreur mise à jour' });
     return res.json(updated);
   }

@@ -264,13 +264,17 @@ const Tache = {
       if (index === -1) return null;
       const existing = items[index];
 
-      if (itemData.completed !== undefined && Object.keys(itemData).length === 1) {
+      if (itemData.completed !== undefined && Object.keys(itemData).filter(k => k !== 'completed' && k !== 'heureFin').length === 0) {
         const relatedIds = getRelatedTaskIds(id, items);
-        items = items.map(item => (
-          relatedIds.has(item.id)
-            ? { ...item, completed: itemData.completed }
-            : item
-        ));
+        items = items.map(item => {
+          if (!relatedIds.has(item.id)) return item;
+          const update = { ...item, completed: itemData.completed };
+          // Only update heureFin for the specific task being validated, not related ones
+          if (item.id === id && itemData.heureFin) {
+            update.heureFin = itemData.heureFin;
+          }
+          return update;
+        });
         writeTaches(items);
         return items.find(item => item.id === id) || null;
       }
