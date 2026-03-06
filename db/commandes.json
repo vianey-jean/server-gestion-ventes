@@ -610,22 +610,18 @@
     "type": "reservation",
     "produits": [
       {
-        "nom": "perruque lisse noir 26 pouces",
-        "prixUnitaire": 44.59,
+        "nom": "Perruque lisse noir 30 pouces",
+        "prixUnitaire": 61.26,
         "quantite": 1,
-        "prixVente": 160
-      },
-      {
-        "nom": "Perruque lisse noir 24 pouces",
-        "prixUnitaire": 44.99,
-        "quantite": 1,
-        "prixVente": 150
+        "prixVente": 190
       }
     ],
-    "dateCommande": "2026-03-05T18:15:31.011Z",
-    "statut": "en_attente",
+    "dateCommande": "2026-03-06T04:50:40.244Z",
+    "statut": "valide",
     "dateEcheance": "2026-03-06",
     "horaire": "08:00",
-    "createdAt": "2026-03-05T18:15:31.044Z"
+    "createdAt": "2026-03-05T18:15:31.044Z",
+    "updatedAt": "2026-03-06T04:50:48.814Z",
+    "saleId": "1772772648792"
   }
 ]

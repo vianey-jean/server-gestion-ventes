@@ -243,8 +243,8 @@
   },
   {
     "id": "1772734558446",
-    "titre": "livraison pour double perruque pour Princess",
-    "description": "",
+    "titre": "Réservation: Perruque lisse noir 30 pouces",
+    "description": "Produits réservés:\n- Perruque lisse noir 30 pouces x1 (190 Ar)",
     "clientNom": "Princesse Princesse",
     "clientTelephone": "0692782974",
     "clientAdresse": "18 avenue Raymond Vergès, La Possession",
@@ -252,26 +252,20 @@
     "heureDebut": "08:00",
     "heureFin": "09:00",
     "lieu": "18 avenue Raymond Vergès, La Possession",
-    "statut": "planifie",
-    "notes": "Créé depuis une réservation",
+    "statut": "confirme",
+    "notes": "Créé automatiquement depuis une réservation",
     "produits": [
       {
-        "nom": "perruque lisse noir 26 pouces",
+        "nom": "Perruque lisse noir 30 pouces",
         "quantite": 1,
-        "prixUnitaire": 44.59,
-        "prixVente": 160
-      },
-      {
-        "nom": "Perruque lisse noir 24 pouces",
-        "quantite": 1,
-        "prixUnitaire": 44.99,
-        "prixVente": 150
+        "prixUnitaire": 61.26,
+        "prixVente": 190
       }
     ],
     "commandeId": "1772734531044",
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-03-05T18:15:58.446Z",
-    "updatedAt": "2026-03-05T18:15:58.446Z"
+    "updatedAt": "2026-03-06T04:50:48.764Z"
   }
 ]

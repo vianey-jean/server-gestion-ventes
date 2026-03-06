@@ -827,7 +827,7 @@
     "purchasePrice": 44.99,
     "quantity": 1,
     "code": "P-24-YAHENB",
-    "reserver": "oui"
+    "reserver": "non"
   },
   {
     "id": "1762516167800",
@@ -877,7 +877,7 @@
     "purchasePrice": 44.59,
     "quantity": 1,
     "code": "P-26-CRRNHA",
-    "reserver": "oui"
+    "reserver": "non"
   },
   {
     "id": "1764234850371",
@@ -1183,6 +1183,14 @@
     "code": "P-XC-AJQUUB",
     "description": "Perruque bouclé mèche blonde gasy",
     "purchasePrice": 50,
+    "quantity": 1,
+    "reserver": "non"
+  },
+  {
+    "id": "1772772612966",
+    "code": "P-30-TPFSGS",
+    "description": "Perruque lisse noir 30 pouces",
+    "purchasePrice": 61.26,
     "quantity": 1,
     "reserver": "non"
   }

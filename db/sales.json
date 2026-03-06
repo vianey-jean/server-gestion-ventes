@@ -3988,5 +3988,29 @@
     "clientPhone": "0692157371",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1772772648792",
+    "date": "2026-03-06",
+    "products": [
+      {
+        "productId": "1772772612966",
+        "description": "Perruque lisse noir 30 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 61.26,
+        "sellingPrice": 190,
+        "profit": 128.74,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 61.26,
+    "totalSellingPrice": 190,
+    "totalProfit": 128.74,
+    "clientName": "Princesse Princesse",
+    "clientAddress": "18 avenue Raymond Vergès, La Possession",
+    "clientPhone": "0692782974",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
