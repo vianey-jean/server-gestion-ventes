@@ -1,0 +1,6 @@
+[
+  { "id": "col-1", "title": "À faire", "color": "#ef4444", "order": 0 },
+  { "id": "col-2", "title": "En production", "color": "#f59e0b", "order": 1 },
+  { "id": "col-3", "title": "En test", "color": "#3b82f6", "order": 2 },
+  { "id": "col-4", "title": "Terminé", "color": "#22c55e", "order": 3 }
+]
