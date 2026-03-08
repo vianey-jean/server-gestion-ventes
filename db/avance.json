@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "1772979455373-jftm3g0la",
+    "travailleurId": "1772633655897",
+    "travailleurNom": "Saniatie AHAMADI",
+    "entrepriseId": "1772633629972",
+    "entrepriseNom": "Caudan",
+    "montant": 120,
+    "totalPointage": 120,
+    "resteApresAvance": 0,
+    "date": "2026-03-08T14:17:35.373Z",
+    "mois": 3,
+    "annee": 2026,
+    "createdAt": "2026-03-08T14:17:35.373Z"
+  }
+]

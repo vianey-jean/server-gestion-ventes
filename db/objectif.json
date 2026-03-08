@@ -1,6 +1,6 @@
 {
   "objectif": 2000,
-  "totalVentesMois": 345,
+  "totalVentesMois": 495,
   "mois": 3,
   "annee": 2026,
   "historique": [
@@ -84,9 +84,9 @@
     {
       "mois": 3,
       "annee": 2026,
-      "totalVentesMois": 345,
+      "totalVentesMois": 495,
       "objectif": 2000,
-      "pourcentage": 17
+      "pourcentage": 25
     }
   ],
   "objectifMax": 2000,

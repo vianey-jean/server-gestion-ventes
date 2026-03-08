@@ -2,11 +2,12 @@
   {
     "id": "1",
     "email": "vianey.jean@ymail.com",
-    "password": "$2b$10$EfdbjjThNKWPVc5GmnbOYuaTtSUR56t7Lw3/86prEfH9ActMPg/MW",
+    "password": "$2b$10$956HCTCjoyTXaBg844AlkuxqEOFhxkAm9Rrb6X3IT4MeKkUX3yr12",
     "firstName": "RABEMANALINA",
-    "lastName": "Jean",
+    "lastName": "Jean Marie Vianey",
     "gender": "male",
-    "address": "123 Demo Street",
-    "phone": "123-456-7890"
+    "address": "10 Allée des Beryls bleus Bellepierre",
+    "phone": "0692198701",
+    "profilePhoto": "/uploads/profil/photo/profile-1-1772979394488.JPG"
   }
 ]

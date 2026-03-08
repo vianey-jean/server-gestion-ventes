@@ -4012,5 +4012,29 @@
     "clientPhone": "0692782974",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1772980409992",
+    "date": "2026-03-07",
+    "products": [
+      {
+        "productId": "1772980373931",
+        "description": "Perruque tefy gasy volumineux mèche blonde",
+        "quantitySold": 1,
+        "purchasePrice": 100,
+        "sellingPrice": 150,
+        "profit": 50,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 100,
+    "totalSellingPrice": 150,
+    "totalProfit": 50,
+    "clientName": "Marie Amourany",
+    "clientAddress": "22 rue des muscadier Apt 3 saint Clotilde",
+    "clientPhone": "0693821738",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]

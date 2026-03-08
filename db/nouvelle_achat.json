@@ -330,5 +330,61 @@
     "totalCost": 27.41,
     "type": "autre_depense",
     "categorie": "divers"
+  },
+  {
+    "id": "1772979865739",
+    "date": "2026-03-07T00:00:00.000Z",
+    "productId": "1772979865737",
+    "productDescription": "Perruque court lace frontale blonde miel",
+    "purchasePrice": 13.15,
+    "quantity": 1,
+    "fournisseur": "Happy Friday hair Store",
+    "caracteristiques": "cheveux humain très court",
+    "totalCost": 13.15,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772979956241",
+    "date": "2026-03-07T00:00:00.000Z",
+    "productId": "1752297135636",
+    "productDescription": "Perruque bouclé blonde miel 28 pouces",
+    "purchasePrice": 77.55,
+    "quantity": 1,
+    "fournisseur": "Happy Friday hair Store",
+    "caracteristiques": "Perruque bouclé blonde miel 28 pouces",
+    "totalCost": 77.55,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772980038923",
+    "date": "2026-03-07T00:00:00.000Z",
+    "productId": "1772980038920",
+    "productDescription": "Perruque lisse rouge bordeaux 28 pouces",
+    "purchasePrice": 65.77,
+    "quantity": 1,
+    "fournisseur": "Happy Friday hair Store",
+    "caracteristiques": "Perruque lisse rouge bordeaux 28 pouces",
+    "totalCost": 65.77,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1772980084875",
+    "date": "2026-03-07T00:00:00.000Z",
+    "description": "frais fedex des perruque 07/03/2026",
+    "totalCost": 31.54,
+    "type": "autre_depense",
+    "categorie": "divers"
+  },
+  {
+    "id": "1772980179297",
+    "date": "2026-03-07T00:00:00.000Z",
+    "productId": "1772980179295",
+    "productDescription": "Perruque bouclé rouge bordeaux 28 pouces",
+    "purchasePrice": 65.77,
+    "quantity": 1,
+    "fournisseur": "Happy Friday hair Store",
+    "caracteristiques": "Perruque bouclé rouge bordeaux 28 pouces",
+    "totalCost": 65.77,
+    "type": "achat_produit"
   }
 ]

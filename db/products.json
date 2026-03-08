@@ -544,8 +544,8 @@
   {
     "id": "1752297135636",
     "description": "Perruque bouclé blonde miel 28 pouces",
-    "purchasePrice": 58.41,
-    "quantity": 1,
+    "purchasePrice": 77.55,
+    "quantity": 2,
     "code": "P-28-GIEJGT"
   },
   {
@@ -1193,5 +1193,36 @@
     "purchasePrice": 61.26,
     "quantity": 1,
     "reserver": "non"
+  },
+  {
+    "id": "1772979865737",
+    "code": "P-XC-ZIADIW",
+    "description": "Perruque court lace frontale blonde miel",
+    "purchasePrice": 13.15,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1772980038920",
+    "code": "P-28-BSADZT",
+    "description": "Perruque lisse rouge bordeaux 28 pouces",
+    "purchasePrice": 65.77,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1772980179295",
+    "code": "P-28-NOXETJ",
+    "description": "Perruque bouclé rouge bordeaux 28 pouces",
+    "purchasePrice": 65.77,
+    "quantity": 1,
+    "sellingPrice": 0
+  },
+  {
+    "id": "1772980373931",
+    "code": "P-XC-RELSGU",
+    "description": "Perruque tefy gasy volumineux mèche blonde",
+    "purchasePrice": 100,
+    "quantity": 0
   }
 ]
