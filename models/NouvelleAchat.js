@@ -125,7 +125,8 @@ const NouvelleAchat = {
           const updatedProductData = {
             description: achatData.productDescription || existingProduct.description,
             purchasePrice: Number(achatData.purchasePrice) || existingProduct.purchasePrice,
-            quantity: existingProduct.quantity + quantityToAdd
+            quantity: existingProduct.quantity + quantityToAdd,
+            fournisseur: achatData.fournisseur || existingProduct.fournisseur || ''
           };
           
           Product.update(achatData.productId, updatedProductData);
@@ -136,8 +137,9 @@ const NouvelleAchat = {
           const newProduct = Product.create({
             description: achatData.productDescription,
             purchasePrice: Number(achatData.purchasePrice),
-            quantity: quantityToAdd, // Quantité EXACTE du formulaire
-            sellingPrice: 0
+            quantity: quantityToAdd,
+            sellingPrice: 0,
+            fournisseur: achatData.fournisseur || ''
           });
           
           if (newProduct) {
@@ -163,7 +165,8 @@ const NouvelleAchat = {
           
           const updatedProductData = {
             purchasePrice: Number(achatData.purchasePrice) || existingProductByDescription.purchasePrice,
-            quantity: existingProductByDescription.quantity + quantityToAdd
+            quantity: existingProductByDescription.quantity + quantityToAdd,
+            fournisseur: achatData.fournisseur || existingProductByDescription.fournisseur || ''
           };
           
           Product.update(existingProductByDescription.id, updatedProductData);
@@ -174,8 +177,9 @@ const NouvelleAchat = {
           const newProduct = Product.create({
             description: achatData.productDescription,
             purchasePrice: Number(achatData.purchasePrice),
-            quantity: quantityToAdd, // Quantité EXACTE du formulaire
-            sellingPrice: 0
+            quantity: quantityToAdd,
+            sellingPrice: 0,
+            fournisseur: achatData.fournisseur || ''
           });
           
           if (newProduct) {
