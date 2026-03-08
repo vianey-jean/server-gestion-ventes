@@ -115,8 +115,13 @@ app.use(suspiciousActivityLogger);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
-// Sanitization de tous les inputs
-app.use(sanitizeMiddleware);
+// Sanitization de tous les inputs (skip for drawing uploads - base64 data)
+app.use((req, res, next) => {
+  if (req.path === '/api/notes/upload-drawing') {
+    return next();
+  }
+  return sanitizeMiddleware(req, res, next);
+});
 
 // Create db directory if it doesn't exist
 const dbPath = path.join(__dirname, 'db');
@@ -267,6 +272,7 @@ const pointageRoutes = require('./routes/pointage');
 const travailleurRoutes = require('./routes/travailleur');
 const tacheRoutes = require('./routes/tache');
 const notesRoutes = require('./routes/notes');
+const avanceRoutes = require('./routes/avance');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -293,6 +299,7 @@ app.use('/api/pointages', pointageRoutes);
 app.use('/api/travailleurs', travailleurRoutes);
 app.use('/api/taches', tacheRoutes);
 app.use('/api/notes', notesRoutes);
+app.use('/api/avances', avanceRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
