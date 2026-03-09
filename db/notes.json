@@ -48,8 +48,8 @@
     "id": "1773046305058-28utg8rmu",
     "title": "docs",
     "content": "ajout tous les composant nouveaux dans les docs",
-    "columnId": "col-1",
-    "order": 0,
+    "columnId": "col-3",
+    "order": 1,
     "color": "#ffffff",
     "bold": false,
     "boldLines": [],
@@ -57,6 +57,6 @@
     "drawing": null,
     "voiceText": "",
     "createdAt": "2026-03-09T08:51:45.058Z",
-    "updatedAt": "2026-03-09T08:51:45.058Z"
+    "updatedAt": "2026-03-09T13:11:18.266Z"
   }
 ]

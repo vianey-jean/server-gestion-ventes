@@ -640,9 +640,11 @@
       }
     ],
     "dateCommande": "2026-03-09T08:59:41.293Z",
-    "statut": "en_attente",
+    "statut": "valide",
     "dateEcheance": "2026-03-09",
     "horaire": "17:00",
-    "createdAt": "2026-03-09T08:59:41.406Z"
+    "createdAt": "2026-03-09T08:59:41.406Z",
+    "saleId": "1773061835923",
+    "updatedAt": "2026-03-09T13:10:35.945Z"
   }
 ]

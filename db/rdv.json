@@ -279,7 +279,7 @@
     "heureDebut": "17:00",
     "heureFin": "18:00",
     "lieu": "Parking run market saint-Clotilde",
-    "statut": "planifie",
+    "statut": "confirme",
     "notes": "Créé depuis une réservation",
     "produits": [
       {
@@ -293,6 +293,6 @@
     "notificationEnvoyee": false,
     "rappelEnvoye": false,
     "createdAt": "2026-03-09T09:00:08.358Z",
-    "updatedAt": "2026-03-09T09:00:08.358Z"
+    "updatedAt": "2026-03-09T13:10:35.851Z"
   }
 ]

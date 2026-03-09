@@ -4036,5 +4036,29 @@
     "clientPhone": "0693821738",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1773061835923",
+    "date": "2026-03-09",
+    "products": [
+      {
+        "productId": "1753186907720",
+        "description": "Tissages bouclé noir 16 poucess",
+        "quantitySold": 1,
+        "purchasePrice": 12.82,
+        "sellingPrice": 100,
+        "profit": 87.18,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 12.82,
+    "totalSellingPrice": 100,
+    "totalProfit": 87.18,
+    "clientName": "Lina Ma copilote",
+    "clientAddress": "Parking run market saint-Clotilde",
+    "clientPhone": "0692005905",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
