@@ -3,7 +3,7 @@
     "id": "1772979629367-srvvhfr4b",
     "title": "Finalisation de la page profil",
     "content": "il faut créer la page profil et on peut modifier les photo et tous les renseignement du profils avec le changement de mot de passe",
-    "columnId": "col-3",
+    "columnId": "col-4",
     "order": 0,
     "color": "#ffffff",
     "bold": false,
@@ -12,6 +12,51 @@
     "drawing": "/uploads/notes/dessin/dessin_1772979626806_s0nipr.jpeg",
     "voiceText": "",
     "createdAt": "2026-03-08T14:20:29.367Z",
-    "updatedAt": "2026-03-08T14:20:42.664Z"
+    "updatedAt": "2026-03-09T08:50:17.228Z"
+  },
+  {
+    "id": "1773046207347-j0eccjpig",
+    "title": "messagerie",
+    "content": "création de messagerie instantané pour les visiteur",
+    "columnId": "col-3",
+    "order": 1,
+    "color": "#ffffff",
+    "bold": false,
+    "boldLines": [],
+    "underlineLines": [],
+    "drawing": null,
+    "voiceText": "",
+    "createdAt": "2026-03-09T08:50:07.347Z",
+    "updatedAt": "2026-03-09T08:50:14.729Z"
+  },
+  {
+    "id": "1773046251858-rust16alb",
+    "title": "Ajout fournisseurs dans ajout produit",
+    "content": "Ajout fournisseurs dans ajout produit",
+    "columnId": "col-4",
+    "order": 1,
+    "color": "#ffffff",
+    "bold": false,
+    "boldLines": [],
+    "underlineLines": [],
+    "drawing": null,
+    "voiceText": "",
+    "createdAt": "2026-03-09T08:50:51.858Z",
+    "updatedAt": "2026-03-09T08:51:04.072Z"
+  },
+  {
+    "id": "1773046305058-28utg8rmu",
+    "title": "docs",
+    "content": "ajout tous les composant nouveaux dans les docs",
+    "columnId": "col-1",
+    "order": 0,
+    "color": "#ffffff",
+    "bold": false,
+    "boldLines": [],
+    "underlineLines": [],
+    "drawing": null,
+    "voiceText": "",
+    "createdAt": "2026-03-09T08:51:45.058Z",
+    "updatedAt": "2026-03-09T08:51:45.058Z"
   }
 ]

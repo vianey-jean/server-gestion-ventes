@@ -386,5 +386,49 @@
     "caracteristiques": "Perruque bouclé rouge bordeaux 28 pouces",
     "totalCost": 65.77,
     "type": "achat_produit"
+  },
+  {
+    "id": "1773045736543",
+    "date": "2026-03-09T00:00:00.000Z",
+    "productId": "1773045736539",
+    "productDescription": "Demi-Perruque bouclé noir 18 pouces",
+    "purchasePrice": 60.25,
+    "quantity": 1,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Demi-Perruque bouclé noir 16 pouces",
+    "totalCost": 60.25,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1773045819666",
+    "date": "2026-03-09T00:00:00.000Z",
+    "productId": "1770785586730",
+    "productDescription": "Tissages lisse blonde miel 20 pouces",
+    "purchasePrice": 16.56,
+    "quantity": 3,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Tissages lisse blonde miel 20 pouces",
+    "totalCost": 49.67999999999999,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1773045891426",
+    "date": "2026-03-09T00:00:00.000Z",
+    "productId": "1773045891424",
+    "productDescription": "Tissages lisse noir 26 pouces",
+    "purchasePrice": 37.01,
+    "quantity": 3,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Tissages lisse ondulé noir 26 pouces",
+    "totalCost": 111.03,
+    "type": "achat_produit"
+  },
+  {
+    "id": "1773045924769",
+    "date": "2026-03-09T00:00:00.000Z",
+    "description": "frais transport sinowei",
+    "totalCost": 36.5,
+    "type": "autre_depense",
+    "categorie": "divers"
   }
 ]

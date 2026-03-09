@@ -82,5 +82,33 @@
     "travailleurId": "1772633655897",
     "travailleurNom": "Saniatie AHAMADI",
     "createdAt": "2026-03-07T04:05:20.512Z"
+  },
+  {
+    "id": "1773045611028",
+    "date": "2026-03-09",
+    "entrepriseId": "1772633629972",
+    "entrepriseNom": "Caudan",
+    "typePaiement": "horaire",
+    "heures": 4,
+    "prixJournalier": 0,
+    "prixHeure": 10,
+    "montantTotal": 40,
+    "travailleurId": "1772633655897",
+    "travailleurNom": "Saniatie AHAMADI",
+    "createdAt": "2026-03-09T08:40:11.028Z"
+  },
+  {
+    "id": "1773045622449",
+    "date": "2026-03-09",
+    "entrepriseId": "1772633612058",
+    "entrepriseNom": "Chez Dany",
+    "typePaiement": "journalier",
+    "heures": 0,
+    "prixJournalier": 25,
+    "prixHeure": 0,
+    "montantTotal": 25,
+    "travailleurId": "1772633655897",
+    "travailleurNom": "Saniatie AHAMADI",
+    "createdAt": "2026-03-09T08:40:22.449Z"
   }
 ]

@@ -581,7 +581,8 @@
     "description": "Tissages bouclé noir 16 poucess",
     "purchasePrice": 12.82,
     "quantity": 3,
-    "code": "T-16-VLKGOB"
+    "code": "T-16-VLKGOB",
+    "reserver": "oui"
   },
   {
     "id": "1753187017537",
@@ -1047,7 +1048,8 @@
     "code": "T-20-NKDSMC",
     "description": "Tissages lisse blonde miel 20 pouces",
     "purchasePrice": 16.56,
-    "quantity": 1
+    "quantity": 4,
+    "fournisseur": "Sinuowei"
   },
   {
     "id": "1770794882047",
@@ -1101,7 +1103,7 @@
     "code": "P-16-CBAQME",
     "description": "Demi-Perruque bouclé noir 16 pouces",
     "purchasePrice": 49.36,
-    "quantity": 1,
+    "quantity": 0,
     "sellingPrice": 0,
     "photos": [],
     "mainPhoto": null
@@ -1224,5 +1226,31 @@
     "description": "Perruque tefy gasy volumineux mèche blonde",
     "purchasePrice": 100,
     "quantity": 0
+  },
+  {
+    "id": "1773045736539",
+    "code": "P-18-NEYFVZ",
+    "description": "Demi-Perruque bouclé noir 18 pouces",
+    "purchasePrice": 60.25,
+    "quantity": 1,
+    "sellingPrice": 0,
+    "fournisseur": "Sinuowei"
+  },
+  {
+    "id": "1773045891424",
+    "code": "T-26-WPTILI",
+    "description": "Tissages lisse noir 26 pouces",
+    "purchasePrice": 37.01,
+    "quantity": 3,
+    "sellingPrice": 0,
+    "fournisseur": "Sinuowei"
+  },
+  {
+    "id": "1773046704074",
+    "code": "P-16-OFZMFE",
+    "description": "perruque bouclé noir 16 pouces",
+    "purchasePrice": 34.7,
+    "quantity": 1,
+    "fournisseur": "BPHW"
   }
 ]
