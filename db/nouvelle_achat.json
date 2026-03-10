@@ -430,5 +430,17 @@
     "totalCost": 36.5,
     "type": "autre_depense",
     "categorie": "divers"
+  },
+  {
+    "id": "1773143195170",
+    "date": "2026-03-10T00:00:00.000Z",
+    "productId": "1756486622500",
+    "productDescription": "Perruque bouclé blonde miel blanche 24 pouces",
+    "purchasePrice": 64.84,
+    "quantity": 1,
+    "fournisseur": "Sinuowei",
+    "caracteristiques": "Perruque bouclé blonde miel blanche 24 pouces",
+    "totalCost": 64.84,
+    "type": "achat_produit"
   }
 ]

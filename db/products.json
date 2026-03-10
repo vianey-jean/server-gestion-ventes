@@ -672,8 +672,9 @@
     "id": "1756486622500",
     "description": "Perruque bouclé blonde miel blanche 24 pouces",
     "purchasePrice": 64.84,
-    "quantity": 0,
-    "code": "P-24-ZMMMMP"
+    "quantity": 1,
+    "code": "P-24-ZMMMMP",
+    "fournisseur": "Sinuowei"
   },
   {
     "id": "1756657529781",
