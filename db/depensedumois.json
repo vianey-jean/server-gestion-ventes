@@ -59,6 +59,25 @@
     "id": "4",
     "mois": "03",
     "annee": "2026",
-    "mouvements": []
+    "mouvements": [
+      {
+        "id": "1",
+        "description": "Charge fixe",
+        "categorie": "chargeFixe",
+        "date": "2026-03-10",
+        "debit": "352.96",
+        "credit": "",
+        "solde": -352.96
+      },
+      {
+        "id": "2",
+        "description": "RSA",
+        "categorie": "Autres",
+        "date": "2026-03-10",
+        "debit": "",
+        "credit": "1824",
+        "solde": 1471.04
+      }
+    ]
   }
 ]

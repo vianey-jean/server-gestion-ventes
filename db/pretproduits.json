@@ -451,8 +451,14 @@
     "description": "Perruque bouclé blonde miel 22 pouces 350 densité, Disolvant",
     "nom": "Emilienne Nomenjanahary",
     "prixVente": 275,
-    "avanceRecue": 60,
-    "reste": 215,
-    "estPaye": false
+    "avanceRecue": 160,
+    "reste": 115,
+    "estPaye": false,
+    "paiements": [
+      {
+        "date": "2026-03-10",
+        "montant": 100
+      }
+    ]
   }
 ]
