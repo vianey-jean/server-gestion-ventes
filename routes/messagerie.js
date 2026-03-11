@@ -58,12 +58,10 @@ function broadcastToAdmins(event, data) {
 const setMessagerieCORS = (req, res) => {
   const origin = req.get('Origin');
   const allowed = [
-    'http://localhost:3000', 
-    'http://localhost:10000',
-    'http://localhost:8080', 
-    'http://localhost:8081',
+    'http://localhost:3000', 'http://localhost:8080', 'http://localhost:8081',
     'https://server-gestion-ventes.onrender.com',
-    'https://riziky-gestion-ventes.vercel.app'
+    'https://riziky-gestion-ventes.vercel.app',
+    'https://riziky-boutic.vercel.app'
   ];
   if (origin && (allowed.includes(origin) || origin.includes('lovable.app') || origin.includes('lovableproject.com'))) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -85,13 +83,27 @@ router.options('/events', (req, res) => {
 // SSE Endpoint
 // =====================
 router.get('/events', (req, res) => {
-  setMessagerieCORS(req, res);
+  const origin = req.get('Origin');
+  const allowed = [
+    'http://localhost:3000', 'http://localhost:8080', 'http://localhost:8081',
+    'https://server-gestion-ventes.onrender.com',
+    'https://riziky-gestion-ventes.vercel.app',
+    'https://riziky-boutic.vercel.app'
+  ];
+  let allowedOrigin = origin || '*';
+  if (origin && (allowed.includes(origin) || origin.includes('lovable.app') || origin.includes('lovableproject.com'))) {
+    allowedOrigin = origin;
+  }
   
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache, no-store, must-revalidate',
     'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no'
+    'X-Accel-Buffering': 'no',
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin'
   });
 
   const clientId = `livechat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
