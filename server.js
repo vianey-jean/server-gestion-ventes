@@ -55,11 +55,11 @@ app.use(securityHeadersMiddleware);
 // Configuration CORS avec toutes les origines autorisées
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost:10000',
   'http://localhost:8080',
   'http://localhost:8081',
   'https://server-gestion-ventes.onrender.com',
-  'https://riziky-gestion-ventes.vercel.app',
-  'https://riziky-boutic.vercel.app'
+  'https://riziky-gestion-ventes.vercel.app'
 ];
 
 const corsOptions = {
