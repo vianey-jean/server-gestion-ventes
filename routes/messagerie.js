@@ -54,57 +54,17 @@ function broadcastToAdmins(event, data) {
   });
 }
 
-// Helper CORS pour SSE messagerie
-const setMessagerieCORS = (req, res) => {
-  const origin = req.get('Origin');
-  const allowed = [
-    'http://localhost:3000', 'http://localhost:8080', 'http://localhost:8081',
-    'https://server-gestion-ventes.onrender.com',
-    'https://riziky-gestion-ventes.vercel.app',
-    'https://riziky-boutic.vercel.app'
-  ];
-  if (origin && (allowed.includes(origin) || origin.includes('lovable.app') || origin.includes('lovableproject.com'))) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  } else {
-    res.setHeader('Access-Control-Allow-Origin', origin || '*');
-  }
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin');
-};
-
-// Preflight CORS pour SSE
-router.options('/events', (req, res) => {
-  setMessagerieCORS(req, res);
-  res.status(200).send();
-});
 
 // =====================
 // SSE Endpoint
 // =====================
 router.get('/events', (req, res) => {
-  const origin = req.get('Origin');
-  const allowed = [
-    'http://localhost:3000', 'http://localhost:8080', 'http://localhost:8081',
-    'https://server-gestion-ventes.onrender.com',
-    'https://riziky-gestion-ventes.vercel.app',
-    'https://riziky-boutic.vercel.app'
-  ];
-  let allowedOrigin = origin || '*';
-  if (origin && (allowed.includes(origin) || origin.includes('lovable.app') || origin.includes('lovableproject.com'))) {
-    allowedOrigin = origin;
-  }
-  
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no',
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Credentials': 'true',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin'
-  });
+  // Set SSE headers individually to preserve CORS headers from global middleware
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.status(200).flushHeaders();
 
   const clientId = `livechat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const visitorId = req.query.visitorId || null;
