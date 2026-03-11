@@ -57,17 +57,36 @@ function broadcastToAdmins(event, data) {
 // =====================
 // SSE Endpoint
 // =====================
+// OPTIONS preflight for SSE endpoint
+router.options('/events', (req, res) => {
+  const origin = req.get('Origin') || '*';
+  res.set({
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Max-Age': '86400'
+  });
+  res.status(200).end();
+});
+
 router.get('/events', (req, res) => {
   const origin = req.get('Origin') || '*';
   
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no',
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Credentials': 'true'
-  });
+  // Set CORS headers FIRST via setHeader (not writeHead which overwrites)
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin');
+  
+  // SSE headers
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  
+  // Flush headers to start the stream (preserves all headers above)
+  res.status(200).flushHeaders();
 
   const clientId = `livechat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const visitorId = req.query.visitorId || null;
