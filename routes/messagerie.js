@@ -72,7 +72,6 @@ router.get('/events', (req, res) => {
   res.setHeader('X-Accel-Buffering', 'no');
 
   res.flushHeaders();
-  res.flushHeaders();
 
   const clientId = `livechat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const visitorId = req.query.visitorId || null;
