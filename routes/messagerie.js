@@ -49,29 +49,25 @@ function broadcastToAdmins(event, data) {
     if (client.adminId) {
       try {
         client.res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
-      } catch (e) { }
+      } catch (e) {}
     }
   });
 }
-
 
 // =====================
 // SSE Endpoint
 // =====================
 router.get('/events', (req, res) => {
-
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-
-  // Headers SSE
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.setHeader('Connection', 'keep-alive');
-  res.setHeader('X-Accel-Buffering', 'no');
-
-  res.flushHeaders();
+  const origin = req.get('Origin') || '*';
+  
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Connection': 'keep-alive',
+    'X-Accel-Buffering': 'no',
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Credentials': 'true'
+  });
 
   const clientId = `livechat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const visitorId = req.query.visitorId || null;
@@ -89,7 +85,7 @@ router.get('/events', (req, res) => {
   req.on('close', () => {
     clearInterval(heartbeat);
     sseClients.delete(clientId);
-
+    
     // If admin disconnects, broadcast offline
     if (adminId) {
       broadcastAdminStatus();
@@ -113,7 +109,7 @@ function broadcastAdminStatus() {
     if (client.visitorId) {
       try {
         client.res.write(`event: admin_status\ndata: ${JSON.stringify({ online })}\n\n`);
-      } catch (e) { }
+      } catch (e) {}
     }
   });
 }
@@ -125,7 +121,7 @@ router.get('/admin-status', (req, res) => {
     const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
     const admins = users.filter(u => u.role === 'administrateur');
     const adminIds = admins.map(a => a.id);
-
+    
     let online = false;
     for (const [, client] of sseClients) {
       if (client.adminId && adminIds.includes(client.adminId)) {
@@ -146,7 +142,7 @@ router.get('/conversations', authMiddleware, (req, res) => {
   try {
     const messages = readDB();
     const adminId = req.user.id;
-
+    
     // Group by visitorId
     const convMap = {};
     messages.filter(m => m.adminId === adminId).forEach(m => {
@@ -164,13 +160,13 @@ router.get('/conversations', authMiddleware, (req, res) => {
         convMap[m.visitorId].unreadCount++;
       }
     });
-
+    
     // Set last message and sort
     const conversations = Object.values(convMap).map(conv => {
       conv.lastMessage = conv.messages[conv.messages.length - 1];
       return conv;
     }).sort((a, b) => new Date(b.lastMessage.date) - new Date(a.lastMessage.date));
-
+    
     res.json(conversations);
   } catch (error) {
     console.error('Error fetching conversations:', error);
@@ -200,7 +196,7 @@ router.get('/messages/:visitorId/:adminId', (req, res) => {
 router.post('/send', (req, res) => {
   try {
     const { visitorId, visitorNom, adminId, contenu, from } = req.body;
-
+    
     if (!visitorId || !adminId || !contenu || !from) {
       return res.status(400).json({ message: 'Champs obligatoires manquants' });
     }
@@ -216,13 +212,13 @@ router.post('/send', (req, res) => {
       date: new Date().toISOString(),
       lu: false
     };
-
+    
     messages.push(newMessage);
     writeDB(messages);
 
     // Broadcast via SSE
     broadcastToConversation(visitorId, adminId, 'new_message', newMessage);
-
+    
     // If from visitor, also notify admin of new conversation
     if (from === 'visitor') {
       broadcastToAdmins('new_conversation_message', newMessage);
@@ -252,7 +248,7 @@ router.put('/mark-read/:visitorId/:adminId', (req, res) => {
     const { visitorId, adminId } = req.params;
     const { reader } = req.body; // 'visitor' or 'admin'
     const messages = readDB();
-
+    
     let updated = false;
     messages.forEach(m => {
       if (m.visitorId === visitorId && m.adminId === adminId && !m.lu) {
@@ -263,7 +259,7 @@ router.put('/mark-read/:visitorId/:adminId', (req, res) => {
         }
       }
     });
-
+    
     if (updated) writeDB(messages);
     res.json({ ok: true });
   } catch (error) {
@@ -299,17 +295,17 @@ router.put('/edit/:messageId', (req, res) => {
     const messages = readDB();
     const idx = messages.findIndex(m => m.id === messageId);
     if (idx === -1) return res.status(404).json({ message: 'Message non trouvé' });
-
+    
     // Verify ownership
     if (messages[idx].from !== from) {
       return res.status(403).json({ message: 'Non autorisé' });
     }
-
+    
     messages[idx].contenu = contenu.trim();
     messages[idx].edited = true;
     messages[idx].editedAt = new Date().toISOString();
     writeDB(messages);
-
+    
     broadcastToConversation(messages[idx].visitorId, messages[idx].adminId, 'message_edited', messages[idx]);
     res.json(messages[idx]);
   } catch (error) {
@@ -328,17 +324,17 @@ router.delete('/delete/:messageId', (req, res) => {
     const messages = readDB();
     const idx = messages.findIndex(m => m.id === messageId);
     if (idx === -1) return res.status(404).json({ message: 'Message non trouvé' });
-
+    
     if (messages[idx].from !== from) {
       return res.status(403).json({ message: 'Non autorisé' });
     }
-
+    
     // Replace content with deletion notice
     messages[idx].contenu = '';
     messages[idx].deleted = true;
     messages[idx].deletedAt = new Date().toISOString();
     writeDB(messages);
-
+    
     broadcastToConversation(messages[idx].visitorId, messages[idx].adminId, 'message_deleted', messages[idx]);
     res.json(messages[idx]);
   } catch (error) {
@@ -357,16 +353,16 @@ router.post('/like/:messageId', (req, res) => {
     const messages = readDB();
     const idx = messages.findIndex(m => m.id === messageId);
     if (idx === -1) return res.status(404).json({ message: 'Message non trouvé' });
-
+    
     if (!messages[idx].likes) messages[idx].likes = [];
-
+    
     const likeIdx = messages[idx].likes.indexOf(from);
     if (likeIdx === -1) {
       messages[idx].likes.push(from);
     } else {
       messages[idx].likes.splice(likeIdx, 1);
     }
-
+    
     writeDB(messages);
     broadcastToConversation(messages[idx].visitorId, messages[idx].adminId, 'message_liked', messages[idx]);
     res.json(messages[idx]);
