@@ -43,7 +43,14 @@ const PORT = process.env.PORT || 10000;
 // ===================
 
 // Compression pour performance
-app.use(compression());
+app.use(compression({
+  filter: (req, res) => {
+    if (req.path === '/api/sync/events' || req.path === '/api/messagerie/events') {
+      return false;
+    }
+    return compression.filter(req, res);
+  }
+}));
 
 // Security headers
 app.use(securityHeadersMiddleware);

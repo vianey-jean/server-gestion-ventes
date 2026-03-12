@@ -57,17 +57,22 @@ function broadcastToAdmins(event, data) {
 // =====================
 // SSE Endpoint
 // =====================
+router.options('/events', (req, res) => {
+  res.sendStatus(204);
+});
+
 router.get('/events', (req, res) => {
-  const origin = req.get('Origin') || '*';
-  
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no',
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Credentials': 'true'
-  });
+  // Laisser le middleware CORS global gérer les headers CORS
+  // et définir ici uniquement les headers SSE.
+  res.status(200);
+  res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, no-transform');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders?.();
+
+  req.socket?.setKeepAlive?.(true, 15000);
+  req.socket?.setNoDelay?.(true);
 
   const clientId = `livechat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const visitorId = req.query.visitorId || null;
