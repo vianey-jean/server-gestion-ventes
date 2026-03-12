@@ -442,5 +442,13 @@
     "caracteristiques": "Perruque bouclé blonde miel blanche 24 pouces",
     "totalCost": 64.84,
     "type": "achat_produit"
+  },
+  {
+    "id": "1773293379150",
+    "date": "2026-03-11T00:00:00.000Z",
+    "description": "taxe importation fedex",
+    "totalCost": 10,
+    "type": "taxes",
+    "categorie": "divers"
   }
 ]

@@ -18,8 +18,8 @@
     "id": "1773046207347-j0eccjpig",
     "title": "messagerie",
     "content": "création de messagerie instantané pour les visiteur",
-    "columnId": "col-3",
-    "order": 1,
+    "columnId": "col-4",
+    "order": 3,
     "color": "#ffffff",
     "bold": false,
     "boldLines": [],
@@ -27,7 +27,7 @@
     "drawing": null,
     "voiceText": "",
     "createdAt": "2026-03-09T08:50:07.347Z",
-    "updatedAt": "2026-03-09T08:50:14.729Z"
+    "updatedAt": "2026-03-12T05:32:06.215Z"
   },
   {
     "id": "1773046251858-rust16alb",
@@ -48,8 +48,8 @@
     "id": "1773046305058-28utg8rmu",
     "title": "docs",
     "content": "ajout tous les composant nouveaux dans les docs",
-    "columnId": "col-3",
-    "order": 1,
+    "columnId": "col-4",
+    "order": 2,
     "color": "#ffffff",
     "bold": false,
     "boldLines": [],
@@ -57,6 +57,21 @@
     "drawing": null,
     "voiceText": "",
     "createdAt": "2026-03-09T08:51:45.058Z",
-    "updatedAt": "2026-03-09T13:11:18.266Z"
+    "updatedAt": "2026-03-12T05:31:58.833Z"
+  },
+  {
+    "id": "1773293504522-8oyxtmqpv",
+    "title": "Correction bug cors",
+    "content": "correction des bug pour cors sur partie front end et back. surtout au niveau de messagerie instantané.",
+    "columnId": "col-3",
+    "order": 2,
+    "color": "#ffffff",
+    "bold": false,
+    "boldLines": [],
+    "underlineLines": [],
+    "drawing": null,
+    "voiceText": "",
+    "createdAt": "2026-03-12T05:31:44.522Z",
+    "updatedAt": "2026-03-12T05:31:49.781Z"
   }
 ]

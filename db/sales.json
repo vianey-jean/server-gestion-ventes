@@ -4084,5 +4084,29 @@
     "clientPhone": "0693326932",
     "reste": 0,
     "nextPaymentDate": null
+  },
+  {
+    "id": "1773293321567",
+    "date": "2026-03-12",
+    "products": [
+      {
+        "productId": "1762441427899",
+        "description": "Perruque lisse noir 24 pouces",
+        "quantitySold": 1,
+        "purchasePrice": 44.99,
+        "sellingPrice": 170,
+        "profit": 125.01,
+        "deliveryFee": 0,
+        "deliveryLocation": "Saint-Denis"
+      }
+    ],
+    "totalPurchasePrice": 44.99,
+    "totalSellingPrice": 170,
+    "totalProfit": 125.01,
+    "clientName": "Sabrina Farida Jeannie Shenase",
+    "clientAddress": "48 avenue Lenine Parc boisé Le port",
+    "clientPhone": "0692626573",
+    "reste": 0,
+    "nextPaymentDate": null
   }
 ]
