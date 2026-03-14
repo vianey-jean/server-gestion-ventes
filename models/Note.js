@@ -25,20 +25,25 @@ const Note = {
 
   create: (data) => {
     const notes = readJSON(notesPath);
+    const columns = readJSON(columnsPath);
+    const colId = data.columnId || 'col-1';
+    const col = columns.find(c => c.id === colId);
+    const now = new Date().toISOString();
     const note = {
       id: Date.now().toString() + '-' + Math.random().toString(36).substr(2, 9),
       title: data.title || '',
       content: data.content || '',
-      columnId: data.columnId || 'col-1',
-      order: data.order || notes.filter(n => n.columnId === (data.columnId || 'col-1')).length,
+      columnId: colId,
+      order: data.order || notes.filter(n => n.columnId === colId).length,
       color: data.color || '#ffffff',
       bold: data.bold || false,
       boldLines: data.boldLines || [],
       underlineLines: data.underlineLines || [],
       drawing: data.drawing || null,
       voiceText: data.voiceText || '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      history: [{ columnId: colId, columnTitle: col ? col.title : colId, movedAt: now }],
+      createdAt: now,
+      updatedAt: now
     };
     notes.push(note);
     writeJSON(notesPath, notes);
@@ -65,11 +70,17 @@ const Note = {
 
   moveToColumn: (id, columnId, order) => {
     const notes = readJSON(notesPath);
+    const columns = readJSON(columnsPath);
     const index = notes.findIndex(n => n.id === id);
     if (index === -1) return null;
+    const col = columns.find(c => c.id === columnId);
+    const now = new Date().toISOString();
     notes[index].columnId = columnId;
     notes[index].order = order;
-    notes[index].updatedAt = new Date().toISOString();
+    notes[index].updatedAt = now;
+    // Add history entry
+    if (!notes[index].history) notes[index].history = [];
+    notes[index].history.push({ columnId, columnTitle: col ? col.title : columnId, movedAt: now });
     writeJSON(notesPath, notes);
     return notes[index];
   },
