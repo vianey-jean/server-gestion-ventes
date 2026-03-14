@@ -73,5 +73,20 @@
     "voiceText": "",
     "createdAt": "2026-03-12T05:31:44.522Z",
     "updatedAt": "2026-03-12T05:31:49.781Z"
+  },
+  {
+    "id": "1773465868518-kt52hiy8i",
+    "title": "Créer un lien de partage",
+    "content": "Créer un lien de partage pour Notes, Pointages et Taches. et chaque lien est unique et sécurisé par IP et avec un code accès.",
+    "columnId": "col-3",
+    "order": 1,
+    "color": "#ffffff",
+    "bold": false,
+    "boldLines": [],
+    "underlineLines": [],
+    "drawing": null,
+    "voiceText": "",
+    "createdAt": "2026-03-14T05:24:28.518Z",
+    "updatedAt": "2026-03-14T05:24:34.732Z"
   }
 ]
