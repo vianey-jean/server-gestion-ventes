@@ -4,6 +4,37 @@ const Rdv = require('../models/Rdv');
 const Client = require('../models/Client');
 const RdvNotification = require('../models/RdvNotification');
 const authMiddleware = require('../middleware/auth');
+const fs = require('fs');
+const path = require('path');
+
+const readJson = (filePath) => {
+  try {
+    if (!fs.existsSync(filePath)) return [];
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch { return []; }
+};
+
+const checkIndisponibilite = (date, heureDebut, heureFin) => {
+  const indispoPath = path.join(__dirname, '../db/indisponible.json');
+  const indispos = readJson(indispoPath);
+  const indispoForDate = indispos.filter(d => d.date === date);
+  if (indispoForDate.length === 0) return { disponible: true };
+  const conflicts = indispoForDate.filter(d => {
+    if (d.journeeComplete) return true;
+    if (!heureDebut || !heureFin) return true;
+    return d.heureDebut < heureFin && d.heureFin > heureDebut;
+  });
+  if (conflicts.length > 0) {
+    const c = conflicts[0];
+    return {
+      disponible: false,
+      message: c.journeeComplete
+        ? `Journée indisponible${c.motif ? ` (${c.motif})` : ''}`
+        : `Créneau indisponible: ${c.heureDebut} - ${c.heureFin}${c.motif ? ` (${c.motif})` : ''}`
+    };
+  }
+  return { disponible: true };
+};
 
 // Get all rdvs
 router.get('/', authMiddleware, async (req, res) => {
@@ -105,6 +136,12 @@ router.post('/', authMiddleware, async (req, res) => {
     
     if (!titre || !clientNom || !date || !heureDebut || !heureFin) {
       return res.status(400).json({ message: 'Titre, clientNom, date, heureDebut et heureFin sont obligatoires' });
+    }
+
+    // Check indisponibilité
+    const indispoCheck = checkIndisponibilite(date, heureDebut, heureFin);
+    if (!indispoCheck.disponible) {
+      return res.status(409).json({ message: `🚫 ${indispoCheck.message}. Impossible de créer un RDV pendant un créneau indisponible.` });
     }
     
     const newRdv = Rdv.create(req.body);

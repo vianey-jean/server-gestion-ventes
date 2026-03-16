@@ -71,17 +71,14 @@ const isAdminPrincipale = (user) => {
   return user && user.role === 'administrateur principale';
 };
 
-// All DB files to backup/restore/delete
-const DB_FILES = [
-  'users.json', 'products.json', 'sales.json', 'clients.json',
-  'pretfamilles.json', 'pretproduits.json', 'depensedumois.json',
-  'depensefixe.json', 'benefice.json', 'commandes.json', 'remboursement.json',
-  'fournisseurs.json', 'entreprise.json', 'pointage.json', 'travailleur.json',
-  'tache.json', 'notes.json', 'noteColumns.json', 'rdv.json',
-  'rdvNotifications.json', 'objectif.json', 'nouvelle_achat.json',
-  'compta.json', 'avance.json', 'messages.json', 'messagerie.json',
-  'shareTokens.json', 'lienIp.json', 'settings.json'
-];
+// Dynamically get ALL .json files in the db folder for backup/restore/delete
+const getDbFiles = () => {
+  try {
+    return fs.readdirSync(dbPath).filter(f => f.endsWith('.json'));
+  } catch {
+    return [];
+  }
+};
 
 // ==================
 // GET /api/settings
@@ -203,7 +200,7 @@ router.post('/backup', authMiddleware, (req, res) => {
 
     // Collect all DB data
     const backupData = {};
-    DB_FILES.forEach(file => {
+    getDbFiles().forEach(file => {
       const filePath = path.join(dbPath, file);
       const data = readJson(filePath);
       if (data !== null) {
@@ -296,7 +293,7 @@ router.post('/restore', authMiddleware, (req, res) => {
     
     // Restore each file
     let restoredCount = 0;
-    DB_FILES.forEach(file => {
+    getDbFiles().forEach(file => {
       if (backupData[file] !== undefined) {
         const filePath = path.join(dbPath, file);
         writeJson(filePath, backupData[file]);
@@ -346,18 +343,19 @@ router.post('/delete-all', authMiddleware, (req, res) => {
     const adminPrincipaleUsers = users.filter(u => u.role === 'administrateur principale');
 
     // Delete all data - write empty arrays/objects, but keep admin principale in users
-    DB_FILES.forEach(file => {
+    getDbFiles().forEach(file => {
       const filePath = path.join(dbPath, file);
       if (fs.existsSync(filePath)) {
         if (file === 'users.json') {
-          // Keep only admin principale users
           writeJson(filePath, adminPrincipaleUsers);
-        } else if (file === 'depensefixe.json') {
-          writeJson(filePath, {});
-        } else if (file === 'settings.json') {
-          writeJson(filePath, {});
         } else {
-          writeJson(filePath, []);
+          // Detect if the file contains an object or array, reset accordingly
+          const currentData = readJson(filePath);
+          if (currentData !== null && !Array.isArray(currentData) && typeof currentData === 'object') {
+            writeJson(filePath, {});
+          } else {
+            writeJson(filePath, []);
+          }
         }
       }
     });

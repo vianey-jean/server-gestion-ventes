@@ -286,6 +286,9 @@ const avanceRoutes = require('./routes/avance');
 const profileRoutes = require('./routes/profile');
 const messagerieRoutes = require('./routes/messagerie');
 const settingsRoutes = require('./routes/settings');
+const indisponibleRoutes = require('./routes/indisponible');
+const moduleSettingsRoutes = require('./routes/moduleSettings');
+const parametresRoutes = require('./routes/parametres');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -318,6 +321,9 @@ app.use('/api/avances', avanceRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/messagerie', messagerieRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/indisponible', indisponibleRoutes);
+app.use('/api/module-settings', moduleSettingsRoutes);
+app.use('/api/parametres', parametresRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

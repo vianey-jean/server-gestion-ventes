@@ -2,6 +2,37 @@ const express = require('express');
 const router = express.Router();
 const Commande = require('../models/Commande');
 const authMiddleware = require('../middleware/auth');
+const fs = require('fs');
+const path = require('path');
+
+const readJson = (filePath) => {
+  try {
+    if (!fs.existsSync(filePath)) return [];
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch { return []; }
+};
+
+const checkIndisponibilite = (date, heureDebut, heureFin) => {
+  const indispoPath = path.join(__dirname, '../db/indisponible.json');
+  const indispos = readJson(indispoPath);
+  const indispoForDate = indispos.filter(d => d.date === date);
+  if (indispoForDate.length === 0) return { disponible: true };
+  const conflicts = indispoForDate.filter(d => {
+    if (d.journeeComplete) return true;
+    if (!heureDebut || !heureFin) return true;
+    return d.heureDebut < heureFin && d.heureFin > heureDebut;
+  });
+  if (conflicts.length > 0) {
+    const c = conflicts[0];
+    return {
+      disponible: false,
+      message: c.journeeComplete
+        ? `Journée indisponible${c.motif ? ` (${c.motif})` : ''}`
+        : `Créneau indisponible: ${c.heureDebut} - ${c.heureFin}${c.motif ? ` (${c.motif})` : ''}`
+    };
+  }
+  return { disponible: true };
+};
 
 // Get all commandes
 router.get('/', authMiddleware, async (req, res) => {
@@ -31,6 +62,17 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // Create commande
 router.post('/', authMiddleware, async (req, res) => {
   try {
+    // Check indisponibilité if date/horaire provided
+    const { date, dateLivraison, horaire } = req.body;
+    const checkDate = dateLivraison || date;
+    if (checkDate && horaire) {
+      const [heureDebut] = horaire.split('-').map(h => h?.trim());
+      const indispoCheck = checkIndisponibilite(checkDate, heureDebut || '00:00', '23:59');
+      if (!indispoCheck.disponible) {
+        return res.status(409).json({ message: `🚫 ${indispoCheck.message}. Impossible de créer une réservation pendant un créneau indisponible.` });
+      }
+    }
+
     const newCommande = await Commande.create(req.body);
     res.status(201).json(newCommande);
   } catch (error) {
