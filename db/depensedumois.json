@@ -1,83 +1,8 @@
 [
   {
     "id": "1",
-    "mois": "12",
-    "annee": "2025",
-    "mouvements": [
-      {
-        "id": "1",
-        "description": "Charge fixe",
-        "categorie": "chargeFixe",
-        "date": "2025-12-02",
-        "debit": "352.96",
-        "credit": "",
-        "solde": -352.96
-      },
-      {
-        "id": "2",
-        "description": "RSA",
-        "categorie": "Autres",
-        "date": "2025-12-02",
-        "debit": "",
-        "credit": "1701",
-        "solde": 1348.04
-      }
-    ]
-  },
-  {
-    "id": "2",
-    "mois": "01",
-    "annee": "2026",
-    "mouvements": []
-  },
-  {
-    "id": "3",
-    "mois": "02",
-    "annee": "2026",
-    "mouvements": [
-      {
-        "id": "1",
-        "description": "Charge fixe",
-        "categorie": "chargeFixe",
-        "date": "2026-02-14",
-        "debit": "352.96",
-        "credit": "",
-        "solde": -352.96
-      },
-      {
-        "id": "2",
-        "description": "RSA",
-        "categorie": "Autres",
-        "date": "2026-02-06",
-        "debit": "",
-        "credit": "1701",
-        "solde": 1348.04
-      }
-    ]
-  },
-  {
-    "id": "4",
     "mois": "03",
     "annee": "2026",
-    "mouvements": [
-      {
-        "id": "1",
-        "description": "Charge fixe",
-        "categorie": "chargeFixe",
-        "date": "2026-03-10",
-        "debit": "352.96",
-        "credit": "",
-        "solde": -352.96
-      },
-      {
-        "id": "2",
-        "description": "RSA",
-        "categorie": "Autres",
-        "date": "2026-03-10",
-        "debit": "",
-        "credit": "1824",
-        "solde": 1471.04
-      }
-    ]
+    "mouvements": []
   }
 ]

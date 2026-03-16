@@ -122,9 +122,10 @@ app.use(suspiciousActivityLogger);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
-// Sanitization de tous les inputs (skip for drawing uploads - base64 data)
+// Sanitization de tous les inputs
+// Skip pour payloads volumineux/chiffrés qui seraient tronqués par la sanitization
 app.use((req, res, next) => {
-  if (req.path === '/api/notes/upload-drawing') {
+  if (req.path === '/api/notes/upload-drawing' || req.path === '/api/settings/restore') {
     return next();
   }
   return sanitizeMiddleware(req, res, next);
@@ -284,6 +285,7 @@ const shareLinksRoutes = require('./routes/shareLinks');
 const avanceRoutes = require('./routes/avance');
 const profileRoutes = require('./routes/profile');
 const messagerieRoutes = require('./routes/messagerie');
+const settingsRoutes = require('./routes/settings');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -315,6 +317,7 @@ app.use('/api/share-links', shareLinksRoutes);
 app.use('/api/avances', avanceRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/messagerie', messagerieRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
