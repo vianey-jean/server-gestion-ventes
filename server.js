@@ -8,7 +8,7 @@
  * - Base de données JSON (fichiers dans server/db/)
  * - Synchronisation temps réel via SSE (/api/sync/events)
  * - Sécurité : rate limiting, sanitization, headers sécurisés
- * - CORS configuré pour Vercel, Lovable et localhost
+ * - CORS configuré pour Vercel et localhost
  * 
  * @module server
  * @version 4.2.0

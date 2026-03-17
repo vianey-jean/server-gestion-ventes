@@ -18,7 +18,7 @@ const setCORSHeaders = (req, res) => {
   if (origin && allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
   } else if (origin) {
-    // Permettre toutes les origines en développement/preview (Lovable, Vercel, etc.)
+    // Permettre toutes les origines en développement/preview (Vercel, etc.)
     res.header('Access-Control-Allow-Origin', origin);
   } else {
     res.header('Access-Control-Allow-Origin', '*');
