@@ -124,7 +124,7 @@ router.get('/admin-status', (req, res) => {
   const usersPath = path.join(__dirname, '../db/users.json');
   try {
     const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
-    const admins = users.filter(u => u.role === 'administrateur');
+    const admins = users.filter(u => u.role === 'administrateur' || u.role === 'administrateur principale');
     const adminIds = admins.map(a => a.id);
     
     let online = false;
