@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "id": "msg_1773825514493_dy3haz7kc",
+    "visitorId": "visitor_1773825511123_dluu5x5wu",
+    "visitorNom": "SANIATIE AHAMADI",
+    "adminId": "1",
+    "contenu": "cc",
+    "from": "visitor",
+    "date": "2026-03-18T09:18:34.493Z",
+    "lu": true
+  },
+  {
+    "id": "msg_1773825694682_xg7ngrg2h",
+    "visitorId": "visitor_1773825511123_dluu5x5wu",
+    "visitorNom": "SANIATIE AHAMADI",
+    "adminId": "1",
+    "contenu": "cc",
+    "from": "visitor",
+    "date": "2026-03-18T09:21:34.682Z",
+    "lu": true
+  },
+  {
+    "id": "msg_1773825702954_1viyklz0v",
+    "visitorId": "visitor_1773825511123_dluu5x5wu",
+    "visitorNom": "SANIATIE AHAMADI",
+    "adminId": "1",
+    "contenu": "oui",
+    "from": "admin",
+    "date": "2026-03-18T09:21:42.954Z",
+    "lu": true
+  },
+  {
+    "id": "msg_1773825737452_vosuhx6sf",
+    "visitorId": "visitor_1773825511123_dluu5x5wu",
+    "visitorNom": "SANIATIE AHAMADI",
+    "adminId": "1",
+    "contenu": "cc",
+    "from": "visitor",
+    "date": "2026-03-18T09:22:17.452Z",
+    "lu": true
+  }
+]

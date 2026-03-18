@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "1773825509156",
+    "expediteurNom": "SANIATIE AHAMADI",
+    "expediteurEmail": "ahamadi.saniatie@hotmail.com",
+    "expediteurTelephone": "0692198701",
+    "sujet": "Support technique",
+    "contenu": "test",
+    "destinataireId": "1",
+    "dateEnvoi": "2026-03-18T09:18:29.156Z",
+    "lu": false
+  }
+]

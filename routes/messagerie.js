@@ -349,6 +349,23 @@ router.delete('/delete/:messageId', (req, res) => {
 });
 
 // =====================
+// WebRTC Call Signaling
+// =====================
+router.post('/call-signal', (req, res) => {
+  try {
+    const { visitorId, adminId, type, data, from } = req.body;
+    if (!visitorId || !adminId || !type || !from) {
+      return res.status(400).json({ message: 'Champs obligatoires manquants' });
+    }
+    broadcastToConversation(visitorId, adminId, 'call_signal', { visitorId, adminId, type, data, from });
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('Error in call signal:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// =====================
 // Like/unlike a message
 // =====================
 router.post('/like/:messageId', (req, res) => {
