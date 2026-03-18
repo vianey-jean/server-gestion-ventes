@@ -1,16 +1,1 @@
-{
-  "historique": [
-    {
-      "mois": 3,
-      "annee": 2026,
-      "totalVentesMois": 0,
-      "objectif": 2000,
-      "pourcentage": 0
-    }
-  ],
-  "totalVentesMois": 0,
-  "mois": 3,
-  "annee": 2026,
-  "objectif": 2000,
-  "objectifMax": 2000
-}
+{}
