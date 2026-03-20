@@ -134,7 +134,6 @@ router.put('/user-role', authMiddleware, (req, res) => {
       return res.status(400).json({ message: 'ID utilisateur requis' });
     }
 
-    // Prevent changing admin principale role
     const users = readJson(usersPath) || [];
     const userIndex = users.findIndex(u => u.id === userId);
     if (userIndex === -1) {
@@ -145,13 +144,13 @@ router.put('/user-role', authMiddleware, (req, res) => {
       return res.status(403).json({ message: 'Impossible de modifier le rôle de l\'administrateur principale' });
     }
 
-    // Only allow '' (simple) or 'administrateur'
     if (newRole !== '' && newRole !== 'administrateur') {
       return res.status(400).json({ message: 'Rôle invalide' });
     }
 
     if (newRole === '') {
       delete users[userIndex].role;
+      delete users[userIndex].specification;
     } else {
       users[userIndex].role = newRole;
     }
@@ -162,6 +161,46 @@ router.put('/user-role', authMiddleware, (req, res) => {
     res.json({ success: true, user: userWithoutPassword });
   } catch (error) {
     console.error('Error changing user role:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// ==================
+// PUT /api/settings/user-specification - Change user specification
+// ==================
+router.put('/user-specification', authMiddleware, (req, res) => {
+  try {
+    if (!isAdminPrincipale(req.user)) {
+      return res.status(403).json({ message: 'Accès refusé. Administrateur principale requis.' });
+    }
+
+    const { userId, specification } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: 'ID utilisateur requis' });
+    }
+
+    const users = readJson(usersPath) || [];
+    const userIndex = users.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    if (users[userIndex].role !== 'administrateur') {
+      return res.status(400).json({ message: 'Seul un administrateur peut avoir une spécification' });
+    }
+
+    if (specification === 'live') {
+      users[userIndex].specification = 'live';
+    } else {
+      delete users[userIndex].specification;
+    }
+
+    writeJson(usersPath, users);
+
+    const { password, ...userWithoutPassword } = users[userIndex];
+    res.json({ success: true, user: userWithoutPassword });
+  } catch (error) {
+    console.error('Error changing user specification:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
