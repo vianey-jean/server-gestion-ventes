@@ -198,7 +198,7 @@ router.get('/admin-conversations', authMiddleware, (req, res) => {
     const messages = readAdminDB();
     const myId = req.user.id;
     const convMap = {};
-    messages.filter(m => m.senderId === myId || m.receiverId === myId).forEach(m => {
+    messages.filter(m => (m.senderId === myId || m.receiverId === myId) && (!m.hiddenFor || !m.hiddenFor.includes(myId))).forEach(m => {
       const otherId = m.senderId === myId ? m.receiverId : m.senderId;
       if (!convMap[otherId]) {
         convMap[otherId] = { adminId: otherId, adminName: m.senderId === myId ? m.receiverName : m.senderName, lastMessage: null, unreadCount: 0 };
@@ -220,7 +220,8 @@ router.get('/admin-messages/:otherAdminId', authMiddleware, (req, res) => {
     const otherId = req.params.otherAdminId;
     const convMessages = messages.filter(
       m => (m.senderId === myId && m.receiverId === otherId) || (m.senderId === otherId && m.receiverId === myId)
-    ).sort((a, b) => new Date(a.date) - new Date(b.date));
+    ).filter(m => !m.hiddenFor || !m.hiddenFor.includes(myId))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
     res.json(convMessages);
   } catch (error) {
     res.status(500).json({ message: 'Erreur serveur' });
@@ -500,6 +501,72 @@ router.delete('/delete/:messageId', (req, res) => {
     res.json(messages[idx]);
   } catch (error) {
     console.error('Error deleting message:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// =====================
+// Admin-to-Admin: Delete own message (removes for both parties)
+// =====================
+router.delete('/admin-delete-own/:messageId', authMiddleware, (req, res) => {
+  try {
+    const { messageId } = req.params;
+    const myId = req.user.id;
+    const messages = readAdminDB();
+    const idx = messages.findIndex(m => m.id === messageId);
+    if (idx === -1) return res.status(404).json({ message: 'Message non trouvé' });
+    if (messages[idx].senderId !== myId) return res.status(403).json({ message: 'Non autorisé: ce n\'est pas votre message' });
+
+    const deletedMsg = messages[idx];
+    const receiverId = deletedMsg.receiverId;
+    messages.splice(idx, 1);
+    writeAdminDB(messages);
+
+    // Broadcast deletion to both sender and receiver
+    sseClients.forEach((client) => {
+      if (client.adminId === myId || client.adminId === receiverId) {
+        try {
+          client.res.write(`event: admin_message_deleted\ndata: ${JSON.stringify({ id: messageId, type: 'full' })}\n\n`);
+        } catch (e) {}
+      }
+    });
+
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('Error deleting admin message:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// =====================
+// Admin-to-Admin: Hide other's message (only for self)
+// =====================
+router.delete('/admin-hide/:messageId', authMiddleware, (req, res) => {
+  try {
+    const { messageId } = req.params;
+    const myId = req.user.id;
+    const messages = readAdminDB();
+    const idx = messages.findIndex(m => m.id === messageId);
+    if (idx === -1) return res.status(404).json({ message: 'Message non trouvé' });
+
+    if (!messages[idx].hiddenFor) messages[idx].hiddenFor = [];
+    if (!messages[idx].hiddenFor.includes(myId)) {
+      messages[idx].hiddenFor.push(myId);
+    }
+    writeAdminDB(messages);
+
+    // Broadcast only to the requester
+    sseClients.forEach((client) => {
+      if (client.adminId === myId) {
+        try {
+          client.res.write(`event: admin_message_hidden\ndata: ${JSON.stringify({ id: messageId, hiddenFor: myId })}\n\n`);
+        } catch (e) {}
+      }
+    });
+
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('Error hiding admin message:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
