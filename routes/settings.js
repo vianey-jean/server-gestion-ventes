@@ -649,4 +649,41 @@ router.post('/verify-password', authMiddleware, (req, res) => {
   }
 });
 
+// ========== AUTO-SAUVEGARDE STATUS ==========
+const autoSauvegardePath = path.join(dbPath, 'auto-sauvegarde.json');
+
+const readAutoSauvegarde = () => {
+  try {
+    if (!fs.existsSync(autoSauvegardePath)) {
+      fs.writeFileSync(autoSauvegardePath, JSON.stringify({ autoSauvegarde: true }, null, 2));
+      return { autoSauvegarde: true };
+    }
+    return JSON.parse(fs.readFileSync(autoSauvegardePath, 'utf8'));
+  } catch {
+    return { autoSauvegarde: true };
+  }
+};
+
+// GET auto-sauvegarde status
+router.get('/auto-sauvegarde', authMiddleware, (req, res) => {
+  try {
+    const data = readAutoSauvegarde();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// PUT auto-sauvegarde status
+router.put('/auto-sauvegarde', authMiddleware, (req, res) => {
+  try {
+    const { autoSauvegarde } = req.body;
+    const data = { autoSauvegarde: !!autoSauvegarde };
+    fs.writeFileSync(autoSauvegardePath, JSON.stringify(data, null, 2));
+    res.json({ success: true, ...data });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;
