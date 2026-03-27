@@ -11,6 +11,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const authMiddleware = require('../middleware/auth');
+const syncManager = require('../middleware/sync');
 
 const dbPath = path.join(__dirname, '../db');
 const settingsPath = path.join(dbPath, 'settings.json');
@@ -385,6 +386,7 @@ router.post('/backup', authMiddleware, (req, res) => {
     settings.backup = settings.backup || {};
     settings.backup.lastBackupDate = new Date().toISOString();
     writeJson(settingsPath, settings);
+    syncManager.markBackupCompleted('manual');
 
     res.json({
       success: true,
@@ -538,6 +540,89 @@ router.post('/delete-all', authMiddleware, (req, res) => {
   } catch (error) {
     console.error('Error deleting all data:', error);
     res.status(500).json({ message: 'Erreur lors de la suppression' });
+  }
+});
+
+// ==================
+// POST /api/settings/auto-backup - Sauvegarde automatique avec mot de passe utilisateur
+// ==================
+router.post('/auto-backup', authMiddleware, (req, res) => {
+  try {
+    if (!isAdmin(req.user)) {
+      return res.status(403).json({ message: 'Accès refusé. Administrateur requis.' });
+    }
+
+    // Get the user's actual password from DB to use as encryption code
+    const users = readJson(usersPath) || [];
+    const currentUser = users.find(u => u.id === req.user.id);
+    if (!currentUser) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    const { encryptionPassword } = req.body;
+    if (!encryptionPassword || encryptionPassword.length < 1) {
+      return res.status(400).json({ message: 'Mot de passe requis pour la sauvegarde automatique' });
+    }
+
+    // Verify the password matches
+    const isPasswordValid = bcrypt.compareSync(encryptionPassword, currentUser.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Mot de passe invalide' });
+    }
+
+    // Use the plain password as encryption code
+    const encryptionCode = encryptionPassword;
+
+    // Collect all DB data
+    const backupData = {};
+    getDbFiles().forEach(file => {
+      const filePath = path.join(dbPath, file);
+      const data = readJson(filePath);
+      if (data !== null) {
+        backupData[file] = data;
+      }
+    });
+
+    backupData._metadata = {
+      backupDate: new Date().toISOString(),
+      version: '1.0',
+      filesCount: Object.keys(backupData).length - 1,
+      autoBackup: true
+    };
+
+    // Encrypt data
+    const jsonData = JSON.stringify(backupData);
+    const algorithm = 'aes-256-cbc';
+    const key = crypto.scryptSync(encryptionCode, 'riziky-salt-2024', 32);
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(algorithm, key, iv);
+    let encrypted = cipher.update(jsonData, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+
+    const hashedCode = bcrypt.hashSync(encryptionCode, 10);
+
+    const encryptedPackage = {
+      iv: iv.toString('hex'),
+      data: encrypted,
+      checksum: crypto.createHash('sha256').update(jsonData).digest('hex'),
+      codeHash: hashedCode
+    };
+
+    // Update last backup date
+    const settings = readJson(settingsPath) || {};
+    settings.backup = settings.backup || {};
+    settings.backup.lastBackupDate = new Date().toISOString();
+    writeJson(settingsPath, settings);
+    syncManager.markBackupCompleted('auto');
+
+    res.json({
+      success: true,
+      backup: encryptedPackage,
+      filename: `auto-backup-riziky-${new Date().toISOString().split('T')[0]}.json`
+    });
+  } catch (error) {
+    console.error('Error creating auto-backup:', error);
+    res.status(500).json({ message: 'Erreur lors de la sauvegarde automatique' });
   }
 });
 

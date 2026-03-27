@@ -5,10 +5,28 @@ const path = require('path');
 class SyncManager {
   constructor() {
     this.watchers = new Map();
+    this.autoBackupWatchers = new Map();
     this.clients = new Set();
     this.lastModified = new Map();
+    this.autoBackupLastModified = new Map();
     this.lastSyncData = new Map();
+    this.lastAutoBackupData = new Map();
     this.dbPath = path.join(__dirname, '../db');
+    this.autoBackupReadyTimer = null;
+    this.autoBackupStableWindowMs = 5 * 60 * 1000;
+    this.autoBackupCountdownMs = 5 * 60 * 1000;
+    this.autoBackupState = {
+      signal: false,
+      activationId: null,
+      lastChangeAt: null,
+      lastChangedFile: null,
+      readyAt: null,
+      countdownStartedAt: null,
+      lastBackupAt: null,
+      lastBackupMode: null,
+      reason: 'idle',
+      version: 0
+    };
   }
 
   // Obtenir le mois et l'année actuels
@@ -30,23 +48,139 @@ class SyncManager {
     });
   }
 
+  getDataType(filePath) {
+    return path.basename(filePath, '.json');
+  }
+
+  readFileData(filePath, options = {}) {
+    const { filterSalesForCurrentMonth = false } = options;
+    const rawData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const dataType = this.getDataType(filePath);
+
+    if (filterSalesForCurrentMonth && dataType === 'sales') {
+      return this.filterCurrentMonthSales(rawData);
+    }
+
+    return rawData;
+  }
+
+  hasCachedDataChanged(cache, cacheKey, newData) {
+    const lastData = cache.get(cacheKey);
+    const currentDataStr = JSON.stringify(newData);
+
+    if (!lastData) {
+      cache.set(cacheKey, currentDataStr);
+      return true;
+    }
+
+    if (lastData !== currentDataStr) {
+      cache.set(cacheKey, currentDataStr);
+      return true;
+    }
+
+    return false;
+  }
+
   // Vérifier si les données ont réellement changé
   hasDataChanged(filePath, newData) {
-    const dataType = path.basename(filePath, '.json');
-    const lastData = this.lastSyncData.get(dataType);
-    
-    if (!lastData) {
-      this.lastSyncData.set(dataType, JSON.stringify(newData));
-      return true;
+    const dataType = this.getDataType(filePath);
+    return this.hasCachedDataChanged(this.lastSyncData, dataType, newData);
+  }
+
+  hasAutoBackupDataChanged(filePath, newData) {
+    const dataType = this.getDataType(filePath);
+    return this.hasCachedDataChanged(this.lastAutoBackupData, dataType, newData);
+  }
+
+  scheduleAutoBackupSignal() {
+    if (this.autoBackupReadyTimer) {
+      clearTimeout(this.autoBackupReadyTimer);
+      this.autoBackupReadyTimer = null;
     }
-    
-    const currentDataStr = JSON.stringify(newData);
-    if (lastData !== currentDataStr) {
-      this.lastSyncData.set(dataType, currentDataStr);
-      return true;
+
+    const referenceChangeAt = this.autoBackupState.lastChangeAt;
+
+    this.autoBackupState.signal = false;
+    this.autoBackupState.activationId = null;
+    this.autoBackupState.countdownStartedAt = null;
+    this.autoBackupState.readyAt = referenceChangeAt
+      ? new Date(referenceChangeAt.getTime() + this.autoBackupStableWindowMs)
+      : null;
+    this.autoBackupState.reason = referenceChangeAt ? 'waiting_for_stability' : 'idle';
+    this.autoBackupState.version += 1;
+
+    if (!referenceChangeAt) {
+      return;
     }
-    
-    return false;
+
+    this.autoBackupReadyTimer = setTimeout(() => {
+      const latestChangeAt = this.autoBackupState.lastChangeAt;
+      if (!latestChangeAt || latestChangeAt.getTime() !== referenceChangeAt.getTime()) {
+        return;
+      }
+
+      const countdownStartedAt = new Date();
+
+      this.autoBackupState.signal = true;
+      this.autoBackupState.activationId = `auto_backup_${referenceChangeAt.getTime()}_${countdownStartedAt.getTime()}`;
+      this.autoBackupState.countdownStartedAt = countdownStartedAt;
+      this.autoBackupState.reason = 'countdown_active';
+      this.autoBackupState.version += 1;
+
+      this.notifyClients('auto-backup-state', this.getAutoBackupState());
+    }, this.autoBackupStableWindowMs);
+  }
+
+  registerDataChange(filePath) {
+    const dataType = this.getDataType(filePath);
+
+    if (dataType === 'settings') {
+      return;
+    }
+
+    const changedAt = new Date();
+
+    this.autoBackupState.lastChangeAt = changedAt;
+    this.autoBackupState.lastChangedFile = dataType;
+    this.autoBackupState.lastBackupMode = null;
+
+    this.scheduleAutoBackupSignal();
+    this.notifyClients('auto-backup-state', this.getAutoBackupState());
+  }
+
+  markBackupCompleted(mode = 'manual') {
+    if (this.autoBackupReadyTimer) {
+      clearTimeout(this.autoBackupReadyTimer);
+      this.autoBackupReadyTimer = null;
+    }
+
+    this.autoBackupState.signal = false;
+    this.autoBackupState.activationId = null;
+    this.autoBackupState.readyAt = null;
+    this.autoBackupState.countdownStartedAt = null;
+    this.autoBackupState.lastBackupAt = new Date();
+    this.autoBackupState.lastBackupMode = mode;
+    this.autoBackupState.reason = 'backup_completed';
+    this.autoBackupState.version += 1;
+
+    this.notifyClients('auto-backup-state', this.getAutoBackupState());
+  }
+
+  getAutoBackupState() {
+    return {
+      signal: this.autoBackupState.signal,
+      activationId: this.autoBackupState.activationId,
+      lastChangeAt: this.autoBackupState.lastChangeAt ? this.autoBackupState.lastChangeAt.toISOString() : null,
+      lastChangedFile: this.autoBackupState.lastChangedFile,
+      readyAt: this.autoBackupState.readyAt ? this.autoBackupState.readyAt.toISOString() : null,
+      countdownStartedAt: this.autoBackupState.countdownStartedAt ? this.autoBackupState.countdownStartedAt.toISOString() : null,
+      lastBackupAt: this.autoBackupState.lastBackupAt ? this.autoBackupState.lastBackupAt.toISOString() : null,
+      lastBackupMode: this.autoBackupState.lastBackupMode,
+      stableWindowMs: this.autoBackupStableWindowMs,
+      countdownDurationMs: this.autoBackupCountdownMs,
+      reason: this.autoBackupState.reason,
+      version: this.autoBackupState.version
+    };
   }
 
   // Surveiller les changements de fichiers avec détection de vrais changements
@@ -67,11 +201,10 @@ class SyncManager {
                 this.lastModified.set(filePath, stats.mtime);
                 
                 // Lire et vérifier si les données ont vraiment changé
-                const rawData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-                const dataType = path.basename(filePath, '.json');
+                const dataType = this.getDataType(filePath);
                 
                 // Filtrer les ventes pour le mois en cours, garder les autres données telles quelles
-                let processedData = dataType === 'sales' ? this.filterCurrentMonthSales(rawData) : rawData;
+                const processedData = this.readFileData(filePath, { filterSalesForCurrentMonth: true });
                 
                 // Vérifier si les données ont réellement changé
                 if (this.hasDataChanged(filePath, processedData)) {
@@ -92,6 +225,41 @@ class SyncManager {
     }
   }
 
+  watchFileForAutoBackup(filePath) {
+    if (this.autoBackupWatchers.has(filePath)) {
+      return;
+    }
+
+    try {
+      const watcher = fs.watch(filePath, { persistent: true }, (eventType) => {
+        if (eventType === 'change') {
+          setTimeout(() => {
+            try {
+              const stats = fs.statSync(filePath);
+              const lastMod = this.autoBackupLastModified.get(filePath);
+
+              if (!lastMod || stats.mtime > lastMod) {
+                this.autoBackupLastModified.set(filePath, stats.mtime);
+
+                const rawData = this.readFileData(filePath);
+
+                if (this.hasAutoBackupDataChanged(filePath, rawData)) {
+                  this.registerDataChange(filePath);
+                }
+              }
+            } catch (error) {
+              // Erreur silencieuse
+            }
+          }, 100);
+        }
+      });
+
+      this.autoBackupWatchers.set(filePath, watcher);
+    } catch (error) {
+      // Erreur silencieuse
+    }
+  }
+
   // Arrêter la surveillance
   unwatchFile(filePath) {
     const watcher = this.watchers.get(filePath);
@@ -101,6 +269,17 @@ class SyncManager {
         watcher.close();
       }
       this.watchers.delete(filePath);
+    }
+  }
+
+  unwatchAutoBackupFile(filePath) {
+    const watcher = this.autoBackupWatchers.get(filePath);
+
+    if (watcher) {
+      if (typeof watcher.close === 'function') {
+        watcher.close();
+      }
+      this.autoBackupWatchers.delete(filePath);
     }
   }
 
@@ -235,8 +414,32 @@ filesToWatch.forEach(fileName => {
   }
 });
 
+const autoBackupFilesToWatch = (() => {
+  try {
+    return fs.readdirSync(syncManager.dbPath).filter(fileName => fileName.endsWith('.json') && fileName !== 'settings.json');
+  } catch {
+    return [];
+  }
+})();
+
+autoBackupFilesToWatch.forEach(fileName => {
+  const filePath = path.join(syncManager.dbPath, fileName);
+  if (fs.existsSync(filePath)) {
+    syncManager.watchFileForAutoBackup(filePath);
+  }
+});
+
 // Nettoyage à l'arrêt
 process.on('SIGINT', () => {
+  filesToWatch.forEach(fileName => {
+    syncManager.unwatchFile(path.join(syncManager.dbPath, fileName));
+  });
+  autoBackupFilesToWatch.forEach(fileName => {
+    syncManager.unwatchAutoBackupFile(path.join(syncManager.dbPath, fileName));
+  });
+  if (syncManager.autoBackupReadyTimer) {
+    clearTimeout(syncManager.autoBackupReadyTimer);
+  }
   process.exit(0);
 });
 
