@@ -352,26 +352,26 @@ const checkAndCreateMonthEntry = () => {
 const getRsa = () => {
   try {
     if (!fs.existsSync(rsaPath)) {
-      const defaultRsa = { montant: 607.75, lastUpdated: null };
+      const defaultRsa = { montant: 1814, lastUpdated: null };
       fs.writeFileSync(rsaPath, JSON.stringify(defaultRsa, null, 2));
       return defaultRsa;
     }
     const data = fs.readFileSync(rsaPath, 'utf8');
     const parsed = JSON.parse(data);
     if (!parsed || typeof parsed.montant === 'undefined') {
-      return { montant: 607.75, lastUpdated: null };
+      return { montant: 1814, lastUpdated: null };
     }
     return parsed;
   } catch (error) {
     console.error('Erreur lors de la lecture du RSA:', error);
-    return { montant: 607.75, lastUpdated: null };
+    return { montant: 1814, lastUpdated: null };
   }
 };
 
 const updateRsa = (montant) => {
   try {
     const rsaData = {
-      montant: parseFloat(montant) || 607.75,
+      montant: parseFloat(montant) || 1814,
       lastUpdated: new Date().toISOString()
     };
     fs.writeFileSync(rsaPath, JSON.stringify(rsaData, null, 2));
