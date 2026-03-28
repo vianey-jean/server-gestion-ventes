@@ -131,4 +131,41 @@ router.get('/check-month', auth, (req, res) => {
   }
 });
 
+// Route pour obtenir le RSA
+router.get('/rsa', auth, (req, res) => {
+  try {
+    const rsa = DepenseDuMois.getRsa();
+    res.json(rsa);
+  } catch (error) {
+    console.error('Erreur lors de la récupération du RSA:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Route pour mettre à jour le RSA
+router.put('/rsa', auth, (req, res) => {
+  try {
+    const { montant } = req.body;
+    if (!montant && montant !== 0) {
+      return res.status(400).json({ message: 'Le montant du RSA est requis' });
+    }
+    const updatedRsa = DepenseDuMois.updateRsa(montant);
+    res.json(updatedRsa);
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du RSA:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Route pour déclencher l'auto-ajout RSA + Charge Fixe
+router.post('/auto-entries', auth, (req, res) => {
+  try {
+    const result = DepenseDuMois.autoAddMonthlyEntries();
+    res.json(result);
+  } catch (error) {
+    console.error('Erreur lors de l\'auto-ajout:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;

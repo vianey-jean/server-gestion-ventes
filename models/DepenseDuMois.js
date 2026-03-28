@@ -4,6 +4,7 @@ const path = require('path');
 
 const depenseDuMoisPath = path.join(__dirname, '../db/depensedumois.json');
 const depenseFixePath = path.join(__dirname, '../db/depensefixe.json');
+const rsaPath = path.join(__dirname, '../db/rsa.json');
 
 // Fonction pour lire toutes les données de la base
 const getAllData = () => {
@@ -347,6 +348,126 @@ const checkAndCreateMonthEntry = () => {
   }
 };
 
+// ===== RSA =====
+const getRsa = () => {
+  try {
+    if (!fs.existsSync(rsaPath)) {
+      const defaultRsa = { montant: 607.75, lastUpdated: null };
+      fs.writeFileSync(rsaPath, JSON.stringify(defaultRsa, null, 2));
+      return defaultRsa;
+    }
+    const data = fs.readFileSync(rsaPath, 'utf8');
+    const parsed = JSON.parse(data);
+    if (!parsed || typeof parsed.montant === 'undefined') {
+      return { montant: 607.75, lastUpdated: null };
+    }
+    return parsed;
+  } catch (error) {
+    console.error('Erreur lors de la lecture du RSA:', error);
+    return { montant: 607.75, lastUpdated: null };
+  }
+};
+
+const updateRsa = (montant) => {
+  try {
+    const rsaData = {
+      montant: parseFloat(montant) || 607.75,
+      lastUpdated: new Date().toISOString()
+    };
+    fs.writeFileSync(rsaPath, JSON.stringify(rsaData, null, 2));
+    return rsaData;
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du RSA:', error);
+    throw error;
+  }
+};
+
+// Auto-ajout RSA (le 6) et Charge Fixe (le 10) du mois
+const autoAddMonthlyEntries = () => {
+  try {
+    const now = new Date();
+    const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+    const currentYear = now.getFullYear().toString();
+    const currentDay = now.getDate();
+
+    const allData = getAllData();
+    let currentEntryIndex = allData.findIndex(entry =>
+      entry.mois === currentMonth && entry.annee === currentYear
+    );
+
+    if (currentEntryIndex === -1) {
+      const newId = allData.length > 0
+        ? (Math.max(...allData.map(e => parseInt(e.id) || 0)) + 1).toString()
+        : '1';
+      allData.push({ id: newId, mois: currentMonth, annee: currentYear, mouvements: [] });
+      currentEntryIndex = allData.length - 1;
+    }
+
+    const mouvements = allData[currentEntryIndex].mouvements || [];
+    const added = { rsa: false, chargeFixe: false };
+
+    // Check if RSA already added this month (manual or auto)
+    const rsaExists = mouvements.some(m => m.categorie === 'RSA');
+
+    // Check if Charge Fixe already added this month (manual or auto)
+    const chargeFixeExists = mouvements.some(m => m.categorie === 'chargeFixe');
+
+    // Auto-add RSA on or after the 6th
+    if (currentDay >= 6 && !rsaExists) {
+      const rsaData = getRsa();
+      const lastMouvement = mouvements.length > 0 ? mouvements[mouvements.length - 1] : null;
+      const lastSolde = lastMouvement ? lastMouvement.solde : 0;
+      const newMouvementId = mouvements.length > 0
+        ? (Math.max(...mouvements.map(m => parseInt(m.id) || 0)) + 1).toString()
+        : '1';
+
+      mouvements.push({
+        id: newMouvementId,
+        description: 'RSA - Revenu mensuel',
+        categorie: 'RSA',
+        date: `${currentYear}-${currentMonth}-06`,
+        debit: '',
+        credit: rsaData.montant.toString(),
+        solde: lastSolde + rsaData.montant,
+        autoAdded: true
+      });
+      added.rsa = true;
+    }
+
+    // Auto-add Charge Fixe on or after the 10th
+    if (currentDay >= 10 && !chargeFixeExists) {
+      const depensesFixeData = getDepensesFixe();
+      const lastMouvement = mouvements.length > 0 ? mouvements[mouvements.length - 1] : null;
+      const lastSolde = lastMouvement ? lastMouvement.solde : 0;
+      const newMouvementId = mouvements.length > 0
+        ? (Math.max(...mouvements.map(m => parseInt(m.id) || 0)) + 1).toString()
+        : '1';
+
+      mouvements.push({
+        id: newMouvementId,
+        description: 'Charges fixes mensuelles',
+        categorie: 'chargeFixe',
+        date: `${currentYear}-${currentMonth}-10`,
+        debit: (depensesFixeData.total || 0).toString(),
+        credit: '',
+        solde: lastSolde - (depensesFixeData.total || 0),
+        autoAdded: true
+      });
+      added.chargeFixe = true;
+    }
+
+    if (added.rsa || added.chargeFixe) {
+      allData[currentEntryIndex].mouvements = mouvements;
+      saveAllData(allData);
+    }
+
+    return added;
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout automatique des entrées mensuelles:', error);
+    return { rsa: false, chargeFixe: false };
+  }
+};
+
 module.exports = {
   getAllMouvements,
   getMouvementById,
@@ -357,5 +478,8 @@ module.exports = {
   updateDepensesFixe,
   resetAllMouvements,
   checkAndCreateMonthEntry,
-  getOrCreateCurrentMonthEntry
+  getOrCreateCurrentMonthEntry,
+  getRsa,
+  updateRsa,
+  autoAddMonthlyEntries
 };
