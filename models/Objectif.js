@@ -222,10 +222,19 @@ const Objectif = {
     const data = readData();
     if (!data.historique) data.historique = [];
     
-    // DÉTECTION DU CHANGEMENT DE MOIS - Réinitialiser si nouveau mois
+    // DÉTECTION DU CHANGEMENT DE MOIS
     const isNewMonth = data.mois !== currentMonth || data.annee !== currentYear;
     
-    // Update historique for all months with data - PRESERVE existing objectif values
+    // ✅ RESET: Remettre à 0 les totalVentesMois de TOUS les mois de l'année en cours
+    // pour éviter les données obsolètes (ventes supprimées, etc.)
+    data.historique.forEach(h => {
+      if (h.annee === currentYear) {
+        h.totalVentesMois = 0;
+        h.pourcentage = 0;
+      }
+    });
+    
+    // ✅ Recalculer depuis les ventes réelles - PRESERVE existing objectif values
     Object.values(monthlyTotals).forEach(({ month, year, total }) => {
       const existingIndex = data.historique.findIndex(
         h => h.mois === month && h.annee === year
@@ -264,30 +273,15 @@ const Objectif = {
     data.mois = currentMonth;
     data.annee = currentYear;
     
-    // SI NOUVEAU MOIS: Réinitialiser objectif à 2000
+    // ✅ Toujours s'assurer que le mois en cours existe dans l'historique
+    const currentMonthIndex = data.historique.findIndex(
+      h => h.mois === currentMonth && h.annee === currentYear
+    );
+    
     if (isNewMonth) {
       data.objectif = DEFAULT_OBJECTIF;
       data.objectifMax = DEFAULT_OBJECTIF;
-      
-      // Créer entrée pour le nouveau mois si elle n'existe pas
-      const newMonthIndex = data.historique.findIndex(
-        h => h.mois === currentMonth && h.annee === currentYear
-      );
-      
-      if (newMonthIndex < 0) {
-        data.historique.push({
-          mois: currentMonth,
-          annee: currentYear,
-          totalVentesMois: currentMonthTotal,
-          objectif: DEFAULT_OBJECTIF,
-          pourcentage: 0
-        });
-      } else {
-        // Mettre à jour l'entrée existante avec l'objectif par défaut
-        data.historique[newMonthIndex].objectif = DEFAULT_OBJECTIF;
-      }
     } else {
-      // Mois actuel: préserver l'objectif existant
       if (!data.objectif || data.objectif === 0) {
         data.objectif = DEFAULT_OBJECTIF;
       }
@@ -295,6 +289,36 @@ const Objectif = {
         data.objectifMax = data.objectif || DEFAULT_OBJECTIF;
       }
     }
+    
+    const currentObjectif = data.objectifMax || data.objectif || DEFAULT_OBJECTIF;
+    const currentPourcentage = currentObjectif > 0 
+      ? Math.round((currentMonthTotal / currentObjectif) * 100) 
+      : 0;
+    
+    if (currentMonthIndex >= 0) {
+      data.historique[currentMonthIndex].totalVentesMois = currentMonthTotal;
+      data.historique[currentMonthIndex].pourcentage = currentPourcentage;
+      // Preserve objectif if not new month
+      if (isNewMonth) {
+        data.historique[currentMonthIndex].objectif = DEFAULT_OBJECTIF;
+      }
+    } else {
+      data.historique.push({
+        mois: currentMonth,
+        annee: currentYear,
+        totalVentesMois: currentMonthTotal,
+        objectif: currentObjectif,
+        pourcentage: currentPourcentage
+      });
+    }
+    
+    // ✅ Dédupliquer l'historique (garder la dernière entrée par mois/année)
+    const uniqueMap = {};
+    data.historique.forEach(h => {
+      const key = `${h.mois}-${h.annee}`;
+      uniqueMap[key] = h;
+    });
+    data.historique = Object.values(uniqueMap);
     
     // Sort historique by month
     data.historique.sort((a, b) => {
@@ -304,7 +328,6 @@ const Objectif = {
     
     writeData(data);
     
-    // Retourner avec l'objectif max
     return {
       ...data,
       objectif: data.objectifMax || data.objectif
@@ -315,11 +338,31 @@ const Objectif = {
     const data = readData();
     const now = new Date();
     const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    
+    // ✅ Dédupliquer l'historique avant de retourner
+    const uniqueMap = {};
+    (data.historique || []).forEach(h => {
+      const key = `${h.mois}-${h.annee}`;
+      uniqueMap[key] = h;
+    });
     
     // Filter historique for current year only
-    const yearHistorique = (data.historique || [])
+    const yearHistorique = Object.values(uniqueMap)
       .filter(h => h.annee === currentYear)
       .sort((a, b) => a.mois - b.mois);
+    
+    // ✅ S'assurer que le mois en cours est dans l'historique avec les bonnes données
+    const currentInHistorique = yearHistorique.find(h => h.mois === currentMonth);
+    if (currentInHistorique) {
+      // Mettre à jour avec les données actuelles
+      currentInHistorique.totalVentesMois = data.totalVentesMois || 0;
+      const obj = data.objectifMax || data.objectif || DEFAULT_OBJECTIF;
+      currentInHistorique.objectif = obj;
+      currentInHistorique.pourcentage = obj > 0 
+        ? Math.round(((data.totalVentesMois || 0) / obj) * 100) 
+        : 0;
+    }
     
     // Filter objectifChanges for current year only
     const yearObjectifChanges = (data.objectifChanges || [])
@@ -334,9 +377,9 @@ const Objectif = {
     return {
       currentData: {
         objectif: data.objectifMax || data.objectif || DEFAULT_OBJECTIF,
-        totalVentesMois: data.totalVentesMois,
-        mois: data.mois,
-        annee: data.annee
+        totalVentesMois: data.totalVentesMois || 0,
+        mois: data.mois || currentMonth,
+        annee: data.annee || currentYear
       },
       historique: yearHistorique,
       objectifChanges: yearObjectifChanges,
