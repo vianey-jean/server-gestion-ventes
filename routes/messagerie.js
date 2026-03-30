@@ -58,6 +58,13 @@ function broadcastToAdmins(event, data) {
 // SSE Endpoint
 // =====================
 router.options('/events', (req, res) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin');
   res.sendStatus(204);
 });
 
