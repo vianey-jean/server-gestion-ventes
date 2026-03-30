@@ -615,10 +615,14 @@ router.post('/auto-backup', authMiddleware, (req, res) => {
     writeJson(settingsPath, settings);
     syncManager.markBackupCompleted('auto');
 
+    // Build filename with user's name
+    const userName = (currentUser.lastName || currentUser.firstName || 'inconnu').replace(/[^a-zA-Z0-9À-ÿ\s-]/g, '').replace(/\s+/g, ' ').trim();
+    const dateStr = new Date().toISOString().split('T')[0];
+
     res.json({
       success: true,
       backup: encryptedPackage,
-      filename: `auto-backup-riziky-${new Date().toISOString().split('T')[0]}.json`
+      filename: `auto-backup-riziky-${userName}-${dateStr}.json`
     });
   } catch (error) {
     console.error('Error creating auto-backup:', error);

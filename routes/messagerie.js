@@ -62,8 +62,12 @@ router.options('/events', (req, res) => {
 });
 
 router.get('/events', (req, res) => {
-  // Laisser le middleware CORS global gérer les headers CORS
-  // et définir ici uniquement les headers SSE.
+  // Headers CORS explicites pour SSE cross-origin
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
   res.status(200);
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, no-transform');
