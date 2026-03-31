@@ -34,14 +34,15 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // Create new client
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { nom, phone, adresse } = req.body;
+    const { nom, phone, phones, adresse } = req.body;
     
     // Validation des champs obligatoires
-    if (!nom || !phone || !adresse) {
+    const hasPhone = (phones && Array.isArray(phones) && phones.filter(p => p && p.trim()).length > 0) || (phone && phone.trim());
+    if (!nom || !hasPhone || !adresse) {
       return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
     }
     
-    const newClient = Client.create({ nom, phone, adresse });
+    const newClient = Client.create({ nom, phones: phones || (phone ? [phone] : []), adresse });
     
     if (!newClient) {
       return res.status(500).json({ message: 'Error creating client' });
@@ -61,13 +62,14 @@ router.post('/', authMiddleware, async (req, res) => {
 // Update client
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
-    const { nom, phone, adresse } = req.body;
+    const { nom, phone, phones, adresse } = req.body;
     
-    if (!nom || !phone || !adresse) {
+    const hasPhone = (phones && Array.isArray(phones) && phones.filter(p => p && p.trim()).length > 0) || (phone && phone.trim());
+    if (!nom || !hasPhone || !adresse) {
       return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
     }
     
-    const updatedClient = Client.update(req.params.id, { nom, phone, adresse });
+    const updatedClient = Client.update(req.params.id, { nom, phones: phones || (phone ? [phone] : []), adresse });
     
     if (!updatedClient) {
       return res.status(404).json({ message: 'Client not found' });
