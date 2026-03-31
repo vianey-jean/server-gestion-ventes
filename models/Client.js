@@ -4,12 +4,30 @@ const path = require('path');
 
 const clientsPath = path.join(__dirname, '../db/clients.json');
 
+/**
+ * Normalise un client pour s'assurer que phones est toujours un tableau.
+ * Gère la rétrocompatibilité avec l'ancien champ "phone" (string).
+ */
+const normalizeClient = (client) => {
+  if (!client) return client;
+  // Migration: ancien format phone (string) → nouveau format phones (array)
+  if (!client.phones && client.phone) {
+    client.phones = [client.phone];
+  }
+  if (!client.phones) {
+    client.phones = [];
+  }
+  // Garder phone comme alias du premier numéro pour rétrocompatibilité
+  client.phone = client.phones[0] || '';
+  return client;
+};
+
 const Client = {
   // Get all clients
   getAll: () => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
-      return clients;
+      return clients.map(normalizeClient);
     } catch (error) {
       console.error("Error reading clients:", error);
       return [];
@@ -20,7 +38,8 @@ const Client = {
   getById: (id) => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
-      return clients.find(client => client.id === id);
+      const client = clients.find(client => client.id === id);
+      return normalizeClient(client);
     } catch (error) {
       console.error("Error reading client by ID:", error);
       return null;
@@ -31,14 +50,15 @@ const Client = {
   getByName: (nom) => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
-      return clients.find(client => client.nom.toLowerCase() === nom.toLowerCase());
+      const client = clients.find(client => client.nom.toLowerCase() === nom.toLowerCase());
+      return normalizeClient(client);
     } catch (error) {
       console.error("Error reading client by name:", error);
       return null;
     }
   },
 
-  // Create new client
+  // Create new client - accepte phones (array) ou phone (string)
   create: (clientData) => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
@@ -52,11 +72,24 @@ const Client = {
         return { error: 'Un client avec ce nom existe déjà' };
       }
       
+      // Normaliser les phones
+      let phones = [];
+      if (clientData.phones && Array.isArray(clientData.phones)) {
+        phones = clientData.phones.filter(p => p && p.trim());
+      } else if (clientData.phone) {
+        phones = [clientData.phone];
+      }
+      
+      if (phones.length === 0) {
+        return { error: 'Au moins un numéro de téléphone est requis' };
+      }
+
       // Create new client object
       const newClient = {
         id: Date.now().toString(),
         nom: clientData.nom,
-        phone: clientData.phone,
+        phones: phones,
+        phone: phones[0], // rétrocompatibilité
         adresse: clientData.adresse,
         dateCreation: new Date().toISOString()
       };
@@ -86,22 +119,36 @@ const Client = {
       }
       
       // Check if another client with the same name exists (excluding current client)
-      const existingClient = clients.find(client => 
-        client.id !== id && client.nom.toLowerCase() === clientData.nom.toLowerCase()
-      );
-      
-      if (existingClient) {
-        return { error: 'Un autre client avec ce nom existe déjà' };
+      if (clientData.nom) {
+        const existingClient = clients.find(client => 
+          client.id !== id && client.nom.toLowerCase() === clientData.nom.toLowerCase()
+        );
+        
+        if (existingClient) {
+          return { error: 'Un autre client avec ce nom existe déjà' };
+        }
       }
       
       const oldClient = clients[clientIndex];
       
+      // Normaliser les phones
+      let phones;
+      if (clientData.phones && Array.isArray(clientData.phones)) {
+        phones = clientData.phones.filter(p => p && p.trim());
+      } else if (clientData.phone) {
+        phones = [clientData.phone];
+      } else {
+        // Garder les anciens phones
+        phones = normalizeClient(oldClient).phones;
+      }
+
       // Update client data
       clients[clientIndex] = { 
-        ...oldClient, 
-        nom: clientData.nom,
-        phone: clientData.phone,
-        adresse: clientData.adresse
+        ...normalizeClient(oldClient), 
+        nom: clientData.nom || oldClient.nom,
+        phones: phones,
+        phone: phones[0] || '', // rétrocompatibilité
+        adresse: clientData.adresse || oldClient.adresse
       };
       
       // Write back to file
