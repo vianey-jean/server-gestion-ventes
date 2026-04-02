@@ -274,6 +274,62 @@ router.put('/user-role', authMiddleware, (req, res) => {
 });
 
 // ==================
+// DELETE /api/settings/user/:id - Delete a user account
+// ==================
+router.delete('/user/:id', authMiddleware, (req, res) => {
+  try {
+    if (!isAdminPrincipale(req.user)) {
+      return res.status(403).json({ message: 'Accès refusé. Administrateur principale requis.' });
+    }
+
+    const userId = req.params.id;
+    const users = readJson(usersPath) || [];
+    const userIndex = users.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    if (users[userIndex].role === 'administrateur principale') {
+      return res.status(403).json({ message: 'Impossible de supprimer le compte administrateur principale' });
+    }
+
+    const deletedUser = users[userIndex];
+    
+    // Delete profile photo if exists
+    if (deletedUser.profilePhoto) {
+      const photoPath = path.join(__dirname, '..', deletedUser.profilePhoto);
+      if (fs.existsSync(photoPath)) {
+        try { fs.unlinkSync(photoPath); } catch (e) { console.error('Error deleting user photo:', e); }
+      }
+    }
+
+    // Remove user from array
+    users.splice(userIndex, 1);
+    writeJson(usersPath, users);
+
+    // Clean up user data in other db files
+    const dbFiles = ['pointage.json', 'rdv.json', 'taches.json'];
+    dbFiles.forEach(file => {
+      const filePath = path.join(dbPath, file);
+      if (fs.existsSync(filePath)) {
+        try {
+          const data = readJson(filePath);
+          if (Array.isArray(data)) {
+            const filtered = data.filter(item => item.userId !== userId && item.assignedTo !== userId);
+            writeJson(filePath, filtered);
+          }
+        } catch (e) { console.error(`Error cleaning ${file}:`, e); }
+      }
+    });
+
+    res.json({ success: true, message: `Le compte de ${deletedUser.firstName || ''} ${deletedUser.lastName || ''} a été supprimé` });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// ==================
 // PUT /api/settings/user-specification - Change user specification
 // ==================
 router.put('/user-specification', authMiddleware, (req, res) => {

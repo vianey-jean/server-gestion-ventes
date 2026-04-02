@@ -91,6 +91,7 @@ const Client = {
         phones: phones,
         phone: phones[0], // rétrocompatibilité
         adresse: clientData.adresse,
+        photo: clientData.photo || '',
         dateCreation: new Date().toISOString()
       };
       
@@ -148,7 +149,8 @@ const Client = {
         nom: clientData.nom || oldClient.nom,
         phones: phones,
         phone: phones[0] || '', // rétrocompatibilité
-        adresse: clientData.adresse || oldClient.adresse
+        adresse: clientData.adresse || oldClient.adresse,
+        photo: clientData.photo !== undefined ? clientData.photo : (oldClient.photo || '')
       };
       
       // Write back to file
@@ -166,14 +168,22 @@ const Client = {
     try {
       let clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
       
-      // Find client index
-      const clientIndex = clients.findIndex(client => client.id === id);
-      if (clientIndex === -1) {
+      // Find client
+      const client = clients.find(c => c.id === id);
+      if (!client) {
         return false;
+      }
+
+      // Delete associated photo if exists
+      if (client.photo) {
+        const photoPath = path.join(__dirname, '..', client.photo);
+        if (fs.existsSync(photoPath)) {
+          try { fs.unlinkSync(photoPath); } catch (e) { console.error('Error deleting client photo:', e); }
+        }
       }
       
       // Remove from clients array
-      clients.splice(clientIndex, 1);
+      clients = clients.filter(c => c.id !== id);
       
       // Write back to file
       fs.writeFileSync(clientsPath, JSON.stringify(clients, null, 2));
