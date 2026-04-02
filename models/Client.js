@@ -4,6 +4,11 @@ const path = require('path');
 
 const clientsPath = path.join(__dirname, '../db/clients.json');
 
+const getClientPhotoFilePath = (photoUrl) => {
+  if (!photoUrl) return null;
+  return path.join(__dirname, '..', photoUrl.replace(/^\/+/, ''));
+};
+
 /**
  * Normalise un client pour s'assurer que phones est toujours un tableau.
  * Gère la rétrocompatibilité avec l'ancien champ "phone" (string).
@@ -176,7 +181,7 @@ const Client = {
 
       // Delete associated photo if exists
       if (client.photo) {
-        const photoPath = path.join(__dirname, '..', client.photo);
+        const photoPath = getClientPhotoFilePath(client.photo);
         if (fs.existsSync(photoPath)) {
           try { fs.unlinkSync(photoPath); } catch (e) { console.error('Error deleting client photo:', e); }
         }

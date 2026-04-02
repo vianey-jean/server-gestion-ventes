@@ -37,6 +37,18 @@ const upload = multer({
   }
 });
 
+const getClientPhotoFilePath = (photoUrl) => {
+  if (!photoUrl) return null;
+  return path.join(__dirname, '..', photoUrl.replace(/^\/+/, ''));
+};
+
+const deleteClientPhotoFile = (photoUrl) => {
+  const filePath = getClientPhotoFilePath(photoUrl);
+  if (filePath && fs.existsSync(filePath)) {
+    try { fs.unlinkSync(filePath); } catch {}
+  }
+};
+
 // Get all clients
 router.get('/', authMiddleware, async (req, res) => {
   try {
@@ -114,6 +126,7 @@ router.post('/', authMiddleware, upload.single('photo'), async (req, res) => {
 router.put('/:id', authMiddleware, upload.single('photo'), async (req, res) => {
   try {
     let { nom, phone, phones, adresse } = req.body;
+    const removePhoto = req.body.removePhoto === 'true' || req.body.removePhoto === true;
     
     // Parse phones if it's a JSON string (from FormData)
     if (typeof phones === 'string') {
@@ -125,19 +138,18 @@ router.put('/:id', authMiddleware, upload.single('photo'), async (req, res) => {
       if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
       return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
     }
+
+    const oldClient = Client.getById(req.params.id);
+    if (!oldClient) {
+      if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
+      return res.status(404).json({ message: 'Client not found' });
+    }
     
-    // If new photo uploaded, delete old one
     let photoPath;
     if (req.file) {
       photoPath = `/uploads/clients/${req.file.filename}`;
-      // Delete old photo
-      const oldClient = Client.getById(req.params.id);
-      if (oldClient && oldClient.photo) {
-        const oldPhotoPath = path.join(__dirname, '..', oldClient.photo);
-        if (fs.existsSync(oldPhotoPath)) {
-          try { fs.unlinkSync(oldPhotoPath); } catch {}
-        }
-      }
+    } else if (removePhoto) {
+      photoPath = '';
     }
     
     const updateData = { 
@@ -150,11 +162,17 @@ router.put('/:id', authMiddleware, upload.single('photo'), async (req, res) => {
     const updatedClient = Client.update(req.params.id, updateData);
     
     if (!updatedClient) {
+      if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
       return res.status(404).json({ message: 'Client not found' });
     }
     
     if (updatedClient.error) {
+      if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
       return res.status(400).json({ message: updatedClient.error });
+    }
+
+    if ((req.file || removePhoto) && oldClient.photo && oldClient.photo !== updatedClient.photo) {
+      deleteClientPhotoFile(oldClient.photo);
     }
     
     res.json(updatedClient);
