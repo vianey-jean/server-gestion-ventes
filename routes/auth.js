@@ -70,7 +70,6 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
     // Check if user exists
     const user = User.getByEmail(email);
     if (!user) {
-      // Message générique pour éviter l'énumération des utilisateurs
       return res.status(401).json({ message: 'Identifiants invalides' });
     }
     
@@ -80,20 +79,69 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
         message: 'Profil utilisateur incomplet dans la base de données' 
       });
     }
+
+    // Check if account is locked
+    const maxAttempts = user.nombreConnexion || 5;
+    const lockoutMinutes = user.tempsBlocage || 15;
+    const failedAttempts = user.failedAttempts || 0;
+    const lockedUntil = user.lockedUntil ? new Date(user.lockedUntil) : null;
+
+    if (lockedUntil && new Date() < lockedUntil) {
+      const remainingMs = lockedUntil.getTime() - Date.now();
+      const remainingSeconds = Math.ceil(remainingMs / 1000);
+      return res.status(423).json({
+        message: 'Compte temporairement bloqué',
+        locked: true,
+        lockedUntil: lockedUntil.toISOString(),
+        remainingSeconds,
+        maxAttempts,
+        failedAttempts: maxAttempts
+      });
+    }
+
+    // If lock expired, reset attempts
+    if (lockedUntil && new Date() >= lockedUntil) {
+      User.update(user.id, { failedAttempts: 0, lockedUntil: null });
+    }
     
     // Check password with bcrypt compare
     if (!User.comparePassword(password, user.password)) {
-      return res.status(401).json({ message: 'Identifiants invalides' });
+      const newFailedAttempts = (lockedUntil && new Date() >= lockedUntil ? 0 : failedAttempts) + 1;
+      const updateData = { failedAttempts: newFailedAttempts };
+
+      if (newFailedAttempts >= maxAttempts) {
+        const lockUntil = new Date(Date.now() + lockoutMinutes * 60 * 1000);
+        updateData.lockedUntil = lockUntil.toISOString();
+        User.update(user.id, updateData);
+        return res.status(423).json({
+          message: `Compte bloqué pendant ${lockoutMinutes} minutes`,
+          locked: true,
+          lockedUntil: lockUntil.toISOString(),
+          remainingSeconds: lockoutMinutes * 60,
+          maxAttempts,
+          failedAttempts: newFailedAttempts
+        });
+      }
+
+      User.update(user.id, updateData);
+      return res.status(401).json({
+        message: 'Identifiants invalides',
+        failedAttempts: newFailedAttempts,
+        maxAttempts,
+        remainingAttempts: maxAttempts - newFailedAttempts
+      });
     }
     
-    // Create and sign JWT token avec expiration courte
+    // Successful login — reset failed attempts
+    User.update(user.id, { failedAttempts: 0, lockedUntil: null });
+
+    // Create and sign JWT token
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET || 'defaultsecretkey',
-      { expiresIn: '8h' } // Réduit à 8h pour plus de sécurité
+      { expiresIn: '8h' }
     );
     
-    // Return user data and token without password
     const { password: _, ...userWithoutPassword } = user;
     res.json({
       user: userWithoutPassword,
@@ -121,12 +169,35 @@ router.post('/check-email', (req, res) => {
     const user = User.getByEmail(email);
     
     if (user) {
+      // Check lock status
+      const maxAttempts = user.nombreConnexion || 5;
+      const failedAttempts = user.failedAttempts || 0;
+      const lockedUntil = user.lockedUntil ? new Date(user.lockedUntil) : null;
+      let locked = false;
+      let remainingSeconds = 0;
+      let currentFailedAttempts = failedAttempts;
+
+      if (lockedUntil && new Date() < lockedUntil) {
+        locked = true;
+        remainingSeconds = Math.ceil((lockedUntil.getTime() - Date.now()) / 1000);
+        currentFailedAttempts = maxAttempts;
+      } else if (lockedUntil && new Date() >= lockedUntil) {
+        // Lock expired, reset
+        User.update(user.id, { failedAttempts: 0, lockedUntil: null });
+        currentFailedAttempts = 0;
+      }
+
       res.json({ 
         exists: true, 
         user: { 
           firstName: user.firstName, 
           lastName: user.lastName 
-        }
+        },
+        maxAttempts,
+        failedAttempts: currentFailedAttempts,
+        locked,
+        lockedUntil: locked ? lockedUntil.toISOString() : null,
+        remainingSeconds
       });
     } else {
       res.json({ exists: false });

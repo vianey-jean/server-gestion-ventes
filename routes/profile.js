@@ -120,4 +120,34 @@ router.put('/password', authMiddleware, (req, res) => {
   }
 });
 
+// PUT update security settings (nombreConnexion, tempsBlocage)
+router.put('/security-settings', authMiddleware, (req, res) => {
+  try {
+    const { nombreConnexion, tempsBlocage } = req.body;
+    
+    const updates = {};
+    if (nombreConnexion !== undefined) {
+      const val = parseInt(nombreConnexion, 10);
+      if (isNaN(val) || val < 1 || val > 20) {
+        return res.status(400).json({ message: 'Nombre de connexion doit être entre 1 et 20' });
+      }
+      updates.nombreConnexion = val;
+    }
+    if (tempsBlocage !== undefined) {
+      const val = parseInt(tempsBlocage, 10);
+      if (isNaN(val) || val < 1 || val > 1440) {
+        return res.status(400).json({ message: 'Temps de blocage doit être entre 1 et 1440 minutes' });
+      }
+      updates.tempsBlocage = val;
+    }
+
+    const updated = User.update(req.user.id, updates);
+    if (!updated) return res.status(400).json({ message: 'Erreur lors de la mise à jour' });
+    res.json({ success: true, user: updated });
+  } catch (error) {
+    console.error('Security settings update error:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;

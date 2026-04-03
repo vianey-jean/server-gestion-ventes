@@ -9,6 +9,10 @@
     "address": "10 Allée des Beryls bleus Bellepierre",
     "phone": "0692198701",
     "role": "administrateur principale",
+    "nombreConnexion": 5,
+    "tempsBlocage": 15,
+    "failedAttempts": 0,
+    "lockedUntil": null,
     "profilePhoto": "/uploads/profil/photo/profile-1-1772979394488.JPG"
   }
 ]
