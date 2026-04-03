@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const usersPath = path.join(__dirname, '../db/users.json');
 
@@ -9,7 +10,7 @@ const User = {
   // Get all users
   getAll: () => {
     try {
-      const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+      const users = readJsonDecrypted(usersPath) || [];
       return users;
     } catch (error) {
       console.error("Error reading users:", error);
@@ -20,7 +21,7 @@ const User = {
   // Get user by email
   getByEmail: (email) => {
     try {
-      const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+      const users = readJsonDecrypted(usersPath) || [];
       return users.find(user => user.email.toLowerCase() === email.toLowerCase()) || null;
     } catch (error) {
       console.error("Error finding user by email:", error);
@@ -31,7 +32,7 @@ const User = {
   // Get user by ID
   getById: (id) => {
     try {
-      const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+      const users = readJsonDecrypted(usersPath) || [];
       return users.find(user => user.id === id) || null;
     } catch (error) {
       console.error("Error finding user by id:", error);
@@ -42,7 +43,7 @@ const User = {
   // Create new user
   create: (userData) => {
     try {
-      const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+      const users = readJsonDecrypted(usersPath) || [];
       
       // Check if email already exists
       const emailExists = users.some(user => user.email.toLowerCase() === userData.email.toLowerCase());
@@ -65,7 +66,7 @@ const User = {
       users.push(newUser);
       
       // Write back to file
-      fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+      writeJsonEncrypted(usersPath, users);
       
       // Return the user without password
       const { password, ...userWithoutPassword } = newUser;
@@ -79,7 +80,7 @@ const User = {
   // Update user
   update: (id, userData) => {
     try {
-      let users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+      let users = readJsonDecrypted(usersPath) || [];
       
       // Find user index
       const userIndex = users.findIndex(user => user.id === id);
@@ -97,7 +98,7 @@ const User = {
       users[userIndex] = { ...users[userIndex], ...userData };
       
       // Write back to file
-      fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+      writeJsonEncrypted(usersPath, users);
       
       // Return the updated user without password
       const { password, ...userWithoutPassword } = users[userIndex];
@@ -111,7 +112,7 @@ const User = {
   // Update password
   updatePassword: (email, newPassword) => {
     try {
-      let users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+      let users = readJsonDecrypted(usersPath) || [];
       
       // Find user index
       const userIndex = users.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
@@ -132,7 +133,7 @@ const User = {
       users[userIndex].password = hashedPassword;
       
       // Write back to file
-      fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+      writeJsonEncrypted(usersPath, users);
       
       return true;
     } catch (error) {

@@ -1,13 +1,13 @@
 const fs = require('fs');
 const path = require('path');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const remboursementPath = path.join(__dirname, '../db/remboursement.json');
 
 const Remboursement = {
   getAll: () => {
     try {
-      const data = fs.readFileSync(remboursementPath, 'utf8');
-      return JSON.parse(data);
+      return readJsonDecrypted(remboursementPath) || [];
     } catch (error) {
       console.error("Error reading remboursements:", error);
       return [];
@@ -16,8 +16,7 @@ const Remboursement = {
 
   getByMonthYear: (month, year) => {
     try {
-      const data = fs.readFileSync(remboursementPath, 'utf8');
-      const remboursements = JSON.parse(data);
+      const remboursements = readJsonDecrypted(remboursementPath) || [];
       return remboursements.filter(r => {
         const d = new Date(r.date);
         return (d.getMonth() + 1) === Number(month) && d.getFullYear() === Number(year);
@@ -30,14 +29,14 @@ const Remboursement = {
 
   create: (data) => {
     try {
-      const remboursements = JSON.parse(fs.readFileSync(remboursementPath, 'utf8'));
+      const remboursements = readJsonDecrypted(remboursementPath) || [];
       const newRemboursement = {
         id: Date.now().toString(),
         ...data,
         createdAt: new Date().toISOString()
       };
       remboursements.push(newRemboursement);
-      fs.writeFileSync(remboursementPath, JSON.stringify(remboursements, null, 2));
+      writeJsonEncrypted(remboursementPath, remboursements);
       return newRemboursement;
     } catch (error) {
       console.error("Error creating remboursement:", error);
@@ -47,11 +46,11 @@ const Remboursement = {
 
   delete: (id) => {
     try {
-      let remboursements = JSON.parse(fs.readFileSync(remboursementPath, 'utf8'));
+      let remboursements = readJsonDecrypted(remboursementPath) || [];
       const index = remboursements.findIndex(r => r.id === id);
       if (index === -1) return false;
       remboursements.splice(index, 1);
-      fs.writeFileSync(remboursementPath, JSON.stringify(remboursements, null, 2));
+      writeJsonEncrypted(remboursementPath, remboursements);
       return true;
     } catch (error) {
       console.error("Error deleting remboursement:", error);

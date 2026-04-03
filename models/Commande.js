@@ -1,16 +1,18 @@
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const path = require('path');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const dataPath = path.join(__dirname, '../db/commandes.json');
 
 class Commande {
   static async getAll() {
     try {
-      const data = await fs.readFile(dataPath, 'utf8');
-      return JSON.parse(data);
+      const data = readJsonDecrypted(dataPath);
+      return data || [];
     } catch (error) {
       if (error.code === 'ENOENT') {
-        await fs.writeFile(dataPath, '[]');
+        writeJsonEncrypted(dataPath, []);
         return [];
       }
       throw error;
@@ -30,7 +32,7 @@ class Commande {
       createdAt: new Date().toISOString()
     };
     commandes.push(newCommande);
-    await fs.writeFile(dataPath, JSON.stringify(commandes, null, 2));
+    writeJsonEncrypted(dataPath, commandes);
     return newCommande;
   }
 
@@ -40,14 +42,14 @@ class Commande {
     if (index === -1) throw new Error('Commande not found');
     
     commandes[index] = { ...commandes[index], ...updates, updatedAt: new Date().toISOString() };
-    await fs.writeFile(dataPath, JSON.stringify(commandes, null, 2));
+    writeJsonEncrypted(dataPath, commandes);
     return commandes[index];
   }
 
   static async delete(id) {
     const commandes = await this.getAll();
     const filtered = commandes.filter(c => c.id !== id);
-    await fs.writeFile(dataPath, JSON.stringify(filtered, null, 2));
+    writeJsonEncrypted(dataPath, filtered);
     return true;
   }
 }

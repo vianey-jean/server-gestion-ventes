@@ -12,17 +12,15 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const authMiddleware = require('../middleware/auth');
 const syncManager = require('../middleware/sync');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const dbPath = path.join(__dirname, '../db');
 const settingsPath = path.join(dbPath, 'settings.json');
 const usersPath = path.join(dbPath, 'users.json');
 
-// Helper: read JSON file safely
+// Helper: read JSON file safely (with decryption support)
 const readJson = (filePath) => {
-  try {
-    if (!fs.existsSync(filePath)) return null;
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch { return null; }
+  return readJsonDecrypted(filePath);
 };
 
 // Default settings structure
@@ -57,9 +55,9 @@ const DEFAULT_SETTINGS = {
   },
 };
 
-// Helper: write JSON file
+// Helper: write JSON file (with encryption support)
 const writeJson = (filePath, data) => {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  writeJsonEncrypted(filePath, data);
 };
 
 // Helper: check if user is admin (both types)

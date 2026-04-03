@@ -1,13 +1,13 @@
 const fs = require('fs');
 const path = require('path');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const entreprisePath = path.join(__dirname, '../db/entreprise.json');
 
 const Entreprise = {
   getAll: () => {
     try {
-      const data = fs.readFileSync(entreprisePath, 'utf8');
-      return JSON.parse(data);
+      return readJsonDecrypted(entreprisePath) || [];
     } catch (error) {
       return [];
     }
@@ -15,8 +15,7 @@ const Entreprise = {
 
   getById: (id) => {
     try {
-      const data = fs.readFileSync(entreprisePath, 'utf8');
-      const items = JSON.parse(data);
+      const items = readJsonDecrypted(entreprisePath) || [];
       return items.find(item => item.id === id) || null;
     } catch (error) {
       return null;
@@ -25,15 +24,14 @@ const Entreprise = {
 
   create: (itemData) => {
     try {
-      const data = fs.readFileSync(entreprisePath, 'utf8');
-      const items = JSON.parse(data);
+      const items = readJsonDecrypted(entreprisePath) || [];
       const newItem = {
         id: Date.now().toString(),
         ...itemData,
         createdAt: new Date().toISOString()
       };
       items.push(newItem);
-      fs.writeFileSync(entreprisePath, JSON.stringify(items, null, 2));
+      writeJsonEncrypted(entreprisePath, items);
       return newItem;
     } catch (error) {
       console.error('Error creating entreprise:', error);
@@ -43,12 +41,11 @@ const Entreprise = {
 
   update: (id, itemData) => {
     try {
-      const data = fs.readFileSync(entreprisePath, 'utf8');
-      let items = JSON.parse(data);
+      let items = readJsonDecrypted(entreprisePath) || [];
       const index = items.findIndex(item => item.id === id);
       if (index === -1) return null;
       items[index] = { ...items[index], ...itemData };
-      fs.writeFileSync(entreprisePath, JSON.stringify(items, null, 2));
+      writeJsonEncrypted(entreprisePath, items);
       return items[index];
     } catch (error) {
       console.error('Error updating entreprise:', error);
@@ -58,12 +55,11 @@ const Entreprise = {
 
   delete: (id) => {
     try {
-      const data = fs.readFileSync(entreprisePath, 'utf8');
-      let items = JSON.parse(data);
+      let items = readJsonDecrypted(entreprisePath) || [];
       const index = items.findIndex(item => item.id === id);
       if (index === -1) return false;
       items.splice(index, 1);
-      fs.writeFileSync(entreprisePath, JSON.stringify(items, null, 2));
+      writeJsonEncrypted(entreprisePath, items);
       return true;
     } catch (error) {
       console.error('Error deleting entreprise:', error);

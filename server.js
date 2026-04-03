@@ -14,6 +14,9 @@
  * @version 4.2.0
  */
 
+// Patch db I/O for transparent encryption — MUST be before any model imports
+require('./middleware/patchDbIO');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -289,6 +292,7 @@ const settingsRoutes = require('./routes/settings');
 const indisponibleRoutes = require('./routes/indisponible');
 const moduleSettingsRoutes = require('./routes/moduleSettings');
 const parametresRoutes = require('./routes/parametres');
+const encryptionRoutes = require('./routes/encryption');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -324,6 +328,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/indisponible', indisponibleRoutes);
 app.use('/api/module-settings', moduleSettingsRoutes);
 app.use('/api/parametres', parametresRoutes);
+app.use('/api/encryption', encryptionRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
