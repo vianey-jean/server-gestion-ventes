@@ -24,6 +24,9 @@ const originalReadFileSync = fs.readFileSync;
 const originalWriteFileSync = fs.writeFileSync;
 
 // Patch readFileSync
+// NOTE: readJsonDecrypted in encryption.js handles its own decryption.
+// This patch handles models that use fs.readFileSync/writeFileSync directly
+// (not through readJsonDecrypted/writeJsonEncrypted).
 fs.readFileSync = function patchedReadFileSync(filePath, ...args) {
   const result = originalReadFileSync.call(fs, filePath, ...args);
   
@@ -38,12 +41,17 @@ fs.readFileSync = function patchedReadFileSync(filePath, ...args) {
       if (isEncrypted(strResult)) {
         const config = getEncryptionConfig();
         if (config.enabled && config.key) {
-          const decrypted = decryptData(strResult, config.key);
-          // Return as string if encoding was specified, otherwise as Buffer
-          if (args[0] === 'utf8' || args[0] === 'utf-8' || (args[0] && args[0].encoding === 'utf8')) {
-            return decrypted;
+          try {
+            const decrypted = decryptData(strResult, config.key);
+            // Validate decrypted data is valid JSON
+            JSON.parse(decrypted);
+            if (args[0] === 'utf8' || args[0] === 'utf-8' || (args[0] && args[0].encoding === 'utf8')) {
+              return decrypted;
+            }
+            return Buffer.from(decrypted, 'utf8');
+          } catch (e) {
+            // Decryption or parse failed, return original
           }
-          return Buffer.from(decrypted, 'utf8');
         }
       }
     }

@@ -98,15 +98,15 @@ router.post('/deactivate', authMiddleware, (req, res) => {
       return res.status(400).json({ message: 'Clé de cryptage incorrecte' });
     }
 
-    // Decrypt all data
-    const decryptedCount = decryptAllData(encryptionKey);
-
-    // Save config
+    // Disable encryption first so decrypted files are written back in plain JSON
     saveEncryptionConfig({
       enabled: false,
       key: null,
       deactivatedAt: new Date().toISOString()
     });
+
+    // Decrypt all data
+    const decryptedCount = decryptAllData(encryptionKey);
 
     res.json({
       success: true,

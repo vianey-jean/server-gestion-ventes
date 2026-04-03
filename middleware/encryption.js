@@ -131,12 +131,27 @@ function readJsonDecrypted(filePath) {
     const config = getEncryptionConfig();
     const filename = path.basename(filePath);
     
-    if (config.enabled && config.key && shouldEncryptFile(filename) && isEncrypted(raw)) {
-      const decrypted = decryptData(raw, config.key);
-      return JSON.parse(decrypted);
+    // Try to parse the raw content
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (e) {
+      console.error(`Invalid JSON in ${filePath}:`, e.message);
+      return null;
     }
     
-    return JSON.parse(raw);
+    // If the parsed result is an encrypted object, decrypt it
+    if (parsed && parsed.__encrypted === true && config.enabled && config.key && shouldEncryptFile(filename)) {
+      try {
+        const decrypted = decryptData(raw, config.key);
+        return JSON.parse(decrypted);
+      } catch (e) {
+        console.error(`Decryption failed for ${filePath}:`, e.message);
+        return null;
+      }
+    }
+    
+    return parsed;
   } catch (e) {
     console.error(`Error reading ${filePath}:`, e.message);
     return null;

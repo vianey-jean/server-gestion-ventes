@@ -8,10 +8,20 @@ const usersPath = path.join(__dirname, '../db/users.json');
 
 const User = {
   // Get all users
+  // Helper to safely get users array
+  _getUsers: () => {
+    const data = readJsonDecrypted(usersPath);
+    if (Array.isArray(data)) return data;
+    if (data === null || data === undefined) return [];
+    // If data is an object (e.g. encrypted blob that wasn't decrypted), return empty
+    console.warn('Users data is not an array, got:', typeof data);
+    return [];
+  },
+
+  // Get all users
   getAll: () => {
     try {
-      const users = readJsonDecrypted(usersPath) || [];
-      return users;
+      return User._getUsers();
     } catch (error) {
       console.error("Error reading users:", error);
       return [];
@@ -21,7 +31,7 @@ const User = {
   // Get user by email
   getByEmail: (email) => {
     try {
-      const users = readJsonDecrypted(usersPath) || [];
+      const users = User._getUsers();
       return users.find(user => user.email.toLowerCase() === email.toLowerCase()) || null;
     } catch (error) {
       console.error("Error finding user by email:", error);
@@ -32,7 +42,7 @@ const User = {
   // Get user by ID
   getById: (id) => {
     try {
-      const users = readJsonDecrypted(usersPath) || [];
+      const users = User._getUsers();
       return users.find(user => user.id === id) || null;
     } catch (error) {
       console.error("Error finding user by id:", error);
@@ -43,7 +53,7 @@ const User = {
   // Create new user
   create: (userData) => {
     try {
-      const users = readJsonDecrypted(usersPath) || [];
+      const users = User._getUsers();
       
       // Check if email already exists
       const emailExists = users.some(user => user.email.toLowerCase() === userData.email.toLowerCase());
@@ -80,7 +90,7 @@ const User = {
   // Update user
   update: (id, userData) => {
     try {
-      let users = readJsonDecrypted(usersPath) || [];
+      let users = User._getUsers();
       
       // Find user index
       const userIndex = users.findIndex(user => user.id === id);
@@ -112,7 +122,7 @@ const User = {
   // Update password
   updatePassword: (email, newPassword) => {
     try {
-      let users = readJsonDecrypted(usersPath) || [];
+      let users = User._getUsers();
       
       // Find user index
       const userIndex = users.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
