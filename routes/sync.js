@@ -5,30 +5,22 @@ const crypto = require('crypto');
 const syncManager = require('../middleware/sync');
 const authMiddleware = require('../middleware/auth');
 
-// Middleware CORS spécifique pour SSE avec gestion des origines multiples
+// Middleware CORS spécifique pour SSE — mirror l'origine de la requête
 const setCORSHeaders = (req, res) => {
-  const origin = req.get('Origin');
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:8080',
-    'https://server-gestion-ventes.onrender.com',
-    'https://riziky-gestion-ventes.vercel.app'
-  ]
-  
-  // Si l'origine est dans la liste, utiliser cette origine spécifique
-  if (origin && allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  } else if (origin) {
-    // Permettre toutes les origines en développement/preview ( Vercel, etc.)
-    res.header('Access-Control-Allow-Origin', origin);
+  const origin = req.get('Origin') || req.headers.origin;
+
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
   } else {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '*');
   }
-  
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Max-Age', '86400');
+
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin, Last-Event-ID');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Type, Cache-Control');
+  res.setHeader('Access-Control-Max-Age', '86400');
 };
 
 // Endpoint pour Server-Sent Events avec configuration CORS améliorée
@@ -36,14 +28,17 @@ router.get('/events', (req, res) => {
   // Configuration des headers CORS pour SSE
   setCORSHeaders(req, res);
   
-  const headers = {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no'
-  };
-  
-  res.writeHead(200, headers);
+  // SSE headers
+  res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, no-transform');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.status(200);
+  res.flushHeaders?.();
+
+  // Keep TCP alive
+  req.socket?.setKeepAlive?.(true, 15000);
+  req.socket?.setNoDelay?.(true);
 
   const clientId = `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   
