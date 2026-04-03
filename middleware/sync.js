@@ -1,6 +1,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { readDb } = require('./dbHelper');
 
 class SyncManager {
   constructor() {
@@ -54,7 +55,7 @@ class SyncManager {
 
   readFileData(filePath, options = {}) {
     const { filterSalesForCurrentMonth = false } = options;
-    const rawData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const rawData = readDb(filePath) || [];
     const dataType = this.getDataType(filePath);
 
     if (filterSalesForCurrentMonth && dataType === 'sales') {
@@ -314,6 +315,7 @@ class SyncManager {
       'pretproduits.json',
       'depensedumois.json',
       'depensefixe.json',
+      'nouvelle_achat.json',
       'clients.json',
       'messages.json',
       'rdv.json',
@@ -325,12 +327,8 @@ class SyncManager {
       const filePath = path.join(this.dbPath, fileName);
       if (fs.existsSync(filePath)) {
         try {
-          let data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          let data = this.readFileData(filePath, { filterSalesForCurrentMonth: true });
           const dataType = path.basename(filePath, '.json');
-          
-          if (dataType === 'sales') {
-            data = this.filterCurrentMonthSales(data);
-          }
           
           client.notify('data-changed', {
             type: dataType,
@@ -390,6 +388,7 @@ const filesToWatch = [
   'pretproduits.json',
   'depensedumois.json',
   'depensefixe.json',
+  'nouvelle_achat.json',
   'clients.json',
   'messages.json',
   'rdv.json',

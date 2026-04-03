@@ -12,6 +12,9 @@ const path = require('path');
 const ALGORITHM = 'aes-256-cbc';
 const SALT = 'riziky-encryption-salt-2024';
 const encryptionConfigPath = path.join(__dirname, '../db/encryption.json');
+let cachedConfig = null;
+let cachedConfigMtimeMs = 0;
+const derivedKeyCache = new Map();
 
 // Files to exclude from encryption (system files)
 const EXCLUDED_FILES = ['encryption.json', 'auto-sauvegarde.json', 'settings.json', 'moduleSettings.json'];
@@ -22,7 +25,14 @@ const EXCLUDED_FILES = ['encryption.json', 'auto-sauvegarde.json', 'settings.jso
 function getEncryptionConfig() {
   try {
     if (!fs.existsSync(encryptionConfigPath)) return { enabled: false, key: null };
+    const stats = fs.statSync(encryptionConfigPath);
+    if (cachedConfig && cachedConfigMtimeMs === stats.mtimeMs) {
+      return cachedConfig;
+    }
+
     const data = JSON.parse(fs.readFileSync(encryptionConfigPath, 'utf8'));
+    cachedConfig = data;
+    cachedConfigMtimeMs = stats.mtimeMs;
     return data;
   } catch {
     return { enabled: false, key: null };
@@ -34,13 +44,26 @@ function getEncryptionConfig() {
  */
 function saveEncryptionConfig(config) {
   fs.writeFileSync(encryptionConfigPath, JSON.stringify(config, null, 2));
+  cachedConfig = config;
+  try {
+    cachedConfigMtimeMs = fs.statSync(encryptionConfigPath).mtimeMs;
+  } catch {
+    cachedConfigMtimeMs = Date.now();
+  }
+  derivedKeyCache.clear();
 }
 
 /**
  * Derive a 32-byte key from the encryption key string
  */
 function deriveKey(keyString) {
-  return crypto.scryptSync(keyString, SALT, 32);
+  if (derivedKeyCache.has(keyString)) {
+    return derivedKeyCache.get(keyString);
+  }
+
+  const derivedKey = crypto.scryptSync(keyString, SALT, 32);
+  derivedKeyCache.set(keyString, derivedKey);
+  return derivedKey;
 }
 
 /**
