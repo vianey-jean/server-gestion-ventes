@@ -150,4 +150,51 @@ router.put('/security-settings', authMiddleware, (req, res) => {
   }
 });
 
+// GET timeout settings
+router.get('/timeout-settings', authMiddleware, (req, res) => {
+  try {
+    const user = User.getById(req.user.id);
+    res.json({
+      active: user.inactiveMinutes || 10,
+      timeout: user.timeoutHours || 7
+    });
+  } catch (error) {
+    console.error('Timeout settings fetch error:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// PUT timeout settings
+router.put('/timeout-settings', authMiddleware, (req, res) => {
+  try {
+    const { active, timeout } = req.body;
+    const updates = {};
+    if (active !== undefined) {
+      const val = parseInt(active, 10);
+      if (isNaN(val) || val < 1 || val > 120) return res.status(400).json({ message: 'Inactivité doit être entre 1 et 120 minutes' });
+      updates.inactiveMinutes = val;
+    }
+    if (timeout !== undefined) {
+      const val = parseInt(timeout, 10);
+      if (isNaN(val) || val < 1 || val > 24) return res.status(400).json({ message: 'Timeout doit être entre 1 et 24 heures' });
+      updates.timeoutHours = val;
+    }
+    const updated = User.update(req.user.id, updates);
+    if (!updated) return res.status(400).json({ message: 'Erreur lors de la mise à jour' });
+
+    // Also update the global file
+    const fs = require('fs');
+    const path = require('path');
+    const timeoutPath = path.join(__dirname, '../db/timeoutinactive.json');
+    const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
+    const data = { active: String(updates.inactiveMinutes || 10), timeout: String(updates.timeoutHours || 7) };
+    writeJsonEncrypted(timeoutPath, data);
+
+    res.json({ success: true, user: updated });
+  } catch (error) {
+    console.error('Timeout settings update error:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;
