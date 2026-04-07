@@ -6,19 +6,7 @@ const authMiddleware = require('../middleware/auth');
 
 const DB_PATH = path.join(__dirname, '../db/messagerie.json');
 
-function applySseCorsHeaders(req, res) {
-  const origin = req.headers.origin;
-
-  if (origin) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Vary', 'Origin');
-  }
-
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin, Last-Event-ID');
-  res.setHeader('Access-Control-Expose-Headers', 'Content-Type, Cache-Control');
-}
+// CORS is handled by the global cors() middleware in server.js.
 
 // Helpers
 function readDB() {
@@ -71,13 +59,10 @@ function broadcastToAdmins(event, data) {
 // =====================
 // SSE Endpoint
 // =====================
-router.options('/events', (req, res) => {
-  applySseCorsHeaders(req, res);
-  res.sendStatus(204);
-});
+// OPTIONS preflight handled by global cors() middleware
 
 router.get('/events', (req, res) => {
-  applySseCorsHeaders(req, res);
+  // CORS already handled by global middleware
   res.status(200);
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, no-transform');

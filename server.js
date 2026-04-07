@@ -69,7 +69,8 @@ const allowedOrigins = [
   'http://localhost:8081',
   'https://server-gestion-ventes.onrender.com',
   'https://riziky-gestion-ventes.vercel.app',
-  'https://riziky-boutic.vercel.app'
+  'https://riziky-boutic.vercel.app',
+  'https://sales-gestion-ventes.lovable.app'
 ];
 
 const corsOptions = {
@@ -98,8 +99,10 @@ const corsOptions = {
     'Cache-Control',
     'X-Requested-With',
     'Accept',
-    'Origin'
+    'Origin',
+    'Last-Event-ID'
   ],
+  exposedHeaders: ['Content-Type', 'Cache-Control'],
   optionsSuccessStatus: 200
 };
 

@@ -5,28 +5,12 @@ const crypto = require('crypto');
 const syncManager = require('../middleware/sync');
 const authMiddleware = require('../middleware/auth');
 
-// Middleware CORS spécifique pour SSE — mirror l'origine de la requête
-const setCORSHeaders = (req, res) => {
-  const origin = req.get('Origin') || req.headers.origin;
-
-  if (origin) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Vary', 'Origin');
-  } else {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  }
-
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Headers', 'Cache-Control, Authorization, Content-Type, X-Requested-With, Accept, Origin, Last-Event-ID');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Expose-Headers', 'Content-Type, Cache-Control');
-  res.setHeader('Access-Control-Max-Age', '86400');
-};
+// CORS is handled by the global cors() middleware in server.js.
+// SSE endpoints only need to set SSE-specific headers.
 
 // Endpoint pour Server-Sent Events avec configuration CORS améliorée
 router.get('/events', (req, res) => {
-  // Configuration des headers CORS pour SSE
-  setCORSHeaders(req, res);
+  // CORS already handled by global middleware
   
   // SSE headers
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
@@ -89,11 +73,7 @@ router.get('/events', (req, res) => {
   req.on('close', () => clearTimeout(timeout));
 });
 
-// Middleware OPTIONS pour préflight CORS sur SSE
-router.options('/events', (req, res) => {
-  setCORSHeaders(req, res);
-  res.status(200).send();
-});
+// OPTIONS preflight handled by global cors() middleware
 
 // Endpoint pour forcer la synchronisation
 router.post('/force-sync', authMiddleware, (req, res) => {
