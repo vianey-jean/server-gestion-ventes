@@ -594,11 +594,368 @@ router.post('/like/:messageId', (req, res) => {
     
     writeDB(messages);
     broadcastToConversation(messages[idx].visitorId, messages[idx].adminId, 'message_liked', messages[idx]);
-    res.json(messages[idx]);
+  res.json(messages[idx]);
   } catch (error) {
     console.error('Error liking message:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
+});
+
+// =====================
+// GROUP CHAT
+// =====================
+const GROUP_DB_PATH = path.join(__dirname, '../db/group-chats.json');
+const GROUP_MSG_DB_PATH = path.join(__dirname, '../db/group-messages.json');
+
+function readGroupDB() {
+  try {
+    if (!fs.existsSync(GROUP_DB_PATH)) fs.writeFileSync(GROUP_DB_PATH, '[]');
+    return JSON.parse(fs.readFileSync(GROUP_DB_PATH, 'utf-8'));
+  } catch { return []; }
+}
+function writeGroupDB(data) { fs.writeFileSync(GROUP_DB_PATH, JSON.stringify(data, null, 2)); }
+
+function readGroupMsgDB() {
+  try {
+    if (!fs.existsSync(GROUP_MSG_DB_PATH)) fs.writeFileSync(GROUP_MSG_DB_PATH, '[]');
+    return JSON.parse(fs.readFileSync(GROUP_MSG_DB_PATH, 'utf-8'));
+  } catch { return []; }
+}
+function writeGroupMsgDB(data) { fs.writeFileSync(GROUP_MSG_DB_PATH, JSON.stringify(data, null, 2)); }
+
+// Helper: broadcast SSE to a group member (checks both adminId AND visitorId)
+function broadcastToGroupMember(memberId, event, data) {
+  sseClients.forEach((client) => {
+    if (client.adminId === memberId || client.visitorId === memberId) {
+      try { client.res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`); } catch {}
+    }
+  });
+}
+
+// Helper: resolve member name from users.json or messagerie.json (visitors)
+function resolveMemberName(id) {
+  const usersPath = path.join(__dirname, '../db/users.json');
+  const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+  const u = users.find(u => u.id === id);
+  if (u) return { id, name: `${u.firstName} ${u.lastName}`, role: u.role || '', isVisitor: false };
+
+  // Check visitor conversations in messagerie.json
+  const messages = readDB();
+  const visitorMsg = messages.find(m => m.visitorId === id);
+  if (visitorMsg) return { id, name: visitorMsg.visitorNom || 'Visiteur', role: 'visiteur', isVisitor: true };
+
+  return { id, name: 'Inconnu', role: '', isVisitor: id.startsWith('visitor_') };
+}
+
+// Create a group (admin principale only)
+router.post('/group/create', authMiddleware, (req, res) => {
+  try {
+    if (req.user.role !== 'administrateur principale') {
+      return res.status(403).json({ message: 'Seul l\'administrateur principal peut créer un groupe' });
+    }
+    const { name, memberIds } = req.body;
+    if (!name || !memberIds || !Array.isArray(memberIds) || memberIds.length < 2) {
+      return res.status(400).json({ message: 'Nom et au moins 2 autres membres requis' });
+    }
+    // Always include creator
+    const allMembers = Array.from(new Set([req.user.id, ...memberIds]));
+    if (allMembers.length < 3) {
+      return res.status(400).json({ message: 'Un groupe doit contenir au moins 3 personnes' });
+    }
+
+    // Resolve member names (supports both admin users AND visitors)
+    const membersInfo = allMembers.map(id => resolveMemberName(id));
+
+    const groups = readGroupDB();
+    const newGroup = {
+      id: `grp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      name: name.trim(),
+      createdBy: req.user.id,
+      members: membersInfo,
+      createdAt: new Date().toISOString()
+    };
+    groups.push(newGroup);
+    writeGroupDB(groups);
+
+    // Notify all members via SSE (admin + visitor)
+    allMembers.forEach(memberId => broadcastToGroupMember(memberId, 'group_created', newGroup));
+
+    res.status(201).json(newGroup);
+  } catch (error) {
+    console.error('Error creating group:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Get groups for current user
+router.get('/groups', authMiddleware, (req, res) => {
+  try {
+    const groups = readGroupDB();
+    const myGroups = groups.filter(g => g.members.some(m => m.id === req.user.id));
+    
+    // Add last message and unread count
+    const allMsgs = readGroupMsgDB();
+    const result = myGroups.map(g => {
+      const groupMsgs = allMsgs.filter(m => m.groupId === g.id);
+      const lastMessage = groupMsgs.length > 0 ? groupMsgs[groupMsgs.length - 1] : null;
+      const unreadCount = groupMsgs.filter(m => m.senderId !== req.user.id && (!m.readBy || !m.readBy.includes(req.user.id))).length;
+      return { ...g, lastMessage, unreadCount };
+    }).sort((a, b) => {
+      const da = a.lastMessage ? new Date(a.lastMessage.date) : new Date(a.createdAt);
+      const db = b.lastMessage ? new Date(b.lastMessage.date) : new Date(b.createdAt);
+      return db - da;
+    });
+    
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// =====================
+// VISITOR GROUP ENDPOINTS (no auth required, visitor identified by visitorId)
+// =====================
+
+// Get groups for a visitor
+router.get('/visitor-groups/:visitorId', (req, res) => {
+  try {
+    const { visitorId } = req.params;
+    if (!visitorId) return res.status(400).json({ message: 'visitorId requis' });
+
+    const groups = readGroupDB();
+    const myGroups = groups.filter(g => g.members.some(m => m.id === visitorId));
+
+    const allMsgs = readGroupMsgDB();
+    const result = myGroups.map(g => {
+      const groupMsgs = allMsgs.filter(m => m.groupId === g.id);
+      const lastMessage = groupMsgs.length > 0 ? groupMsgs[groupMsgs.length - 1] : null;
+      const unreadCount = groupMsgs.filter(m => m.senderId !== visitorId && (!m.readBy || !m.readBy.includes(visitorId))).length;
+      return { ...g, lastMessage, unreadCount };
+    }).sort((a, b) => {
+      const da = a.lastMessage ? new Date(a.lastMessage.date) : new Date(a.createdAt);
+      const db = b.lastMessage ? new Date(b.lastMessage.date) : new Date(b.createdAt);
+      return db - da;
+    });
+
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Get group messages for a visitor
+router.get('/visitor-group-messages/:groupId/:visitorId', (req, res) => {
+  try {
+    const { groupId, visitorId } = req.params;
+    const groups = readGroupDB();
+    const group = groups.find(g => g.id === groupId);
+    if (!group || !group.members.some(m => m.id === visitorId)) {
+      return res.status(403).json({ message: 'Accès non autorisé' });
+    }
+    const allMsgs = readGroupMsgDB();
+    const msgs = allMsgs.filter(m => m.groupId === groupId).sort((a, b) => new Date(a.date) - new Date(b.date));
+    res.json(msgs);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Send group message as visitor
+router.post('/visitor-group-send', (req, res) => {
+  try {
+    const { groupId, visitorId, visitorNom, contenu } = req.body;
+    if (!groupId || !visitorId || !contenu) return res.status(400).json({ message: 'Champs obligatoires manquants' });
+
+    const groups = readGroupDB();
+    const group = groups.find(g => g.id === groupId);
+    if (!group || !group.members.some(m => m.id === visitorId)) {
+      return res.status(403).json({ message: 'Accès non autorisé' });
+    }
+
+    const msgs = readGroupMsgDB();
+    const newMsg = {
+      id: `gmsg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      groupId,
+      senderId: visitorId,
+      senderName: visitorNom || 'Visiteur',
+      contenu: contenu.trim(),
+      date: new Date().toISOString(),
+      readBy: [visitorId]
+    };
+    msgs.push(newMsg);
+    writeGroupMsgDB(msgs);
+
+    // Broadcast to all group members (admin + visitor)
+    group.members.forEach(member => broadcastToGroupMember(member.id, 'group_message', newMsg));
+
+    res.status(201).json(newMsg);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Mark group messages as read (visitor)
+router.put('/visitor-group-mark-read/:groupId/:visitorId', (req, res) => {
+  try {
+    const { groupId, visitorId } = req.params;
+    const msgs = readGroupMsgDB();
+    let updated = false;
+    msgs.forEach(m => {
+      if (m.groupId === groupId && m.senderId !== visitorId) {
+        if (!m.readBy) m.readBy = [];
+        if (!m.readBy.includes(visitorId)) {
+          m.readBy.push(visitorId);
+          updated = true;
+        }
+      }
+    });
+    if (updated) writeGroupMsgDB(msgs);
+    res.json({ ok: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Visitor group typing indicator
+router.post('/visitor-group-typing', (req, res) => {
+  const { groupId, visitorId, visitorNom, isTyping } = req.body;
+  if (!groupId || !visitorId) return res.status(400).json({ message: 'groupId et visitorId requis' });
+
+  const groups = readGroupDB();
+  const group = groups.find(g => g.id === groupId);
+  if (!group) return res.json({ ok: true });
+
+  group.members.forEach(member => {
+    if (member.id !== visitorId) {
+      broadcastToGroupMember(member.id, 'group_typing', {
+        groupId, senderId: visitorId,
+        senderName: visitorNom || 'Visiteur',
+        isTyping
+      });
+    }
+  });
+  res.json({ ok: true });
+});
+
+// =====================
+// EXISTING ADMIN GROUP ENDPOINTS (with auth)
+// =====================
+
+// Get group messages
+router.get('/group-messages/:groupId', authMiddleware, (req, res) => {
+  try {
+    const groups = readGroupDB();
+    const group = groups.find(g => g.id === req.params.groupId);
+    if (!group || !group.members.some(m => m.id === req.user.id)) {
+      return res.status(403).json({ message: 'Accès non autorisé' });
+    }
+    const allMsgs = readGroupMsgDB();
+    const msgs = allMsgs.filter(m => m.groupId === req.params.groupId).sort((a, b) => new Date(a.date) - new Date(b.date));
+    res.json(msgs);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Send group message
+router.post('/group-send', authMiddleware, (req, res) => {
+  try {
+    const { groupId, contenu } = req.body;
+    if (!groupId || !contenu) return res.status(400).json({ message: 'Champs obligatoires manquants' });
+
+    const groups = readGroupDB();
+    const group = groups.find(g => g.id === groupId);
+    if (!group || !group.members.some(m => m.id === req.user.id)) {
+      return res.status(403).json({ message: 'Accès non autorisé' });
+    }
+
+    const msgs = readGroupMsgDB();
+    const newMsg = {
+      id: `gmsg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      groupId,
+      senderId: req.user.id,
+      senderName: `${req.user.firstName} ${req.user.lastName}`,
+      contenu: contenu.trim(),
+      date: new Date().toISOString(),
+      readBy: [req.user.id]
+    };
+    msgs.push(newMsg);
+    writeGroupMsgDB(msgs);
+
+    // Broadcast to all group members (admin + visitor)
+    group.members.forEach(member => broadcastToGroupMember(member.id, 'group_message', newMsg));
+
+    res.status(201).json(newMsg);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Mark group messages as read
+router.put('/group-mark-read/:groupId', authMiddleware, (req, res) => {
+  try {
+    const msgs = readGroupMsgDB();
+    let updated = false;
+    msgs.forEach(m => {
+      if (m.groupId === req.params.groupId && m.senderId !== req.user.id) {
+        if (!m.readBy) m.readBy = [];
+        if (!m.readBy.includes(req.user.id)) {
+          m.readBy.push(req.user.id);
+          updated = true;
+        }
+      }
+    });
+    if (updated) writeGroupMsgDB(msgs);
+    res.json({ ok: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Rename group (admin principale only)
+router.put('/group/rename/:groupId', authMiddleware, (req, res) => {
+  try {
+    if (req.user.role !== 'administrateur principale') {
+      return res.status(403).json({ message: 'Non autorisé' });
+    }
+    const { name } = req.body;
+    if (!name) return res.status(400).json({ message: 'Nom requis' });
+    
+    const groups = readGroupDB();
+    const idx = groups.findIndex(g => g.id === req.params.groupId);
+    if (idx === -1) return res.status(404).json({ message: 'Groupe non trouvé' });
+    
+    groups[idx].name = name.trim();
+    writeGroupDB(groups);
+    
+    // Notify all members (admin + visitor)
+    groups[idx].members.forEach(member => broadcastToGroupMember(member.id, 'group_updated', groups[idx]));
+    
+    res.json(groups[idx]);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Group typing indicator
+router.post('/group-typing', authMiddleware, (req, res) => {
+  const { groupId, isTyping } = req.body;
+  if (!groupId) return res.status(400).json({ message: 'groupId requis' });
+  
+  const groups = readGroupDB();
+  const group = groups.find(g => g.id === groupId);
+  if (!group) return res.json({ ok: true });
+  
+  group.members.forEach(member => {
+    if (member.id !== req.user.id) {
+      broadcastToGroupMember(member.id, 'group_typing', {
+        groupId, senderId: req.user.id,
+        senderName: `${req.user.firstName} ${req.user.lastName}`,
+        isTyping
+      });
+    }
+  });
+  res.json({ ok: true });
 });
 
 module.exports = router;
