@@ -497,13 +497,19 @@ router.post('/restore', authMiddleware, (req, res) => {
     let unchangedFilesCount = 0;
     let totalAddedEntries = 0;
 
-    getDbFiles().forEach(file => {
+    // Restore all files from backup - including files that may not exist locally yet
+    const allFilesToRestore = new Set([
+      ...getDbFiles(),
+      ...Object.keys(backupData).filter(k => k !== '_metadata' && k.endsWith('.json'))
+    ]);
+
+    allFilesToRestore.forEach(file => {
       if (backupData[file] === undefined) {
         return;
       }
 
       const filePath = path.join(dbPath, file);
-      const existingData = readJson(filePath);
+      const existingData = fs.existsSync(filePath) ? readJson(filePath) : null;
       const mergeResult = mergeRestoreData(existingData, backupData[file]);
 
       if (mergeResult.changed) {

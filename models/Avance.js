@@ -37,6 +37,7 @@ const Avance = {
       montant: data.montant || 0,
       totalPointage: data.totalPointage || 0,
       resteApresAvance: data.resteApresAvance || 0,
+      pointageIds: data.pointageIds || [],
       date: data.date || new Date().toISOString(),
       mois: data.mois || new Date().getMonth() + 1,
       annee: data.annee || new Date().getFullYear(),
