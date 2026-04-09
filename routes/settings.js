@@ -598,6 +598,180 @@ router.post('/delete-all', authMiddleware, (req, res) => {
 });
 
 // ==================
+// POST /api/settings/bulk-delete - Suppression sélective (ventes, produits, clients)
+// Admin principale uniquement
+// ==================
+router.post('/bulk-delete', authMiddleware, (req, res) => {
+  try {
+    if (!isAdminPrincipale(req.user)) {
+      return res.status(403).json({ message: 'Accès refusé. Administrateur principale requis.' });
+    }
+
+    const { type, ids, deleteAll, month, year } = req.body;
+
+    if (!type || !['sales', 'products', 'clients'].includes(type)) {
+      return res.status(400).json({ message: 'Type invalide. Choisir: sales, products, clients' });
+    }
+
+    const fileMap = {
+      sales: 'sales.json',
+      products: 'products.json',
+      clients: 'clients.json'
+    };
+
+    const filePath = path.join(dbPath, fileMap[type]);
+    let data = readJson(filePath) || [];
+
+    if (!Array.isArray(data)) {
+      return res.status(500).json({ message: 'Format de données invalide' });
+    }
+
+    const originalCount = data.length;
+    let deletedCount = 0;
+
+    if (deleteAll) {
+      // Supprimer tout pour ce type
+      if (type === 'sales' && month !== undefined && year !== undefined) {
+        // Supprimer uniquement les ventes d'un mois/année spécifique
+        const monthNum = Number(month);
+        const yearNum = Number(year);
+        data = data.filter(sale => {
+          const d = new Date(sale.date);
+          const match = (d.getMonth() + 1) === monthNum && d.getFullYear() === yearNum;
+          if (match) deletedCount++;
+          return !match;
+        });
+      } else if (type === 'sales' && year !== undefined) {
+        // Supprimer toutes les ventes d'une année
+        const yearNum = Number(year);
+        data = data.filter(sale => {
+          const d = new Date(sale.date);
+          const match = d.getFullYear() === yearNum;
+          if (match) deletedCount++;
+          return !match;
+        });
+      } else {
+        deletedCount = data.length;
+        data = [];
+      }
+    } else if (ids && Array.isArray(ids) && ids.length > 0) {
+      // Supprimer par IDs sélectionnés
+      const idSet = new Set(ids);
+      data = data.filter(item => {
+        if (idSet.has(item.id)) {
+          deletedCount++;
+          return false;
+        }
+        return true;
+      });
+    } else {
+      return res.status(400).json({ message: 'Fournir ids[] ou deleteAll=true' });
+    }
+
+    writeJson(filePath, data);
+
+    // Notifier les clients SSE
+    if (req.app?.locals?.broadcastSSE) {
+      req.app.locals.broadcastSSE({ type, action: 'bulk-delete', data: { deletedCount } });
+    }
+
+    res.json({
+      success: true,
+      message: `${deletedCount} ${type === 'sales' ? 'vente(s)' : type === 'products' ? 'produit(s)' : 'client(s)'} supprimé(s)`,
+      deletedCount,
+      remainingCount: data.length
+    });
+  } catch (error) {
+    console.error('Error in bulk-delete:', error);
+    res.status(500).json({ message: 'Erreur lors de la suppression' });
+  }
+});
+
+// GET /api/settings/bulk-data - Récupérer données pour la modale de suppression
+router.get('/bulk-data', authMiddleware, (req, res) => {
+  try {
+    if (!isAdminPrincipale(req.user)) {
+      return res.status(403).json({ message: 'Accès refusé' });
+    }
+
+    const { type, month, year } = req.query;
+
+    if (!type || !['sales', 'products', 'clients'].includes(type)) {
+      return res.status(400).json({ message: 'Type invalide' });
+    }
+
+    const fileMap = {
+      sales: 'sales.json',
+      products: 'products.json',
+      clients: 'clients.json'
+    };
+
+    const filePath = path.join(dbPath, fileMap[type]);
+    let data = readJson(filePath) || [];
+
+    if (type === 'sales' && month !== undefined && year !== undefined) {
+      const monthNum = Number(month);
+      const yearNum = Number(year);
+      data = data.filter(sale => {
+        const d = new Date(sale.date);
+        return (d.getMonth() + 1) === monthNum && d.getFullYear() === yearNum;
+      });
+    } else if (type === 'sales' && year !== undefined) {
+      const yearNum = Number(year);
+      data = data.filter(sale => {
+        const d = new Date(sale.date);
+        return d.getFullYear() === yearNum;
+      });
+    }
+
+    // Return lightweight data for selection
+    const lightData = data.map(item => {
+      if (type === 'sales') {
+        return {
+          id: item.id,
+          date: item.date,
+          description: item.description || (item.products ? item.products.map(p => p.description).join(', ') : ''),
+          totalSellingPrice: item.totalSellingPrice || item.sellingPrice || 0,
+          clientName: item.clientName || ''
+        };
+      } else if (type === 'products') {
+        return {
+          id: item.id,
+          description: item.description,
+          purchasePrice: item.purchasePrice,
+          sellingPrice: item.sellingPrice,
+          quantity: item.quantity
+        };
+      } else {
+        return {
+          id: item.id,
+          nom: item.nom,
+          phone: item.phone,
+          adresse: item.adresse
+        };
+      }
+    });
+
+    // For sales, also return available years/months
+    let years = [];
+    if (type === 'sales') {
+      const allSales = readJson(filePath) || [];
+      const yearSet = new Set();
+      allSales.forEach(s => {
+        const d = new Date(s.date);
+        if (!isNaN(d.getTime())) yearSet.add(d.getFullYear());
+      });
+      years = Array.from(yearSet).sort((a, b) => b - a);
+    }
+
+    res.json({ data: lightData, total: lightData.length, years });
+  } catch (error) {
+    console.error('Error in bulk-data:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// ==================
 // POST /api/settings/auto-backup - Sauvegarde automatique avec mot de passe utilisateur
 // ==================
 router.post('/auto-backup', authMiddleware, (req, res) => {
