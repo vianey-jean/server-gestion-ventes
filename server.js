@@ -296,6 +296,7 @@ const indisponibleRoutes = require('./routes/indisponible');
 const moduleSettingsRoutes = require('./routes/moduleSettings');
 const parametresRoutes = require('./routes/parametres');
 const encryptionRoutes = require('./routes/encryption');
+const shareCommentsRoutes = require('./routes/shareComments');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -332,6 +333,7 @@ app.use('/api/indisponible', indisponibleRoutes);
 app.use('/api/module-settings', moduleSettingsRoutes);
 app.use('/api/parametres', parametresRoutes);
 app.use('/api/encryption', encryptionRoutes);
+app.use('/api/share-comments', shareCommentsRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
