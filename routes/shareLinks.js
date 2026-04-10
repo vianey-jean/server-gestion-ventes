@@ -32,13 +32,13 @@ const writeJSON = (filePath, data) => {
 // =====================
 router.post('/generate', auth, (req, res) => {
   try {
-    const { type } = req.body;
+    const { type, filters } = req.body;
     if (!['notes', 'pointage', 'taches'].includes(type)) {
       return res.status(400).json({ error: 'Type invalide. Utilisez: notes, pointage, taches' });
     }
 
     const token = crypto.randomBytes(32).toString('hex');
-    const accessCode = crypto.randomBytes(4).toString('hex').toUpperCase(); // 8-char unique code
+    const accessCode = crypto.randomBytes(4).toString('hex').toUpperCase();
 
     const tokens = readJSON(shareTokensPath);
     const entry = {
@@ -46,6 +46,7 @@ router.post('/generate', auth, (req, res) => {
       token,
       accessCode,
       type,
+      filters: filters || null,
       active: true,
       createdAt: new Date().toISOString()
     };
@@ -176,7 +177,41 @@ router.get('/view/:token', (req, res) => {
       return res.status(403).json({ error: 'Accès refusé. Ce lien est associé à un autre appareil.' });
     }
 
-    // Return data based on type
+    // Helper to filter data by entry.filters
+    const applyDateFilter = (items, dateField, filters) => {
+      if (!filters || !filters.dateFilter || filters.dateFilter.mode === 'all') return items;
+      const df = filters.dateFilter;
+      if (df.mode === 'jours') {
+        return items.filter(i => df.days.includes(i[dateField]));
+      }
+      if (df.mode === 'mois') {
+        return items.filter(i => {
+          const d = new Date(i[dateField]);
+          return df.months.includes(d.getMonth()) && d.getFullYear() === df.year;
+        });
+      }
+      if (df.mode === 'semaines') {
+        return items.filter(i => {
+          const d = new Date(i[dateField]);
+          if (d.getFullYear() !== df.year) return false;
+          const jan1 = new Date(df.year, 0, 1);
+          const dayOfYear = Math.floor((d - jan1) / 86400000) + 1;
+          const weekNum = Math.ceil((dayOfYear + jan1.getDay()) / 7);
+          const wStr = `${df.year}-W${String(weekNum).padStart(2, '0')}`;
+          return df.weeks.includes(wStr);
+        });
+      }
+      if (df.mode === 'annees') {
+        return items.filter(i => df.years.includes(new Date(i[dateField]).getFullYear()));
+      }
+      return items;
+    };
+
+    const applyPersonFilter = (items, filters, nameField, idField) => {
+      if (!filters || !filters.personne || filters.personne === 'all') return items;
+      return items.filter(i => i[idField] === filters.personne || i[nameField] === filters.personne);
+    };
+
     if (entry.type === 'notes') {
       const notes = readJSON(notesPath).map(n => ({
         title: n.title, content: n.content, columnId: n.columnId,
@@ -191,21 +226,34 @@ router.get('/view/:token', (req, res) => {
     }
 
     if (entry.type === 'pointage') {
-      const pointages = readJSON(pointagePath).map(p => ({
-        date: p.date, entrepriseNom: p.entrepriseNom, typePaiement: p.typePaiement,
-        heures: p.heures, prixJournalier: p.prixJournalier, prixHeure: p.prixHeure,
-        montantTotal: p.montantTotal, travailleurNom: p.travailleurNom || '', createdAt: p.createdAt
+      let pointages = readJSON(pointagePath).map(p => ({
+        id: p.id, date: p.date, entrepriseId: p.entrepriseId, entrepriseNom: p.entrepriseNom,
+        typePaiement: p.typePaiement, heures: p.heures, prixJournalier: p.prixJournalier,
+        prixHeure: p.prixHeure, montantTotal: p.montantTotal,
+        travailleurId: p.travailleurId || '', travailleurNom: p.travailleurNom || '', createdAt: p.createdAt
       }));
+      const f = entry.filters;
+      pointages = applyPersonFilter(pointages, f, 'travailleurNom', 'travailleurId');
+      pointages = applyDateFilter(pointages, 'date', f);
+      if (f && f.entreprises && f.entreprises !== 'all') {
+        pointages = pointages.filter(p => f.entreprises.includes(p.entrepriseId));
+      }
       return res.json({ type: 'pointage', pointages });
     }
 
     if (entry.type === 'taches') {
-      const taches = readJSON(tachePath).map(t => ({
-        date: t.date, heureDebut: t.heureDebut, heureFin: t.heureFin,
+      let taches = readJSON(tachePath).map(t => ({
+        id: t.id, date: t.date, heureDebut: t.heureDebut, heureFin: t.heureFin,
         description: t.description, importance: t.importance,
-        travailleurNom: t.travailleurNom || '', completed: t.completed || false,
-        createdAt: t.createdAt
+        travailleurId: t.travailleurId || '', travailleurNom: t.travailleurNom || '',
+        completed: t.completed || false, createdAt: t.createdAt
       }));
+      const f = entry.filters;
+      taches = applyPersonFilter(taches, f, 'travailleurNom', 'travailleurId');
+      taches = applyDateFilter(taches, 'date', f);
+      if (f && f.importance && f.importance !== 'all') {
+        taches = taches.filter(t => t.importance === f.importance);
+      }
       return res.json({ type: 'taches', taches });
     }
 
