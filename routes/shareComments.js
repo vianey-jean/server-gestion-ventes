@@ -311,6 +311,10 @@ router.get('/snapshot/:filename', auth, (req, res) => {
     if (!fs.existsSync(filepath)) {
       return res.status(404).json({ error: 'Fichier non trouvé' });
     }
+    // Allow framing and remove restrictive headers
+    res.removeHeader('X-Frame-Options');
+    res.setHeader('Content-Security-Policy', "frame-ancestors *");
+    res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.sendFile(filepath);
   } catch (err) {
