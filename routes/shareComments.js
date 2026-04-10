@@ -6,6 +6,10 @@ const auth = require('../middleware/auth');
 
 const commentsPath = path.join(__dirname, '..', 'db', 'lienpartagecommente.json');
 const shareTokensPath = path.join(__dirname, '..', 'db', 'shareTokens.json');
+const snapshotDir = path.join(__dirname, '..', 'db', 'upload', 'lienPartage');
+
+// Ensure directories exist
+if (!fs.existsSync(snapshotDir)) fs.mkdirSync(snapshotDir, { recursive: true });
 
 const readJSON = (filePath) => {
   try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
@@ -18,11 +22,135 @@ const writeJSON = (filePath, data) => {
 
 if (!fs.existsSync(commentsPath)) writeJSON(commentsPath, []);
 
+// Generate an HTML snapshot document for the comment
+const generateSnapshot = (commentEntry) => {
+  const { type, comments, generalComment, allItems, nom, prenom, sentAt, createdAt } = commentEntry;
+  const date = sentAt || createdAt;
+  
+  const typeLabels = { pointage: 'Pointage', taches: 'Tâches', notes: 'Notes' };
+  const typeLabel = typeLabels[type] || type;
+
+  let itemsHtml = '';
+  
+  if (allItems && allItems.length > 0) {
+    allItems.forEach((item, idx) => {
+      const comment = comments.find(c => c.index === idx);
+      const highlighted = comment ? 'border-left: 4px solid #3b82f6; background: #eff6ff;' : '';
+      
+      let itemContent = '';
+      if (type === 'pointage') {
+        itemContent = `
+          <div style="padding: 12px; margin: 8px 0; border: 1px solid #e5e7eb; border-radius: 8px; ${highlighted}">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: bold; color: #0891b2;">📅 ${item.date || ''}</span>
+              <span style="font-weight: bold; color: #059669;">${(item.montantTotal || 0).toFixed(2)}€</span>
+            </div>
+            <div style="font-weight: bold; font-size: 14px;">${item.entrepriseNom || ''}</div>
+            <div style="color: #6b7280; font-size: 12px;">
+              ${item.typePaiement === 'journalier' ? '📋 Journalier' : `⏱️ ${item.heures || 0}h`}
+              ${item.travailleurNom ? ` • 👤 ${item.travailleurNom}` : ''}
+            </div>
+            ${comment ? `<div style="margin-top: 8px; padding: 8px; background: #dbeafe; border-radius: 6px; font-size: 12px;">
+              <strong style="color: #2563eb;">💬 Commentaire:</strong> ${comment.text}
+            </div>` : ''}
+          </div>`;
+      } else if (type === 'taches') {
+        itemContent = `
+          <div style="padding: 12px; margin: 8px 0; border: 1px solid #e5e7eb; border-radius: 8px; ${highlighted}">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: bold; color: #7c3aed;">📅 ${item.date || ''}</span>
+              <span style="font-size: 11px; padding: 2px 8px; border-radius: 12px; ${
+                item.importance === 'pertinent' ? 'background: #fee2e2; color: #dc2626;' : 'background: #d1fae5; color: #059669;'
+              }">${item.importance === 'pertinent' ? '🔴 Pertinent' : '🟢 Optionnel'}</span>
+            </div>
+            <div style="font-weight: bold; font-size: 14px; ${item.completed ? 'text-decoration: line-through; opacity: 0.5;' : ''}">${item.description || ''}</div>
+            <div style="color: #6b7280; font-size: 12px;">
+              ⏰ ${item.heureDebut || ''} - ${item.heureFin || ''}
+              ${item.travailleurNom ? ` • 👤 ${item.travailleurNom}` : ''}
+            </div>
+            ${comment ? `<div style="margin-top: 8px; padding: 8px; background: #dbeafe; border-radius: 6px; font-size: 12px;">
+              <strong style="color: #2563eb;">💬 Commentaire:</strong> ${comment.text}
+            </div>` : ''}
+          </div>`;
+      } else if (type === 'notes') {
+        itemContent = `
+          <div style="padding: 12px; margin: 8px 0; border: 1px solid #e5e7eb; border-radius: 8px; ${highlighted}">
+            ${item.title ? `<div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">${item.title}</div>` : ''}
+            ${item.content ? `<div style="font-size: 12px; color: #4b5563; white-space: pre-wrap;">${item.content}</div>` : ''}
+            ${comment ? `<div style="margin-top: 8px; padding: 8px; background: #dbeafe; border-radius: 6px; font-size: 12px;">
+              <strong style="color: #2563eb;">💬 Commentaire:</strong> ${comment.text}
+            </div>` : ''}
+          </div>`;
+      }
+      
+      itemsHtml += itemContent;
+    });
+  }
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commentaires - ${typeLabel}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f9fafb; color: #1f2937; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .header { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+    .header h1 { margin: 0 0 4px; font-size: 20px; }
+    .header p { margin: 0; opacity: 0.9; font-size: 13px; }
+    .contact { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .contact h3 { margin: 0 0 8px; font-size: 14px; color: #374151; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; color: #6b7280; }
+    .items { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .items h3 { margin: 0 0 12px; font-size: 14px; color: #374151; }
+    .general { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; }
+    .general h3 { margin: 0 0 8px; font-size: 14px; color: #374151; }
+    .general p { margin: 0; font-size: 13px; color: #4b5563; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Commentaires - ${typeLabel}</h1>
+      <p>Par ${prenom} ${nom} • ${new Date(date).toLocaleString('fr-FR')}</p>
+    </div>
+    
+    <div class="contact">
+      <h3>👤 Informations de contact</h3>
+      <div class="contact-grid">
+        <div>Prénom: ${commentEntry.prenom}</div>
+        <div>Nom: ${commentEntry.nom}</div>
+        ${commentEntry.telephone ? `<div>📞 ${commentEntry.telephone}</div>` : ''}
+        ${commentEntry.email ? `<div>📧 ${commentEntry.email}</div>` : ''}
+      </div>
+    </div>
+
+    <div class="items">
+      <h3>📋 Éléments partagés (${(allItems || []).length}) - Commentaires en surbrillance</h3>
+      ${itemsHtml || '<p style="color: #9ca3af;">Aucun élément</p>'}
+    </div>
+
+    ${generalComment ? `
+    <div class="general">
+      <h3>💬 Commentaire général</h3>
+      <p>${generalComment}</p>
+    </div>` : ''}
+  </div>
+</body>
+</html>`;
+
+  const filename = `comment_${type}_${commentEntry.id}.html`;
+  const filepath = path.join(snapshotDir, filename);
+  fs.writeFileSync(filepath, html, 'utf8');
+  return filename;
+};
+
 // Public: Submit comments for a shared link
 router.post('/submit/:token', (req, res) => {
   try {
     const { token } = req.params;
-    const { nom, prenom, telephone, email, comments, generalComment } = req.body;
+    const { nom, prenom, telephone, email, comments, generalComment, allItems } = req.body;
 
     // Validate token exists and is active
     const tokens = readJSON(shareTokensPath);
@@ -47,9 +175,10 @@ router.post('/submit/:token', (req, res) => {
       prenom: prenom || '',
       telephone: telephone || '',
       email: email || '',
-      comments: comments || [], // Array of { index, text } for inline comments
+      comments: comments || [],
       generalComment: generalComment || '',
-      status: 'validated', // validated but not yet sent
+      allItems: allItems || [],
+      status: 'validated',
       createdAt: new Date().toISOString(),
       read: false
     };
@@ -73,7 +202,30 @@ router.post('/send/:id', (req, res) => {
 
     allComments[idx].status = 'sent';
     allComments[idx].sentAt = new Date().toISOString();
+
+    // Generate snapshot HTML document
+    const snapshotFile = generateSnapshot(allComments[idx]);
+    allComments[idx].snapshotFile = snapshotFile;
+
     writeJSON(commentsPath, allComments);
+
+    // Notify SSE clients for real-time sync
+    try {
+      const syncManager = require('../middleware/sync');
+      syncManager.notifyClients('share-comment-received', {
+        type: allComments[idx].type,
+        comment: {
+          id: allComments[idx].id,
+          type: allComments[idx].type,
+          nom: allComments[idx].nom,
+          prenom: allComments[idx].prenom,
+          snapshotFile,
+          sentAt: allComments[idx].sentAt,
+        }
+      });
+    } catch (e) {
+      // SSE notification is best-effort
+    }
 
     res.json({ message: 'Commentaires envoyés' });
   } catch (err) {
@@ -144,6 +296,23 @@ router.get('/detail/:id', auth, (req, res) => {
     const comment = allComments.find(c => c.id === id);
     if (!comment) return res.status(404).json({ error: 'Non trouvé' });
     res.json(comment);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Serve snapshot HTML files (authenticated)
+router.get('/snapshot/:filename', auth, (req, res) => {
+  try {
+    const { filename } = req.params;
+    // Prevent directory traversal
+    const safeName = path.basename(filename);
+    const filepath = path.join(snapshotDir, safeName);
+    if (!fs.existsSync(filepath)) {
+      return res.status(404).json({ error: 'Fichier non trouvé' });
+    }
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.sendFile(filepath);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
