@@ -10,7 +10,10 @@ const authMiddleware = require('../middleware/auth');
 
 // Endpoint pour Server-Sent Events avec configuration CORS améliorée
 router.get('/events', (req, res) => {
-  // CORS already handled by global middleware
+  // Explicit CORS headers for SSE (belt-and-suspenders)
+  const origin = req.headers.origin || '*';
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   
   // SSE headers
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');

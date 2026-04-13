@@ -80,7 +80,10 @@ function broadcastToAdmins(event, data) {
 // OPTIONS preflight handled by global cors() middleware
 
 router.get('/events', (req, res) => {
-  // CORS already handled by global middleware
+  // Explicit CORS headers for SSE (belt-and-suspenders)
+  const origin = req.headers.origin || '*';
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.status(200);
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, no-transform');
