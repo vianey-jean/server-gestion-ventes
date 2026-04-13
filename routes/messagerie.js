@@ -3,25 +3,43 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const authMiddleware = require('../middleware/auth');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const DB_PATH = path.join(__dirname, '../db/messagerie.json');
 
 // CORS is handled by the global cors() middleware in server.js.
 
 // Helpers
-function readDB() {
+function readArrayFile(filePath) {
   try {
-    if (!fs.existsSync(DB_PATH)) {
-      fs.writeFileSync(DB_PATH, '[]');
+    if (!fs.existsSync(filePath)) {
+      writeJsonEncrypted(filePath, []);
+      return [];
     }
-    return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+
+    const data = readJsonDecrypted(filePath);
+    return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }
 }
 
+function writeArrayFile(filePath, data) {
+  writeJsonEncrypted(filePath, Array.isArray(data) ? data : []);
+}
+
+function readUsers() {
+  const usersPath = path.join(__dirname, '../db/users.json');
+  const data = readJsonDecrypted(usersPath);
+  return Array.isArray(data) ? data : [];
+}
+
+function readDB() {
+  return readArrayFile(DB_PATH);
+}
+
 function writeDB(data) {
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+  writeArrayFile(DB_PATH, data);
 }
 
 // SSE clients storage
@@ -119,9 +137,8 @@ function broadcastAdminStatus() {
 }
 
 router.get('/admin-status', (req, res) => {
-  const usersPath = path.join(__dirname, '../db/users.json');
   try {
-    const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+    const users = readUsers();
     
     // Priority 1: admin principale online
     const adminPrincipaux = users.filter(u => u.role === 'administrateur principale');
@@ -154,8 +171,7 @@ router.get('/admin-status', (req, res) => {
 // =====================
 router.get('/admin-users', authMiddleware, (req, res) => {
   try {
-    const usersPath = path.join(__dirname, '../db/users.json');
-    const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+    const users = readUsers();
     const admins = users.filter(u => u.role === 'administrateur' || u.role === 'administrateur principale');
     
     const adminList = admins.map(a => {
@@ -183,13 +199,10 @@ router.get('/admin-users', authMiddleware, (req, res) => {
 const ADMIN_MSG_PATH = path.join(__dirname, '../db/admin-messages.json');
 
 function readAdminDB() {
-  try {
-    if (!fs.existsSync(ADMIN_MSG_PATH)) fs.writeFileSync(ADMIN_MSG_PATH, '[]');
-    return JSON.parse(fs.readFileSync(ADMIN_MSG_PATH, 'utf-8'));
-  } catch { return []; }
+  return readArrayFile(ADMIN_MSG_PATH);
 }
 function writeAdminDB(data) {
-  fs.writeFileSync(ADMIN_MSG_PATH, JSON.stringify(data, null, 2));
+  writeArrayFile(ADMIN_MSG_PATH, data);
 }
 
 router.get('/admin-conversations', authMiddleware, (req, res) => {
@@ -608,20 +621,14 @@ const GROUP_DB_PATH = path.join(__dirname, '../db/group-chats.json');
 const GROUP_MSG_DB_PATH = path.join(__dirname, '../db/group-messages.json');
 
 function readGroupDB() {
-  try {
-    if (!fs.existsSync(GROUP_DB_PATH)) fs.writeFileSync(GROUP_DB_PATH, '[]');
-    return JSON.parse(fs.readFileSync(GROUP_DB_PATH, 'utf-8'));
-  } catch { return []; }
+  return readArrayFile(GROUP_DB_PATH);
 }
-function writeGroupDB(data) { fs.writeFileSync(GROUP_DB_PATH, JSON.stringify(data, null, 2)); }
+function writeGroupDB(data) { writeArrayFile(GROUP_DB_PATH, data); }
 
 function readGroupMsgDB() {
-  try {
-    if (!fs.existsSync(GROUP_MSG_DB_PATH)) fs.writeFileSync(GROUP_MSG_DB_PATH, '[]');
-    return JSON.parse(fs.readFileSync(GROUP_MSG_DB_PATH, 'utf-8'));
-  } catch { return []; }
+  return readArrayFile(GROUP_MSG_DB_PATH);
 }
-function writeGroupMsgDB(data) { fs.writeFileSync(GROUP_MSG_DB_PATH, JSON.stringify(data, null, 2)); }
+function writeGroupMsgDB(data) { writeArrayFile(GROUP_MSG_DB_PATH, data); }
 
 // Helper: broadcast SSE to a group member (checks both adminId AND visitorId)
 function broadcastToGroupMember(memberId, event, data) {
@@ -634,8 +641,7 @@ function broadcastToGroupMember(memberId, event, data) {
 
 // Helper: resolve member name from users.json or messagerie.json (visitors)
 function resolveMemberName(id) {
-  const usersPath = path.join(__dirname, '../db/users.json');
-  const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+  const users = readUsers();
   const u = users.find(u => u.id === id);
   if (u) return { id, name: `${u.firstName} ${u.lastName}`, role: u.role || '', isVisitor: false };
 

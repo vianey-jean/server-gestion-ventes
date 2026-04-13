@@ -1,19 +1,15 @@
-const fs = require('fs');
 const path = require('path');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const commentsPath = path.join(__dirname, '../db/productComments.json');
 
 const readComments = () => {
-  try {
-    const data = fs.readFileSync(commentsPath, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+  const data = readJsonDecrypted(commentsPath);
+  return Array.isArray(data) ? data : [];
 };
 
 const writeComments = (comments) => {
-  fs.writeFileSync(commentsPath, JSON.stringify(comments, null, 2));
+  writeJsonEncrypted(commentsPath, Array.isArray(comments) ? comments : []);
 };
 
 module.exports = {
@@ -40,6 +36,22 @@ module.exports = {
     return newComment;
   },
 
+  update(id, data) {
+    const comments = readComments();
+    const idx = comments.findIndex(c => c.id === id);
+    if (idx === -1) return null;
+
+    comments[idx] = {
+      ...comments[idx],
+      comment: data.comment,
+      rating: Math.min(5, Math.max(1, Number(data.rating) || comments[idx].rating || 5)),
+      clientName: data.clientName || '',
+    };
+
+    writeComments(comments);
+    return comments[idx];
+  },
+
   delete(id) {
     const comments = readComments();
     const idx = comments.findIndex(c => c.id === id);
@@ -47,6 +59,14 @@ module.exports = {
     comments.splice(idx, 1);
     writeComments(comments);
     return true;
+  },
+
+  deleteMany(ids) {
+    const comments = readComments();
+    const idsSet = new Set(ids);
+    const filtered = comments.filter(c => !idsSet.has(c.id));
+    writeComments(filtered);
+    return comments.length - filtered.length;
   },
 
   deleteByProductId(productId) {

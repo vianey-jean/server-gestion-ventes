@@ -1,13 +1,17 @@
-const fs = require('fs');
 const path = require('path');
 const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const entreprisePath = path.join(__dirname, '../db/entreprise.json');
 
+const readEntreprises = () => {
+  const data = readJsonDecrypted(entreprisePath);
+  return Array.isArray(data) ? data : [];
+};
+
 const Entreprise = {
   getAll: () => {
     try {
-      return readJsonDecrypted(entreprisePath) || [];
+      return readEntreprises();
     } catch (error) {
       return [];
     }
@@ -15,7 +19,7 @@ const Entreprise = {
 
   getById: (id) => {
     try {
-      const items = readJsonDecrypted(entreprisePath) || [];
+      const items = readEntreprises();
       return items.find(item => item.id === id) || null;
     } catch (error) {
       return null;
@@ -24,7 +28,7 @@ const Entreprise = {
 
   create: (itemData) => {
     try {
-      const items = readJsonDecrypted(entreprisePath) || [];
+      const items = readEntreprises();
       const newItem = {
         id: Date.now().toString(),
         ...itemData,
@@ -41,7 +45,7 @@ const Entreprise = {
 
   update: (id, itemData) => {
     try {
-      let items = readJsonDecrypted(entreprisePath) || [];
+      let items = readEntreprises();
       const index = items.findIndex(item => item.id === id);
       if (index === -1) return null;
       items[index] = { ...items[index], ...itemData };
@@ -55,7 +59,7 @@ const Entreprise = {
 
   delete: (id) => {
     try {
-      let items = readJsonDecrypted(entreprisePath) || [];
+      let items = readEntreprises();
       const index = items.findIndex(item => item.id === id);
       if (index === -1) return false;
       items.splice(index, 1);

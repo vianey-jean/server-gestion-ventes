@@ -89,6 +89,11 @@ const Product = {
     try {
       const data = fs.readFileSync(productsPath, 'utf8');
       const products = JSON.parse(data);
+      // Guard: always return an array even if file contains an object
+      if (!Array.isArray(products)) {
+        console.warn('⚠️ products.json contains non-array data, returning empty array');
+        return [];
+      }
       console.log(`📦 Retrieved ${products.length} products from database`);
       return products;
     } catch (error) {

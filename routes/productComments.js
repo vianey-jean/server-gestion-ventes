@@ -38,6 +38,44 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
+// Update comment (requires auth)
+router.put('/:id', authMiddleware, async (req, res) => {
+  try {
+    const { comment, rating, clientName } = req.body;
+    if (!comment || rating === undefined) {
+      return res.status(400).json({ message: 'comment and rating are required' });
+    }
+
+    const updatedComment = ProductComment.update(req.params.id, {
+      comment,
+      rating,
+      clientName: clientName || '',
+    });
+
+    if (!updatedComment) return res.status(404).json({ message: 'Comment not found' });
+    res.json(updatedComment);
+  } catch (error) {
+    console.error('Error updating comment:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete multiple comments (requires auth)
+router.delete('/bulk', authMiddleware, async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: 'ids array is required' });
+    }
+
+    const count = ProductComment.deleteMany(ids);
+    res.json({ message: `${count} comments deleted`, count });
+  } catch (error) {
+    console.error('Error deleting comments:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Delete comment (requires auth)
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {

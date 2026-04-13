@@ -1,13 +1,17 @@
-const fs = require('fs');
 const path = require('path');
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const travailleurPath = path.join(__dirname, '../db/travailleur.json');
+
+const readTravailleurs = () => {
+  const data = readJsonDecrypted(travailleurPath);
+  return Array.isArray(data) ? data : [];
+};
 
 const Travailleur = {
   getAll: () => {
     try {
-      const data = fs.readFileSync(travailleurPath, 'utf8');
-      return JSON.parse(data);
+      return readTravailleurs();
     } catch (error) {
       return [];
     }
@@ -15,8 +19,7 @@ const Travailleur = {
 
   getById: (id) => {
     try {
-      const data = fs.readFileSync(travailleurPath, 'utf8');
-      const items = JSON.parse(data);
+      const items = readTravailleurs();
       return items.find(item => item.id === id) || null;
     } catch (error) {
       return null;
@@ -25,8 +28,7 @@ const Travailleur = {
 
   search: (query) => {
     try {
-      const data = fs.readFileSync(travailleurPath, 'utf8');
-      const items = JSON.parse(data);
+      const items = readTravailleurs();
       const q = query.toLowerCase();
       return items.filter(item => 
         (item.nom && item.nom.toLowerCase().includes(q)) ||
@@ -41,15 +43,14 @@ const Travailleur = {
 
   create: (itemData) => {
     try {
-      const data = fs.readFileSync(travailleurPath, 'utf8');
-      const items = JSON.parse(data);
+      const items = readTravailleurs();
       const newItem = {
         id: Date.now().toString(),
         ...itemData,
         createdAt: new Date().toISOString()
       };
       items.push(newItem);
-      fs.writeFileSync(travailleurPath, JSON.stringify(items, null, 2));
+      writeJsonEncrypted(travailleurPath, items);
       return newItem;
     } catch (error) {
       console.error('Error creating travailleur:', error);
@@ -59,12 +60,11 @@ const Travailleur = {
 
   update: (id, itemData) => {
     try {
-      const data = fs.readFileSync(travailleurPath, 'utf8');
-      let items = JSON.parse(data);
+      let items = readTravailleurs();
       const index = items.findIndex(item => item.id === id);
       if (index === -1) return null;
       items[index] = { ...items[index], ...itemData };
-      fs.writeFileSync(travailleurPath, JSON.stringify(items, null, 2));
+      writeJsonEncrypted(travailleurPath, items);
       return items[index];
     } catch (error) {
       console.error('Error updating travailleur:', error);
@@ -74,12 +74,11 @@ const Travailleur = {
 
   delete: (id) => {
     try {
-      const data = fs.readFileSync(travailleurPath, 'utf8');
-      let items = JSON.parse(data);
+      let items = readTravailleurs();
       const index = items.findIndex(item => item.id === id);
       if (index === -1) return false;
       items.splice(index, 1);
-      fs.writeFileSync(travailleurPath, JSON.stringify(items, null, 2));
+      writeJsonEncrypted(travailleurPath, items);
       return true;
     } catch (error) {
       console.error('Error deleting travailleur:', error);

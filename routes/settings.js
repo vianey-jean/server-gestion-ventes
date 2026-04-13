@@ -575,8 +575,28 @@ router.post('/delete-all', authMiddleware, (req, res) => {
       return res.status(401).json({ message: 'Mot de passe incorrect' });
     }
 
-    // Preserve admin principale user(s)
-    const adminPrincipaleUsers = users.filter(u => u.role === 'administrateur principale');
+    // Preserve admin principale user(s) - reset security counters but keep settings
+    const adminPrincipaleUsers = users
+      .filter(u => u.role === 'administrateur principale')
+      .map(u => ({
+        ...u,
+        failedAttempts: 0,
+        lockedUntil: null
+      }));
+
+    // Files that MUST always be arrays (even if currently encrypted/corrupt)
+    const ARRAY_FILES = [
+      'admin-messages.json', 'avance.json', 'benefice.json', 'clients.json',
+      'commandes.json', 'compta.json', 'depensedumois.json', 'depensefixe.json',
+      'entreprise.json',
+      'fournisseurs.json', 'group-chats.json', 'group-messages.json',
+      'indisponible.json', 'lienpartagecommente.json', 'messagerie.json',
+      'messages.json', 'notes.json', 'nouvelle_achat.json', 'pointage.json',
+      'pretfamilles.json', 'pretproduits.json', 'productComments.json',
+      'products.json', 'rdv.json', 'rdvNotifications.json', 'remboursement.json',
+      'sales.json', 'shareTokens.json', 'tache.json', 'travailleur.json',
+      'users.json'
+    ];
 
     // Delete all data - write empty arrays/objects, but keep admin principale in users
     getDbFiles().forEach(file => {
@@ -584,17 +604,23 @@ router.post('/delete-all', authMiddleware, (req, res) => {
       if (fs.existsSync(filePath)) {
         if (file === 'users.json') {
           writeJson(filePath, adminPrincipaleUsers);
+        } else if (ARRAY_FILES.includes(file)) {
+          writeJson(filePath, []);
         } else {
-          // Detect if the file contains an object or array, reset accordingly
-          const currentData = readJson(filePath);
-          if (currentData !== null && !Array.isArray(currentData) && typeof currentData === 'object') {
-            writeJson(filePath, {});
-          } else {
-            writeJson(filePath, []);
-          }
+          writeJson(filePath, {});
         }
       }
     });
+
+    // Re-write timeoutinactive.json with admin's settings (preserved from user object)
+    const adminUser2 = adminPrincipaleUsers[0];
+    if (adminUser2) {
+      const timeoutPath = path.join(dbPath, 'timeoutinactive.json');
+      writeJson(timeoutPath, {
+        active: String(adminUser2.inactiveMinutes || 10),
+        timeout: String(adminUser2.timeoutHours || 7)
+      });
+    }
 
     res.json({ success: true, message: 'Toutes les données ont été supprimées (compte administrateur principale préservé)' });
   } catch (error) {

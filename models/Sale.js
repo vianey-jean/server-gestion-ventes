@@ -10,6 +10,7 @@ const Sale = {
   getAll: () => {
     try {
       const sales = JSON.parse(fs.readFileSync(salesPath, 'utf8'));
+      if (!Array.isArray(sales)) return [];
       return sales;
     } catch (error) {
       console.error("Error reading sales:", error);
