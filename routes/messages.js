@@ -1,3 +1,8 @@
+/**
+ * messages.js - Routes API pour la messagerie interne
+ * 
+ * Gestion des messages internes avec compteur de non-lus et marquage.
+ */
 
 const express = require('express');
 const router = express.Router();

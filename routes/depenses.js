@@ -1,3 +1,8 @@
+/**
+ * depenses.js - Routes API pour la gestion des dépenses mensuelles
+ * 
+ * CRUD pour les dépenses avec catégorisation et suivi mensuel.
+ */
 
 const express = require('express');
 const router = express.Router();

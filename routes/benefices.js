@@ -1,3 +1,8 @@
+/**
+ * benefices.js - Routes API pour le calcul et suivi des bénéfices
+ * 
+ * Gestion des marges, bénéfices nets et rapports financiers.
+ */
 
 const express = require('express');
 const router = express.Router();

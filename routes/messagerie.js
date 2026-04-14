@@ -1,3 +1,8 @@
+/**
+ * messagerie.js - Routes API pour le système de messagerie/chat en temps réel
+ * 
+ * Chat admin avec conversations, SSE pour temps réel, et historique des messages.
+ */
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');

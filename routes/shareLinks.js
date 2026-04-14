@@ -1,3 +1,15 @@
+/**
+ * shareLinks.js - Routes API pour la gestion des liens de partage sécurisés
+ * 
+ * Permet de créer des liens de partage pour les données (pointage, tâches, notes)
+ * avec code d'accès et possibilité de sélection d'éléments spécifiques.
+ * 
+ * Routes :
+ * - POST /generate : Créer un lien avec token + code d'accès
+ * - GET /list : Lister les liens par type
+ * - DELETE /revoke/:id : Révoquer un lien
+ * - POST /access/:token : Valider le code d'accès et retourner les données
+ */
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');

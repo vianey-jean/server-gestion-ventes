@@ -1,3 +1,8 @@
+/**
+ * rdv.js - Routes API pour la gestion des rendez-vous
+ * 
+ * CRUD complet avec notifications, rappels et lien avec les clients.
+ */
 const express = require('express');
 const router = express.Router();
 const Rdv = require('../models/Rdv');

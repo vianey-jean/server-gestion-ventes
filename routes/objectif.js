@@ -1,3 +1,8 @@
+/**
+ * objectif.js - Routes API pour la gestion des objectifs de ventes
+ * 
+ * Définition et suivi des objectifs mensuels/annuels avec calcul de progression.
+ */
 const express = require('express');
 const router = express.Router();
 const Objectif = require('../models/Objectif');

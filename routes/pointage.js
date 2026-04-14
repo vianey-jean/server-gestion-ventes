@@ -1,3 +1,9 @@
+/**
+ * pointage.js - Routes API pour la gestion du pointage des travailleurs
+ * 
+ * CRUD complet pour les entrées de pointage (heures travaillées, montants, entreprises).
+ * Toutes les routes sont authentifiées via le middleware auth.
+ */
 const express = require('express');
 const router = express.Router();
 const Pointage = require('../models/Pointage');

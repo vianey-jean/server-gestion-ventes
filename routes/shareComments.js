@@ -1,3 +1,33 @@
+/**
+ * shareComments.js - Routes API pour les commentaires sur les liens partagés
+ * 
+ * Ce module gère le cycle de vie complet des commentaires :
+ * 
+ * Stockage :
+ * - lienpartagecommente.json : Base de données principale des commentaires
+ * - comment-share.json : Sauvegarde JSON complète (pour export/import/restauration)
+ * - db/upload/lienPartage/ : Fichiers HTML snapshots pour visualisation
+ * 
+ * Routes publiques :
+ * - POST /submit/:token : Soumettre un commentaire (statut 'validated')
+ * - POST /send/:id : Finaliser l'envoi (statut 'sent', génère HTML, notifie SSE)
+ * - GET /check/:token : Vérifier si un token a déjà été commenté
+ * 
+ * Routes authentifiées :
+ * - GET /list : Liste des commentaires envoyés (filtre par type)
+ * - GET /unread : Compteur de non lus par type
+ * - PATCH /read/:id : Marquer comme lu
+ * - GET /detail/:id : Détail d'un commentaire
+ * - DELETE /delete/:id : Supprimer un commentaire (doit être lu)
+ * - GET /snapshot/:filename : Servir un fichier HTML (régénère si manquant)
+ * - POST /sync-html : Synchroniser JSON → HTML manuellement
+ * - POST /import-json : Importer des commentaires depuis un JSON
+ * - GET /export-json : Exporter tous les commentaires en JSON
+ * 
+ * Synchronisation :
+ * - Au démarrage du serveur, les fichiers HTML manquants sont régénérés depuis comment-share.json
+ * - Après chaque envoi, les clients SSE sont notifiés pour mise à jour en temps réel
+ */
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
@@ -427,6 +457,48 @@ router.post('/import-json', auth, (req, res) => {
     const syncResult = syncJsonToHtml();
 
     res.json({ message: `${imported} commentaires importés`, ...syncResult });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Authenticated: Delete a comment (only if already read)
+// Removes from lienpartagecommente.json, comment-share.json, and the HTML snapshot file
+router.delete('/delete/:id', auth, (req, res) => {
+  try {
+    const { id } = req.params;
+    const allComments = readJSON(commentsPath);
+    const idx = allComments.findIndex(c => c.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'Commentaire non trouvé' });
+
+    // Only allow deletion if the comment has been read
+    if (!allComments[idx].read) {
+      return res.status(400).json({ error: 'Ce commentaire doit être lu avant de pouvoir être supprimé' });
+    }
+
+    const comment = allComments[idx];
+
+    // Remove the HTML snapshot file if it exists
+    if (comment.snapshotFile) {
+      const filepath = path.join(snapshotDir, path.basename(comment.snapshotFile));
+      if (fs.existsSync(filepath)) {
+        fs.unlinkSync(filepath);
+      }
+    }
+
+    // Remove from main comments DB
+    allComments.splice(idx, 1);
+    writeJSON(commentsPath, allComments);
+
+    // Remove from comment-share.json (JSON backup)
+    const allShared = readJSON(commentSharePath);
+    const sharedIdx = allShared.findIndex(c => c.id === id);
+    if (sharedIdx >= 0) {
+      allShared.splice(sharedIdx, 1);
+      writeJSON(commentSharePath, allShared);
+    }
+
+    res.json({ message: 'Commentaire supprimé avec succès' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

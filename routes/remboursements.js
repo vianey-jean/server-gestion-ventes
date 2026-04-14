@@ -1,3 +1,8 @@
+/**
+ * remboursements.js - Routes API pour la gestion des remboursements clients
+ * 
+ * CRUD pour les remboursements avec suivi des statuts et historique.
+ */
 const express = require('express');
 const router = express.Router();
 const Remboursement = require('../models/Remboursement');

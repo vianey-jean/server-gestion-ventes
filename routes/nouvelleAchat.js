@@ -1,3 +1,8 @@
+/**
+ * nouvelleAchat.js - Routes API pour la gestion des achats/approvisionnements
+ * 
+ * CRUD pour les nouveaux achats de stock avec calcul du prix de revient.
+ */
 const express = require('express');
 const router = express.Router();
 const NouvelleAchat = require('../models/NouvelleAchat');

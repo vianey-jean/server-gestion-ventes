@@ -1,3 +1,12 @@
+/**
+ * tache.js - Routes API pour la gestion des tâches
+ * 
+ * CRUD complet pour les tâches avec support de :
+ * - Création, modification, suppression de tâches
+ * - Marquage comme complétée/non complétée
+ * - Filtrage par date, importance, travailleur
+ * Toutes les routes sont authentifiées.
+ */
 const express = require('express');
 const router = express.Router();
 const Tache = require('../models/Tache');

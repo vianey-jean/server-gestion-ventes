@@ -1,3 +1,8 @@
+/**
+ * travailleur.js - Routes API pour la gestion des travailleurs
+ * 
+ * CRUD pour les travailleurs utilisés dans le pointage et les tâches.
+ */
 const express = require('express');
 const router = express.Router();
 const Travailleur = require('../models/Travailleur');

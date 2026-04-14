@@ -1,3 +1,8 @@
+/**
+ * entreprise.js - Routes API pour la gestion des entreprises (pointage)
+ * 
+ * CRUD pour les entreprises associées au système de pointage.
+ */
 const express = require('express');
 const router = express.Router();
 const Entreprise = require('../models/Entreprise');

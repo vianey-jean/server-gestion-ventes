@@ -1,3 +1,13 @@
+/**
+ * notesShare.js - Routes API pour le partage des notes via token
+ * 
+ * Ce module gère le partage en lecture seule des notes :
+ * - POST /generate : Génère un token de partage unique (authentifié)
+ * - DELETE /revoke : Révoque tous les tokens actifs (authentifié)
+ * - GET /view/:token : Accès public aux notes partagées (sans auth)
+ * 
+ * Stockage : noteShareTokens.json pour les tokens, notes.json et noteColumns.json pour les données
+ */
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');

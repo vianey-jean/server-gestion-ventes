@@ -1,3 +1,9 @@
+/**
+ * profile.js - Routes API pour la gestion du profil utilisateur
+ * 
+ * Modification des informations personnelles, photo de profil,
+ * changement de mot de passe et paramètres de sécurité.
+ */
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');

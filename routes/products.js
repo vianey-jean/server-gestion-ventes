@@ -1,3 +1,13 @@
+/**
+ * products.js - Routes API pour la gestion des produits
+ * 
+ * CRUD complet pour les produits avec support de :
+ * - Upload d'images produit
+ * - Gestion du stock (entrées, sorties, alertes)
+ * - Recherche et filtrage
+ * - Commentaires sur les produits
+ * Toutes les routes sont authentifiées.
+ */
 
 const express = require('express');
 const router = express.Router();

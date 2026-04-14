@@ -1,3 +1,8 @@
+/**
+ * compta.js - Routes API pour la comptabilité
+ * 
+ * Gestion des écritures comptables, soldes et rapports financiers.
+ */
 const express = require('express');
 const router = express.Router();
 const Compta = require('../models/Compta');

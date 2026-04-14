@@ -1,3 +1,8 @@
+/**
+ * notes.js - Routes API pour la gestion des notes (post-its)
+ * 
+ * CRUD pour les notes avec support de colonnes, dessins et mémos vocaux.
+ */
 const express = require('express');
 const router = express.Router();
 const Note = require('../models/Note');

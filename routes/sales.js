@@ -1,3 +1,13 @@
+/**
+ * sales.js - Routes API pour la gestion des ventes
+ * 
+ * CRUD complet pour les ventes avec :
+ * - Enregistrement de ventes (produits, quantités, prix)
+ * - Mise à jour automatique du stock produit
+ * - Statistiques et rapports de ventes
+ * - Filtrage par période, produit, client
+ * Toutes les routes sont authentifiées.
+ */
 
 const express = require('express');
 const router = express.Router();

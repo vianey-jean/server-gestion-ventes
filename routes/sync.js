@@ -1,3 +1,8 @@
+/**
+ * sync.js - Routes API pour la synchronisation en temps réel (SSE)
+ * 
+ * Gère les Server-Sent Events pour notifier les clients des changements de données.
+ */
 
 const express = require('express');
 const router = express.Router();

@@ -1,3 +1,9 @@
+/**
+ * auth.js - Routes d'authentification
+ * 
+ * Gestion de la connexion, inscription et réinitialisation de mot de passe.
+ * Inclut : rate limiting, blocage après N tentatives échouées, et gestion JWT.
+ */
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');

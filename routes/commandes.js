@@ -1,3 +1,12 @@
+/**
+ * commandes.js - Routes API pour la gestion des commandes fournisseurs
+ * 
+ * CRUD complet pour les commandes avec :
+ * - Création et suivi des commandes fournisseurs
+ * - Gestion des statuts (en attente, livrée, annulée)
+ * - Historique des commandes
+ * Toutes les routes sont authentifiées.
+ */
 const express = require('express');
 const router = express.Router();
 const Commande = require('../models/Commande');

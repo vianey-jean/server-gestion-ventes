@@ -1,3 +1,8 @@
+/**
+ * productComments.js - Routes API pour les commentaires sur les produits
+ * 
+ * CRUD pour les commentaires associés aux produits (avis, notes internes).
+ */
 const express = require('express');
 const router = express.Router();
 const ProductComment = require('../models/ProductComment');

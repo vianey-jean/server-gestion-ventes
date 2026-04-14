@@ -1,3 +1,8 @@
+/**
+ * avance.js - Routes API pour la gestion des avances sur salaire
+ * 
+ * CRUD pour les avances versées aux travailleurs.
+ */
 const express = require('express');
 const router = express.Router();
 const Avance = require('../models/Avance');

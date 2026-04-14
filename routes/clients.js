@@ -1,3 +1,8 @@
+/**
+ * clients.js - Routes API pour la gestion des clients
+ * 
+ * CRUD complet avec upload de photo, recherche et filtrage.
+ */
 
 const express = require('express');
 const router = express.Router();
