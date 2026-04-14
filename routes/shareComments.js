@@ -5,6 +5,7 @@ const path = require('path');
 const auth = require('../middleware/auth');
 
 const commentsPath = path.join(__dirname, '..', 'db', 'lienpartagecommente.json');
+const commentSharePath = path.join(__dirname, '..', 'db', 'comment-share.json');
 const shareTokensPath = path.join(__dirname, '..', 'db', 'shareTokens.json');
 const snapshotDir = path.join(__dirname, '..', 'db', 'upload', 'lienPartage');
 
@@ -21,6 +22,42 @@ const writeJSON = (filePath, data) => {
 };
 
 if (!fs.existsSync(commentsPath)) writeJSON(commentsPath, []);
+if (!fs.existsSync(commentSharePath)) writeJSON(commentSharePath, []);
+
+// Save a comment entry to comment-share.json (JSON backup)
+const saveToCommentShare = (commentEntry) => {
+  const allShared = readJSON(commentSharePath);
+  const existingIdx = allShared.findIndex(c => c.id === commentEntry.id);
+  if (existingIdx >= 0) {
+    allShared[existingIdx] = commentEntry;
+  } else {
+    allShared.push(commentEntry);
+  }
+  writeJSON(commentSharePath, allShared);
+};
+
+// Compare comment-share.json with existing HTML files and regenerate missing ones
+const syncJsonToHtml = () => {
+  const allShared = readJSON(commentSharePath);
+  const sentComments = allShared.filter(c => c.status === 'sent');
+  let regenerated = 0;
+
+  sentComments.forEach(entry => {
+    const expectedFilename = `comment_${entry.type}_${entry.id}.html`;
+    const filepath = path.join(snapshotDir, expectedFilename);
+    if (!fs.existsSync(filepath)) {
+      generateSnapshot(entry);
+      regenerated++;
+    }
+  });
+
+  return { total: sentComments.length, regenerated };
+};
+
+// Run sync on startup
+setTimeout(() => {
+  try { syncJsonToHtml(); } catch (e) { /* silent */ }
+}, 2000);
 
 // Generate an HTML snapshot document for the comment
 const generateSnapshot = (commentEntry) => {
@@ -209,6 +246,12 @@ router.post('/send/:id', (req, res) => {
 
     writeJSON(commentsPath, allComments);
 
+    // Also save full data to comment-share.json (JSON backup)
+    saveToCommentShare(allComments[idx]);
+
+    // Sync: regenerate any missing HTML files from JSON backup
+    syncJsonToHtml();
+
     // Notify SSE clients for real-time sync
     try {
       const syncManager = require('../middleware/sync');
@@ -301,22 +344,99 @@ router.get('/detail/:id', auth, (req, res) => {
   }
 });
 
-// Serve snapshot HTML files (authenticated)
+// Serve snapshot HTML files (authenticated) - auto-regenerate from JSON if missing
 router.get('/snapshot/:filename', auth, (req, res) => {
   try {
     const { filename } = req.params;
-    // Prevent directory traversal
     const safeName = path.basename(filename);
-    const filepath = path.join(snapshotDir, safeName);
+    let filepath = path.join(snapshotDir, safeName);
+
+    // If HTML file doesn't exist, try to regenerate from comment-share.json
+    if (!fs.existsSync(filepath)) {
+      const match = safeName.match(/^comment_(\w+)_(\d+)\.html$/);
+      if (match) {
+        const [, type, id] = match;
+        const allShared = readJSON(commentSharePath);
+        const entry = allShared.find(c => c.id === id && c.type === type);
+        if (entry) {
+          generateSnapshot(entry);
+        }
+      }
+    }
+
     if (!fs.existsSync(filepath)) {
       return res.status(404).json({ error: 'Fichier non trouvé' });
     }
-    // Allow framing and remove restrictive headers
     res.removeHeader('X-Frame-Options');
     res.setHeader('Content-Security-Policy', "frame-ancestors *");
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.sendFile(filepath);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Authenticated: Trigger sync - regenerate all missing HTML from comment-share.json
+router.post('/sync-html', auth, (req, res) => {
+  try {
+    const result = syncJsonToHtml();
+    res.json({ message: `Synchronisation terminée`, ...result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Authenticated: Import comments from JSON (inject data into comment-share.json)
+router.post('/import-json', auth, (req, res) => {
+  try {
+    const { comments } = req.body;
+    if (!Array.isArray(comments)) {
+      return res.status(400).json({ error: 'Format invalide: attendu { comments: [...] }' });
+    }
+
+    const allShared = readJSON(commentSharePath);
+    const mainComments = readJSON(commentsPath);
+    let imported = 0;
+
+    comments.forEach(entry => {
+      if (!entry.id || !entry.type) return;
+
+      // Save to comment-share.json
+      const existingIdx = allShared.findIndex(c => c.id === entry.id);
+      if (existingIdx >= 0) {
+        allShared[existingIdx] = entry;
+      } else {
+        allShared.push(entry);
+        imported++;
+      }
+
+      // Also sync to main comments DB
+      const mainIdx = mainComments.findIndex(c => c.id === entry.id);
+      if (mainIdx >= 0) {
+        mainComments[mainIdx] = entry;
+      } else {
+        mainComments.push(entry);
+      }
+    });
+
+    writeJSON(commentSharePath, allShared);
+    writeJSON(commentsPath, mainComments);
+
+    // Regenerate all missing HTML files
+    const syncResult = syncJsonToHtml();
+
+    res.json({ message: `${imported} commentaires importés`, ...syncResult });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Authenticated: Export all comments as JSON
+router.get('/export-json', auth, (req, res) => {
+  try {
+    const allShared = readJSON(commentSharePath);
+    res.json({ comments: allShared, total: allShared.length });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
