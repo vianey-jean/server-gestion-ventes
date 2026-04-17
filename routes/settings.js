@@ -123,9 +123,32 @@ const areItemsEquivalent = (existingItem, incomingItem) => {
   return false;
 };
 
+const isEmptyContainer = (value) => {
+  if (Array.isArray(value)) return value.length === 0;
+  if (isPlainObject(value)) return Object.keys(value).length === 0;
+  return false;
+};
+
 const mergeRestoreData = (existingData, incomingData) => {
   if (existingData === null || existingData === undefined) {
     return { data: incomingData, added: 1, skipped: 0, changed: true };
+  }
+
+  // Type mismatch (e.g. existing {} after delete-all but incoming is an array,
+  // or existing [] but incoming is an object) — replace with incoming data.
+  // Also covers the case where the local file was reset to an empty container
+  // of the wrong shape so newly added DB files (like pointageauto.json) restore correctly.
+  const typesDiffer =
+    Array.isArray(existingData) !== Array.isArray(incomingData) ||
+    isPlainObject(existingData) !== isPlainObject(incomingData);
+
+  if (typesDiffer || (isEmptyContainer(existingData) && !isEmptyContainer(incomingData))) {
+    const addedCount = Array.isArray(incomingData)
+      ? incomingData.length
+      : isPlainObject(incomingData)
+        ? Object.keys(incomingData).length
+        : 1;
+    return { data: incomingData, added: addedCount, skipped: 0, changed: true };
   }
 
   if (Array.isArray(existingData) && Array.isArray(incomingData)) {
@@ -592,6 +615,7 @@ router.post('/delete-all', authMiddleware, (req, res) => {
       'fournisseurs.json', 'group-chats.json', 'group-messages.json',
       'indisponible.json', 'lienpartagecommente.json', 'messagerie.json',
       'messages.json', 'notes.json', 'nouvelle_achat.json', 'pointage.json',
+      'pointageauto.json',
       'pretfamilles.json', 'pretproduits.json', 'productComments.json',
       'products.json', 'rdv.json', 'rdvNotifications.json', 'remboursement.json',
       'sales.json', 'shareTokens.json', 'tache.json', 'travailleur.json',

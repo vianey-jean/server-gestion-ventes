@@ -261,6 +261,13 @@ if (!fs.existsSync(remboursementPath)) {
   fs.writeFileSync(remboursementPath, JSON.stringify([], null, 2));
 }
 
+// Garantit l'existence du fichier pointage automatique pour qu'il soit
+// toujours inclus dans les sauvegardes/restaurations dynamiques.
+const pointageAutoPath = path.join(dbPath, 'pointageauto.json');
+if (!fs.existsSync(pointageAutoPath)) {
+  fs.writeFileSync(pointageAutoPath, JSON.stringify([], null, 2));
+}
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
