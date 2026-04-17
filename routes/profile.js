@@ -126,11 +126,72 @@ router.put('/password', authMiddleware, (req, res) => {
   }
 });
 
+// ============================================================================
+// Helpers pour les fichiers de paramètres globaux (timeoutinactive & tentativeblocage)
+// Logique : si le fichier contient des valeurs valides, on les utilise.
+//          Sinon (vide / {} / manquant), on retourne les valeurs par défaut.
+// ============================================================================
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
+
+const TIMEOUT_FILE = path.join(__dirname, '../db/timeoutinactive.json');
+const TENTATIVE_FILE = path.join(__dirname, '../db/tentativeblocage.json');
+
+const DEFAULTS_TIMEOUT = { active: 10, timeout: 7 };
+const DEFAULTS_TENTATIVE = { nombreConnexion: 5, tempsBlocage: 15 };
+
+const ensureFile = (filePath) => {
+  if (!fs.existsSync(filePath)) {
+    try { fs.writeFileSync(filePath, JSON.stringify({}, null, 2)); } catch {}
+  }
+};
+
+const safeNumber = (v) => {
+  if (v === null || v === undefined || v === '') return null;
+  const n = parseInt(v, 10);
+  return isNaN(n) ? null : n;
+};
+
+const readTimeoutFile = () => {
+  ensureFile(TIMEOUT_FILE);
+  let data = null;
+  try { data = readJsonDecrypted(TIMEOUT_FILE); } catch { data = null; }
+  if (!data || typeof data !== 'object' || Array.isArray(data)) data = {};
+  const active = safeNumber(data.active);
+  const timeout = safeNumber(data.timeout);
+  return {
+    active: active !== null ? active : DEFAULTS_TIMEOUT.active,
+    timeout: timeout !== null ? timeout : DEFAULTS_TIMEOUT.timeout,
+  };
+};
+
+const readTentativeFile = () => {
+  ensureFile(TENTATIVE_FILE);
+  let data = null;
+  try { data = readJsonDecrypted(TENTATIVE_FILE); } catch { data = null; }
+  if (!data || typeof data !== 'object' || Array.isArray(data)) data = {};
+  const nombreConnexion = safeNumber(data.nombreConnexion);
+  const tempsBlocage = safeNumber(data.tempsBlocage);
+  return {
+    nombreConnexion: nombreConnexion !== null ? nombreConnexion : DEFAULTS_TENTATIVE.nombreConnexion,
+    tempsBlocage: tempsBlocage !== null ? tempsBlocage : DEFAULTS_TENTATIVE.tempsBlocage,
+  };
+};
+
+// GET security settings (tentatives & blocage) — depuis tentativeblocage.json
+router.get('/security-settings', authMiddleware, (req, res) => {
+  try {
+    res.json(readTentativeFile());
+  } catch (error) {
+    console.error('Security settings fetch error:', error);
+    res.json(DEFAULTS_TENTATIVE);
+  }
+});
+
 // PUT update security settings (nombreConnexion, tempsBlocage)
 router.put('/security-settings', authMiddleware, (req, res) => {
   try {
     const { nombreConnexion, tempsBlocage } = req.body;
-    
+
     const updates = {};
     if (nombreConnexion !== undefined) {
       const val = parseInt(nombreConnexion, 10);
@@ -147,26 +208,36 @@ router.put('/security-settings', authMiddleware, (req, res) => {
       updates.tempsBlocage = val;
     }
 
+    // Mise à jour user (compatibilité existante)
     const updated = User.update(req.user.id, updates);
     if (!updated) return res.status(400).json({ message: 'Erreur lors de la mise à jour' });
-    res.json({ success: true, user: updated });
+
+    // Persiste aussi dans tentativeblocage.json (source de vérité globale)
+    try {
+      const current = readTentativeFile();
+      const merged = {
+        nombreConnexion: updates.nombreConnexion !== undefined ? updates.nombreConnexion : current.nombreConnexion,
+        tempsBlocage: updates.tempsBlocage !== undefined ? updates.tempsBlocage : current.tempsBlocage,
+      };
+      writeJsonEncrypted(TENTATIVE_FILE, merged);
+    } catch (e) {
+      console.error('Erreur écriture tentativeblocage.json:', e);
+    }
+
+    res.json({ success: true, user: updated, settings: readTentativeFile() });
   } catch (error) {
     console.error('Security settings update error:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
 
-// GET timeout settings
+// GET timeout settings — source de vérité = timeoutinactive.json
 router.get('/timeout-settings', authMiddleware, (req, res) => {
   try {
-    const user = User.getById(req.user.id);
-    res.json({
-      active: user.inactiveMinutes || 10,
-      timeout: user.timeoutHours || 7
-    });
+    res.json(readTimeoutFile());
   } catch (error) {
     console.error('Timeout settings fetch error:', error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.json(DEFAULTS_TIMEOUT);
   }
 });
 
@@ -188,15 +259,19 @@ router.put('/timeout-settings', authMiddleware, (req, res) => {
     const updated = User.update(req.user.id, updates);
     if (!updated) return res.status(400).json({ message: 'Erreur lors de la mise à jour' });
 
-    // Also update the global file
-    const fs = require('fs');
-    const path = require('path');
-    const timeoutPath = path.join(__dirname, '../db/timeoutinactive.json');
-    const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
-    const data = { active: String(updates.inactiveMinutes || 10), timeout: String(updates.timeoutHours || 7) };
-    writeJsonEncrypted(timeoutPath, data);
+    // Persiste dans timeoutinactive.json (source de vérité)
+    try {
+      const current = readTimeoutFile();
+      const merged = {
+        active: updates.inactiveMinutes !== undefined ? updates.inactiveMinutes : current.active,
+        timeout: updates.timeoutHours !== undefined ? updates.timeoutHours : current.timeout,
+      };
+      writeJsonEncrypted(TIMEOUT_FILE, merged);
+    } catch (e) {
+      console.error('Erreur écriture timeoutinactive.json:', e);
+    }
 
-    res.json({ success: true, user: updated });
+    res.json({ success: true, user: updated, settings: readTimeoutFile() });
   } catch (error) {
     console.error('Timeout settings update error:', error);
     res.status(500).json({ message: 'Erreur serveur' });

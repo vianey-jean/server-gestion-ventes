@@ -612,14 +612,13 @@ router.post('/delete-all', authMiddleware, (req, res) => {
       }
     });
 
-    // Re-write timeoutinactive.json with admin's settings (preserved from user object)
-    const adminUser2 = adminPrincipaleUsers[0];
-    if (adminUser2) {
-      const timeoutPath = path.join(dbPath, 'timeoutinactive.json');
-      writeJson(timeoutPath, {
-        active: String(adminUser2.inactiveMinutes || 10),
-        timeout: String(adminUser2.timeoutHours || 7)
-      });
+    // Réinitialise timeoutinactive.json et tentativeblocage.json à {}
+    // → Le frontend utilisera automatiquement les valeurs par défaut
+    try {
+      writeJson(path.join(dbPath, 'timeoutinactive.json'), {});
+      writeJson(path.join(dbPath, 'tentativeblocage.json'), {});
+    } catch (e) {
+      console.error('Erreur reset fichiers paramètres:', e);
     }
 
     res.json({ success: true, message: 'Toutes les données ont été supprimées (compte administrateur principale préservé)' });
