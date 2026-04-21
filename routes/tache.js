@@ -164,6 +164,15 @@ router.put('/:id', (req, res) => {
   res.json(updated);
 });
 
+// PUT update by commande ID (for reservation sync)
+router.put('/by-commande/:commandeId', (req, res) => {
+  const updated = Tache.updateByCommandeId(req.params.commandeId, req.body);
+  if (!updated || updated.length === 0) {
+    return res.status(404).json({ error: 'Aucune tâche liée à cette commande' });
+  }
+  res.json(updated);
+});
+
 // DELETE
 router.delete('/:id', (req, res) => {
   const existing = Tache.getById(req.params.id);
@@ -174,6 +183,13 @@ router.delete('/:id', (req, res) => {
   const deleted = Tache.delete(req.params.id);
   if (!deleted) return res.status(500).json({ error: 'Erreur suppression' });
   res.json({ message: 'Tâche supprimée' });
+});
+
+// DELETE by commande ID (for reservation sync)
+router.delete('/by-commande/:commandeId', (req, res) => {
+  const deleted = Tache.deleteByCommandeId(req.params.commandeId);
+  if (!deleted) return res.status(404).json({ error: 'Aucune tâche liée à cette commande' });
+  res.json({ message: 'Tâches liées supprimées' });
 });
 
 module.exports = router;

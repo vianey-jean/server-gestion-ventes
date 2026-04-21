@@ -236,8 +236,50 @@ const Tache = {
     return readTaches().find(item => item.id === id) || null;
   },
 
+  getByCommandeId: (commandeId) => {
+    return readTaches().filter(item => item.commandeId === commandeId);
+  },
+
   isAdmin,
   validateTimeSlot,
+
+  updateByCommandeId: (commandeId, itemData) => {
+    try {
+      let items = readTaches();
+      const matchedItems = items.filter(item => item.commandeId === commandeId);
+      if (matchedItems.length === 0) return [];
+
+      const {
+        descriptionPrefix,
+        descriptionPrefixToRemove,
+        ...restData
+      } = itemData || {};
+
+      items = items.map(item => {
+        if (item.commandeId !== commandeId) return item;
+
+        let nextDescription = item.description || '';
+        if (descriptionPrefixToRemove && nextDescription.startsWith(descriptionPrefixToRemove)) {
+          nextDescription = nextDescription.slice(descriptionPrefixToRemove.length);
+        }
+        if (descriptionPrefix && !nextDescription.startsWith(descriptionPrefix)) {
+          nextDescription = `${descriptionPrefix}${nextDescription}`;
+        }
+
+        return {
+          ...item,
+          ...restData,
+          description: restData.description ?? nextDescription,
+          heureFin: restData.heureFin || item.heureFin || item.heureDebut
+        };
+      });
+
+      writeTaches(items);
+      return items.filter(item => item.commandeId === commandeId);
+    } catch (error) {
+      return [];
+    }
+  },
 
   create: (itemData) => {
     try {
@@ -307,6 +349,18 @@ const Tache = {
       if (items[index].importance === 'pertinent') return false;
       items.splice(index, 1);
       writeTaches(items);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  deleteByCommandeId: (commandeId) => {
+    try {
+      const items = readTaches();
+      const filteredItems = items.filter(item => item.commandeId !== commandeId);
+      if (filteredItems.length === items.length) return false;
+      writeTaches(filteredItems);
       return true;
     } catch (error) {
       return false;

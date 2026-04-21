@@ -219,6 +219,25 @@ const Rdv = {
       console.error("Error deleting rdv:", error);
       return false;
     }
+  },
+
+  // Delete rdv by commande ID
+  deleteByCommandeId: (commandeId) => {
+    try {
+      let rdvs = JSON.parse(fs.readFileSync(rdvPath, 'utf8'));
+      const rdvToDelete = rdvs.find(rdv => rdv.commandeId === commandeId);
+      if (!rdvToDelete) {
+        return null;
+      }
+
+      rdvs = rdvs.filter(rdv => rdv.commandeId !== commandeId);
+      fs.writeFileSync(rdvPath, JSON.stringify(rdvs, null, 2));
+
+      return rdvToDelete;
+    } catch (error) {
+      console.error("Error deleting rdv by commande:", error);
+      return null;
+    }
   }
 };
 

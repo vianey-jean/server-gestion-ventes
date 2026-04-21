@@ -243,4 +243,21 @@ router.delete('/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// Delete rdv by commande ID
+router.delete('/by-commande/:commandeId', authMiddleware, async (req, res) => {
+  try {
+    const deletedRdv = Rdv.deleteByCommandeId(req.params.commandeId);
+
+    if (!deletedRdv) {
+      return res.status(404).json({ message: 'RDV not found for this commande' });
+    }
+
+    RdvNotification.deleteByRdvId(deletedRdv.id);
+    res.json({ success: true, rdv: deletedRdv });
+  } catch (error) {
+    console.error('Error deleting rdv by commande:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;
