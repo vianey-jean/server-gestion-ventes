@@ -306,6 +306,7 @@ const parametresRoutes = require('./routes/parametres');
 const encryptionRoutes = require('./routes/encryption');
 const shareCommentsRoutes = require('./routes/shareComments');
 const productCommentsRoutes = require('./routes/productComments');
+const maintenanceRoutes = require('./routes/maintenance');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -345,6 +346,7 @@ app.use('/api/parametres', parametresRoutes);
 app.use('/api/encryption', encryptionRoutes);
 app.use('/api/share-comments', shareCommentsRoutes);
 app.use('/api/product-comments', productCommentsRoutes);
+app.use('/api/maintenance', maintenanceRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
