@@ -5,9 +5,32 @@
  */
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 const NouvelleAchat = require('../models/NouvelleAchat');
 const Fournisseur = require('../models/Fournisseur');
 const authMiddleware = require('../middleware/auth');
+const uploadDepense = require('../middleware/uploadDepense');
+
+// Upload d'un reçu (image/PDF) pour une dépense
+// Renvoie l'URL relative pour l'enregistrement ultérieur
+router.post('/depense/upload-receipt', authMiddleware, uploadDepense.single('receipt'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Aucun fichier reçu' });
+    }
+    const receiptUrl = `/uploads/depense/${req.file.filename}`;
+    console.log('✅ Receipt uploaded:', receiptUrl);
+    res.status(201).json({
+      receiptUrl,
+      filename: req.file.filename,
+      mimetype: req.file.mimetype,
+      size: req.file.size
+    });
+  } catch (error) {
+    console.error('❌ Error uploading receipt:', error);
+    res.status(500).json({ message: error.message || 'Erreur serveur' });
+  }
+});
 
 // Récupérer tous les achats
 router.get('/', authMiddleware, async (req, res) => {
@@ -125,20 +148,21 @@ router.post('/', authMiddleware, async (req, res) => {
 // Ajouter une dépense (taxes, carburant, autres)
 router.post('/depense', authMiddleware, async (req, res) => {
   try {
-    const { description, montant, type, categorie } = req.body;
-    
+    const { description, montant, type, categorie, receiptUrl } = req.body;
+
     if (!description || montant === undefined) {
       return res.status(400).json({ message: 'Description et montant sont requis' });
     }
-    
+
     const depenseData = {
       description,
       montant: Number(montant),
       type: type || 'autre_depense',
       categorie: categorie || 'divers',
-      date: req.body.date || new Date().toISOString()
+      date: req.body.date || new Date().toISOString(),
+      receiptUrl: receiptUrl || null
     };
-    
+
     const newDepense = NouvelleAchat.addDepense(depenseData);
     
     if (!newDepense) {

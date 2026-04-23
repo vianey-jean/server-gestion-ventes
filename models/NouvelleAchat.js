@@ -265,19 +265,34 @@ const NouvelleAchat = {
   delete: (id) => {
     try {
       console.log(`🗑️ Deleting achat ${id}`);
-      
+
       const data = fs.readFileSync(nouvelleAchatPath, 'utf8');
       let achats = JSON.parse(data);
-      
+
       const achatIndex = achats.findIndex(achat => achat.id === id);
       if (achatIndex === -1) {
         console.log(`❌ Achat not found for deletion: ${id}`);
         return false;
       }
-      
+
+      // Supprimer le fichier reçu associé si présent
+      const target = achats[achatIndex];
+      if (target && target.receiptUrl) {
+        try {
+          const rel = target.receiptUrl.replace(/^\/+/, ''); // 'uploads/depense/recu-xxx.pdf'
+          const filePath = path.join(__dirname, '..', rel);
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            console.log(`🗑️ Deleted receipt file: ${filePath}`);
+          }
+        } catch (e) {
+          console.warn('⚠️ Could not delete receipt file:', e.message);
+        }
+      }
+
       achats.splice(achatIndex, 1);
       fs.writeFileSync(nouvelleAchatPath, JSON.stringify(achats, null, 2));
-      
+
       console.log('✅ Achat deleted successfully');
       return true;
     } catch (error) {
@@ -290,22 +305,24 @@ const NouvelleAchat = {
   addDepense: (depenseData) => {
     try {
       console.log('📝 Adding depense:', depenseData);
-      
+
       const data = fs.readFileSync(nouvelleAchatPath, 'utf8');
       const achats = JSON.parse(data);
-      
+
       const newDepense = {
         id: Date.now().toString(),
         date: depenseData.date || new Date().toISOString(),
         description: depenseData.description,
         totalCost: Number(depenseData.montant),
         type: depenseData.type || 'autre_depense', // taxes, carburant, autre_depense
-        categorie: depenseData.categorie || 'divers'
+        categorie: depenseData.categorie || 'divers',
+        // URL du reçu (image ou PDF) — facultatif
+        receiptUrl: depenseData.receiptUrl || null
       };
-      
+
       achats.push(newDepense);
       fs.writeFileSync(nouvelleAchatPath, JSON.stringify(achats, null, 2));
-      
+
       console.log('✅ Depense added successfully:', newDepense);
       return newDepense;
     } catch (error) {

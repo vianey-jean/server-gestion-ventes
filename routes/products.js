@@ -114,6 +114,45 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
+// Create product WITH photos in one request (multipart/form-data)
+// Fields: description, purchasePrice, quantity, fournisseur (optional), sellingPrice (optional)
+// Files: photos[] (max 6), mainPhotoIndex (optional)
+router.post('/with-photos', authMiddleware, upload.array('photos', 6), async (req, res) => {
+  try {
+    const { description, purchasePrice, quantity } = req.body;
+
+    if (!description || purchasePrice === undefined || quantity === undefined) {
+      return res.status(400).json({ message: 'description, purchasePrice and quantity required' });
+    }
+
+    const productData = {
+      description,
+      purchasePrice: Number(purchasePrice),
+      quantity: Number(quantity),
+      fournisseur: req.body.fournisseur || '',
+      sellingPrice: req.body.sellingPrice !== undefined ? Number(req.body.sellingPrice) : undefined
+    };
+
+    const newProduct = Product.create(productData);
+    if (!newProduct) {
+      return res.status(500).json({ message: 'Error creating product' });
+    }
+
+    if (req.files && req.files.length > 0) {
+      const newPhotoUrls = req.files.map(f => `/uploads/${f.filename}`);
+      const mainIndex = req.body.mainPhotoIndex !== undefined ? parseInt(req.body.mainPhotoIndex) : 0;
+      const mainPhoto = newPhotoUrls[mainIndex] || newPhotoUrls[0];
+      const updated = Product.update(newProduct.id, { photos: newPhotoUrls, mainPhoto });
+      return res.status(201).json(updated || newProduct);
+    }
+
+    res.status(201).json(newProduct);
+  } catch (error) {
+    console.error('❌ Error creating product with photos:', error);
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+});
+
 // Update product (requires authentication)
 // Cette route accepte des mises à jour partielles - seuls les champs fournis seront mis à jour
 router.put('/:id', authMiddleware, async (req, res) => {
