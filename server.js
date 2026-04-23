@@ -179,6 +179,34 @@ if (!fs.existsSync(productsPath)) {
   ], null, 2));
 }
 
+// Migration automatique : s'assurer que TOUS les produits ont un `code`
+// ET une `caracteristique` (nom, numero, codeBarre obfusqué, code).
+// Couvre :
+//   - première installation (fichier seed)
+//   - après une restauration / injection d'une vieille sauvegarde
+//   - après un delete-all (fichier remis à [] puis nouveaux produits ajoutés)
+// Sans planter si products.json est vide ou absent.
+try {
+  const ProductModel = require('./models/Product');
+  if (fs.existsSync(productsPath)) {
+    const raw = fs.readFileSync(productsPath, 'utf8');
+    const list = JSON.parse(raw || '[]');
+    if (Array.isArray(list) && list.length > 0) {
+      const needsMigration = list.some(
+        p => !p.code || !p.caracteristique || typeof p.caracteristique !== 'object'
+      );
+      if (needsMigration) {
+        const result = ProductModel.generateCodesForExistingProducts();
+        if (result && result.success) {
+          console.log(`🏷️  Migration produits OK : ${result.updatedCount} code(s) générés / caractéristiques ajoutées.`);
+        }
+      }
+    }
+  }
+} catch (e) {
+  console.warn('⚠️ Migration caracteristique produits ignorée :', e.message);
+}
+
 const salesPath = path.join(dbPath, 'sales.json');
 if (!fs.existsSync(salesPath)) {
   fs.writeFileSync(salesPath, JSON.stringify([], null, 2));

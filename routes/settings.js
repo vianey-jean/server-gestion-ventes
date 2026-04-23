@@ -556,6 +556,16 @@ router.post('/restore', authMiddleware, (req, res) => {
       });
     }
 
+    // Après une restauration, s'assurer que tous les produits ont leur
+    // caractéristique (nom, numero, codeBarre obfusqué, code). Les vieilles
+    // sauvegardes peuvent ne pas en contenir.
+    try {
+      const ProductModel = require('../models/Product');
+      ProductModel.generateCodesForExistingProducts();
+    } catch (e) {
+      console.warn('⚠️ Migration caracteristique post-restore ignorée :', e.message);
+    }
+
     return res.json({
       success: true,
       status: 'updated',

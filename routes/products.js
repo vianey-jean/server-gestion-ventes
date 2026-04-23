@@ -97,7 +97,8 @@ router.post('/', authMiddleware, async (req, res) => {
       purchasePrice: Number(purchasePrice),
       quantity: Number(quantity),
       fournisseur: req.body.fournisseur || '',
-      sellingPrice: req.body.sellingPrice !== undefined ? Number(req.body.sellingPrice) : undefined
+      sellingPrice: req.body.sellingPrice !== undefined ? Number(req.body.sellingPrice) : undefined,
+      ...(req.body.caracteristique ? { caracteristique: req.body.caracteristique } : {}),
     };
     
     const newProduct = Product.create(productData);
@@ -130,7 +131,8 @@ router.post('/with-photos', authMiddleware, upload.array('photos', 6), async (re
       purchasePrice: Number(purchasePrice),
       quantity: Number(quantity),
       fournisseur: req.body.fournisseur || '',
-      sellingPrice: req.body.sellingPrice !== undefined ? Number(req.body.sellingPrice) : undefined
+      sellingPrice: req.body.sellingPrice !== undefined ? Number(req.body.sellingPrice) : undefined,
+      ...(req.body.caracteristique ? { caracteristique: req.body.caracteristique } : {}),
     };
 
     const newProduct = Product.create(productData);
@@ -157,10 +159,10 @@ router.post('/with-photos', authMiddleware, upload.array('photos', 6), async (re
 // Cette route accepte des mises à jour partielles - seuls les champs fournis seront mis à jour
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
-    const { description, purchasePrice, quantity, reserver, fournisseur, sellingPrice } = req.body;
+    const { description, purchasePrice, quantity, reserver, fournisseur, sellingPrice, caracteristique } = req.body;
     
     // Vérifier qu'au moins un champ est fourni pour la mise à jour
-    if (description === undefined && purchasePrice === undefined && quantity === undefined && reserver === undefined && fournisseur === undefined && sellingPrice === undefined) {
+    if (description === undefined && purchasePrice === undefined && quantity === undefined && reserver === undefined && fournisseur === undefined && sellingPrice === undefined && caracteristique === undefined) {
       return res.status(400).json({ message: 'At least one field is required for update' });
     }
     
@@ -172,6 +174,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     if (reserver !== undefined) productData.reserver = reserver;
     if (fournisseur !== undefined) productData.fournisseur = fournisseur;
     if (sellingPrice !== undefined) productData.sellingPrice = Number(sellingPrice);
+    if (caracteristique !== undefined) productData.caracteristique = caracteristique;
     
     const updatedProduct = Product.update(req.params.id, productData);
     
