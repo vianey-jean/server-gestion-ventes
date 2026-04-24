@@ -62,6 +62,9 @@ router.put('/objectif', authMiddleware, async (req, res) => {
         description: 'Le nouvel objectif doit être strictement supérieur à l\'objectif actuel'
       });
     }
+    if (error.message === 'INVALID_OBJECTIF') {
+      return res.status(400).json({ message: 'Valeur d\'objectif invalide' });
+    }
     res.status(500).json({ message: 'Server error' });
   }
 });

@@ -105,6 +105,14 @@ const getComparableIdentity = (item) => {
     return stableStringify(item);
   }
 
+  if (item.annee !== undefined && item.mois !== undefined) {
+    return `mois-annee:${String(item.annee)}-${String(item.mois)}`;
+  }
+
+  if (item.year !== undefined && item.month !== undefined) {
+    return `month-year:${String(item.year)}-${String(item.month)}`;
+  }
+
   const priorityKeys = ['id', '_id', 'email', 'code', 'reference', 'numero', 'phone', 'nom', 'name'];
   const matchedKey = priorityKeys.find((key) => item[key] !== undefined && item[key] !== null && item[key] !== '');
 
@@ -155,19 +163,33 @@ const mergeRestoreData = (existingData, incomingData) => {
     const merged = [...existingData];
     let added = 0;
     let skipped = 0;
+    let changed = false;
 
     incomingData.forEach((incomingItem) => {
-      const alreadyExists = existingData.some((existingItem) => areItemsEquivalent(existingItem, incomingItem));
+      const existingIndex = merged.findIndex((existingItem) => getComparableIdentity(existingItem) === getComparableIdentity(incomingItem));
 
-      if (alreadyExists) {
-        skipped += 1;
-      } else {
+      if (existingIndex === -1) {
         merged.push(incomingItem);
         added += 1;
+        changed = true;
+        return;
       }
+
+      const existingItem = merged[existingIndex];
+
+      if (areItemsEquivalent(existingItem, incomingItem)) {
+        skipped += 1;
+        return;
+      }
+
+      const nested = mergeRestoreData(existingItem, incomingItem);
+      merged[existingIndex] = nested.data;
+      added += nested.added;
+      skipped += nested.skipped;
+      changed = true;
     });
 
-    return { data: merged, added, skipped, changed: added > 0 };
+    return { data: merged, added, skipped, changed };
   }
 
   if (isPlainObject(existingData) && isPlainObject(incomingData)) {
@@ -206,7 +228,7 @@ const mergeRestoreData = (existingData, incomingData) => {
     return { data: existingData, added: 0, skipped: 1, changed: false };
   }
 
-  return { data: existingData, added: 0, skipped: 1, changed: false };
+  return { data: incomingData, added: 0, skipped: 0, changed: true };
 };
 
 // ==================
@@ -526,6 +548,27 @@ router.post('/restore', authMiddleware, (req, res) => {
       ...Object.keys(backupData).filter(k => k !== '_metadata' && k.endsWith('.json'))
     ]);
 
+    // ✅ Fichiers à TOUJOURS remplacer entièrement lors d'une restauration.
+    // Le merge "intelligent" peut perdre des données pour ces fichiers car
+    // les entrées partagent souvent les mêmes ids mais avec des valeurs
+    // numériques mises à jour (quantités produits, objectifs, montants...).
+    const REPLACE_ON_RESTORE = new Set([
+      'objectif.json',
+      'products.json',
+      'nouvelle_achat.json',
+      'pretproduits.json',
+      'pretfamilles.json',
+      'avance.json',
+      'sales.json',
+      'remboursement.json',
+      'compta.json',
+      'benefice.json',
+      'depensedumois.json',
+      'depensefixe.json',
+      'pointage.json',
+      'pointageauto.json'
+    ]);
+
     allFilesToRestore.forEach(file => {
       if (backupData[file] === undefined) {
         return;
@@ -533,6 +576,28 @@ router.post('/restore', authMiddleware, (req, res) => {
 
       const filePath = path.join(dbPath, file);
       const existingData = fs.existsSync(filePath) ? readJson(filePath) : null;
+
+      // Pour les fichiers critiques (état numérique, stocks, finances) on
+      // remplace directement par le contenu de la sauvegarde au lieu de
+      // fusionner — sinon on risque de perdre des quantités/objectifs.
+      if (REPLACE_ON_RESTORE.has(file)) {
+        const existingStr = stableStringify(existingData);
+        const incomingStr = stableStringify(backupData[file]);
+        if (existingStr !== incomingStr) {
+          writeJson(filePath, backupData[file]);
+          updatedFilesCount += 1;
+          const addedCount = Array.isArray(backupData[file])
+            ? backupData[file].length
+            : isPlainObject(backupData[file])
+              ? Object.keys(backupData[file]).length
+              : 1;
+          totalAddedEntries += addedCount;
+        } else {
+          unchangedFilesCount += 1;
+        }
+        return;
+      }
+
       const mergeResult = mergeRestoreData(existingData, backupData[file]);
 
       if (mergeResult.changed) {

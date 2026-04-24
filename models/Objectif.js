@@ -98,6 +98,30 @@ const Objectif = {
     };
   },
   
+  // Calcule le vrai max actuel d'un mois en regardant TOUTES les sources :
+  // objectifMax/objectif, objectifChanges, historique. Évite les régressions
+  // après une restauration ou un reset.
+  _getTrueMaxForMonth: (data, month, year) => {
+    const candidates = [];
+    const now = new Date();
+    if (month === (now.getMonth() + 1) && year === now.getFullYear()) {
+      if (Number.isFinite(Number(data.objectifMax))) candidates.push(Number(data.objectifMax));
+      if (Number.isFinite(Number(data.objectif))) candidates.push(Number(data.objectif));
+    }
+    (data.objectifChanges || []).forEach(c => {
+      if (c.mois === month && c.annee === year) {
+        if (Number.isFinite(Number(c.nouveauObjectif))) candidates.push(Number(c.nouveauObjectif));
+        if (Number.isFinite(Number(c.ancienObjectif))) candidates.push(Number(c.ancienObjectif));
+      }
+    });
+    (data.historique || []).forEach(h => {
+      if (h.mois === month && h.annee === year && Number.isFinite(Number(h.objectif))) {
+        candidates.push(Number(h.objectif));
+      }
+    });
+    return candidates.length > 0 ? Math.max(...candidates, DEFAULT_OBJECTIF) : DEFAULT_OBJECTIF;
+  },
+
   updateObjectif: (newObjectif, targetMonth = null, targetYear = null) => {
     const data = readData();
     const now = new Date();
@@ -114,15 +138,32 @@ const Objectif = {
     }
     
     const newValue = Number(newObjectif);
-    const currentMax = data.objectifMax || data.objectif || DEFAULT_OBJECTIF;
-    
-    // RÈGLE: Interdire la diminution - seul un objectif supérieur est autorisé
+    if (!Number.isFinite(newValue) || newValue <= 0) {
+      throw new Error('INVALID_OBJECTIF');
+    }
+
+    // ✅ Calculer le vrai max en regardant TOUTES les sources (évite duplications
+    // après restauration où data.objectifMax aurait été remis à 2000 par défaut)
+    const currentMax = Objectif._getTrueMaxForMonth(data, monthToUpdate, yearToUpdate);
+
+    // RÈGLE: Interdire la diminution OU l'égalité - strictement supérieur requis
     if (newValue <= currentMax) {
       throw new Error('OBJECTIF_MUST_INCREASE');
     }
-    
-    // Enregistrer le changement dans l'historique des changements
+
+    // ✅ Anti-doublon : si une entrée identique existe déjà pour ce mois,
+    // ne pas en ajouter une autre
     if (!data.objectifChanges) data.objectifChanges = [];
+    const alreadyExists = data.objectifChanges.some(c =>
+      c.mois === monthToUpdate &&
+      c.annee === yearToUpdate &&
+      Number(c.nouveauObjectif) === newValue
+    );
+    if (alreadyExists) {
+      throw new Error('OBJECTIF_MUST_INCREASE');
+    }
+
+    // Enregistrer le changement dans l'historique des changements
     data.objectifChanges.push({
       date: now.toISOString(),
       ancienObjectif: currentMax,
@@ -221,6 +262,7 @@ const Objectif = {
     
     const data = readData();
     if (!data.historique) data.historique = [];
+    if (!data.objectifChanges) data.objectifChanges = [];
     
     // DÉTECTION DU CHANGEMENT DE MOIS
     const isNewMonth = data.mois !== currentMonth || data.annee !== currentYear;
@@ -241,9 +283,11 @@ const Objectif = {
       );
       
       // Get existing objectif or use default
-      const existingObjectif = existingIndex >= 0 
-        ? data.historique[existingIndex].objectif 
-        : DEFAULT_OBJECTIF;
+      const existingObjectif = existingIndex >= 0
+        ? data.historique[existingIndex].objectif
+        : month === currentMonth && year === currentYear
+          ? (data.objectifMax || data.objectif || DEFAULT_OBJECTIF)
+          : DEFAULT_OBJECTIF;
       
       const objectifToUse = existingObjectif || DEFAULT_OBJECTIF;
       const pourcentage = objectifToUse > 0 
@@ -279,11 +323,19 @@ const Objectif = {
     );
     
     if (isNewMonth) {
-      data.objectif = DEFAULT_OBJECTIF;
-      data.objectifMax = DEFAULT_OBJECTIF;
+      // Nouveau mois : on vérifie d'abord s'il existe déjà des objectifs
+      // définis pour ce mois (cas d'une restauration de sauvegarde).
+      const restoredMax = Objectif._getTrueMaxForMonth(data, currentMonth, currentYear);
+      data.objectif = restoredMax || DEFAULT_OBJECTIF;
+      data.objectifMax = restoredMax || DEFAULT_OBJECTIF;
     } else {
+      // ✅ Toujours réaligner sur le vrai max (objectifChanges + historique)
+      // Cela protège contre une restauration où objectifMax aurait été perdu.
+      const trueMax = Objectif._getTrueMaxForMonth(data, currentMonth, currentYear);
+      if (trueMax > (Number(data.objectifMax) || 0)) data.objectifMax = trueMax;
+      if (trueMax > (Number(data.objectif) || 0)) data.objectif = trueMax;
       if (!data.objectif || data.objectif === 0) {
-        data.objectif = DEFAULT_OBJECTIF;
+        data.objectif = data.objectifMax || DEFAULT_OBJECTIF;
       }
       if (!data.objectifMax || data.objectifMax === 0) {
         data.objectifMax = data.objectif || DEFAULT_OBJECTIF;
@@ -325,7 +377,26 @@ const Objectif = {
       if (a.annee !== b.annee) return a.annee - b.annee;
       return a.mois - b.mois;
     });
-    
+
+    // ✅ Dédupliquer objectifChanges : pour un même (mois, annee, nouveauObjectif)
+    // on ne garde que la première entrée chronologique. Cela nettoie les
+    // duplications déjà présentes en base.
+    if (Array.isArray(data.objectifChanges)) {
+      const seen = new Set();
+      const sorted = [...data.objectifChanges].sort((a, b) =>
+        new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+      const dedup = [];
+      sorted.forEach(c => {
+        const key = `${c.annee}-${c.mois}-${Number(c.nouveauObjectif)}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          dedup.push(c);
+        }
+      });
+      data.objectifChanges = dedup;
+    }
+
     writeData(data);
     
     return {

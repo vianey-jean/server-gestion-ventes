@@ -30,6 +30,7 @@ exports.updateObjectif = async (req, res) => {
   } catch (error) {
     if (error.message === 'Cannot modify objectif for past months') return res.status(403).json({ message: 'Les objectifs des mois passés sont verrouillés' });
     if (error.message === 'OBJECTIF_MUST_INCREASE') return res.status(400).json({ message: 'OBJECTIF_MUST_INCREASE' });
+    if (error.message === 'INVALID_OBJECTIF') return res.status(400).json({ message: 'Valeur d\'objectif invalide' });
     res.status(500).json({ message: 'Server error' });
   }
 };
