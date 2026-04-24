@@ -739,14 +739,15 @@ router.post('/bulk-delete', authMiddleware, (req, res) => {
 
     const { type, ids, deleteAll, month, year } = req.body;
 
-    if (!type || !['sales', 'products', 'clients'].includes(type)) {
-      return res.status(400).json({ message: 'Type invalide. Choisir: sales, products, clients' });
+    if (!type || !['sales', 'products', 'clients', 'notes'].includes(type)) {
+      return res.status(400).json({ message: 'Type invalide. Choisir: sales, products, clients, notes' });
     }
 
     const fileMap = {
       sales: 'sales.json',
       products: 'products.json',
-      clients: 'clients.json'
+      clients: 'clients.json',
+      notes: 'notes.json'
     };
 
     const filePath = path.join(dbPath, fileMap[type]);
@@ -805,9 +806,10 @@ router.post('/bulk-delete', authMiddleware, (req, res) => {
       req.app.locals.broadcastSSE({ type, action: 'bulk-delete', data: { deletedCount } });
     }
 
+    const labelMap = { sales: 'vente(s)', products: 'produit(s)', clients: 'client(s)', notes: 'note(s)' };
     res.json({
       success: true,
-      message: `${deletedCount} ${type === 'sales' ? 'vente(s)' : type === 'products' ? 'produit(s)' : 'client(s)'} supprimé(s)`,
+      message: `${deletedCount} ${labelMap[type]} supprimé(s)`,
       deletedCount,
       remainingCount: data.length
     });
@@ -826,14 +828,15 @@ router.get('/bulk-data', authMiddleware, (req, res) => {
 
     const { type, month, year } = req.query;
 
-    if (!type || !['sales', 'products', 'clients'].includes(type)) {
+    if (!type || !['sales', 'products', 'clients', 'notes'].includes(type)) {
       return res.status(400).json({ message: 'Type invalide' });
     }
 
     const fileMap = {
       sales: 'sales.json',
       products: 'products.json',
-      clients: 'clients.json'
+      clients: 'clients.json',
+      notes: 'notes.json'
     };
 
     const filePath = path.join(dbPath, fileMap[type]);
@@ -871,6 +874,15 @@ router.get('/bulk-data', authMiddleware, (req, res) => {
           purchasePrice: item.purchasePrice,
           sellingPrice: item.sellingPrice,
           quantity: item.quantity
+        };
+      } else if (type === 'notes') {
+        // Strip HTML for preview
+        const stripHtml = (html) => String(html || '').replace(/<[^>]*>/g, '').trim();
+        return {
+          id: item.id,
+          nom: item.title || stripHtml(item.titleHtml) || 'Sans titre',
+          description: stripHtml(item.contentHtml || item.content || '').slice(0, 100),
+          date: item.createdAt || item.updatedAt || ''
         };
       } else {
         return {
