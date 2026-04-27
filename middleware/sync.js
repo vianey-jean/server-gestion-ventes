@@ -16,6 +16,13 @@ class SyncManager {
     this.autoBackupReadyTimer = null;
     this.autoBackupStableWindowMs = 5 * 60 * 1000;
     this.autoBackupCountdownMs = 5 * 60 * 1000;
+
+    // ===== Sleep/Awake logic (72h idle => sleep) =====
+    this.idleTimeoutMs = 72 * 60 * 60 * 1000; // 72 hours
+    this.idleTimer = null;
+    this.isSleeping = false;
+    this.lastDataReceivedAt = new Date();
+    this._startIdleTimer();
     this.autoBackupState = {
       signal: false,
       activationId: null,
@@ -132,6 +139,44 @@ class SyncManager {
     }, this.autoBackupStableWindowMs);
   }
 
+  // ===== Sleep/Awake helpers =====
+  _startIdleTimer() {
+    if (this.idleTimer) {
+      clearTimeout(this.idleTimer);
+      this.idleTimer = null;
+    }
+    this.idleTimer = setTimeout(() => {
+      this._enterSleep();
+    }, this.idleTimeoutMs);
+  }
+
+  _enterSleep() {
+    if (this.isSleeping) return;
+    this.isSleeping = true;
+    try {
+      this.notifyClients('server-sleep', {
+        timestamp: new Date(),
+        lastDataReceivedAt: this.lastDataReceivedAt,
+        idleTimeoutMs: this.idleTimeoutMs
+      });
+    } catch {}
+  }
+
+  wakeUp(reason = 'data') {
+    const wasSleeping = this.isSleeping;
+    this.isSleeping = false;
+    this.lastDataReceivedAt = new Date();
+    this._startIdleTimer();
+    if (wasSleeping) {
+      try {
+        this.notifyClients('server-awake', {
+          timestamp: this.lastDataReceivedAt,
+          reason
+        });
+      } catch {}
+    }
+  }
+
   registerDataChange(filePath) {
     const dataType = this.getDataType(filePath);
 
@@ -140,6 +185,9 @@ class SyncManager {
     }
 
     const changedAt = new Date();
+
+    // Wake up + reset 72h countdown on every real data change
+    this.wakeUp('data-change');
 
     this.autoBackupState.lastChangeAt = changedAt;
     this.autoBackupState.lastChangedFile = dataType;
@@ -288,10 +336,14 @@ class SyncManager {
   addClient(clientId, notifyCallback) {
     const client = { id: clientId, notify: notifyCallback, lastPing: Date.now() };
     this.clients.add(client);
-    
+
+    // Wake server immediately on new connection (e.g. user just logged in)
+    // and reset 72h idle countdown so the user gets fresh data fast.
+    this.wakeUp('client-connected');
+
     // Envoyer les données actuelles immédiatement
     this.sendCurrentData(client);
-    
+
     // Heartbeat pour maintenir la connexion
     const heartbeat = setInterval(() => {
       try {
@@ -438,6 +490,9 @@ process.on('SIGINT', () => {
   });
   if (syncManager.autoBackupReadyTimer) {
     clearTimeout(syncManager.autoBackupReadyTimer);
+  }
+  if (syncManager.idleTimer) {
+    clearTimeout(syncManager.idleTimer);
   }
   process.exit(0);
 });

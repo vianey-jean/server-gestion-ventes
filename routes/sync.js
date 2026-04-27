@@ -158,7 +158,13 @@ router.get('/status', (req, res) => {
       fileStats,
       fileContentHashes,
       dataChangeToken,
-      autoBackupState: syncManager.getAutoBackupState()
+      autoBackupState: syncManager.getAutoBackupState(),
+      sleepState: {
+        isSleeping: syncManager.isSleeping,
+        lastDataReceivedAt: syncManager.lastDataReceivedAt,
+        idleTimeoutMs: syncManager.idleTimeoutMs,
+        sleepsAt: new Date(syncManager.lastDataReceivedAt.getTime() + syncManager.idleTimeoutMs)
+      }
     });
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la récupération du statut' });
