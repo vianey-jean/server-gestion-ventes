@@ -67,6 +67,8 @@ router.post('/', authMiddleware, (req, res) => {
       prixJournalier: Number(req.body.prixJournalier) || 0,
       montantTotal: Number(req.body.montantTotal) || 0,
       active: req.body.active !== undefined ? !!req.body.active : true,
+      permanentlyDisabled: req.body.permanentlyDisabled !== undefined ? !!req.body.permanentlyDisabled : false,
+      reactivationStartDate: req.body.reactivationStartDate || null,
       createdAt: new Date().toISOString(),
     };
     items.push(newItem);
