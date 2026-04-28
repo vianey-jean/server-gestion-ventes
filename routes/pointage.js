@@ -8,6 +8,8 @@ const express = require('express');
 const router = express.Router();
 const Pointage = require('../models/Pointage');
 const authMiddleware = require('../middleware/auth');
+const pointageDeletedRoute = require('./pointageDeleted');
+const addDeletedFingerprint = pointageDeletedRoute.addFingerprint;
 
 router.get('/', authMiddleware, (req, res) => {
   try {
@@ -72,8 +74,20 @@ router.put('/:id', authMiddleware, (req, res) => {
 
 router.delete('/:id', authMiddleware, (req, res) => {
   try {
+    // Récupérer l'empreinte AVANT suppression
+    const existing = Pointage.getById(req.params.id);
     const success = Pointage.delete(req.params.id);
     if (!success) return res.status(404).json({ message: 'Not found' });
+    // Enregistrer l'empreinte pour bloquer le pointage auto sur cette date
+    if (existing && existing.date) {
+      try {
+        addDeletedFingerprint({
+          date: existing.date,
+          travailleurId: existing.travailleurId || '',
+          entrepriseId: existing.entrepriseId || '',
+        });
+      } catch (e) { /* silencieux */ }
+    }
     res.json({ message: 'Deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });

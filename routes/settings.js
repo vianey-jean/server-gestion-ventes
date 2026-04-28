@@ -566,7 +566,9 @@ router.post('/restore', authMiddleware, (req, res) => {
       'depensedumois.json',
       'depensefixe.json',
       'pointage.json',
-      'pointageauto.json'
+      'pointageauto.json',
+      'pointageDeleted.json',
+      'pointageAutoSessions.json'
     ]);
 
     allFilesToRestore.forEach(file => {
@@ -690,7 +692,7 @@ router.post('/delete-all', authMiddleware, (req, res) => {
       'fournisseurs.json', 'group-chats.json', 'group-messages.json',
       'indisponible.json', 'lienpartagecommente.json', 'messagerie.json',
       'messages.json', 'notes.json', 'nouvelle_achat.json', 'pointage.json',
-      'pointageauto.json',
+      'pointageauto.json', 'pointageDeleted.json', 'pointageAutoSessions.json',
       'pretfamilles.json', 'pretproduits.json', 'productComments.json',
       'products.json', 'rdv.json', 'rdvNotifications.json', 'remboursement.json',
       'sales.json', 'shareTokens.json', 'tache.json', 'travailleur.json',
