@@ -372,12 +372,7 @@ class SyncManager {
       'messages.json',
       'rdv.json',
       'rdvNotifications.json',
-      'remboursement.json',
-      'pointage.json',
-      'notes.json',
-      'tache.json',
-      'travailleur.json',
-      'entreprise.json'
+      'remboursement.json'
     ];
 
     filesToWatch.forEach(fileName => {
@@ -450,12 +445,7 @@ const filesToWatch = [
   'messages.json',
   'rdv.json',
   'rdvNotifications.json',
-  'remboursement.json',
-  'pointage.json',
-  'notes.json',
-  'tache.json',
-  'travailleur.json',
-  'entreprise.json'
+  'remboursement.json'
 ];
 
 filesToWatch.forEach(fileName => {
