@@ -62,6 +62,17 @@ const Pointage = {
   create: (itemData) => {
     try {
       const items = readPointages();
+      // IDÉMPOTENCE : empêche le doublon (date + travailleurId + entrepriseId)
+      // Garantit qu'un même pointage automatique n'est enregistré qu'une seule fois
+      // par jour, même si déclenché plusieurs fois après suppression / réinjection.
+      if (itemData && itemData.date && itemData.travailleurId && itemData.entrepriseId) {
+        const dup = items.find(p =>
+          p.date === itemData.date &&
+          (p.travailleurId || '') === (itemData.travailleurId || '') &&
+          (p.entrepriseId || '') === (itemData.entrepriseId || '')
+        );
+        if (dup) return dup;
+      }
       const newItem = {
         id: Date.now().toString(),
         ...itemData,
