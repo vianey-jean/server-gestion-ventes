@@ -93,4 +93,15 @@ router.post('/save-monthly', authMiddleware, async (req, res) => {
   }
 });
 
+// Reset objectif of current month back to 2000 (manual reset)
+router.post('/reset', authMiddleware, async (req, res) => {
+  try {
+    const data = Objectif.resetCurrentObjectif();
+    res.json(data);
+  } catch (error) {
+    console.error('Error resetting objectif:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;

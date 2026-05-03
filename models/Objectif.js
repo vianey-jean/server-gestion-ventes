@@ -323,11 +323,25 @@ const Objectif = {
     );
     
     if (isNewMonth) {
-      // Nouveau mois : on vérifie d'abord s'il existe déjà des objectifs
-      // définis pour ce mois (cas d'une restauration de sauvegarde).
-      const restoredMax = Objectif._getTrueMaxForMonth(data, currentMonth, currentYear);
-      data.objectif = restoredMax || DEFAULT_OBJECTIF;
-      data.objectifMax = restoredMax || DEFAULT_OBJECTIF;
+      // ✅ Nouveau mois (ex: 01/05 00:01) : RESET strict à DEFAULT_OBJECTIF (2000).
+      // On ne récupère PAS data.objectifMax/objectif (qui appartiennent au mois précédent).
+      // On regarde uniquement objectifChanges/historique du nouveau mois (cas restauration).
+      const restoredCandidates = [];
+      (data.objectifChanges || []).forEach(c => {
+        if (c.mois === currentMonth && c.annee === currentYear) {
+          if (Number.isFinite(Number(c.nouveauObjectif))) restoredCandidates.push(Number(c.nouveauObjectif));
+        }
+      });
+      (data.historique || []).forEach(h => {
+        if (h.mois === currentMonth && h.annee === currentYear && Number.isFinite(Number(h.objectif))) {
+          restoredCandidates.push(Number(h.objectif));
+        }
+      });
+      const restoredMax = restoredCandidates.length > 0
+        ? Math.max(...restoredCandidates, DEFAULT_OBJECTIF)
+        : DEFAULT_OBJECTIF;
+      data.objectif = restoredMax;
+      data.objectifMax = restoredMax;
     } else {
       // ✅ Toujours réaligner sur le vrai max (objectifChanges + historique)
       // Cela protège contre une restauration où objectifMax aurait été perdu.
@@ -520,10 +534,29 @@ const Objectif = {
           monthlyBenefices[key] = { month, year, total: 0 };
         }
         
-        // Calculate profit from sale
-        const sellingPrice = sale.totalSellingPrice || sale.sellingPrice || 0;
-        const purchasePrice = sale.totalPurchasePrice || sale.purchasePrice || 0;
-        const profit = Number(sellingPrice) - Number(purchasePrice);
+        // ✅ Calcul du vrai bénéfice en tenant compte des spécificités:
+        // - Vente multi-produits : utiliser sale.totalProfit ou somme des p.profit
+        // - Vente single : utiliser sale.profit (= sellingPrice - purchasePrice)
+        // - Avance / prêt : profit = 0 (pas un vrai bénéfice tant que non soldé)
+        // - Remboursement (isRefund) : profit déjà négatif, on l'inclut tel quel
+        let profit = 0;
+        if (sale.products && Array.isArray(sale.products) && sale.products.length > 0) {
+          if (Number.isFinite(Number(sale.totalProfit))) {
+            profit = Number(sale.totalProfit);
+          } else {
+            profit = sale.products.reduce((sum, p) => {
+              const desc = (p.description || '').toLowerCase();
+              if (desc.includes('avance') || desc.includes('prêt') || desc.includes('pret')) return sum;
+              return sum + (Number(p.profit) || 0);
+            }, 0);
+          }
+        } else {
+          const desc = (sale.description || '').toLowerCase();
+          const isAvanceOuPret = desc.includes('avance') || desc.includes('prêt') || desc.includes('pret');
+          if (!isAvanceOuPret || sale.isRefund) {
+            profit = Number(sale.profit) || 0;
+          }
+        }
         
         monthlyBenefices[key].total += profit;
       }
@@ -557,6 +590,47 @@ const Objectif = {
     
     writeData(data);
     return data.beneficesHistorique;
+  },
+
+  // ✅ Réinitialisation manuelle de l'objectif du mois en cours à 2000
+  resetCurrentObjectif: () => {
+    const data = readData();
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear();
+
+    data.objectif = DEFAULT_OBJECTIF;
+    data.objectifMax = DEFAULT_OBJECTIF;
+    data.mois = currentMonth;
+    data.annee = currentYear;
+
+    if (Array.isArray(data.objectifChanges)) {
+      data.objectifChanges = data.objectifChanges.filter(
+        c => !(c.mois === currentMonth && c.annee === currentYear)
+      );
+    }
+
+    if (!data.historique) data.historique = [];
+    const idx = data.historique.findIndex(
+      h => h.mois === currentMonth && h.annee === currentYear
+    );
+    const totalVentes = data.totalVentesMois || 0;
+    const pourcentage = Math.round((totalVentes / DEFAULT_OBJECTIF) * 100);
+    if (idx >= 0) {
+      data.historique[idx].objectif = DEFAULT_OBJECTIF;
+      data.historique[idx].pourcentage = pourcentage;
+    } else {
+      data.historique.push({
+        mois: currentMonth,
+        annee: currentYear,
+        totalVentesMois: totalVentes,
+        objectif: DEFAULT_OBJECTIF,
+        pourcentage
+      });
+    }
+
+    writeData(data);
+    return { ...data, objectif: DEFAULT_OBJECTIF };
   }
 };
 
