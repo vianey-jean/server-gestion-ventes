@@ -1062,4 +1062,79 @@ router.put('/auto-sauvegarde', authMiddleware, (req, res) => {
   }
 });
 
+// ========== AUTO-INJECTER STATUS ==========
+const autoInjecterPath = path.join(dbPath, 'auto-injecter.json');
+
+const readAutoInjecter = () => {
+  try {
+    if (!fs.existsSync(autoInjecterPath)) {
+      fs.writeFileSync(autoInjecterPath, JSON.stringify({ autoInjecter: true }, null, 2));
+      return { autoInjecter: true };
+    }
+    return JSON.parse(fs.readFileSync(autoInjecterPath, 'utf8'));
+  } catch {
+    return { autoInjecter: true };
+  }
+};
+
+router.get('/auto-injecter', authMiddleware, (req, res) => {
+  try { res.json(readAutoInjecter()); }
+  catch { res.status(500).json({ message: 'Erreur serveur' }); }
+});
+
+router.put('/auto-injecter', authMiddleware, (req, res) => {
+  try {
+    if (!isAdmin(req.user)) {
+      return res.status(403).json({ message: 'Accès refusé. Administrateur requis.' });
+    }
+    const { autoInjecter } = req.body;
+    const data = { autoInjecter: !!autoInjecter };
+    fs.writeFileSync(autoInjecterPath, JSON.stringify(data, null, 2));
+    res.json({ success: true, ...data });
+  } catch {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+// Vérifie si la base est "vide" (toutes les bases sauf users.json sont vides,
+// et users.json ne contient que l'admin principale).
+router.get('/needs-injection', authMiddleware, (req, res) => {
+  try {
+    const cfg = readAutoInjecter();
+    if (!cfg.autoInjecter) return res.json({ needsInjection: false, autoInjecter: false });
+
+    // Bases métier critiques : si l'UNE d'elles est vide -> injection requise
+    const CRITICAL = [
+      'products.json', 'sales.json', 'clients.json',
+      'rdv.json', 'tache.json', 'notes.json', 'pointage.json'
+    ];
+
+    const emptyFiles = [];
+    for (const f of CRITICAL) {
+      const fp = path.join(dbPath, f);
+      if (!fs.existsSync(fp)) { emptyFiles.push(f); continue; }
+      const data = readJson(fp);
+      const isEmpty =
+        (Array.isArray(data) && data.length === 0) ||
+        (isPlainObject(data) && Object.keys(data).length === 0) ||
+        data == null;
+      if (isEmpty) emptyFiles.push(f);
+    }
+
+    // users.json : doit contenir uniquement l'admin principale
+    const users = readJson(usersPath) || [];
+    const onlyAdminPrincipal = users.length > 0 &&
+      users.every(u => u.role === 'administrateur principale');
+
+    res.json({
+      needsInjection: emptyFiles.length > 0 && onlyAdminPrincipal,
+      emptyFiles,
+      autoInjecter: true
+    });
+  } catch (e) {
+    console.error('needs-injection error:', e);
+    res.status(500).json({ message: 'Erreur serveur', needsInjection: false });
+  }
+});
+
 module.exports = router;
