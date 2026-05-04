@@ -399,4 +399,90 @@ router.delete('/:id/photos/:photoIndex', authMiddleware, async (req, res) => {
   }
 });
 
+/**
+ * POST /api/products/merge
+ * Fusionne plusieurs produits en un seul.
+ * Body (multipart ou JSON):
+ *  - sourceIds: string[] (JSON string si multipart) - ids des produits à fusionner (≥2)
+ *  - description, purchasePrice, quantity (requis)
+ *  - fournisseur (optionnel)
+ *  - keptPhotos: string[] (JSON string) - URLs photos existantes à conserver
+ *  - photos[]: nouveaux fichiers (optionnel)
+ *  - mainPhotoIndex: index parmi (keptPhotos + nouveaux)
+ *
+ * Crée un nouveau produit avec ces données puis supprime tous les produits sources.
+ */
+router.post('/merge', authMiddleware, upload.array('photos', 6), async (req, res) => {
+  try {
+    let { sourceIds, description, purchasePrice, quantity, fournisseur, keptPhotos, mainPhotoIndex } = req.body;
+
+    if (typeof sourceIds === 'string') {
+      try { sourceIds = JSON.parse(sourceIds); } catch { sourceIds = []; }
+    }
+    if (typeof keptPhotos === 'string') {
+      try { keptPhotos = JSON.parse(keptPhotos); } catch { keptPhotos = []; }
+    }
+    keptPhotos = Array.isArray(keptPhotos) ? keptPhotos : [];
+
+    if (!Array.isArray(sourceIds) || sourceIds.length < 2) {
+      // Nettoyer fichiers uploadés
+      if (req.files) req.files.forEach(f => { try { fs.unlinkSync(f.path); } catch {} });
+      return res.status(400).json({ message: 'Au moins 2 produits source requis' });
+    }
+    if (!description || purchasePrice === undefined || quantity === undefined) {
+      if (req.files) req.files.forEach(f => { try { fs.unlinkSync(f.path); } catch {} });
+      return res.status(400).json({ message: 'description, purchasePrice et quantity requis' });
+    }
+
+    // Vérifier que tous les produits source existent
+    const sourceProducts = sourceIds.map(id => Product.getById(id)).filter(Boolean);
+    if (sourceProducts.length < 2) {
+      if (req.files) req.files.forEach(f => { try { fs.unlinkSync(f.path); } catch {} });
+      return res.status(404).json({ message: 'Produits source introuvables' });
+    }
+
+    // Créer le nouveau produit
+    const productData = {
+      description,
+      purchasePrice: Number(purchasePrice),
+      quantity: Number(quantity),
+      fournisseur: fournisseur || '',
+    };
+    const newProduct = Product.create(productData);
+    if (!newProduct) {
+      if (req.files) req.files.forEach(f => { try { fs.unlinkSync(f.path); } catch {} });
+      return res.status(500).json({ message: 'Erreur création produit fusionné' });
+    }
+
+    // Gestion des photos : combiner keptPhotos + nouvelles uploadées
+    const newPhotoUrls = (req.files || []).map(f => `/uploads/${f.filename}`);
+    const allPhotos = [...keptPhotos, ...newPhotoUrls];
+    if (allPhotos.length > 0) {
+      const idx = mainPhotoIndex !== undefined ? parseInt(mainPhotoIndex) : 0;
+      const mainPhoto = allPhotos[idx] || allPhotos[0];
+      Product.update(newProduct.id, { photos: allPhotos, mainPhoto });
+    }
+
+    // Supprimer les produits sources (sauf si on a gardé leurs photos → ne pas effacer ces fichiers)
+    // Construire un set des photos à préserver
+    const preservedSet = new Set(keptPhotos);
+    sourceIds.forEach(id => {
+      const p = Product.getById(id);
+      if (!p) return;
+      // Retirer du produit les photos qui sont préservées avant suppression pour éviter unlink
+      const photos = (p.photos || []).filter(ph => !preservedSet.has(ph));
+      const mainPhoto = preservedSet.has(p.mainPhoto) ? null : p.mainPhoto;
+      Product.update(id, { photos, mainPhoto });
+      Product.delete(id);
+    });
+
+    const finalProduct = Product.getById(newProduct.id);
+    res.status(201).json(finalProduct || newProduct);
+  } catch (error) {
+    console.error('❌ Error merging products:', error);
+    if (req.files) req.files.forEach(f => { try { fs.unlinkSync(f.path); } catch {} });
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+});
+
 module.exports = router;

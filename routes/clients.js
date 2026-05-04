@@ -203,4 +203,99 @@ router.delete('/:id', authMiddleware, async (req, res) => {
   }
 });
 
+/**
+ * POST /api/clients/merge
+ * Fusionne plusieurs clients en un seul.
+ * Body (multipart):
+ *  - sourceIds: string[] (JSON string) - ids des clients à fusionner (≥2)
+ *  - nom, phones (JSON), adresse (requis)
+ *  - photo: nouveau fichier (optionnel)
+ *  - keepPhotoFromId: id du client dont on conserve la photo (optionnel)
+ *
+ * Crée un nouveau client avec ces données puis supprime tous les clients sources.
+ */
+router.post('/merge', authMiddleware, upload.single('photo'), async (req, res) => {
+  try {
+    let { sourceIds, nom, phones, adresse, keepPhotoFromId } = req.body;
+
+    if (typeof sourceIds === 'string') {
+      try { sourceIds = JSON.parse(sourceIds); } catch { sourceIds = []; }
+    }
+    if (typeof phones === 'string') {
+      try { phones = JSON.parse(phones); } catch { phones = [phones]; }
+    }
+
+    if (!Array.isArray(sourceIds) || sourceIds.length < 2) {
+      if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
+      return res.status(400).json({ message: 'Au moins 2 clients source requis' });
+    }
+
+    const validPhones = (phones || []).filter(p => p && p.trim());
+    if (!nom || validPhones.length === 0 || !adresse) {
+      if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
+      return res.status(400).json({ message: 'nom, phones et adresse requis' });
+    }
+
+    const sourceClients = sourceIds.map(id => Client.getById(id)).filter(Boolean);
+    if (sourceClients.length < 2) {
+      if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
+      return res.status(404).json({ message: 'Clients source introuvables' });
+    }
+
+    // Détermine la photo à utiliser
+    let photoPath = '';
+    let preservedPhotoUrl = null;
+    if (req.file) {
+      photoPath = `/uploads/clients/${req.file.filename}`;
+    } else if (keepPhotoFromId) {
+      const src = sourceClients.find(c => c.id === keepPhotoFromId);
+      if (src && src.photo) {
+        photoPath = src.photo;
+        preservedPhotoUrl = src.photo;
+      }
+    }
+
+    // Pour éviter conflit unicité du nom : si le nouveau nom matche un source, renommer temporairement
+    const tempRenames = [];
+    sourceClients.forEach(c => {
+      if (c.nom.toLowerCase() === nom.toLowerCase()) {
+        const tempName = `__merging_${c.id}_${Date.now()}`;
+        Client.update(c.id, { nom: tempName });
+        tempRenames.push({ id: c.id, original: c.nom });
+      }
+    });
+
+    const newClient = Client.create({
+      nom,
+      phones: validPhones,
+      adresse,
+      photo: photoPath,
+    });
+
+    if (!newClient || newClient.error) {
+      // Restaurer les noms temporaires
+      tempRenames.forEach(r => { try { Client.update(r.id, { nom: r.original }); } catch {} });
+      if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
+      return res.status(400).json({ message: newClient?.error || 'Erreur création client fusionné' });
+    }
+
+    // Supprimer les clients sources (en préservant la photo conservée si applicable)
+    sourceIds.forEach(id => {
+      const c = Client.getById(id);
+      if (!c) return;
+      if (preservedPhotoUrl && c.photo === preservedPhotoUrl) {
+        // Ne pas effacer le fichier physique
+        Client.update(id, { photo: '' });
+      }
+      Client.delete(id);
+    });
+
+    res.status(201).json(newClient);
+  } catch (error) {
+    console.error('❌ Error merging clients:', error);
+    if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+});
+
 module.exports = router;
