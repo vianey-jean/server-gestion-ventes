@@ -339,6 +339,7 @@ const shareCommentsRoutes = require('./routes/shareComments');
 const productCommentsRoutes = require('./routes/productComments');
 const maintenanceRoutes = require('./routes/maintenance');
 const prepaLivraisonRoutes = require('./routes/prepaLivraison');
+const confirmationRdvRoutes = require('./routes/confirmationRdv');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -383,6 +384,7 @@ app.use('/api/share-comments', shareCommentsRoutes);
 app.use('/api/product-comments', productCommentsRoutes);
 app.use('/api/maintenance', maintenanceRoutes);
 app.use('/api/prepa-livraison', prepaLivraisonRoutes);
+app.use('/api/confirmation-rdv', confirmationRdvRoutes);
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
