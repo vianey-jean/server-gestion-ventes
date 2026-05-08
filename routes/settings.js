@@ -699,27 +699,46 @@ router.post('/delete-all', authMiddleware, (req, res) => {
       'users.json'
     ];
 
-    // Delete all data - write empty arrays/objects, but keep admin principale in users
+    // Fichiers de configuration auto à préserver/réinitialiser explicitement
+    // (jamais vidés à {}, sinon les flags auto disparaissent)
+    const PRESERVE_FILES = new Set(['auto-injecter.json', 'auto-sauvegarde.json']);
+
+    // Delete all data - write empty arrays/objects, but keep admin principale in users.
+    // Couvre dynamiquement TOUS les fichiers .json présents et futurs dans /db.
     getDbFiles().forEach(file => {
       const filePath = path.join(dbPath, file);
-      if (fs.existsSync(filePath)) {
-        if (file === 'users.json') {
-          writeJson(filePath, adminPrincipaleUsers);
-        } else if (ARRAY_FILES.includes(file)) {
-          writeJson(filePath, []);
-        } else {
+      if (!fs.existsSync(filePath)) return;
+      if (PRESERVE_FILES.has(file)) return; // gérés ci-dessous
+      if (file === 'users.json') {
+        writeJson(filePath, adminPrincipaleUsers);
+      } else if (ARRAY_FILES.includes(file)) {
+        writeJson(filePath, []);
+      } else {
+        // Heuristique : on regarde la forme actuelle pour déterminer le vide approprié
+        try {
+          const current = readJson(filePath);
+          writeJson(filePath, Array.isArray(current) ? [] : {});
+        } catch {
           writeJson(filePath, {});
         }
       }
     });
 
     // Réinitialise timeoutinactive.json et tentativeblocage.json à {}
-    // → Le frontend utilisera automatiquement les valeurs par défaut
     try {
       writeJson(path.join(dbPath, 'timeoutinactive.json'), {});
       writeJson(path.join(dbPath, 'tentativeblocage.json'), {});
     } catch (e) {
       console.error('Erreur reset fichiers paramètres:', e);
+    }
+
+    // Force auto-injecter = true (pour redéclencher la demande d'injection)
+    // Force auto-sauvegarde = false (pas de sauvegarde auto sur base vide)
+    try {
+      fs.writeFileSync(path.join(dbPath, 'auto-injecter.json'), JSON.stringify({ autoInjecter: true }, null, 2));
+      fs.writeFileSync(path.join(dbPath, 'auto-sauvegarde.json'), JSON.stringify({ autoSauvegarde: false }, null, 2));
+    } catch (e) {
+      console.error('Erreur reset flags auto:', e);
     }
 
     res.json({ success: true, message: 'Toutes les données ont été supprimées (compte administrateur principale préservé)' });
