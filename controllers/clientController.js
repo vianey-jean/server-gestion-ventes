@@ -48,19 +48,29 @@ exports.getById = async (req, res) => {
 /** Crée un nouveau client (avec photo optionnelle) */
 exports.create = async (req, res) => {
   try {
-    let { nom, phone, phones, adresse } = req.body;
+    let { nom, phone, phones, adresse, addresses } = req.body;
     if (typeof phones === 'string') {
       try { phones = JSON.parse(phones); } catch { phones = [phones]; }
     }
+    if (typeof addresses === 'string') {
+      try { addresses = JSON.parse(addresses); } catch { addresses = [addresses]; }
+    }
 
     const hasPhone = (phones && Array.isArray(phones) && phones.filter(p => p && p.trim()).length > 0) || (phone && phone.trim());
-    if (!nom || !hasPhone || !adresse) {
+    const hasAddr = (addresses && Array.isArray(addresses) && addresses.filter(a => a && a.trim()).length > 0) || (adresse && adresse.trim());
+    if (!nom || !hasPhone || !hasAddr) {
       if (req.file) try { fs.unlinkSync(req.file.path); } catch {}
       return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
     }
 
     const photoPath = req.file ? `/uploads/clients/${req.file.filename}` : '';
-    const newClient = Client.create({ nom, phones: phones || (phone ? [phone] : []), adresse, photo: photoPath });
+    const newClient = Client.create({
+      nom,
+      phones: phones || (phone ? [phone] : []),
+      addresses: addresses || (adresse ? [adresse] : []),
+      adresse,
+      photo: photoPath
+    });
 
     if (!newClient || newClient.error) {
       if (req.file) try { fs.unlinkSync(req.file.path); } catch {}
@@ -77,15 +87,19 @@ exports.create = async (req, res) => {
 /** Met à jour un client (avec photo optionnelle) */
 exports.update = async (req, res) => {
   try {
-    let { nom, phone, phones, adresse } = req.body;
+    let { nom, phone, phones, adresse, addresses } = req.body;
     const removePhoto = req.body.removePhoto === 'true' || req.body.removePhoto === true;
 
     if (typeof phones === 'string') {
       try { phones = JSON.parse(phones); } catch { phones = [phones]; }
     }
+    if (typeof addresses === 'string') {
+      try { addresses = JSON.parse(addresses); } catch { addresses = [addresses]; }
+    }
 
     const hasPhone = (phones && Array.isArray(phones) && phones.filter(p => p && p.trim()).length > 0) || (phone && phone.trim());
-    if (!nom || !hasPhone || !adresse) {
+    const hasAddr = (addresses && Array.isArray(addresses) && addresses.filter(a => a && a.trim()).length > 0) || (adresse && adresse.trim());
+    if (!nom || !hasPhone || !hasAddr) {
       if (req.file) try { fs.unlinkSync(req.file.path); } catch {}
       return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
     }
@@ -100,7 +114,12 @@ exports.update = async (req, res) => {
     if (req.file) photoPath = `/uploads/clients/${req.file.filename}`;
     else if (removePhoto) photoPath = '';
 
-    const updateData = { nom, phones: phones || (phone ? [phone] : []), adresse };
+    const updateData = {
+      nom,
+      phones: phones || (phone ? [phone] : []),
+      addresses: addresses || (adresse ? [adresse] : []),
+      adresse
+    };
     if (photoPath !== undefined) updateData.photo = photoPath;
 
     const updatedClient = Client.update(req.params.id, updateData);

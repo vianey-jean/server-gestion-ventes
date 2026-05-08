@@ -252,24 +252,21 @@ const getDepensesFixe = () => {
   }
 };
 
-// Fonction pour mettre à jour les dépenses fixes
+// Fonction pour mettre à jour les dépenses fixes (clés dynamiques)
 const updateDepensesFixe = (depensesFixe) => {
   try {
-    const total = 
-      parseFloat(depensesFixe.free || 0) + 
-      parseFloat(depensesFixe.internetZeop || 0) + 
-      parseFloat(depensesFixe.assuranceVoiture || 0) + 
-      parseFloat(depensesFixe.autreDepense || 0) + 
-      parseFloat(depensesFixe.assuranceVie || 0);
-    
-    const updatedDepensesFixe = {
-      ...depensesFixe,
-      total: parseFloat(total.toFixed(2))
-    };
-    
-    fs.writeFileSync(depenseFixePath, JSON.stringify(updatedDepensesFixe, null, 2));
-    
-    return updatedDepensesFixe;
+    const cleaned = {};
+    let total = 0;
+    Object.entries(depensesFixe || {}).forEach(([k, v]) => {
+      if (k === 'total' || !k) return;
+      const num = parseFloat(v) || 0;
+      cleaned[k] = num;
+      total += num;
+    });
+    cleaned.total = parseFloat(total.toFixed(2));
+
+    fs.writeFileSync(depenseFixePath, JSON.stringify(cleaned, null, 2));
+    return cleaned;
   } catch (error) {
     console.error('Erreur lors de la mise à jour des dépenses fixes:', error);
     throw error;

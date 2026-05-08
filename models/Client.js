@@ -10,25 +10,23 @@ const getClientPhotoFilePath = (photoUrl) => {
 };
 
 /**
- * Normalise un client pour s'assurer que phones est toujours un tableau.
- * Gère la rétrocompatibilité avec l'ancien champ "phone" (string).
+ * Normalise un client pour s'assurer que phones/addresses sont toujours des tableaux.
+ * Gère la rétrocompatibilité avec les anciens champs "phone" / "adresse" (string).
  */
 const normalizeClient = (client) => {
   if (!client) return client;
-  // Migration: ancien format phone (string) → nouveau format phones (array)
-  if (!client.phones && client.phone) {
-    client.phones = [client.phone];
-  }
-  if (!client.phones) {
-    client.phones = [];
-  }
-  // Garder phone comme alias du premier numéro pour rétrocompatibilité
+  // Phones
+  if (!client.phones && client.phone) client.phones = [client.phone];
+  if (!client.phones) client.phones = [];
   client.phone = client.phones[0] || '';
+  // Addresses
+  if (!client.addresses && client.adresse) client.addresses = [client.adresse];
+  if (!client.addresses) client.addresses = client.adresse ? [client.adresse] : [];
+  client.adresse = client.addresses[0] || client.adresse || '';
   return client;
 };
 
 const Client = {
-  // Get all clients
   getAll: () => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
@@ -39,7 +37,6 @@ const Client = {
     }
   },
 
-  // Get client by ID
   getById: (id) => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
@@ -51,7 +48,6 @@ const Client = {
     }
   },
 
-  // Get client by name
   getByName: (nom) => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
@@ -63,49 +59,52 @@ const Client = {
     }
   },
 
-  // Create new client - accepte phones (array) ou phone (string)
   create: (clientData) => {
     try {
       const clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
-      
-      // Check if client already exists
-      const existingClient = clients.find(client => 
+
+      const existingClient = clients.find(client =>
         client.nom.toLowerCase() === clientData.nom.toLowerCase()
       );
-      
       if (existingClient) {
         return { error: 'Un client avec ce nom existe déjà' };
       }
-      
-      // Normaliser les phones
+
+      // Phones
       let phones = [];
       if (clientData.phones && Array.isArray(clientData.phones)) {
         phones = clientData.phones.filter(p => p && p.trim());
       } else if (clientData.phone) {
         phones = [clientData.phone];
       }
-      
       if (phones.length === 0) {
         return { error: 'Au moins un numéro de téléphone est requis' };
       }
 
-      // Create new client object
+      // Addresses
+      let addresses = [];
+      if (clientData.addresses && Array.isArray(clientData.addresses)) {
+        addresses = clientData.addresses.filter(a => a && a.trim());
+      } else if (clientData.adresse) {
+        addresses = [clientData.adresse];
+      }
+      if (addresses.length === 0) {
+        return { error: 'Au moins une adresse est requise' };
+      }
+
       const newClient = {
         id: Date.now().toString(),
         nom: clientData.nom,
-        phones: phones,
-        phone: phones[0], // rétrocompatibilité
-        adresse: clientData.adresse,
+        phones,
+        phone: phones[0],
+        addresses,
+        adresse: addresses[0],
         photo: clientData.photo || '',
         dateCreation: new Date().toISOString()
       };
-      
-      // Add to clients array
+
       clients.push(newClient);
-      
-      // Write back to file
       fs.writeFileSync(clientsPath, JSON.stringify(clients, null, 2));
-      
       return newClient;
     } catch (error) {
       console.error("Error creating client:", error);
@@ -113,54 +112,52 @@ const Client = {
     }
   },
 
-  // Update client
   update: (id, clientData) => {
     try {
       let clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
-      
-      // Find client index
       const clientIndex = clients.findIndex(client => client.id === id);
-      if (clientIndex === -1) {
-        return null;
-      }
-      
-      // Check if another client with the same name exists (excluding current client)
+      if (clientIndex === -1) return null;
+
       if (clientData.nom) {
-        const existingClient = clients.find(client => 
+        const existingClient = clients.find(client =>
           client.id !== id && client.nom.toLowerCase() === clientData.nom.toLowerCase()
         );
-        
-        if (existingClient) {
-          return { error: 'Un autre client avec ce nom existe déjà' };
-        }
+        if (existingClient) return { error: 'Un autre client avec ce nom existe déjà' };
       }
-      
-      const oldClient = clients[clientIndex];
-      
-      // Normaliser les phones
+
+      const oldClient = normalizeClient(clients[clientIndex]);
+
+      // Phones
       let phones;
       if (clientData.phones && Array.isArray(clientData.phones)) {
         phones = clientData.phones.filter(p => p && p.trim());
       } else if (clientData.phone) {
         phones = [clientData.phone];
       } else {
-        // Garder les anciens phones
-        phones = normalizeClient(oldClient).phones;
+        phones = oldClient.phones;
       }
 
-      // Update client data
-      clients[clientIndex] = { 
-        ...normalizeClient(oldClient), 
+      // Addresses
+      let addresses;
+      if (clientData.addresses && Array.isArray(clientData.addresses)) {
+        addresses = clientData.addresses.filter(a => a && a.trim());
+      } else if (clientData.adresse) {
+        addresses = [clientData.adresse];
+      } else {
+        addresses = oldClient.addresses;
+      }
+
+      clients[clientIndex] = {
+        ...oldClient,
         nom: clientData.nom || oldClient.nom,
-        phones: phones,
-        phone: phones[0] || '', // rétrocompatibilité
-        adresse: clientData.adresse || oldClient.adresse,
+        phones,
+        phone: phones[0] || '',
+        addresses,
+        adresse: addresses[0] || '',
         photo: clientData.photo !== undefined ? clientData.photo : (oldClient.photo || '')
       };
-      
-      // Write back to file
+
       fs.writeFileSync(clientsPath, JSON.stringify(clients, null, 2));
-      
       return clients[clientIndex];
     } catch (error) {
       console.error("Error updating client:", error);
@@ -168,31 +165,21 @@ const Client = {
     }
   },
 
-  // Delete client
   delete: (id) => {
     try {
       let clients = JSON.parse(fs.readFileSync(clientsPath, 'utf8'));
-      
-      // Find client
       const client = clients.find(c => c.id === id);
-      if (!client) {
-        return false;
-      }
+      if (!client) return false;
 
-      // Delete associated photo if exists
       if (client.photo) {
         const photoPath = getClientPhotoFilePath(client.photo);
         if (fs.existsSync(photoPath)) {
           try { fs.unlinkSync(photoPath); } catch (e) { console.error('Error deleting client photo:', e); }
         }
       }
-      
-      // Remove from clients array
+
       clients = clients.filter(c => c.id !== id);
-      
-      // Write back to file
       fs.writeFileSync(clientsPath, JSON.stringify(clients, null, 2));
-      
       return true;
     } catch (error) {
       console.error("Error deleting client:", error);
