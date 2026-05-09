@@ -22,7 +22,17 @@ class SyncManager {
     this.idleTimer = null;
     this.isSleeping = false;
     this.lastDataReceivedAt = new Date();
+
+    // ===== Keep-alive self-ping (prevents Render free-tier spin-down) =====
+    // Active only while NOT sleeping. Pings own /api/sync/test every 10 min.
+    this.keepAliveIntervalMs = 10 * 60 * 1000;
+    this.keepAliveTimer = null;
+    this.selfUrl = process.env.RENDER_EXTERNAL_URL
+      || process.env.SELF_PING_URL
+      || `http://localhost:${process.env.PORT || 10000}`;
+
     this._startIdleTimer();
+    this._startKeepAlive();
     this.autoBackupState = {
       signal: false,
       activationId: null,
@@ -153,6 +163,7 @@ class SyncManager {
   _enterSleep() {
     if (this.isSleeping) return;
     this.isSleeping = true;
+    this._stopKeepAlive();
     try {
       this.notifyClients('server-sleep', {
         timestamp: new Date(),
@@ -167,6 +178,7 @@ class SyncManager {
     this.isSleeping = false;
     this.lastDataReceivedAt = new Date();
     this._startIdleTimer();
+    this._startKeepAlive();
     if (wasSleeping) {
       try {
         this.notifyClients('server-awake', {
@@ -174,6 +186,31 @@ class SyncManager {
           reason
         });
       } catch {}
+    }
+  }
+
+  _startKeepAlive() {
+    if (this.keepAliveTimer) return;
+    this.keepAliveTimer = setInterval(() => {
+      if (this.isSleeping) {
+        this._stopKeepAlive();
+        return;
+      }
+      try {
+        const url = `${this.selfUrl.replace(/\/$/, '')}/api/sync/test`;
+        const mod = url.startsWith('https') ? require('https') : require('http');
+        const req = mod.get(url, { timeout: 8000 }, (res) => { res.resume(); });
+        req.on('error', () => {});
+        req.on('timeout', () => { try { req.destroy(); } catch {} });
+      } catch {}
+    }, this.keepAliveIntervalMs);
+    if (this.keepAliveTimer.unref) this.keepAliveTimer.unref();
+  }
+
+  _stopKeepAlive() {
+    if (this.keepAliveTimer) {
+      clearInterval(this.keepAliveTimer);
+      this.keepAliveTimer = null;
     }
   }
 
