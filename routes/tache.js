@@ -10,37 +10,7 @@
 const express = require('express');
 const router = express.Router();
 const Tache = require('../models/Tache');
-const fs = require('fs');
-const path = require('path');
-
-const readJson = (filePath) => {
-  try {
-    if (!fs.existsSync(filePath)) return [];
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch { return []; }
-};
-
-const checkIndisponibilite = (date, heureDebut, heureFin) => {
-  const indispoPath = path.join(__dirname, '../db/indisponible.json');
-  const indispos = readJson(indispoPath);
-  const indispoForDate = indispos.filter(d => d.date === date);
-  if (indispoForDate.length === 0) return { disponible: true };
-  const conflicts = indispoForDate.filter(d => {
-    if (d.journeeComplete) return true;
-    if (!heureDebut || !heureFin) return true;
-    return d.heureDebut < heureFin && d.heureFin > heureDebut;
-  });
-  if (conflicts.length > 0) {
-    const c = conflicts[0];
-    return {
-      disponible: false,
-      message: c.journeeComplete
-        ? `Cette journée est indisponible${c.motif ? ` (${c.motif})` : ''}`
-        : `Créneau indisponible: ${c.heureDebut} - ${c.heureFin}${c.motif ? ` (${c.motif})` : ''}`
-    };
-  }
-  return { disponible: true };
-};
+const { checkIndisponibilite } = require('../services/availabilityService');
 
 // GET all taches or filter by date/month/week
 router.get('/', (req, res) => {

@@ -218,13 +218,11 @@ router.post('/check', authMiddleware, (req, res) => {
     const { date, heureDebut, heureFin } = req.body;
     if (!date) return res.status(400).json({ message: 'Date requise' });
 
+    const { checkIndisponibilite } = require('../services/availabilityService');
+    const result = checkIndisponibilite(date, heureDebut, heureFin);
+
     const data = readJson(indisponiblePath);
     const indispoForDate = data.filter(d => d.date === date);
-
-    if (indispoForDate.length === 0) {
-      return res.json({ disponible: true, indisponibilites: [] });
-    }
-
     const conflicts = indispoForDate.filter(d => {
       if (d.journeeComplete) return true;
       if (!heureDebut || !heureFin) return true;
@@ -232,8 +230,10 @@ router.post('/check', authMiddleware, (req, res) => {
     });
 
     res.json({
-      disponible: conflicts.length === 0,
-      indisponibilites: conflicts
+      disponible: result.disponible,
+      indisponibilites: conflicts,
+      message: result.message,
+      suggestions: result.suggestions || []
     });
 
   } catch {

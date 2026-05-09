@@ -49,11 +49,37 @@ const checkIndisponibilite = (date, heureDebut, heureFin) => {
 
   if (conflicts.length > 0) {
     const c = conflicts[0];
+    // Compute alternative slots before/after the indisponibilité (only for partial)
+    const suggestions = [];
+    const dayStart = '06:00';
+    const dayEnd = '22:00';
+    if (!c.journeeComplete) {
+      // Build occupied ranges for that day
+      const occupied = indispoForDate
+        .filter(d => !d.journeeComplete)
+        .map(d => ({ debut: d.heureDebut, fin: d.heureFin }))
+        .sort((a, b) => a.debut.localeCompare(b.debut));
+      // Slot before first
+      if (occupied[0].debut > dayStart) {
+        suggestions.push({ heureDebut: dayStart, heureFin: occupied[0].debut, label: 'avant' });
+      }
+      // Slot after last
+      const last = occupied[occupied.length - 1];
+      if (last.fin < dayEnd) {
+        suggestions.push({ heureDebut: last.fin, heureFin: dayEnd, label: 'après' });
+      }
+    }
+    const suggestionTxt = suggestions.length > 0
+      ? ` 💡 Créneaux possibles: ${suggestions.map(s => `${s.label} (${s.heureDebut} - ${s.heureFin})`).join(' ou ')}`
+      : ' 💡 Veuillez choisir un autre jour disponible.';
+    const baseMsg = c.journeeComplete
+      ? `Journée indisponible${c.motif ? ` (${c.motif})` : ''}`
+      : `Créneau indisponible: ${c.heureDebut} - ${c.heureFin}${c.motif ? ` (${c.motif})` : ''}`;
     return {
       disponible: false,
-      message: c.journeeComplete
-        ? `Journée indisponible${c.motif ? ` (${c.motif})` : ''}`
-        : `Créneau indisponible: ${c.heureDebut} - ${c.heureFin}${c.motif ? ` (${c.motif})` : ''}`
+      message: baseMsg + suggestionTxt,
+      conflict: c,
+      suggestions
     };
   }
 
