@@ -17,8 +17,8 @@ class SyncManager {
     this.autoBackupStableWindowMs = 5 * 60 * 1000;
     this.autoBackupCountdownMs = 5 * 60 * 1000;
 
-    // ===== Sleep/Awake logic (72h idle => sleep) =====
-    this.idleTimeoutMs = 72 * 60 * 60 * 1000; // 72 hours
+    // ===== Sleep/Awake logic (90j idle => sleep) =====
+    this.idleTimeoutMs = 90 * 24 * 60 * 60 * 1000; // 3 months (~90 days)
     this.idleTimer = null;
     this.isSleeping = false;
     this.lastDataReceivedAt = new Date();
@@ -223,7 +223,7 @@ class SyncManager {
 
     const changedAt = new Date();
 
-    // Wake up + reset 72h countdown on every real data change
+    // Wake up + reset 90j countdown on every real data change
     this.wakeUp('data-change');
 
     this.autoBackupState.lastChangeAt = changedAt;
@@ -375,7 +375,7 @@ class SyncManager {
     this.clients.add(client);
 
     // Wake server immediately on new connection (e.g. user just logged in)
-    // and reset 72h idle countdown so the user gets fresh data fast.
+    // and reset 90j idle countdown so the user gets fresh data fast.
     this.wakeUp('client-connected');
 
     // Envoyer les données actuelles immédiatement
