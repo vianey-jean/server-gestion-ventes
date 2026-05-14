@@ -79,7 +79,8 @@ router.post('/', authMiddleware, (req, res) => {
       motif,
       journeeComplete,
       recurrence,
-      nombreSemaines
+      nombreSemaines,
+      exception
     } = req.body;
 
     if (!date) {
@@ -105,9 +106,10 @@ router.post('/', authMiddleware, (req, res) => {
       heureDebut: journeeComplete ? '00:00' : (heureDebut || '00:00'),
       heureFin: journeeComplete ? '23:59' : (heureFin || '23:59'),
       journeeComplete: !!journeeComplete,
+      exception: !!exception, // ✅ exception persistée
       motif: motif || '',
       recurrence: recurrence || 'once',
-      jourSemaine: JOURS_SEMAINE[new Date(d + 'T00:00:00').getDay()], // ✅ recalcul correct
+      jourSemaine: JOURS_SEMAINE[new Date(d + 'T00:00:00').getDay()],
       createdAt: new Date().toISOString()
     }));
 
@@ -128,7 +130,7 @@ router.put('/:id', authMiddleware, (req, res) => {
     const entry = data.find(d => d.id === req.params.id);
     if (!entry) return res.status(404).json({ message: 'Non trouvé' });
 
-    const { heureDebut, heureFin, motif, journeeComplete, selectedDates } = req.body;
+    const { heureDebut, heureFin, motif, journeeComplete, selectedDates, exception } = req.body;
     const groupId = entry.groupId;
 
     if (groupId && selectedDates && Array.isArray(selectedDates)) {
@@ -142,6 +144,7 @@ router.put('/:id', authMiddleware, (req, res) => {
           heureDebut: journeeComplete ? '00:00' : (heureDebut ?? d.heureDebut),
           heureFin: journeeComplete ? '23:59' : (heureFin ?? d.heureFin),
           journeeComplete: journeeComplete ?? d.journeeComplete,
+          exception: exception ?? d.exception ?? false,
           motif: motif ?? d.motif,
         }));
 
@@ -160,6 +163,7 @@ router.put('/:id', authMiddleware, (req, res) => {
       heureDebut: journeeComplete ? '00:00' : (heureDebut ?? data[index].heureDebut),
       heureFin: journeeComplete ? '23:59' : (heureFin ?? data[index].heureFin),
       journeeComplete: journeeComplete ?? data[index].journeeComplete,
+      exception: exception ?? data[index].exception ?? false,
       motif: motif ?? data[index].motif,
     };
 
@@ -222,7 +226,7 @@ router.post('/check', authMiddleware, (req, res) => {
     const result = checkIndisponibilite(date, heureDebut, heureFin);
 
     const data = readJson(indisponiblePath);
-    const indispoForDate = data.filter(d => d.date === date);
+    const indispoForDate = data.filter(d => d.date === date && !d.exception);
     const conflicts = indispoForDate.filter(d => {
       if (d.journeeComplete) return true;
       if (!heureDebut || !heureFin) return true;

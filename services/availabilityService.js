@@ -37,7 +37,8 @@ const readJson = (filePath) => {
  */
 const checkIndisponibilite = (date, heureDebut, heureFin) => {
   const indispos = readJson(indispoPath);
-  const indispoForDate = indispos.filter(d => d.date === date);
+  // ✅ Exceptions: indispos marquées exception=true ne bloquent jamais
+  const indispoForDate = indispos.filter(d => d.date === date && !d.exception);
 
   if (indispoForDate.length === 0) return { disponible: true };
 
