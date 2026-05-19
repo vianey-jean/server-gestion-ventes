@@ -81,6 +81,7 @@ router.get('/view/:token', (req, res) => {
 
     // Return read-only data (no IDs that could be used for mutations)
     const notes = readJSON(notesPath).map(n => ({
+      id: n.id,
       title: n.title,
       content: n.content,
       columnId: n.columnId,
@@ -91,6 +92,8 @@ router.get('/view/:token', (req, res) => {
       underlineLines: n.underlineLines || [],
       drawing: n.drawing,
       voiceText: n.voiceText || '',
+      fichier: n.fichier || null,
+      fichiers: Array.isArray(n.fichiers) ? n.fichiers : [],
       createdAt: n.createdAt
     }));
 

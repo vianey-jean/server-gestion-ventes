@@ -9,12 +9,89 @@ const Note = require('../models/Note');
 const auth = require('../middleware/auth');
 const fs = require('fs');
 const path = require('path');
+const multer = require('multer');
 
 // Ensure uploads/notes/dessin directory exists
 const dessinDir = path.join(__dirname, '..', 'uploads', 'notes', 'dessin');
 if (!fs.existsSync(dessinDir)) {
   fs.mkdirSync(dessinDir, { recursive: true });
 }
+
+// Ensure uploads/notes/fichier directory exists
+const fichierDir = path.join(__dirname, '..', 'uploads', 'notes', 'fichier');
+if (!fs.existsSync(fichierDir)) {
+  fs.mkdirSync(fichierDir, { recursive: true });
+}
+
+// Multer storage for note files (images, pdf, word, txt, etc.)
+const fichierStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, fichierDir),
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname).toLowerCase() || '';
+    // Sanitize base name
+    const base = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 50);
+    cb(null, `note_${uniqueSuffix}_${base}${ext}`);
+  }
+});
+const uploadFichier = multer({
+  storage: fichierStorage,
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25 MB
+});
+
+// Upload single note attachment file (legacy / backward compat)
+router.post('/upload-fichier', auth, uploadFichier.single('fichier'), (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'Aucun fichier fourni' });
+    const url = `/uploads/notes/fichier/${req.file.filename}`;
+    res.json({
+      url,
+      filename: req.file.filename,
+      originalName: req.file.originalname,
+      mimeType: req.file.mimetype,
+      size: req.file.size
+    });
+  } catch (err) {
+    console.error('Upload fichier error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Upload multiple note attachment files
+router.post('/upload-fichiers', auth, uploadFichier.array('fichiers', 20), (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: 'Aucun fichier fourni' });
+    }
+    const out = req.files.map(f => ({
+      url: `/uploads/notes/fichier/${f.filename}`,
+      filename: f.filename,
+      originalName: f.originalname,
+      mimeType: f.mimetype,
+      size: f.size
+    }));
+    res.json(out);
+  } catch (err) {
+    console.error('Upload fichiers error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete a specific attached file from disk (used when removing inline)
+router.delete('/fichier', auth, (req, res) => {
+  try {
+    const { url } = req.body || {};
+    if (!url || typeof url !== 'string' || !url.startsWith('/uploads/notes/fichier/')) {
+      return res.status(400).json({ error: 'URL invalide' });
+    }
+    const safe = path.normalize(url).replace(/^[\\/]+/, '');
+    const full = path.join(__dirname, '..', safe);
+    if (fs.existsSync(full)) fs.unlinkSync(full);
+    res.json({ message: 'Fichier supprimé' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Upload drawing as JPEG file
 router.post('/upload-drawing', auth, (req, res) => {

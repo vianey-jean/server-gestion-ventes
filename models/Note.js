@@ -3,6 +3,7 @@ const path = require('path');
 
 const notesPath = path.join(__dirname, '..', 'db', 'notes.json');
 const columnsPath = path.join(__dirname, '..', 'db', 'noteColumns.json');
+const uploadsRoot = path.join(__dirname, '..');
 
 const readJSON = (filePath) => {
   try {
@@ -14,10 +15,34 @@ const writeJSON = (filePath, data) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 };
 
+// Safely delete a file stored under /uploads/... (relative URL from DB)
+const deleteFileByUrl = (urlPath) => {
+  try {
+    if (!urlPath || typeof urlPath !== 'string') return;
+    if (!urlPath.startsWith('/uploads/')) return;
+    const safe = path.normalize(urlPath).replace(/^[\\/]+/, '');
+    const full = path.join(uploadsRoot, safe);
+    // Ensure we stay inside uploads directory
+    if (!full.startsWith(path.join(uploadsRoot, 'uploads'))) return;
+    if (fs.existsSync(full)) fs.unlinkSync(full);
+  } catch (e) {
+    console.warn('deleteFileByUrl error:', e.message);
+  }
+};
+
+// Normalize fichiers to an array (backward compat with single fichier)
+const normalizeFichiers = (data) => {
+  const arr = Array.isArray(data.fichiers) ? [...data.fichiers] : [];
+  if (data.fichier && data.fichier.url && !arr.find(f => f && f.url === data.fichier.url)) {
+    arr.unshift(data.fichier);
+  }
+  return arr.filter(Boolean);
+};
+
 const Note = {
   // Notes CRUD
   getAll: () => readJSON(notesPath),
-  
+
   getById: (id) => {
     const notes = readJSON(notesPath);
     return notes.find(n => n.id === id) || null;
@@ -29,6 +54,11 @@ const Note = {
     const colId = data.columnId || 'col-1';
     const col = columns.find(c => c.id === colId);
     const now = new Date().toISOString();
+    const fichiers = Array.isArray(data.fichiers) ? data.fichiers.filter(Boolean) : [];
+    // Backward compat: if a single fichier is provided, merge it in
+    if (data.fichier && data.fichier.url && !fichiers.find(f => f.url === data.fichier.url)) {
+      fichiers.unshift(data.fichier);
+    }
     const note = {
       id: Date.now().toString() + '-' + Math.random().toString(36).substr(2, 9),
       title: data.title || '',
@@ -41,6 +71,8 @@ const Note = {
       underlineLines: data.underlineLines || [],
       drawing: data.drawing || null,
       voiceText: data.voiceText || '',
+      fichier: null, // legacy field, no longer used as primary storage
+      fichiers,
       history: [{ columnId: colId, columnTitle: col ? col.title : colId, movedAt: now }],
       createdAt: now,
       updatedAt: now
@@ -54,7 +86,48 @@ const Note = {
     const notes = readJSON(notesPath);
     const index = notes.findIndex(n => n.id === id);
     if (index === -1) return null;
-    notes[index] = { ...notes[index], ...data, updatedAt: new Date().toISOString() };
+    const old = notes[index];
+
+    // Build new fichiers list (merging any legacy single fichier provided)
+    let newFichiers;
+    if (Array.isArray(data.fichiers)) {
+      newFichiers = data.fichiers.filter(Boolean);
+    } else if (Array.isArray(old.fichiers)) {
+      newFichiers = [...old.fichiers];
+    } else {
+      newFichiers = [];
+    }
+    // If client still posts single 'fichier' as the new full state, merge it
+    if (data.fichier !== undefined) {
+      if (data.fichier && data.fichier.url && !newFichiers.find(f => f && f.url === data.fichier.url)) {
+        newFichiers.unshift(data.fichier);
+      }
+    }
+
+    // Compute removed files (old fichiers + legacy old.fichier) that are not in newFichiers
+    const oldFichiers = Array.isArray(old.fichiers) ? [...old.fichiers] : [];
+    if (old.fichier && old.fichier.url && !oldFichiers.find(f => f && f.url === old.fichier.url)) {
+      oldFichiers.unshift(old.fichier);
+    }
+    const newUrls = new Set(newFichiers.map(f => f.url));
+    oldFichiers.forEach(f => {
+      if (f && f.url && !newUrls.has(f.url)) deleteFileByUrl(f.url);
+    });
+
+    // Handle drawing removal
+    const newDrawing = data.drawing !== undefined ? data.drawing : old.drawing;
+    if (old.drawing && old.drawing !== newDrawing) {
+      deleteFileByUrl(old.drawing);
+    }
+
+    notes[index] = {
+      ...old,
+      ...data,
+      fichier: null,
+      fichiers: newFichiers,
+      drawing: newDrawing,
+      updatedAt: new Date().toISOString()
+    };
     writeJSON(notesPath, notes);
     return notes[index];
   },
@@ -63,6 +136,12 @@ const Note = {
     let notes = readJSON(notesPath);
     const note = notes.find(n => n.id === id);
     if (!note) return false;
+    // Delete attached files from disk
+    if (note.drawing) deleteFileByUrl(note.drawing);
+    if (note.fichier && note.fichier.url) deleteFileByUrl(note.fichier.url);
+    if (Array.isArray(note.fichiers)) {
+      note.fichiers.forEach(f => f && f.url && deleteFileByUrl(f.url));
+    }
     notes = notes.filter(n => n.id !== id);
     writeJSON(notesPath, notes);
     return true;
@@ -78,7 +157,6 @@ const Note = {
     notes[index].columnId = columnId;
     notes[index].order = order;
     notes[index].updatedAt = now;
-    // Add history entry
     if (!notes[index].history) notes[index].history = [];
     notes[index].history.push({ columnId, columnTitle: col ? col.title : columnId, movedAt: now });
     writeJSON(notesPath, notes);
@@ -128,7 +206,6 @@ const Note = {
     let columns = readJSON(columnsPath);
     columns = columns.filter(c => c.id !== id);
     writeJSON(columnsPath, columns);
-    // Move notes from deleted column to first column
     const notes = readJSON(notesPath);
     const firstCol = columns[0];
     if (firstCol) {

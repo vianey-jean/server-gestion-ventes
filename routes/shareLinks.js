@@ -33,6 +33,27 @@ const writeJSON = (filePath, data) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 };
 
+const normalizeNotesFilters = (filters) => {
+  if (!filters || !filters.notesSelection || filters.notesSelection.mode !== 'selected') return filters || null;
+  const columns = Array.isArray(filters.notesSelection.columns) ? filters.notesSelection.columns : [];
+  return {
+    ...filters,
+    notesSelection: {
+      mode: 'selected',
+      columns: columns
+        .filter(c => c && c.columnId !== undefined && c.columnId !== null)
+        .map(c => ({
+          columnId: String(c.columnId),
+          noteIds: c.noteIds === 'all'
+            ? 'all'
+            : Array.isArray(c.noteIds)
+              ? c.noteIds.map(id => String(id))
+              : 'all'
+        }))
+    }
+  };
+};
+
 // Ensure files exist
 [shareTokensPath, lienIpPath].forEach(p => {
   if (!fs.existsSync(p)) writeJSON(p, []);
@@ -52,13 +73,14 @@ router.post('/generate', auth, (req, res) => {
     const token = crypto.randomBytes(32).toString('hex');
     const accessCode = crypto.randomBytes(4).toString('hex').toUpperCase();
 
+    const safeFilters = type === 'notes' ? normalizeNotesFilters(filters) : (filters || null);
     const tokens = readJSON(shareTokensPath);
     const entry = {
       id: Date.now().toString(),
       token,
       accessCode,
       type,
-      filters: filters || null,
+      filters: safeFilters,
       active: true,
       createdAt: new Date().toISOString()
     };
@@ -225,15 +247,44 @@ router.get('/view/:token', (req, res) => {
     };
 
     if (entry.type === 'notes') {
-      const notes = readJSON(notesPath).map(n => ({
-        title: n.title, content: n.content, columnId: n.columnId,
+      let notes = readJSON(notesPath).map(n => ({
+        id: n.id, title: n.title, content: n.content, columnId: n.columnId,
         order: n.order, color: n.color, bold: n.bold,
         boldLines: n.boldLines || [], underlineLines: n.underlineLines || [],
-        drawing: n.drawing, voiceText: n.voiceText || '', createdAt: n.createdAt
+        drawing: n.drawing, voiceText: n.voiceText || '',
+        fichier: n.fichier || null, fichiers: Array.isArray(n.fichiers) ? n.fichiers : [],
+        createdAt: n.createdAt
       }));
-      const columns = readJSON(columnsPath).map(c => ({
+      let columns = readJSON(columnsPath).map(c => ({
         id: c.id, title: c.title, color: c.color, order: c.order
       }));
+
+      // Apply selective column/note filter if provided
+      const sel = entry.filters && entry.filters.notesSelection;
+      if (sel && sel.mode === 'selected') {
+        const rawCols = Array.isArray(sel.columns) ? sel.columns : [];
+        const selectedColumns = rawCols
+          .filter(c => c && (c.columnId !== undefined && c.columnId !== null))
+          .map(c => ({
+          ...c,
+          columnId: String(c.columnId),
+          noteIds: c.noteIds === 'all' ? 'all' : Array.isArray(c.noteIds) ? c.noteIds.map(id => String(id)) : 'all'
+        }));
+        const allowedColIds = new Set(selectedColumns.map(c => c.columnId));
+        columns = columns.filter(c => allowedColIds.has(String(c.id)));
+        notes = notes.filter(n => {
+          const noteColumnId = String(n.columnId);
+          const noteId = String(n.id);
+          const colSel = selectedColumns.find(c => c.columnId === noteColumnId);
+          if (!colSel) return false;
+          // Treat missing/undefined/null/'all' noteIds as "all notes in this column"
+          if (colSel.noteIds === undefined || colSel.noteIds === null || colSel.noteIds === 'all') return true;
+          if (!Array.isArray(colSel.noteIds)) return true;
+          return colSel.noteIds.includes(noteId);
+        });
+        console.log(`[shareLinks/notes] selective filter applied. Columns kept: ${columns.length}, notes returned: ${notes.length}, selection:`, JSON.stringify(selectedColumns));
+      }
+
       return res.json({ type: 'notes', notes, columns });
     }
 
