@@ -17,8 +17,8 @@ class SyncManager {
     this.autoBackupStableWindowMs = 5 * 60 * 1000;
     this.autoBackupCountdownMs = 5 * 60 * 1000;
 
-    // ===== Sleep/Awake logic (72h idle => sleep) =====
-    this.idleTimeoutMs = 72 * 60 * 60 * 1000; // 72 hours
+    // ===== Sleep/Awake logic (96 idle => sleep) =====
+    this.idleTimeoutMs = 96 * 60 * 60 * 1000; // 96 hours
     this.idleTimer = null;
     this.isSleeping = false;
     this.lastDataReceivedAt = new Date();
