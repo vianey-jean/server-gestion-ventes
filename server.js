@@ -299,6 +299,7 @@ if (!fs.existsSync(pointageAutoPath)) {
 // Import routes
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
+const productsVenduRoutes = require('./routes/productsVendu');
 const salesRoutes = require('./routes/sales');
 const clientRoutes = require('./routes/clients');
 const pretFamillesRoutes = require('./routes/pretfamilles');
@@ -346,6 +347,7 @@ const confirmationRdvRoutes = require('./routes/confirmationRdv');
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/products-vendu', productsVenduRoutes);
 app.use('/api/sales', salesRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/pretfamilles', pretFamillesRoutes);
