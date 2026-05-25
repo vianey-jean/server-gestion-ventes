@@ -409,7 +409,8 @@ class SyncManager {
       'messages.json',
       'rdv.json',
       'rdvNotifications.json',
-      'remboursement.json'
+      'remboursement.json',
+      'commandes.json'
     ];
 
     filesToWatch.forEach(fileName => {
@@ -482,7 +483,8 @@ const filesToWatch = [
   'messages.json',
   'rdv.json',
   'rdvNotifications.json',
-  'remboursement.json'
+  'remboursement.json',
+  'commandes.json'
 ];
 
 filesToWatch.forEach(fileName => {
