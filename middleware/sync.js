@@ -408,6 +408,7 @@ class SyncManager {
       'clients.json',
       'messages.json',
       'rdv.json',
+      'rdv-taches.json',
       'rdvNotifications.json',
       'remboursement.json',
       'commandes.json'
@@ -482,6 +483,7 @@ const filesToWatch = [
   'clients.json',
   'messages.json',
   'rdv.json',
+  'rdv-taches.json',
   'rdvNotifications.json',
   'remboursement.json',
   'commandes.json'

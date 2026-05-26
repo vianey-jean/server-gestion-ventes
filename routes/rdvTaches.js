@@ -10,13 +10,38 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const router = express.Router();
+const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
 
 const FILE = path.join(__dirname, '../db/rdv-taches.json');
+const COMMANDES_FILE = path.join(__dirname, '../db/commandes.json');
 
 const read = () => {
-  try { return JSON.parse(fs.readFileSync(FILE, 'utf8')); } catch { return []; }
+  try { return readJsonDecrypted(FILE) || []; } catch { return []; }
 };
-const write = (data) => fs.writeFileSync(FILE, JSON.stringify(data, null, 2));
+const write = (data) => writeJsonEncrypted(FILE, data);
+const readCommandes = () => {
+  try { return readJsonDecrypted(COMMANDES_FILE) || []; } catch { return []; }
+};
+
+const getCommandeForRdv = (rdv) => readCommandes().find(c =>
+  c.type === 'rdv' && (c.id === rdv.commandeId || c.rdvTacheId === rdv.id)
+) || null;
+
+const findIndexByCommandeId = (items, commandeId) => {
+  const directIndex = items.findIndex(r => r.commandeId === commandeId);
+  if (directIndex !== -1) return directIndex;
+  const commande = readCommandes().find(c => c.id === commandeId && c.type === 'rdv');
+  if (!commande?.rdvTacheId) return -1;
+  return items.findIndex(r => r.id === commande.rdvTacheId);
+};
+
+const withCommandeLinks = (items) => {
+  const commandes = readCommandes().filter(c => c.type === 'rdv');
+  return items.map(item => {
+    const linked = commandes.find(c => c.id === item.commandeId || c.rdvTacheId === item.id);
+    return linked ? { ...item, commandeId: linked.id } : item;
+  });
+};
 
 const DAY_START = 4 * 60;       // 04:00
 const DAY_END = 23 * 60 + 59;   // 23:59
@@ -72,7 +97,7 @@ router.get('/', (req, res) => {
     } else if (year) {
       items = items.filter(r => new Date(r.date).getFullYear() === parseInt(year));
     }
-    res.json(items);
+    res.json(withCommandeLinks(items));
   } catch { res.status(500).json({ error: 'Erreur serveur' }); }
 });
 
@@ -121,6 +146,7 @@ router.post('/', (req, res) => {
       heureDebut: data.heureDebut,
       heureFin: data.heureFin,
       commentaires: data.commentaires || '',
+      commandeId: data.commandeId || '',
       statut: data.statut || 'planifie',
       createdAt: now,
       updatedAt: now
@@ -131,12 +157,54 @@ router.post('/', (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Erreur serveur' }); }
 });
 
+router.put('/by-commande/:commandeId', (req, res) => {
+  try {
+    const items = read();
+    const idx = findIndexByCommandeId(items, req.params.commandeId);
+    if (idx === -1) return res.status(404).json({ error: 'RDV commande introuvable' });
+    const existing = items[idx];
+    const next = { ...existing, ...req.body, id: existing.id, commandeId: existing.commandeId || req.params.commandeId, updatedAt: new Date().toISOString() };
+    if (next.date !== existing.date || next.heureDebut !== existing.heureDebut || next.heureFin !== existing.heureFin) {
+      const s = toMin(next.heureDebut);
+      const e = toMin(next.heureFin);
+      if (s < DAY_START || e > DAY_END || e <= s) {
+        return res.status(400).json({ error: 'Plage horaire invalide (04:00 - 23:59)' });
+      }
+      const conflict = checkConflict(items, next.date, next.heureDebut, next.heureFin, existing.id);
+      if (conflict) {
+        return res.status(409).json({
+          error: `Créneau occupé par "${conflict.tacheNom}" (${conflict.heureDebut} - ${conflict.heureFin})`,
+          conflict,
+          freeSlots: buildFreeSlots(items.filter(r => r.id !== existing.id), next.date)
+        });
+      }
+    }
+    items[idx] = next;
+    write(items);
+    res.json(next);
+  } catch { res.status(500).json({ error: 'Erreur serveur' }); }
+});
+
+router.delete('/by-commande/:commandeId', (req, res) => {
+  try {
+    const items = read();
+    const idx = findIndexByCommandeId(items, req.params.commandeId);
+    if (idx === -1) return res.status(404).json({ error: 'RDV commande introuvable' });
+    const filtered = items.filter((_, i) => i !== idx);
+    write(filtered);
+    res.json({ message: 'RDV commande supprimé' });
+  } catch { res.status(500).json({ error: 'Erreur serveur' }); }
+});
+
 router.put('/:id', (req, res) => {
   try {
     const items = read();
     const idx = items.findIndex(r => r.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Introuvable' });
     const existing = items[idx];
+    if (getCommandeForRdv(existing)) {
+      return res.status(403).json({ error: 'Ce RDV provient des Commandes. Modifiez-le depuis la page Commandes.' });
+    }
     const next = { ...existing, ...req.body, id: existing.id, updatedAt: new Date().toISOString() };
     if (next.date !== existing.date || next.heureDebut !== existing.heureDebut || next.heureFin !== existing.heureFin) {
       const s = toMin(next.heureDebut);
@@ -162,6 +230,10 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   try {
     const items = read();
+    const existing = items.find(r => r.id === req.params.id);
+    if (existing && getCommandeForRdv(existing)) {
+      return res.status(403).json({ error: 'Ce RDV provient des Commandes. Supprimez-le depuis la page Commandes.' });
+    }
     const filtered = items.filter(r => r.id !== req.params.id);
     if (filtered.length === items.length) return res.status(404).json({ error: 'Introuvable' });
     write(filtered);
