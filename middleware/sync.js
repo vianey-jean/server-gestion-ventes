@@ -486,7 +486,8 @@ const filesToWatch = [
   'rdv-taches.json',
   'rdvNotifications.json',
   'remboursement.json',
-  'commandes.json'
+  'commandes.json',
+  'historique-connexion.json'
 ];
 
 filesToWatch.forEach(fileName => {

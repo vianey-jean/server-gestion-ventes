@@ -343,6 +343,7 @@ const productCommentsRoutes = require('./routes/productComments');
 const maintenanceRoutes = require('./routes/maintenance');
 const prepaLivraisonRoutes = require('./routes/prepaLivraison');
 const confirmationRdvRoutes = require('./routes/confirmationRdv');
+const historiqueConnexionRoutes = require('./routes/historiqueConnexion');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -391,6 +392,10 @@ app.use('/api/product-comments', productCommentsRoutes);
 app.use('/api/maintenance', maintenanceRoutes);
 app.use('/api/prepa-livraison', prepaLivraisonRoutes);
 app.use('/api/confirmation-rdv', confirmationRdvRoutes);
+app.use('/api/historique-connexion', historiqueConnexionRoutes);
+
+// Expose historique logger globally for cross-route logging (used by auth)
+app.locals.logHistorique = historiqueConnexionRoutes.logEntry;
 
 // Static file serving for uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

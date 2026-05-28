@@ -119,6 +119,7 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
         const lockUntil = new Date(Date.now() + lockoutMinutes * 60 * 1000);
         updateData.lockedUntil = lockUntil.toISOString();
         User.update(user.id, updateData);
+        try { req.app.locals.logHistorique?.(req, { type: 'login_locked', userId: user.id, userEmail: user.email, userName: `${user.firstName} ${user.lastName}`, userRole: user.role || '', message: `Compte bloqué (${lockoutMinutes} min)` }); } catch {}
         return res.status(423).json({
           message: `Compte bloqué pendant ${lockoutMinutes} minutes`,
           locked: true,
@@ -130,6 +131,7 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
       }
 
       User.update(user.id, updateData);
+      try { req.app.locals.logHistorique?.(req, { type: 'login_failed', userId: user.id, userEmail: user.email, userName: `${user.firstName} ${user.lastName}`, userRole: user.role || '', message: `Mot de passe incorrect (tentative ${newFailedAttempts}/${maxAttempts})` }); } catch {}
       return res.status(401).json({
         message: 'Identifiants invalides',
         failedAttempts: newFailedAttempts,
@@ -149,6 +151,7 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
     );
     
     const { password: _, ...userWithoutPassword } = user;
+    try { req.app.locals.logHistorique?.(req, { type: 'login_success', userId: user.id, userEmail: user.email, userName: `${user.firstName} ${user.lastName}`, userRole: user.role || 'utilisateur', message: 'Connexion réussie' }); } catch {}
     res.json({
       user: userWithoutPassword,
       token,
