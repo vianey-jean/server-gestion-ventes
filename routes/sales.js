@@ -101,7 +101,7 @@ router.post('/', authMiddleware, async (req, res) => {
       // Nouveau format
       products, totalPurchasePrice, totalSellingPrice, totalProfit,
       // Client info
-      clientName, clientAddress, clientPhone,
+      clientName, clientAddress, clientPhone, clientVille,
       // Données d'avance
       reste, nextPaymentDate
     } = req.body;
@@ -190,6 +190,7 @@ router.post('/', authMiddleware, async (req, res) => {
         clientName: clientName || null,
         clientAddress: clientAddress || null,
         clientPhone: clientPhone || null,
+        clientVille: clientVille || null,
         reste: reste ? Number(reste) : 0,
         nextPaymentDate: nextPaymentDate || null
       };
@@ -263,6 +264,7 @@ router.post('/', authMiddleware, async (req, res) => {
         clientName: clientName || null,
         clientAddress: clientAddress || null,
         clientPhone: clientPhone || null,
+        clientVille: clientVille || null,
         reste: reste ? Number(reste) : 0,
         nextPaymentDate: nextPaymentDate || null
       };
@@ -311,7 +313,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
       // Nouveau format multi-produits
       products, totalPurchasePrice, totalSellingPrice, totalProfit,
       // Client info
-      clientName, clientAddress, clientPhone,
+      clientName, clientAddress, clientPhone, clientVille,
       // Données d'avance
       reste, nextPaymentDate
     } = req.body;
@@ -345,6 +347,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
         clientName: clientName || null,
         clientAddress: clientAddress || null,
         clientPhone: clientPhone || null,
+        clientVille: clientVille || null,
         reste: reste ? Number(reste) : 0,
         nextPaymentDate: nextPaymentDate || null
       };
@@ -374,6 +377,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
         clientName: clientName || null,
         clientAddress: clientAddress || null,
         clientPhone: clientPhone || null,
+        clientVille: clientVille || null,
         reste: reste ? Number(reste) : 0,
         nextPaymentDate: nextPaymentDate || null
       };

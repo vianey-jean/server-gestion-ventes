@@ -48,7 +48,7 @@ exports.getById = async (req, res) => {
 /** Crée un nouveau client (avec photo optionnelle) */
 exports.create = async (req, res) => {
   try {
-    let { nom, phone, phones, adresse, addresses } = req.body;
+    let { nom, phone, phones, adresse, addresses, ville } = req.body;
     if (typeof phones === 'string') {
       try { phones = JSON.parse(phones); } catch { phones = [phones]; }
     }
@@ -69,6 +69,7 @@ exports.create = async (req, res) => {
       phones: phones || (phone ? [phone] : []),
       addresses: addresses || (adresse ? [adresse] : []),
       adresse,
+      ville,
       photo: photoPath
     });
 
@@ -87,7 +88,7 @@ exports.create = async (req, res) => {
 /** Met à jour un client (avec photo optionnelle) */
 exports.update = async (req, res) => {
   try {
-    let { nom, phone, phones, adresse, addresses } = req.body;
+    let { nom, phone, phones, adresse, addresses, ville } = req.body;
     const removePhoto = req.body.removePhoto === 'true' || req.body.removePhoto === true;
 
     if (typeof phones === 'string') {
@@ -120,6 +121,7 @@ exports.update = async (req, res) => {
       addresses: addresses || (adresse ? [adresse] : []),
       adresse
     };
+    if (ville !== undefined) updateData.ville = ville;
     if (photoPath !== undefined) updateData.photo = photoPath;
 
     const updatedClient = Client.update(req.params.id, updateData);

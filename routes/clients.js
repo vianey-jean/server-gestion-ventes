@@ -84,21 +84,23 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // Create new client (with optional photo)
 router.post('/', authMiddleware, upload.single('photo'), async (req, res) => {
   try {
-    let { nom, phone, phones, adresse, addresses } = req.body;
+    let { nom, phone, phones, adresse, addresses, ville, villes } = req.body;
     
-    // Parse phones/addresses if they're JSON strings (from FormData)
+    // Parse phones/addresses/villes if they're JSON strings (from FormData)
     if (typeof phones === 'string') {
       try { phones = JSON.parse(phones); } catch { phones = [phones]; }
     }
     if (typeof addresses === 'string') {
       try { addresses = JSON.parse(addresses); } catch { addresses = [addresses]; }
     }
+    if (typeof villes === 'string') {
+      try { villes = JSON.parse(villes); } catch { villes = [villes]; }
+    }
     
     // Validation des champs obligatoires
     const hasPhone = (phones && Array.isArray(phones) && phones.filter(p => p && p.trim()).length > 0) || (phone && phone.trim());
     const hasAddr = (addresses && Array.isArray(addresses) && addresses.filter(a => a && a.trim()).length > 0) || (adresse && adresse.trim());
     if (!nom || !hasPhone || !hasAddr) {
-      // Delete uploaded file if validation fails
       if (req.file) {
         try { fs.unlinkSync(req.file.path); } catch {}
       }
@@ -112,6 +114,8 @@ router.post('/', authMiddleware, upload.single('photo'), async (req, res) => {
       phones: phones || (phone ? [phone] : []), 
       addresses: addresses || (adresse ? [adresse] : []),
       adresse,
+      ville,
+      villes,
       photo: photoPath
     });
     
@@ -135,15 +139,18 @@ router.post('/', authMiddleware, upload.single('photo'), async (req, res) => {
 // Update client (with optional photo)
 router.put('/:id', authMiddleware, upload.single('photo'), async (req, res) => {
   try {
-    let { nom, phone, phones, adresse, addresses } = req.body;
+    let { nom, phone, phones, adresse, addresses, ville, villes } = req.body;
     const removePhoto = req.body.removePhoto === 'true' || req.body.removePhoto === true;
     
-    // Parse phones/addresses if they're JSON strings (from FormData)
+    // Parse phones/addresses/villes if they're JSON strings (from FormData)
     if (typeof phones === 'string') {
       try { phones = JSON.parse(phones); } catch { phones = [phones]; }
     }
     if (typeof addresses === 'string') {
       try { addresses = JSON.parse(addresses); } catch { addresses = [addresses]; }
+    }
+    if (typeof villes === 'string') {
+      try { villes = JSON.parse(villes); } catch { villes = [villes]; }
     }
     
     const hasPhone = (phones && Array.isArray(phones) && phones.filter(p => p && p.trim()).length > 0) || (phone && phone.trim());
@@ -172,6 +179,8 @@ router.put('/:id', authMiddleware, upload.single('photo'), async (req, res) => {
       addresses: addresses || (adresse ? [adresse] : []),
       adresse 
     };
+    if (ville !== undefined) updateData.ville = ville;
+    if (villes !== undefined) updateData.villes = villes;
     if (photoPath !== undefined) updateData.photo = photoPath;
     
     const updatedClient = Client.update(req.params.id, updateData);

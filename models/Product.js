@@ -234,10 +234,18 @@ const Product = {
       const uniqueCode = generateProductCode(productData.description || '', existingCodes);
       
       // Create new product object with unique code
+      const { dateAchat, newPurchase, ...restProductData } = productData || {};
+      const purchaseDate = (typeof dateAchat === 'string' && dateAchat) ? dateAchat : new Date().toISOString();
       const newProduct = {
         id: Date.now().toString(),
         code: uniqueCode,
-        ...productData
+        ...restProductData,
+        dateAchat: purchaseDate,
+        achats: [{
+          date: purchaseDate,
+          quantity: Number(restProductData.quantity) || 0,
+          purchasePrice: Number(restProductData.purchasePrice) || 0
+        }]
       };
 
       // Construire la caractéristique (nom, numero, codeBarre obfusqué, code)
@@ -281,8 +289,32 @@ const Product = {
         return null;
       }
 
+      // Extraire newPurchase pour ne pas le persister tel quel
+      const { newPurchase, ...restUpdate } = productData || {};
+
       // Update product data
-      const merged = { ...products[productIndex], ...productData };
+      const merged = { ...products[productIndex], ...restUpdate };
+
+      // Si une nouvelle achat est fournie, l'ajouter à l'historique des achats
+      if (newPurchase && typeof newPurchase === 'object') {
+        const qty = Number(newPurchase.quantity) || 0;
+        if (qty > 0) {
+          if (!Array.isArray(merged.achats)) {
+            // Initialiser l'historique avec l'achat initial s'il manque
+            const initialQty = Math.max(0, (Number(products[productIndex].quantity) || 0));
+            merged.achats = initialQty > 0 ? [{
+              date: products[productIndex].dateAchat || products[productIndex].dateCreation || new Date().toISOString(),
+              quantity: initialQty,
+              purchasePrice: Number(products[productIndex].purchasePrice) || 0
+            }] : [];
+          }
+          merged.achats.push({
+            date: (typeof newPurchase.date === 'string' && newPurchase.date) ? newPurchase.date : new Date().toISOString(),
+            quantity: qty,
+            purchasePrice: Number(newPurchase.purchasePrice) || Number(merged.purchasePrice) || 0
+          });
+        }
+      }
 
       // Si pas encore de caractéristique, la créer maintenant
       if (!merged.caracteristique || typeof merged.caracteristique !== 'object') {

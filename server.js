@@ -300,6 +300,8 @@ if (!fs.existsSync(pointageAutoPath)) {
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const productsVenduRoutes = require('./routes/productsVendu');
+const clientsVillesRoutes = require('./routes/clientsVilles');
+const livraisonVilleRoutes = require('./routes/livraisonVille');
 const salesRoutes = require('./routes/sales');
 const clientRoutes = require('./routes/clients');
 const pretFamillesRoutes = require('./routes/pretfamilles');
@@ -351,6 +353,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/products-vendu', productsVenduRoutes);
 app.use('/api/sales', salesRoutes);
 app.use('/api/clients', clientRoutes);
+app.use('/api/clients-villes', clientsVillesRoutes);
+app.use('/api/livraison-villes', livraisonVilleRoutes);
 app.use('/api/pretfamilles', pretFamillesRoutes);
 app.use('/api/pretproduits', pretProduitsRoutes);
 app.use('/api/depenses', depensesRoutes);

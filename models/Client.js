@@ -23,6 +23,14 @@ const normalizeClient = (client) => {
   if (!client.addresses && client.adresse) client.addresses = [client.adresse];
   if (!client.addresses) client.addresses = client.adresse ? [client.adresse] : [];
   client.adresse = client.addresses[0] || client.adresse || '';
+  // Villes (par adresse) - même longueur que addresses
+  if (!Array.isArray(client.villes)) client.villes = [];
+  while (client.villes.length < client.addresses.length) client.villes.push('');
+  if (client.villes.length > client.addresses.length) client.villes = client.villes.slice(0, client.addresses.length);
+  // Ville (rétrocompatibilité = ville de l'adresse principale)
+  if (typeof client.ville !== 'string') client.ville = client.ville || '';
+  if (client.villes[0]) client.ville = client.villes[0];
+  else if (client.ville) client.villes[0] = client.ville;
   return client;
 };
 
@@ -92,6 +100,17 @@ const Client = {
         return { error: 'Au moins une adresse est requise' };
       }
 
+      // Villes (par adresse)
+      let villes = [];
+      if (Array.isArray(clientData.villes)) {
+        villes = clientData.villes.map(v => (typeof v === 'string' ? v.trim() : ''));
+      }
+      while (villes.length < addresses.length) villes.push('');
+      villes = villes.slice(0, addresses.length);
+      if (!villes[0] && typeof clientData.ville === 'string' && clientData.ville.trim()) {
+        villes[0] = clientData.ville.trim();
+      }
+
       const newClient = {
         id: Date.now().toString(),
         nom: clientData.nom,
@@ -99,6 +118,8 @@ const Client = {
         phone: phones[0],
         addresses,
         adresse: addresses[0],
+        villes,
+        ville: villes[0] || (typeof clientData.ville === 'string' ? clientData.ville.trim() : ''),
         photo: clientData.photo || '',
         dateCreation: new Date().toISOString()
       };
@@ -147,6 +168,20 @@ const Client = {
         addresses = oldClient.addresses;
       }
 
+      // Villes (par adresse)
+      let villes;
+      if (Array.isArray(clientData.villes)) {
+        villes = clientData.villes.map(v => (typeof v === 'string' ? v.trim() : ''));
+      } else {
+        villes = Array.isArray(oldClient.villes) ? [...oldClient.villes] : [];
+      }
+      while (villes.length < addresses.length) villes.push('');
+      villes = villes.slice(0, addresses.length);
+      // Si la ville scalaire est fournie, l'écrire en position 0
+      if (clientData.ville !== undefined && typeof clientData.ville === 'string') {
+        villes[0] = clientData.ville.trim();
+      }
+
       clients[clientIndex] = {
         ...oldClient,
         nom: clientData.nom || oldClient.nom,
@@ -154,6 +189,8 @@ const Client = {
         phone: phones[0] || '',
         addresses,
         adresse: addresses[0] || '',
+        villes,
+        ville: villes[0] || (clientData.ville !== undefined ? (typeof clientData.ville === 'string' ? clientData.ville.trim() : '') : (oldClient.ville || '')),
         photo: clientData.photo !== undefined ? clientData.photo : (oldClient.photo || '')
       };
 
