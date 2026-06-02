@@ -346,6 +346,7 @@ const maintenanceRoutes = require('./routes/maintenance');
 const prepaLivraisonRoutes = require('./routes/prepaLivraison');
 const confirmationRdvRoutes = require('./routes/confirmationRdv');
 const historiqueConnexionRoutes = require('./routes/historiqueConnexion');
+const versementRoutes = require('./routes/versement');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -358,6 +359,7 @@ app.use('/api/livraison-villes', livraisonVilleRoutes);
 app.use('/api/pretfamilles', pretFamillesRoutes);
 app.use('/api/pretproduits', pretProduitsRoutes);
 app.use('/api/depenses', depensesRoutes);
+app.use('/api/versements', versementRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/benefices', beneficesRoutes);
 app.use('/api/messages', messagesRoutes);
