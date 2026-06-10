@@ -113,20 +113,28 @@ const NouvelleAchat = {
       // ========================================
       // GESTION DU PRODUIT
       // ========================================
+      const achatDate = achatData.date || new Date().toISOString();
       if (achatData.productId) {
         // CAS 1: Un productId est fourni
         const existingProduct = Product.getById(achatData.productId);
         
         if (existingProduct) {
-          // CAS 1A: Le produit existe → mise à jour du stock
+          // CAS 1A: Le produit existe → mise à jour du stock + historique
           console.log('📦 Updating existing product stock...');
           console.log(`   Current quantity: ${existingProduct.quantity}, Adding: ${quantityToAdd}`);
           
+          const newPurchasePrice = Number(achatData.purchasePrice) || existingProduct.purchasePrice;
           const updatedProductData = {
             description: achatData.productDescription || existingProduct.description,
-            purchasePrice: Number(achatData.purchasePrice) || existingProduct.purchasePrice,
+            purchasePrice: newPurchasePrice,
             quantity: existingProduct.quantity + quantityToAdd,
-            fournisseur: achatData.fournisseur || existingProduct.fournisseur || ''
+            fournisseur: achatData.fournisseur || existingProduct.fournisseur || '',
+            newPurchase: {
+              date: achatDate,
+              quantity: quantityToAdd,
+              purchasePrice: newPurchasePrice,
+              fournisseur: achatData.fournisseur || existingProduct.fournisseur || ''
+            }
           };
           
           Product.update(achatData.productId, updatedProductData);
@@ -139,7 +147,8 @@ const NouvelleAchat = {
             purchasePrice: Number(achatData.purchasePrice),
             quantity: quantityToAdd,
             sellingPrice: 0,
-            fournisseur: achatData.fournisseur || ''
+            fournisseur: achatData.fournisseur || '',
+            dateAchat: achatDate
           });
           
           if (newProduct) {
@@ -163,10 +172,17 @@ const NouvelleAchat = {
           
           finalProductId = existingProductByDescription.id;
           
+          const newPurchasePrice = Number(achatData.purchasePrice) || existingProductByDescription.purchasePrice;
           const updatedProductData = {
-            purchasePrice: Number(achatData.purchasePrice) || existingProductByDescription.purchasePrice,
+            purchasePrice: newPurchasePrice,
             quantity: existingProductByDescription.quantity + quantityToAdd,
-            fournisseur: achatData.fournisseur || existingProductByDescription.fournisseur || ''
+            fournisseur: achatData.fournisseur || existingProductByDescription.fournisseur || '',
+            newPurchase: {
+              date: achatDate,
+              quantity: quantityToAdd,
+              purchasePrice: newPurchasePrice,
+              fournisseur: achatData.fournisseur || existingProductByDescription.fournisseur || ''
+            }
           };
           
           Product.update(existingProductByDescription.id, updatedProductData);
@@ -179,7 +195,8 @@ const NouvelleAchat = {
             purchasePrice: Number(achatData.purchasePrice),
             quantity: quantityToAdd,
             sellingPrice: 0,
-            fournisseur: achatData.fournisseur || ''
+            fournisseur: achatData.fournisseur || '',
+            dateAchat: achatDate
           });
           
           if (newProduct) {
@@ -190,6 +207,7 @@ const NouvelleAchat = {
           }
         }
       }
+
       
       // ========================================
       // CRÉATION DE L'ENREGISTREMENT D'ACHAT

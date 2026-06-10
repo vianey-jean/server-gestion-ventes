@@ -282,9 +282,29 @@ router.post('/', authMiddleware, async (req, res) => {
       console.log('❌ Erreur retournée:', newSale.error);
       return res.status(400).json({ message: newSale.error });
     }
-    
+
+    // Enregistrer l'historique des ventes sur chaque produit (ventes[])
+    try {
+      if (isMultiProduct && Array.isArray(newSale.products)) {
+        newSale.products.forEach(p => {
+          const isAdv = (p.description || '').toLowerCase().includes('avance');
+          if (!isAdv && p.productId && Number(p.quantitySold) > 0) {
+            Product.recordSale(p.productId, Number(p.quantitySold), newSale.date, Number(p.sellingPrice) || 0);
+          }
+        });
+      } else if (!isMultiProduct && newSale.productId) {
+        const isAdv = (newSale.description || '').toLowerCase().includes('avance');
+        if (!isAdv && Number(newSale.quantitySold) > 0) {
+          Product.recordSale(newSale.productId, Number(newSale.quantitySold), newSale.date, Number(newSale.sellingPrice) || 0);
+        }
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not record sale on product history:', e?.message);
+    }
+
     console.log('✅ Vente créée avec succès:', newSale);
     res.status(201).json(newSale);
+
   } catch (error) {
     console.error('❌ Error creating sale:', error);
     res.status(500).json({ message: 'Server error' });

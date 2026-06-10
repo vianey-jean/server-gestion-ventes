@@ -236,6 +236,7 @@ const Product = {
       // Create new product object with unique code
       const { dateAchat, newPurchase, ...restProductData } = productData || {};
       const purchaseDate = (typeof dateAchat === 'string' && dateAchat) ? dateAchat : new Date().toISOString();
+      const fournisseurInit = (restProductData.fournisseur || '').toString().trim();
       const newProduct = {
         id: Date.now().toString(),
         code: uniqueCode,
@@ -244,8 +245,11 @@ const Product = {
         achats: [{
           date: purchaseDate,
           quantity: Number(restProductData.quantity) || 0,
-          purchasePrice: Number(restProductData.purchasePrice) || 0
-        }]
+          purchasePrice: Number(restProductData.purchasePrice) || 0,
+          fournisseur: fournisseurInit
+        }],
+        ventes: [],
+        fournisseursHistory: fournisseurInit ? [{ nom: fournisseurInit, dateDebut: purchaseDate }] : []
       };
 
       // Construire la caractéristique (nom, numero, codeBarre obfusqué, code)
@@ -305,16 +309,32 @@ const Product = {
             merged.achats = initialQty > 0 ? [{
               date: products[productIndex].dateAchat || products[productIndex].dateCreation || new Date().toISOString(),
               quantity: initialQty,
-              purchasePrice: Number(products[productIndex].purchasePrice) || 0
+              purchasePrice: Number(products[productIndex].purchasePrice) || 0,
+              fournisseur: products[productIndex].fournisseur || ''
             }] : [];
           }
+          const achatDate = (typeof newPurchase.date === 'string' && newPurchase.date) ? newPurchase.date : new Date().toISOString();
+          const achatFournisseur = (newPurchase.fournisseur || merged.fournisseur || '').toString().trim();
           merged.achats.push({
-            date: (typeof newPurchase.date === 'string' && newPurchase.date) ? newPurchase.date : new Date().toISOString(),
+            date: achatDate,
             quantity: qty,
-            purchasePrice: Number(newPurchase.purchasePrice) || Number(merged.purchasePrice) || 0
+            purchasePrice: Number(newPurchase.purchasePrice) || Number(merged.purchasePrice) || 0,
+            fournisseur: achatFournisseur
           });
+
+          // Mettre à jour l'historique des fournisseurs si changement
+          if (achatFournisseur) {
+            if (!Array.isArray(merged.fournisseursHistory)) merged.fournisseursHistory = [];
+            const last = merged.fournisseursHistory[merged.fournisseursHistory.length - 1];
+            if (!last || last.nom.trim().toLowerCase() !== achatFournisseur.toLowerCase()) {
+              merged.fournisseursHistory.push({ nom: achatFournisseur, dateDebut: achatDate });
+            }
+          }
         }
       }
+
+      if (!Array.isArray(merged.ventes)) merged.ventes = [];
+
 
       // Si pas encore de caractéristique, la créer maintenant
       if (!merged.caracteristique || typeof merged.caracteristique !== 'object') {
@@ -430,6 +450,33 @@ const Product = {
       return null;
     }
   },
+
+  /**
+   * Enregistre une vente dans l'historique du produit (ventes[]).
+   * N'altère PAS le stock (déjà géré par updateQuantity).
+   */
+  recordSale: (id, quantity, date, sellingPrice) => {
+    try {
+      const data = fs.readFileSync(productsPath, 'utf8');
+      let products = JSON.parse(data);
+      const idx = products.findIndex(p => p.id === id);
+      if (idx === -1) return null;
+      const p = products[idx];
+      if (!Array.isArray(p.ventes)) p.ventes = [];
+      p.ventes.push({
+        date: date || new Date().toISOString(),
+        quantity: Number(quantity) || 0,
+        sellingPrice: Number(sellingPrice) || 0
+      });
+      products[idx] = p;
+      fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
+      return p;
+    } catch (error) {
+      console.error("❌ Error recording sale on product:", error);
+      return null;
+    }
+  },
+
 
   // Ajouter des codes uniques à tous les produits existants qui n'en ont pas
   generateCodesForExistingProducts: () => {
