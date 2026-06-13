@@ -247,6 +247,29 @@ router.patch('/:id/quantity', authMiddleware, async (req, res) => {
   }
 });
 
+// Toggle disponibilité d'un achat d'un produit
+// PATCH /api/products/:id/achats/:index/disponibilite { disponible: boolean }
+router.patch('/:id/achats/:index/disponibilite', authMiddleware, async (req, res) => {
+  try {
+    const { disponible } = req.body || {};
+    if (typeof disponible !== 'boolean') {
+      return res.status(400).json({ message: 'disponible (boolean) requis' });
+    }
+    const result = Product.setAchatDisponibilite(
+      req.params.id,
+      parseInt(req.params.index, 10),
+      disponible
+    );
+    if (!result) return res.status(404).json({ message: 'Produit introuvable' });
+    if (result.error) return res.status(400).json({ message: result.error });
+    res.json(result);
+  } catch (error) {
+    console.error('Error toggling achat disponibilite:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 // Upload product image (requires authentication)
 router.post('/:id/image', authMiddleware, upload.single('image'), async (req, res) => {
   try {

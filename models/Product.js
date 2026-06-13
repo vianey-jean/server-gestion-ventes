@@ -234,19 +234,25 @@ const Product = {
       const uniqueCode = generateProductCode(productData.description || '', existingCodes);
       
       // Create new product object with unique code
-      const { dateAchat, newPurchase, ...restProductData } = productData || {};
+      const { dateAchat, newPurchase, disponible, nouvelleAchatId, ...restProductData } = productData || {};
       const purchaseDate = (typeof dateAchat === 'string' && dateAchat) ? dateAchat : new Date().toISOString();
       const fournisseurInit = (restProductData.fournisseur || '').toString().trim();
+      const initialQty = Number(restProductData.quantity) || 0;
+      const isDisponible = disponible !== false; // défaut: true (rétro-compat)
       const newProduct = {
         id: Date.now().toString(),
         code: uniqueCode,
         ...restProductData,
+        // Si l'achat initial est indisponible -> stock vendable = 0
+        quantity: isDisponible ? initialQty : 0,
         dateAchat: purchaseDate,
         achats: [{
           date: purchaseDate,
-          quantity: Number(restProductData.quantity) || 0,
+          quantity: initialQty,
           purchasePrice: Number(restProductData.purchasePrice) || 0,
-          fournisseur: fournisseurInit
+          fournisseur: fournisseurInit,
+          disponible: isDisponible,
+          ...(nouvelleAchatId ? { nouvelleAchatId } : {})
         }],
         ventes: [],
         fournisseursHistory: fournisseurInit ? [{ nom: fournisseurInit, dateDebut: purchaseDate }] : []
@@ -315,11 +321,14 @@ const Product = {
           }
           const achatDate = (typeof newPurchase.date === 'string' && newPurchase.date) ? newPurchase.date : new Date().toISOString();
           const achatFournisseur = (newPurchase.fournisseur || merged.fournisseur || '').toString().trim();
+          const achatDisponible = newPurchase.disponible !== false; // défaut: true
           merged.achats.push({
             date: achatDate,
             quantity: qty,
             purchasePrice: Number(newPurchase.purchasePrice) || Number(merged.purchasePrice) || 0,
-            fournisseur: achatFournisseur
+            fournisseur: achatFournisseur,
+            disponible: achatDisponible,
+            ...(newPurchase.nouvelleAchatId ? { nouvelleAchatId: newPurchase.nouvelleAchatId } : {})
           });
 
           // Mettre à jour l'historique des fournisseurs si changement
@@ -477,6 +486,48 @@ const Product = {
     }
   },
 
+
+  /**
+   * Bascule la disponibilité d'un achat (achats[index]) d'un produit.
+   * - true  -> ajoute la quantité de l'achat au stock vendable (product.quantity)
+   * - false -> retire la quantité de l'achat du stock vendable (clampée à 0)
+   * Retourne le produit mis à jour ou null en cas d'erreur.
+   */
+  setAchatDisponibilite: (id, achatIndex, disponible) => {
+    try {
+      const data = fs.readFileSync(productsPath, 'utf8');
+      let products = JSON.parse(data);
+      const idx = products.findIndex(p => p.id === id);
+      if (idx === -1) return null;
+      const p = products[idx];
+      const achats = Array.isArray(p.achats) ? p.achats : [];
+      const i = Number(achatIndex);
+      if (!achats[i]) return { error: 'Achat introuvable' };
+
+      const currentDispo = achats[i].disponible !== false; // legacy undefined = true
+      const nextDispo = !!disponible;
+      if (currentDispo === nextDispo) {
+        return p; // pas de changement
+      }
+
+      const qty = Number(achats[i].quantity) || 0;
+      let newQuantity = Number(p.quantity) || 0;
+      if (nextDispo) {
+        newQuantity += qty;
+      } else {
+        newQuantity = Math.max(0, newQuantity - qty);
+      }
+
+      achats[i] = { ...achats[i], disponible: nextDispo };
+      products[idx] = { ...p, achats, quantity: newQuantity };
+      fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
+      console.log(`🔄 Achat #${i} du produit ${id} -> ${nextDispo ? 'disponible' : 'indisponible'} (stock: ${newQuantity})`);
+      return products[idx];
+    } catch (error) {
+      console.error('❌ Error setAchatDisponibilite:', error);
+      return null;
+    }
+  },
 
   // Ajouter des codes uniques à tous les produits existants qui n'en ont pas
   generateCodesForExistingProducts: () => {

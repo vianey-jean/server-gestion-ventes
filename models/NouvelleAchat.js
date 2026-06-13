@@ -109,7 +109,15 @@ const NouvelleAchat = {
       // Variable pour stocker l'ID du produit final
       let finalProductId = achatData.productId;
       const quantityToAdd = Number(achatData.quantity);
-      
+      // 🆕 Disponibilité de cet achat (défaut: true)
+      const disponible = achatData.disponible !== false;
+      // Quantité réellement ajoutée au stock vendable (0 si indisponible)
+      const sellableDelta = disponible ? quantityToAdd : 0;
+      // ID provisoire de l'achat (utilisé pour lier l'entrée nouvelle_achat <-> product.achats)
+      const nouvelleAchatId = Date.now().toString();
+      // Index attendu de l'achat dans product.achats (rempli plus bas)
+      let productAchatIndex = null;
+
       // ========================================
       // GESTION DU PRODUIT
       // ========================================
@@ -121,24 +129,27 @@ const NouvelleAchat = {
         if (existingProduct) {
           // CAS 1A: Le produit existe → mise à jour du stock + historique
           console.log('📦 Updating existing product stock...');
-          console.log(`   Current quantity: ${existingProduct.quantity}, Adding: ${quantityToAdd}`);
+          console.log(`   Current quantity: ${existingProduct.quantity}, Adding (sellable): ${sellableDelta}, disponible=${disponible}`);
           
           const newPurchasePrice = Number(achatData.purchasePrice) || existingProduct.purchasePrice;
           const updatedProductData = {
             description: achatData.productDescription || existingProduct.description,
             purchasePrice: newPurchasePrice,
-            quantity: existingProduct.quantity + quantityToAdd,
+            quantity: existingProduct.quantity + sellableDelta,
             fournisseur: achatData.fournisseur || existingProduct.fournisseur || '',
             newPurchase: {
               date: achatDate,
               quantity: quantityToAdd,
               purchasePrice: newPurchasePrice,
-              fournisseur: achatData.fournisseur || existingProduct.fournisseur || ''
+              fournisseur: achatData.fournisseur || existingProduct.fournisseur || '',
+              disponible,
+              nouvelleAchatId
             }
           };
           
-          Product.update(achatData.productId, updatedProductData);
-          console.log(`✅ Product updated - New quantity: ${updatedProductData.quantity}`);
+          const updated = Product.update(achatData.productId, updatedProductData);
+          if (updated && Array.isArray(updated.achats)) productAchatIndex = updated.achats.length - 1;
+          console.log(`✅ Product updated - New sellable quantity: ${updatedProductData.quantity}`);
         } else {
           // CAS 1B: Le productId est fourni mais le produit n'existe pas → création
           console.log('🆕 Product ID provided but product not found, creating new product...');
@@ -148,12 +159,15 @@ const NouvelleAchat = {
             quantity: quantityToAdd,
             sellingPrice: 0,
             fournisseur: achatData.fournisseur || '',
-            dateAchat: achatDate
+            dateAchat: achatDate,
+            disponible,
+            nouvelleAchatId
           });
           
           if (newProduct) {
             finalProductId = newProduct.id;
-            console.log(`✅ New product created with quantity: ${quantityToAdd}`);
+            productAchatIndex = 0;
+            console.log(`✅ New product created with quantity: ${quantityToAdd} (disponible=${disponible})`);
           }
         }
       } else {
@@ -168,25 +182,27 @@ const NouvelleAchat = {
         if (existingProductByDescription) {
           // CAS 2A: Un produit avec la même description existe → mise à jour
           console.log('📦 Found existing product by description, updating stock...');
-          console.log(`   Current quantity: ${existingProductByDescription.quantity}, Adding: ${quantityToAdd}`);
           
           finalProductId = existingProductByDescription.id;
           
           const newPurchasePrice = Number(achatData.purchasePrice) || existingProductByDescription.purchasePrice;
           const updatedProductData = {
             purchasePrice: newPurchasePrice,
-            quantity: existingProductByDescription.quantity + quantityToAdd,
+            quantity: existingProductByDescription.quantity + sellableDelta,
             fournisseur: achatData.fournisseur || existingProductByDescription.fournisseur || '',
             newPurchase: {
               date: achatDate,
               quantity: quantityToAdd,
               purchasePrice: newPurchasePrice,
-              fournisseur: achatData.fournisseur || existingProductByDescription.fournisseur || ''
+              fournisseur: achatData.fournisseur || existingProductByDescription.fournisseur || '',
+              disponible,
+              nouvelleAchatId
             }
           };
           
-          Product.update(existingProductByDescription.id, updatedProductData);
-          console.log(`✅ Existing product updated - New quantity: ${updatedProductData.quantity}`);
+          const updated = Product.update(existingProductByDescription.id, updatedProductData);
+          if (updated && Array.isArray(updated.achats)) productAchatIndex = updated.achats.length - 1;
+          console.log(`✅ Existing product updated - New sellable quantity: ${updatedProductData.quantity}`);
         } else {
           // CAS 2B: Aucun produit correspondant → création d'un nouveau produit
           console.log('🆕 No matching product found, creating new product...');
@@ -196,12 +212,15 @@ const NouvelleAchat = {
             quantity: quantityToAdd,
             sellingPrice: 0,
             fournisseur: achatData.fournisseur || '',
-            dateAchat: achatDate
+            dateAchat: achatDate,
+            disponible,
+            nouvelleAchatId
           });
           
           if (newProduct) {
             finalProductId = newProduct.id;
-            console.log(`✅ New product created with quantity: ${quantityToAdd}`);
+            productAchatIndex = 0;
+            console.log(`✅ New product created with quantity: ${quantityToAdd} (disponible=${disponible})`);
           } else {
             console.error('❌ Failed to create new product');
           }
@@ -213,7 +232,7 @@ const NouvelleAchat = {
       // CRÉATION DE L'ENREGISTREMENT D'ACHAT
       // ========================================
       const newAchat = {
-        id: Date.now().toString(),
+        id: nouvelleAchatId,
         date: achatData.date || new Date().toISOString(),
         productId: finalProductId,
         productDescription: achatData.productDescription,
@@ -222,7 +241,9 @@ const NouvelleAchat = {
         fournisseur: achatData.fournisseur || '',
         caracteristiques: achatData.caracteristiques || '',
         totalCost: Number(achatData.purchasePrice) * quantityToAdd,
-        type: 'achat_produit'
+        type: 'achat_produit',
+        disponible,
+        productAchatIndex
       };
       
       achats.push(newAchat);
@@ -267,10 +288,40 @@ const NouvelleAchat = {
         ...achatData,
         totalCost
       };
-      
+
+      // 🆕 Si la disponibilité a changé pour un achat produit, synchroniser le stock du produit
+      if (
+        isAchatProduit &&
+        achatData.disponible !== undefined &&
+        (existing.disponible !== false) !== (achatData.disponible !== false) &&
+        existing.productId
+      ) {
+        try {
+          // Localiser l'index de l'achat dans product.achats
+          const product = Product.getById(existing.productId);
+          let pIndex = existing.productAchatIndex;
+          if (product && Array.isArray(product.achats)) {
+            if (pIndex === null || pIndex === undefined || !product.achats[pIndex]) {
+              // Fallback : matcher par date + quantity + purchasePrice
+              pIndex = product.achats.findIndex(a =>
+                a.date === existing.date &&
+                Number(a.quantity) === Number(existing.quantity) &&
+                Number(a.purchasePrice) === Number(existing.purchasePrice)
+              );
+            }
+            if (pIndex !== -1 && pIndex !== undefined && pIndex !== null) {
+              Product.setAchatDisponibilite(existing.productId, pIndex, achatData.disponible);
+              updatedData.productAchatIndex = pIndex;
+            }
+          }
+        } catch (e) {
+          console.warn('⚠️ Impossible de synchroniser la disponibilité produit:', e.message);
+        }
+      }
+
       achats[achatIndex] = updatedData;
       fs.writeFileSync(nouvelleAchatPath, JSON.stringify(achats, null, 2));
-      
+
       console.log('✅ Achat updated successfully:', updatedData);
       return updatedData;
     } catch (error) {

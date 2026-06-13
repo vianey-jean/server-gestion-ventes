@@ -110,7 +110,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // Créer un nouvel achat
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { productId, productDescription, purchasePrice, quantity, fournisseur, caracteristiques } = req.body;
+    const { productId, productDescription, purchasePrice, quantity, fournisseur, caracteristiques, disponible } = req.body;
     
     if (!productDescription || purchasePrice === undefined || quantity === undefined) {
       return res.status(400).json({ message: 'Description, prix et quantité sont requis' });
@@ -123,7 +123,9 @@ router.post('/', authMiddleware, async (req, res) => {
       quantity: Number(quantity),
       fournisseur: fournisseur || '',
       caracteristiques: caracteristiques || '',
-      date: req.body.date || new Date().toISOString()
+      date: req.body.date || new Date().toISOString(),
+      // 🆕 disponibilité (défaut: true si non précisée)
+      disponible: disponible === undefined ? true : !!disponible
     };
     
     const newAchat = NouvelleAchat.create(achatData);
