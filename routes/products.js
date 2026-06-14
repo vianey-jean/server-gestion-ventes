@@ -269,6 +269,57 @@ router.patch('/:id/achats/:index/disponibilite', authMiddleware, async (req, res
   }
 });
 
+// === Achat: modifier / supprimer un achat précis ===
+router.put('/:id/achats/:index', authMiddleware, async (req, res) => {
+  try {
+    const result = Product.updateAchat(req.params.id, parseInt(req.params.index, 10), req.body || {});
+    if (!result) return res.status(404).json({ message: 'Produit introuvable' });
+    if (result.error) return res.status(400).json({ message: result.error });
+    res.json(result);
+  } catch (error) {
+    console.error('Error updateAchat:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.delete('/:id/achats/:index', authMiddleware, async (req, res) => {
+  try {
+    const result = Product.deleteAchat(req.params.id, parseInt(req.params.index, 10));
+    if (!result) return res.status(404).json({ message: 'Produit introuvable' });
+    if (result.error) return res.status(400).json({ message: result.error });
+    res.json(result);
+  } catch (error) {
+    console.error('Error deleteAchat:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// === Vente: modifier / supprimer une vente précise dans products.json ===
+router.put('/:id/ventes/:index', authMiddleware, async (req, res) => {
+  try {
+    const result = Product.updateVente(req.params.id, parseInt(req.params.index, 10), req.body || {});
+    if (!result) return res.status(404).json({ message: 'Produit introuvable' });
+    if (result.error) return res.status(400).json({ message: result.error });
+    res.json(result);
+  } catch (error) {
+    console.error('Error updateVente:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.delete('/:id/ventes/:index', authMiddleware, async (req, res) => {
+  try {
+    const result = Product.deleteVente(req.params.id, parseInt(req.params.index, 10));
+    if (!result) return res.status(404).json({ message: 'Produit introuvable' });
+    if (result.error) return res.status(400).json({ message: result.error });
+    res.json(result);
+  } catch (error) {
+    console.error('Error deleteVente:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
 // Upload product image (requires authentication)
 router.post('/:id/image', authMiddleware, upload.single('image'), async (req, res) => {

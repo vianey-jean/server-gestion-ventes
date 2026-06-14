@@ -529,6 +529,152 @@ const Product = {
     }
   },
 
+  /**
+   * Met à jour un achat (achats[index]) d'un produit.
+   * Ajuste product.quantity en fonction des changements de quantité ET de disponibilité.
+   * patch peut contenir: date, quantity, purchasePrice, fournisseur, disponible
+   */
+  updateAchat: (id, achatIndex, patch) => {
+    try {
+      const data = fs.readFileSync(productsPath, 'utf8');
+      let products = JSON.parse(data);
+      const idx = products.findIndex(p => p.id === id);
+      if (idx === -1) return null;
+      const p = products[idx];
+      const achats = Array.isArray(p.achats) ? [...p.achats] : [];
+      const i = Number(achatIndex);
+      if (!achats[i]) return { error: 'Achat introuvable' };
+
+      const old = achats[i];
+      const oldDispo = old.disponible !== false;
+      const oldQty = Number(old.quantity) || 0;
+
+      const next = {
+        ...old,
+        ...(patch.date !== undefined ? { date: patch.date } : {}),
+        ...(patch.quantity !== undefined ? { quantity: Number(patch.quantity) || 0 } : {}),
+        ...(patch.purchasePrice !== undefined ? { purchasePrice: Number(patch.purchasePrice) || 0 } : {}),
+        ...(patch.fournisseur !== undefined ? { fournisseur: String(patch.fournisseur || '') } : {}),
+        ...(patch.disponible !== undefined ? { disponible: !!patch.disponible } : {}),
+      };
+      const newDispo = next.disponible !== false;
+      const newQty = Number(next.quantity) || 0;
+
+      const delta = (newDispo ? newQty : 0) - (oldDispo ? oldQty : 0);
+      const newQuantity = Math.max(0, (Number(p.quantity) || 0) + delta);
+
+      achats[i] = next;
+      products[idx] = { ...p, achats, quantity: newQuantity };
+      fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
+      console.log(`✏️ Achat #${i} du produit ${id} mis à jour (stock: ${newQuantity})`);
+      return products[idx];
+    } catch (error) {
+      console.error('❌ Error updateAchat:', error);
+      return null;
+    }
+  },
+
+  /**
+   * Supprime un achat (achats[index]) d'un produit.
+   * Si l'achat était disponible, retire sa quantité du stock vendable.
+   */
+  deleteAchat: (id, achatIndex) => {
+    try {
+      const data = fs.readFileSync(productsPath, 'utf8');
+      let products = JSON.parse(data);
+      const idx = products.findIndex(p => p.id === id);
+      if (idx === -1) return null;
+      const p = products[idx];
+      const achats = Array.isArray(p.achats) ? [...p.achats] : [];
+      const i = Number(achatIndex);
+      if (!achats[i]) return { error: 'Achat introuvable' };
+
+      const old = achats[i];
+      const oldDispo = old.disponible !== false;
+      const oldQty = Number(old.quantity) || 0;
+      const delta = oldDispo ? -oldQty : 0;
+      const newQuantity = Math.max(0, (Number(p.quantity) || 0) + delta);
+
+      achats.splice(i, 1);
+      products[idx] = { ...p, achats, quantity: newQuantity };
+      fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
+      console.log(`🗑️ Achat #${i} du produit ${id} supprimé (stock: ${newQuantity})`);
+      return products[idx];
+    } catch (error) {
+      console.error('❌ Error deleteAchat:', error);
+      return null;
+    }
+  },
+
+  /**
+   * Met à jour une vente (ventes[index]) d'un produit.
+   * Ajuste product.quantity selon le delta de quantité (rendre/retirer du stock).
+   * patch peut contenir: date, quantity, sellingPrice
+   */
+  updateVente: (id, venteIndex, patch) => {
+    try {
+      const data = fs.readFileSync(productsPath, 'utf8');
+      let products = JSON.parse(data);
+      const idx = products.findIndex(p => p.id === id);
+      if (idx === -1) return null;
+      const p = products[idx];
+      const ventes = Array.isArray(p.ventes) ? [...p.ventes] : [];
+      const i = Number(venteIndex);
+      if (!ventes[i]) return { error: 'Vente introuvable' };
+
+      const old = ventes[i];
+      const oldQty = Number(old.quantity) || 0;
+      const next = {
+        ...old,
+        ...(patch.date !== undefined ? { date: patch.date } : {}),
+        ...(patch.quantity !== undefined ? { quantity: Number(patch.quantity) || 0 } : {}),
+        ...(patch.sellingPrice !== undefined ? { sellingPrice: Number(patch.sellingPrice) || 0 } : {}),
+      };
+      const newQty = Number(next.quantity) || 0;
+      // delta sur stock = oldQty - newQty (si on vend moins, on rend; si plus, on retire)
+      const newQuantity = Math.max(0, (Number(p.quantity) || 0) + (oldQty - newQty));
+
+      ventes[i] = next;
+      products[idx] = { ...p, ventes, quantity: newQuantity };
+      fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
+      console.log(`✏️ Vente #${i} du produit ${id} mise à jour (stock: ${newQuantity})`);
+      return products[idx];
+    } catch (error) {
+      console.error('❌ Error updateVente:', error);
+      return null;
+    }
+  },
+
+  /**
+   * Supprime une vente (ventes[index]) d'un produit.
+   * Rend la quantité au stock vendable.
+   */
+  deleteVente: (id, venteIndex) => {
+    try {
+      const data = fs.readFileSync(productsPath, 'utf8');
+      let products = JSON.parse(data);
+      const idx = products.findIndex(p => p.id === id);
+      if (idx === -1) return null;
+      const p = products[idx];
+      const ventes = Array.isArray(p.ventes) ? [...p.ventes] : [];
+      const i = Number(venteIndex);
+      if (!ventes[i]) return { error: 'Vente introuvable' };
+
+      const old = ventes[i];
+      const oldQty = Number(old.quantity) || 0;
+      const newQuantity = Math.max(0, (Number(p.quantity) || 0) + oldQty);
+
+      ventes.splice(i, 1);
+      products[idx] = { ...p, ventes, quantity: newQuantity };
+      fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
+      console.log(`🗑️ Vente #${i} du produit ${id} supprimée (stock: ${newQuantity})`);
+      return products[idx];
+    } catch (error) {
+      console.error('❌ Error deleteVente:', error);
+      return null;
+    }
+  },
+
   // Ajouter des codes uniques à tous les produits existants qui n'en ont pas
   generateCodesForExistingProducts: () => {
     try {
