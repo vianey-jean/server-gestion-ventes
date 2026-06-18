@@ -243,7 +243,9 @@ const NouvelleAchat = {
         totalCost: Number(achatData.purchasePrice) * quantityToAdd,
         type: 'achat_produit',
         disponible,
-        productAchatIndex
+        productAchatIndex,
+        // 🆕 URL de la facture d'achat (facultatif)
+        receiptUrl: achatData.receiptUrl || null
       };
       
       achats.push(newAchat);
@@ -348,7 +350,7 @@ const NouvelleAchat = {
       const target = achats[achatIndex];
       if (target && target.receiptUrl) {
         try {
-          const rel = target.receiptUrl.replace(/^\/+/, ''); // 'uploads/depense/recu-xxx.pdf'
+          const rel = target.receiptUrl.replace(/^\/+/, ''); // 'uploads/depense/...' ou 'uploads/achat/...'
           const filePath = path.join(__dirname, '..', rel);
           if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);

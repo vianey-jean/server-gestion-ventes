@@ -10,6 +10,7 @@ const NouvelleAchat = require('../models/NouvelleAchat');
 const Fournisseur = require('../models/Fournisseur');
 const authMiddleware = require('../middleware/auth');
 const uploadDepense = require('../middleware/uploadDepense');
+const uploadAchat = require('../middleware/uploadAchat');
 
 // Upload d'un reçu (image/PDF) pour une dépense
 // Renvoie l'URL relative pour l'enregistrement ultérieur
@@ -28,6 +29,27 @@ router.post('/depense/upload-receipt', authMiddleware, uploadDepense.single('rec
     });
   } catch (error) {
     console.error('❌ Error uploading receipt:', error);
+    res.status(500).json({ message: error.message || 'Erreur serveur' });
+  }
+});
+
+// Upload d'une facture (image/PDF) pour un achat produit
+// Renvoie l'URL relative pour l'enregistrement ultérieur
+router.post('/achat/upload-receipt', authMiddleware, uploadAchat.single('receipt'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Aucun fichier reçu' });
+    }
+    const receiptUrl = `/uploads/achat/${req.file.filename}`;
+    console.log('✅ Achat receipt uploaded:', receiptUrl);
+    res.status(201).json({
+      receiptUrl,
+      filename: req.file.filename,
+      mimetype: req.file.mimetype,
+      size: req.file.size
+    });
+  } catch (error) {
+    console.error('❌ Error uploading achat receipt:', error);
     res.status(500).json({ message: error.message || 'Erreur serveur' });
   }
 });
@@ -110,7 +132,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // Créer un nouvel achat
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { productId, productDescription, purchasePrice, quantity, fournisseur, caracteristiques, disponible } = req.body;
+    const { productId, productDescription, purchasePrice, quantity, fournisseur, caracteristiques, disponible, receiptUrl } = req.body;
     
     if (!productDescription || purchasePrice === undefined || quantity === undefined) {
       return res.status(400).json({ message: 'Description, prix et quantité sont requis' });
@@ -125,7 +147,9 @@ router.post('/', authMiddleware, async (req, res) => {
       caracteristiques: caracteristiques || '',
       date: req.body.date || new Date().toISOString(),
       // 🆕 disponibilité (défaut: true si non précisée)
-      disponible: disponible === undefined ? true : !!disponible
+      disponible: disponible === undefined ? true : !!disponible,
+      // 🆕 URL de la facture (facultatif)
+      receiptUrl: receiptUrl || null
     };
     
     const newAchat = NouvelleAchat.create(achatData);

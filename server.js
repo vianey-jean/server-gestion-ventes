@@ -406,7 +406,22 @@ app.use('/api/historique-connexion', historiqueConnexionRoutes);
 app.locals.logHistorique = historiqueConnexionRoutes.logEntry;
 
 // Static file serving for uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', (req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cache-Control, X-Requested-With, Accept, Origin, Range');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Type, Content-Length, Content-Disposition, Accept-Ranges, Content-Range');
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 // 404 handler
 app.use((req, res) => {
