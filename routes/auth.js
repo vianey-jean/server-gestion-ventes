@@ -294,12 +294,17 @@ router.post('/register', validateRequest(validationSchemas.register), async (req
       text: `Bonjour ${firstName}, validez votre compte en ouvrant ce lien : ${link}`,
     });
 
+    if (!mailResult.sent) {
+      console.error('[register] Échec envoi email de validation à', email, '-', mailResult.reason || mailResult.error);
+      return res.status(502).json({
+        message: "Impossible d'envoyer l'email de validation. Veuillez réessayer plus tard ou contacter le support.",
+      });
+    }
     return res.status(201).json({
       pending: true,
       email,
-      message: 'Votre compte est bien créé, mais il faut valider avec le lien envoyé sur votre email.',
-      emailSent: !!mailResult.sent,
-      devLink: mailResult.sent ? undefined : link,
+      message: 'Votre compte est bien créé. Un email de validation vient de vous être envoyé.',
+      emailSent: true,
     });
   } catch (error) {
     console.error('Register error:', error.message);
@@ -461,11 +466,17 @@ router.post('/reset-password-link', async (req, res) => {
       text: `Réinitialisez votre mot de passe via ce lien : ${link}`,
     });
 
+    if (!mailResult.sent) {
+      console.error('[reset-password-link] Échec envoi email à', email, '-', mailResult.reason || mailResult.error);
+      return res.status(502).json({
+        success: false,
+        message: "Impossible d'envoyer l'email de réinitialisation. Veuillez réessayer plus tard.",
+      });
+    }
     res.json({
       success: true,
       message: 'Lien de réinitialisation envoyé à votre email.',
-      emailSent: !!mailResult.sent,
-      devLink: mailResult.sent ? undefined : link,
+      emailSent: true,
     });
   } catch (err) {
     console.error('reset-password-link error:', err.message);
