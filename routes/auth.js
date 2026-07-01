@@ -5,38 +5,11 @@
  * Inclut : rate limiting, blocage après N tentatives échouées, et gestion JWT.
  */
 const express = require('express');
-const path = require('path');
-const crypto = require('crypto');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { rateLimitMiddleware, validateRequest } = require('../middleware/security');
 const validationSchemas = require('../middleware/validation');
-const { readJsonDecrypted, writeJsonEncrypted } = require('../middleware/encryption');
-const { sendMail, buildHtml } = require('../services/emailService');
-
-// ============================================================
-// Helpers pour les tokens de vérification email et reset password
-// ============================================================
-const PENDING_USERS_PATH = path.join(__dirname, '../db/pendingUsers.json');
-const RESET_TOKENS_PATH = path.join(__dirname, '../db/passwordResetTokens.json');
-
-function readList(p) {
-  try {
-    const data = readJsonDecrypted(p);
-    return Array.isArray(data) ? data : [];
-  } catch { return []; }
-}
-function writeList(p, list) {
-  try { writeJsonEncrypted(p, list); } catch (e) { console.error('writeList error', e.message); }
-}
-function purgeExpired(list) {
-  const now = Date.now();
-  return list.filter(item => !item.expiresAt || item.expiresAt > now);
-}
-function getAppUrl(req) {
-  return process.env.APP_URL || req.headers.origin || req.headers.referer?.split('/').slice(0, 3).join('/') || 'http://localhost:8080';
-}
 
 // Rate limiting strict pour auth
 router.use(rateLimitMiddleware('auth'));
@@ -245,127 +218,68 @@ router.post('/check-email', (req, res) => {
 });
 
 // Register route avec validation stricte
-router.post('/register', validateRequest(validationSchemas.register), async (req, res) => {
+router.post('/register', validateRequest(validationSchemas.register), (req, res) => {
   try {
-    const {
-      email, password, confirmPassword, firstName, lastName,
-      gender, address, phone, acceptTerms
+    const { 
+      email, password, confirmPassword, firstName, lastName, 
+      gender, address, phone, acceptTerms 
     } = req.body;
-
+    
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Les mots de passe ne correspondent pas' });
     }
+    
     if (!acceptTerms) {
       return res.status(400).json({ message: 'Vous devez accepter les conditions' });
     }
+    
+    // Vérification de la force du mot de passe
     if (password.length < 6) {
       return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 6 caractères' });
     }
-
-    // Email déjà activé ?
+    
+    // Check if email is already registered
     const existingUser = User.getByEmail(email);
     if (existingUser) {
       return res.status(400).json({ message: 'Cet email est déjà utilisé' });
     }
-
-    // On stocke le compte en attente (non actif) avec un token de validation
-    let pending = purgeExpired(readList(PENDING_USERS_PATH));
-    pending = pending.filter(p => p.email.toLowerCase() !== email.toLowerCase());
-
-    const token = crypto.randomBytes(32).toString('hex');
-    const expiresAt = Date.now() + 60 * 60 * 1000; // 1h
-
-    pending.push({
-      token, email, password, firstName, lastName, gender, address, phone,
-      createdAt: new Date().toISOString(), expiresAt,
-    });
-    writeList(PENDING_USERS_PATH, pending);
-
-    const link = `${getAppUrl(req)}/verify-account/${token}`;
-    const mailResult = await sendMail({
-      to: email,
-      subject: 'Confirmez la création de votre compte',
-      html: buildHtml({
-        title: 'Bienvenue ' + firstName + ' !',
-        intro: `Votre compte a bien été créé mais doit être validé. Cliquez sur le bouton ci-dessous pour finaliser votre inscription.`,
-        ctaText: 'Valider mon compte',
-        ctaUrl: link,
-      }),
-      text: `Bonjour ${firstName}, validez votre compte en ouvrant ce lien : ${link}`,
-    });
-
-    if (!mailResult.sent) {
-      console.warn('[register] SMTP indisponible (', mailResult.reason || mailResult.error, ') — compte en attente créé, lien renvoyé au client.');
-      return res.status(201).json({
-        pending: true,
-        email,
-        message: "Compte créé. L'envoi d'email est indisponible pour l'instant — utilisez le lien ci-dessous pour valider votre compte.",
-        emailSent: false,
-        verifyLink: link,
-        smtpConfigured: false,
-      });
-    }
-    return res.status(201).json({
-      pending: true,
+    
+    // Create user with hashed password (handled in User.create)
+    const userData = {
       email,
-      message: 'Votre compte est bien créé. Un email de validation vient de vous être envoyé.',
-      emailSent: true,
+      password,
+      firstName,
+      lastName,
+      gender,
+      address,
+      phone
+    };
+    
+    const newUser = User.create(userData);
+    
+    if (!newUser) {
+      return res.status(500).json({ message: 'Erreur lors de la création du compte' });
+    }
+    
+    // Create and sign JWT token
+    const token = jwt.sign(
+      { id: newUser.id, email: newUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+    
+    // Return user data and token
+    res.status(201).json({
+      user: newUser,
+      token,
+      verified: true,
+      registeredAt: new Date().toISOString()
     });
   } catch (error) {
     console.error('Register error:', error.message);
     res.status(500).json({ message: 'Erreur lors de l\'inscription' });
   }
 });
-
-// Vérifie un token de validation de compte
-router.get('/verify-account/:token', (req, res) => {
-  const { token } = req.params;
-  const pending = purgeExpired(readList(PENDING_USERS_PATH));
-  const entry = pending.find(p => p.token === token);
-  if (!entry) return res.status(404).json({ valid: false, message: 'Lien invalide ou expiré' });
-  res.json({ valid: true, email: entry.email, firstName: entry.firstName, lastName: entry.lastName });
-});
-
-// Active le compte (déplace pending → users)
-router.post('/activate-account', (req, res) => {
-  try {
-    const { token } = req.body;
-    if (!token) return res.status(400).json({ message: 'Token requis' });
-
-    let pending = purgeExpired(readList(PENDING_USERS_PATH));
-    const entry = pending.find(p => p.token === token);
-    if (!entry) return res.status(404).json({ message: 'Lien invalide ou expiré' });
-
-    // Double vérification email
-    if (User.getByEmail(entry.email)) {
-      pending = pending.filter(p => p.token !== token);
-      writeList(PENDING_USERS_PATH, pending);
-      return res.status(400).json({ message: 'Ce compte est déjà activé.' });
-    }
-
-    const newUser = User.create({
-      email: entry.email, password: entry.password,
-      firstName: entry.firstName, lastName: entry.lastName,
-      gender: entry.gender, address: entry.address, phone: entry.phone,
-    });
-    if (!newUser) return res.status(500).json({ message: 'Erreur lors de la création du compte' });
-
-    pending = pending.filter(p => p.token !== token);
-    writeList(PENDING_USERS_PATH, pending);
-
-    const jwtToken = jwt.sign(
-      { id: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET || 'defaultsecretkey',
-      { expiresIn: '8h' }
-    );
-    res.json({ success: true, user: newUser, token: jwtToken, message: 'Compte validé avec succès' });
-  } catch (err) {
-    console.error('Activate account error:', err.message);
-    res.status(500).json({ message: 'Erreur lors de l\'activation du compte' });
-  }
-});
-
-
 
 // Reset password request route - verify email exists
 router.post('/reset-password-request', (req, res) => {
@@ -441,99 +355,4 @@ router.post('/reset-password', (req, res) => {
   }
 });
 
-// Envoie un lien de réinitialisation par email (après confirmation utilisateur côté client)
-router.post('/reset-password-link', async (req, res) => {
-  try {
-    const { email } = req.body;
-    if (!email) return res.status(400).json({ success: false, message: 'Email requis' });
-
-    const user = User.getByEmail(email);
-    if (!user) return res.status(404).json({ success: false, message: 'Cet email n\'existe pas dans notre système' });
-
-    let tokens = purgeExpired(readList(RESET_TOKENS_PATH));
-    tokens = tokens.filter(t => t.email.toLowerCase() !== email.toLowerCase());
-
-    const token = crypto.randomBytes(32).toString('hex');
-    const expiresAt = Date.now() + 60 * 60 * 1000;
-    tokens.push({ token, email, createdAt: new Date().toISOString(), expiresAt });
-    writeList(RESET_TOKENS_PATH, tokens);
-
-    const link = `${getAppUrl(req)}/reset-password-confirm/${token}`;
-    const mailResult = await sendMail({
-      to: email,
-      subject: 'Réinitialisation de votre mot de passe',
-      html: buildHtml({
-        title: 'Réinitialisation du mot de passe',
-        intro: `Vous avez demandé à changer votre mot de passe. Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe. Ce lien est valable 1 heure.`,
-        ctaText: 'Modifier mon mot de passe',
-        ctaUrl: link,
-      }),
-      text: `Réinitialisez votre mot de passe via ce lien : ${link}`,
-    });
-
-    if (!mailResult.sent) {
-      console.warn('[reset-password-link] SMTP indisponible (', mailResult.reason || mailResult.error, ') — lien renvoyé au client.');
-      return res.json({
-        success: true,
-        message: "L'envoi d'email est indisponible pour l'instant — utilisez le lien ci-dessous pour réinitialiser votre mot de passe.",
-        emailSent: false,
-        resetLink: link,
-        smtpConfigured: false,
-      });
-    }
-    res.json({
-      success: true,
-      message: 'Lien de réinitialisation envoyé à votre email.',
-      emailSent: true,
-    });
-  } catch (err) {
-    console.error('reset-password-link error:', err.message);
-    res.status(500).json({ success: false, message: 'Erreur serveur' });
-  }
-});
-
-// Vérifie un token de reset password
-router.get('/reset-password-token/:token', (req, res) => {
-  const tokens = purgeExpired(readList(RESET_TOKENS_PATH));
-  const entry = tokens.find(t => t.token === req.params.token);
-  if (!entry) return res.status(404).json({ valid: false, message: 'Lien invalide ou expiré' });
-  res.json({ valid: true, email: entry.email });
-});
-
-// Confirme un nouveau mot de passe via un token
-router.post('/reset-password-confirm', (req, res) => {
-  try {
-    const { token, newPassword, confirmPassword } = req.body;
-    if (!token || !newPassword || !confirmPassword) {
-      return res.status(400).json({ success: false, message: 'Tous les champs sont requis' });
-    }
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
-    }
-    const hasLower = /[a-z]/.test(newPassword);
-    const hasUpper = /[A-Z]/.test(newPassword);
-    const hasNum = /[0-9]/.test(newPassword);
-    const hasSpe = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword);
-    if (!hasLower || !hasUpper || !hasNum || !hasSpe || newPassword.length < 6) {
-      return res.status(400).json({ success: false, message: 'Le mot de passe doit contenir au moins 6 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial' });
-    }
-
-    let tokens = purgeExpired(readList(RESET_TOKENS_PATH));
-    const entry = tokens.find(t => t.token === token);
-    if (!entry) return res.status(404).json({ success: false, message: 'Lien invalide ou expiré' });
-
-    const success = User.updatePassword(entry.email, newPassword);
-    if (!success) return res.status(400).json({ success: false, message: 'Le nouveau mot de passe doit être différent de l\'ancien' });
-
-    tokens = tokens.filter(t => t.token !== token);
-    writeList(RESET_TOKENS_PATH, tokens);
-
-    res.json({ success: true, message: 'Mot de passe réinitialisé avec succès' });
-  } catch (err) {
-    console.error('reset-password-confirm error:', err.message);
-    res.status(500).json({ success: false, message: 'Erreur serveur' });
-  }
-});
-
 module.exports = router;
-
