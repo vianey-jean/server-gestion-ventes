@@ -295,9 +295,14 @@ router.post('/register', validateRequest(validationSchemas.register), async (req
     });
 
     if (!mailResult.sent) {
-      console.error('[register] Échec envoi email de validation à', email, '-', mailResult.reason || mailResult.error);
-      return res.status(502).json({
-        message: "Impossible d'envoyer l'email de validation. Veuillez réessayer plus tard ou contacter le support.",
+      console.warn('[register] SMTP indisponible (', mailResult.reason || mailResult.error, ') — compte en attente créé, lien renvoyé au client.');
+      return res.status(201).json({
+        pending: true,
+        email,
+        message: "Compte créé. L'envoi d'email est indisponible pour l'instant — utilisez le lien ci-dessous pour valider votre compte.",
+        emailSent: false,
+        verifyLink: link,
+        smtpConfigured: false,
       });
     }
     return res.status(201).json({
@@ -467,10 +472,13 @@ router.post('/reset-password-link', async (req, res) => {
     });
 
     if (!mailResult.sent) {
-      console.error('[reset-password-link] Échec envoi email à', email, '-', mailResult.reason || mailResult.error);
-      return res.status(502).json({
-        success: false,
-        message: "Impossible d'envoyer l'email de réinitialisation. Veuillez réessayer plus tard.",
+      console.warn('[reset-password-link] SMTP indisponible (', mailResult.reason || mailResult.error, ') — lien renvoyé au client.');
+      return res.json({
+        success: true,
+        message: "L'envoi d'email est indisponible pour l'instant — utilisez le lien ci-dessous pour réinitialiser votre mot de passe.",
+        emailSent: false,
+        resetLink: link,
+        smtpConfigured: false,
       });
     }
     res.json({
