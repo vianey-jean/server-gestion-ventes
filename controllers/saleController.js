@@ -10,6 +10,9 @@
 
 const Sale = require('../models/Sale');
 const Product = require('../models/Product');
+const Fidelite = require('../models/Fidelite');
+
+const syncFidelite = () => { try { Fidelite.rebuild(); } catch (e) { console.error('Fidelite sync error:', e); } };
 
 /** Récupère toutes les ventes */
 exports.getAll = async (req, res) => {
@@ -68,6 +71,7 @@ exports.create = async (req, res) => {
     }
 
     const newSale = Sale.create(saleData);
+    syncFidelite();
 
     // Notifier les clients SSE
     if (req.app && req.app.locals && req.app.locals.broadcastSSE) {
@@ -86,6 +90,7 @@ exports.update = async (req, res) => {
   try {
     const updatedSale = Sale.update(req.params.id, req.body);
     if (!updatedSale) return res.status(404).json({ message: 'Sale not found' });
+    syncFidelite();
 
     if (req.app?.locals?.broadcastSSE) {
       req.app.locals.broadcastSSE({ type: 'sales', action: 'update', data: updatedSale });
@@ -103,6 +108,7 @@ exports.delete = async (req, res) => {
   try {
     const deleted = Sale.delete(req.params.id);
     if (!deleted) return res.status(404).json({ message: 'Sale not found' });
+    syncFidelite();
 
     if (req.app?.locals?.broadcastSSE) {
       req.app.locals.broadcastSSE({ type: 'sales', action: 'delete', data: { id: req.params.id } });

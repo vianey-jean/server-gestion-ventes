@@ -633,6 +633,13 @@ router.post('/restore', authMiddleware, (req, res) => {
       console.warn('⚠️ Migration caracteristique post-restore ignorée :', e.message);
     }
 
+    // Reconstruire fidelite.json à partir des ventes restaurées
+    try {
+      require('../models/Fidelite').rebuild();
+    } catch (e) {
+      console.warn('⚠️ Rebuild fidelite post-restore ignoré :', e.message);
+    }
+
     return res.json({
       success: true,
       status: 'updated',

@@ -11,6 +11,8 @@
 
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+let Fidelite;
+try { Fidelite = require('../models/Fidelite'); } catch (_) { Fidelite = null; }
 
 /**
  * Vérifie un token JWT et l'existence de l'utilisateur
@@ -108,6 +110,8 @@ exports.login = (req, res) => {
     );
 
     const { password: _, ...userWithoutPassword } = user;
+    // À chaque connexion admin, s'assurer que fidelite.json est synchro avec sales.json
+    try { if (Fidelite && typeof Fidelite.rebuild === 'function') Fidelite.rebuild(); } catch (e) { console.warn('Fidelite rebuild on login ignoré:', e.message); }
     res.json({ user: userWithoutPassword, token, verified: true, loginTime: new Date().toISOString() });
   } catch (error) {
     console.error('Login error:', error.message);
