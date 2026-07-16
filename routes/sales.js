@@ -13,6 +13,9 @@ const express = require('express');
 const router = express.Router();
 const Sale = require('../models/Sale');
 const Product = require('../models/Product');
+const Fidelite = require('../models/Fidelite');
+
+const syncFidelite = () => { try { Fidelite.rebuild(); } catch (e) { console.error('Fidelite sync error:', e?.message); } };
 const authMiddleware = require('../middleware/auth');
 
 // Get all sales
@@ -303,6 +306,7 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 
     console.log('✅ Vente créée avec succès:', newSale);
+    syncFidelite();
     res.status(201).json(newSale);
 
   } catch (error) {
@@ -554,6 +558,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
     
     console.log('✅ Vente mise à jour avec succès:', updatedSale);
+    syncFidelite();
     res.json(updatedSale);
   } catch (error) {
     console.error('❌ Error updating sale:', error);
@@ -624,6 +629,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
       }
     }
     
+    syncFidelite();
     res.json({ success: true });
   } catch (error) {
     console.error('Error deleting sale:', error);
