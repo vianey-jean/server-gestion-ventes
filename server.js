@@ -415,6 +415,7 @@ app.use('/api/modele-produits', productAttributeRoutes.modeleRouter);
 app.use('/api/taille-produits', productAttributeRoutes.tailleRouter);
 app.use('/api/couleur-produits', productAttributeRoutes.couleurRouter);
 app.use('/api/devant-produits', productAttributeRoutes.devantRouter);
+app.use('/api/autres-produits', productAttributeRoutes.autresRouter);
 
 // Expose historique logger globally for cross-route logging (used by auth)
 app.locals.logHistorique = historiqueConnexionRoutes.logEntry;

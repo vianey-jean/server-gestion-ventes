@@ -49,4 +49,5 @@ module.exports = {
   tailleRouter: buildRouter('tailleproduits.json'),
   couleurRouter: buildRouter('couleurproduits.json'),
   devantRouter: buildRouter('devantproduits.json'),
+  autresRouter: buildRouter('autresproduits.json'),
 };
