@@ -408,6 +408,9 @@ app.use('/api/maintenance', maintenanceRoutes);
 app.use('/api/prepa-livraison', prepaLivraisonRoutes);
 app.use('/api/confirmation-rdv', confirmationRdvRoutes);
 app.use('/api/historique-connexion', historiqueConnexionRoutes);
+app.use('/api/availability', require('./routes/availability'));
+
+
 
 // Attributs produits (modele, taille, couleur, devant)
 const productAttributeRoutes = require('./routes/productAttributes');
