@@ -347,6 +347,7 @@ const prepaLivraisonRoutes = require('./routes/prepaLivraison');
 const confirmationRdvRoutes = require('./routes/confirmationRdv');
 const historiqueConnexionRoutes = require('./routes/historiqueConnexion');
 const versementRoutes = require('./routes/versement');
+const banksRoutes = require('./routes/banks');
 const prixProductsRoutes = require('./routes/prixproducts');
 const fideliteRoutes = require('./routes/fidelite');
 
@@ -368,6 +369,7 @@ app.use('/api/pretfamilles', pretFamillesRoutes);
 app.use('/api/pretproduits', pretProduitsRoutes);
 app.use('/api/depenses', depensesRoutes);
 app.use('/api/versements', versementRoutes);
+app.use('/api/banks', banksRoutes);
 app.use('/api/prix-products', prixProductsRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/benefices', beneficesRoutes);
