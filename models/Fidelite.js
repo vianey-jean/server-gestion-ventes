@@ -41,12 +41,12 @@ const ListesFidelite = require('./ListesFidelite');
 
 const tierOf = (count) => {
   const t = ListesFidelite.tierFor(count);
-  return t?.id || 'nouveau';
+  return t?.id || '';
 };
 
 const tierLabelOf = (count) => {
   const t = ListesFidelite.tierFor(count);
-  return t?.label || 'Nouveau Client';
+  return t?.label || '';
 };
 
 
@@ -99,8 +99,8 @@ const Fidelite = {
       count: 0,
       totalAmount: 0,
       sales: [],
-      tier: 'nouveau',
-      tierLabel: 'Nouveau Client',
+      tier: '',
+      tierLabel: '',
     };
   },
 

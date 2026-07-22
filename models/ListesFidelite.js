@@ -18,9 +18,9 @@ const DEFAULTS = [
 const read = () => {
   try {
     const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    if (Array.isArray(raw) && raw.length > 0) return raw;
+    if (Array.isArray(raw)) return raw;
   } catch {}
-  return DEFAULTS.slice();
+  return [];
 };
 
 const write = (list) => {
@@ -53,12 +53,14 @@ const validate = (list) => {
 
 const tierFor = (count, list) => {
   const c = Number(count) || 0;
-  const s = sorted(list || read());
+  const src = list || read();
+  if (!Array.isArray(src) || src.length === 0) return null;
+  const s = sorted(src);
   for (const t of s) {
     const max = t.max === null ? Infinity : t.max;
     if (c >= t.min && c <= max) return t;
   }
-  return s[0] || DEFAULTS[0];
+  return null;
 };
 
 const slugify = (s) => (s || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `tier-${Date.now()}`;
