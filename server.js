@@ -350,6 +350,8 @@ const versementRoutes = require('./routes/versement');
 const banksRoutes = require('./routes/banks');
 const prixProductsRoutes = require('./routes/prixproducts');
 const fideliteRoutes = require('./routes/fidelite');
+const listesFideliteRoutes = require('./routes/listesFidelite');
+
 
 // Reconstruire fidelite.json au démarrage depuis sales.json
 try { require('./models/Fidelite').rebuild(); } catch (e) { console.error('Fidelite initial rebuild failed:', e); }
@@ -362,6 +364,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/products-vendu', productsVenduRoutes);
 app.use('/api/sales', salesRoutes);
 app.use('/api/fidelite', fideliteRoutes);
+app.use('/api/listes-fidelite', listesFideliteRoutes);
+
 app.use('/api/clients', clientRoutes);
 app.use('/api/clients-villes', clientsVillesRoutes);
 app.use('/api/livraison-villes', livraisonVilleRoutes);

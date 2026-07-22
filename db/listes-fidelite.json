@@ -1,0 +1,7 @@
+[
+  { "id": "nouveau", "label": "Nouveau Client", "min": 0, "max": 0, "order": 0, "grad": "from-slate-500 to-slate-700" },
+  { "id": "standard", "label": "Client Standard", "min": 1, "max": 1, "order": 1, "grad": "from-sky-500 to-blue-600" },
+  { "id": "bon", "label": "Bon Client", "min": 2, "max": 2, "order": 2, "grad": "from-emerald-500 to-teal-600" },
+  { "id": "fidele", "label": "Client Fidèle", "min": 3, "max": 4, "order": 3, "grad": "from-purple-500 via-fuchsia-500 to-pink-500" },
+  { "id": "vip", "label": "Client VIP", "min": 5, "max": null, "order": 4, "grad": "from-yellow-400 via-amber-500 to-orange-500" }
+]

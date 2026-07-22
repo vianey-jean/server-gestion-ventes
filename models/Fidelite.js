@@ -35,24 +35,20 @@ const writeFidelite = (data) => {
   }
 };
 
+// Les tiers ne sont plus codés en dur : ils viennent de listes-fidelite.json
+// via le modèle ListesFidelite, afin d'être configurables par l'utilisateur.
+const ListesFidelite = require('./ListesFidelite');
+
 const tierOf = (count) => {
-  if (count >= 5) return 'vip';
-  if (count >= 3) return 'fidele';
-  if (count === 2) return 'bon';
-  if (count === 1) return 'standard';
-  return 'nouveau';
+  const t = ListesFidelite.tierFor(count);
+  return t?.id || 'nouveau';
 };
 
 const tierLabelOf = (count) => {
-  const t = tierOf(count);
-  return {
-    nouveau: 'Nouveau Client',
-    standard: 'Client Standard',
-    bon: 'Bon Client',
-    fidele: 'Client Fidèle',
-    vip: 'Client VIP',
-  }[t];
+  const t = ListesFidelite.tierFor(count);
+  return t?.label || 'Nouveau Client';
 };
+
 
 const Fidelite = {
   rebuild: () => {
