@@ -482,6 +482,13 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Promesse rejetée non gérée:', reason);
 });
 
+// Start reservation cleanup service (purge réservations ultérieures > 10 jours)
+try {
+  require('./services/reservationCleanupService').start();
+} catch (e) {
+  console.error('Erreur démarrage reservationCleanupService:', e.message);
+}
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

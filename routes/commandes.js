@@ -24,6 +24,17 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
+// Get reservations ultérieures expiring within 24h (MUST be before /:id)
+router.get('/expiring-soon', authMiddleware, async (req, res) => {
+  try {
+    const { getExpiringSoon } = require('../services/reservationCleanupService');
+    res.json(getExpiringSoon());
+  } catch (error) {
+    console.error('Error fetching expiring reservations:', error);
+    res.status(500).json({ message: 'Error fetching expiring reservations' });
+  }
+});
+
 // Get single commande
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
@@ -41,24 +52,33 @@ router.get('/:id', authMiddleware, async (req, res) => {
 // Create commande
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    // Check indisponibilité if date/horaire provided
-    const { date, dateLivraison, horaire } = req.body;
-    const checkDate = dateLivraison || date;
-    if (checkDate && horaire) {
-      const [heureDebut] = horaire.split('-').map(h => h?.trim());
-      const indispoCheck = checkIndisponibilite(checkDate, heureDebut || '00:00', '23:59');
-      if (!indispoCheck.disponible) {
-        return res.status(409).json({ message: `🚫 ${indispoCheck.message}. Impossible de créer une réservation pendant un créneau indisponible.` });
+    const payload = { ...req.body };
+    // Réservation ultérieure : bypass indispo + statut + expiresAt (+10 jours)
+    if (payload.reservationUlterieure) {
+      payload.statut = 'ulterieur';
+      if (!payload.expiresAt) {
+        payload.expiresAt = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString();
+      }
+    } else {
+      const { date, dateLivraison, dateEcheance, horaire } = payload;
+      const checkDate = dateLivraison || date || dateEcheance;
+      if (checkDate && horaire) {
+        const [heureDebut] = horaire.split('-').map(h => h?.trim());
+        const indispoCheck = checkIndisponibilite(checkDate, heureDebut || '00:00', '23:59');
+        if (!indispoCheck.disponible) {
+          return res.status(409).json({ message: `🚫 ${indispoCheck.message}. Impossible de créer une réservation pendant un créneau indisponible.` });
+        }
       }
     }
 
-    const newCommande = await Commande.create(req.body);
+    const newCommande = await Commande.create(payload);
     res.status(201).json(newCommande);
   } catch (error) {
     console.error('Error creating commande:', error);
     res.status(500).json({ message: 'Error creating commande' });
   }
 });
+
 
 // Update commande
 router.put('/:id', authMiddleware, async (req, res) => {
