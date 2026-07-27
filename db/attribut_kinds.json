@@ -1,0 +1,7 @@
+[
+  { "id": "k_modele", "nom": "Modèle", "slug": "modele", "fileName": "modeleproduit.json", "protected": false, "legacy": "modele", "color": "from-purple-500 to-fuchsia-600", "dateCreation": "2024-01-01T00:00:00.000Z" },
+  { "id": "k_autres", "nom": "Autres", "slug": "autres", "fileName": "autresproduits.json", "protected": false, "legacy": "autres", "color": "from-sky-500 to-cyan-600", "dateCreation": "2024-01-01T00:00:00.000Z" },
+  { "id": "k_taille", "nom": "Taille", "slug": "taille", "fileName": "tailleproduits.json", "protected": false, "legacy": "taille", "color": "from-pink-500 to-rose-600", "dateCreation": "2024-01-01T00:00:00.000Z" },
+  { "id": "k_couleur", "nom": "Couleur", "slug": "couleur", "fileName": "couleurproduits.json", "protected": false, "legacy": "couleur", "color": "from-amber-500 to-orange-600", "dateCreation": "2024-01-01T00:00:00.000Z" },
+  { "id": "k_devant", "nom": "Devant", "slug": "devant", "fileName": "devantproduits.json", "protected": false, "legacy": "devant", "color": "from-emerald-500 to-teal-600", "dateCreation": "2024-01-01T00:00:00.000Z" }
+]

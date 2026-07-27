@@ -426,6 +426,9 @@ app.use('/api/couleur-produits', productAttributeRoutes.couleurRouter);
 app.use('/api/devant-produits', productAttributeRoutes.devantRouter);
 app.use('/api/autres-produits', productAttributeRoutes.autresRouter);
 
+// Attributs dynamiques (kinds + valeurs) — permet d'ajouter/modifier/supprimer des types d'attribut
+app.use('/api/attribut-kinds', require('./routes/attributKinds'));
+
 // Expose historique logger globally for cross-route logging (used by auth)
 app.locals.logHistorique = historiqueConnexionRoutes.logEntry;
 
