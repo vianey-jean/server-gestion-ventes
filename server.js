@@ -114,12 +114,18 @@ app.use(cors(corsOptions));
 // ===================
 
 // Ne pas bloquer SSE (connexion longue) avec le rate-limit global
+// Le heartbeat de session unique est également exempté (appel fréquent)
 app.use((req, res, next) => {
-  if (req.path === '/api/sync/events' || req.path === '/api/messagerie/events') {
+  if (
+    req.path === '/api/sync/events' ||
+    req.path === '/api/messagerie/events' ||
+    req.path.startsWith('/api/connecte-profil-unique')
+  ) {
     return next();
   }
   return rateLimitMiddleware('general')(req, res, next);
 });
+
 
 // Détection d'activités suspectes
 app.use(suspiciousActivityLogger);
@@ -415,6 +421,10 @@ app.use('/api/prepa-livraison', prepaLivraisonRoutes);
 app.use('/api/confirmation-rdv', confirmationRdvRoutes);
 app.use('/api/historique-connexion', historiqueConnexionRoutes);
 app.use('/api/availability', require('./routes/availability'));
+
+// Session unique par profil (connecte-profil-unique.json)
+app.use('/api/connecte-profil-unique', require('./routes/connecteProfilUnique'));
+
 
 
 
