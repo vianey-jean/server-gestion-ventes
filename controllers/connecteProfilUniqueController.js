@@ -22,6 +22,46 @@
 
 const M = require('../models/ConnecteProfilUnique');
 
+/**
+ * Envoie une notification à TOUTES les sessions actives d'administrateurs
+ * principaux (sauf l'entrée exclue).
+ */
+const notifyPrincipals = (data, notif, excludeEntryId = null) => {
+  data.forEach((adm) => {
+    if (!M.isPrincipal(adm.role)) return;
+    if (excludeEntryId && adm.id === excludeEntryId) return;
+    if (!M.isEntryActive(adm)) return;
+    adm.notifications = Array.isArray(adm.notifications) ? adm.notifications : [];
+    adm.notifications.push({ id: M.newId('notif'), delivered: false, ...notif });
+    if (adm.notifications.length > 200) adm.notifications = adm.notifications.slice(-200);
+  });
+};
+
+/** Notification verte / rouge décrivant une entrée de session */
+const sessionNotif = (entry, type) => {
+  const { iso, date, heure } = M.nowParts();
+  return {
+    type,
+    message:
+      type === 'user_login'
+        ? `${entry.nom || entry.email || 'Un profil'} vient de se connecter`
+        : `${entry.nom || entry.email || 'Un profil'} vient de se déconnecter`,
+    details: {
+      nom: entry.nom || '',
+      email: entry.email || '',
+      role: entry.role || '',
+      ip: entry.ip || '',
+      browser: entry.browser || '',
+      os: entry.os || '',
+      device: entry.device || '',
+      timezone: entry.timezone || '',
+      date,
+      heure,
+    },
+    createdAt: iso,
+  };
+};
+
 /** Applique les expirations (demandes manuelles > 5 min, sessions mortes) */
 const processExpirations = (data) => {
   let changed = false;
@@ -36,17 +76,38 @@ const processExpirations = (data) => {
       entry.forceLogout = true;
       entry.forceLogoutReason = 'Déconnexion automatique après 5 minutes sans réponse';
       M.closeSession(entry, 'déconnexion automatique (délai 5 min dépassé)');
+      notifyPrincipals(data, sessionNotif(entry, 'user_logout'), entry.id);
       changed = true;
     }
     // Session sans heartbeat => considérée fermée
     if (entry.active && !M.isEntryActive(entry)) {
       M.closeSession(entry, 'session inactive (navigateur fermé)');
+      notifyPrincipals(data, sessionNotif(entry, 'user_logout'), entry.id);
       changed = true;
     }
   });
 
   return changed;
 };
+
+/**
+ * Résumé des connexions / déconnexions du jour (00:00 → 23:59)
+ * survenues AVANT l'instant donné.
+ */
+const buildDailySummary = (data, beforeIso) => {
+  const today = new Date().toISOString().slice(0, 10);
+  const limit = new Date(beforeIso).getTime();
+  let connexions = 0;
+  let deconnexions = 0;
+  data.forEach((e) => {
+    (e.historique || []).forEach((s) => {
+      if (s.connecteAt && s.dateConnexion === today && new Date(s.connecteAt).getTime() < limit) connexions += 1;
+      if (s.deconnecteAt && s.dateDeconnexion === today && new Date(s.deconnecteAt).getTime() < limit) deconnexions += 1;
+    });
+  });
+  return { connexions, deconnexions };
+};
+
 
 const publicEntry = (e) => ({
   id: e.id,
@@ -202,7 +263,33 @@ exports.registerLogin = (req, res) => {
       });
     }
 
+    // Notification VERTE aux administrateurs principaux connectés
+    notifyPrincipals(data, sessionNotif(entry, 'user_login'), entry.id);
+
+    // L'administrateur principal qui vient de se connecter reçoit le résumé
+    // des connexions / déconnexions du jour survenues avant son arrivée.
+    if (M.isPrincipal(entry.role)) {
+      const summary = buildDailySummary(data, iso);
+      if (summary.connexions > 0 || summary.deconnexions > 0) {
+        entry.notifications = Array.isArray(entry.notifications) ? entry.notifications : [];
+        entry.notifications.push({
+          id: M.newId('notif'),
+          type: 'daily_summary',
+          message: `${summary.connexions} connexion(s) et ${summary.deconnexions} déconnexion(s) aujourd'hui avant votre arrivée`,
+          details: {
+            connexions: String(summary.connexions),
+            deconnexions: String(summary.deconnexions),
+            date,
+            heure,
+          },
+          createdAt: iso,
+          delivered: false,
+        });
+      }
+    }
+
     M.writeAll(data);
+
     res.json({ success: true, sessionId, entryId: entry.id, principal: M.isPrincipal(entry.role) });
   } catch (error) {
     console.error('registerLogin error:', error.message);
@@ -228,6 +315,7 @@ exports.logout = (req, res) => {
         entry.logoutRequest.respondedAt = new Date().toISOString();
       }
       M.closeSession(entry, motif || 'déconnexion manuelle');
+      notifyPrincipals(data, sessionNotif(entry, 'user_logout'), entry.id);
       M.writeAll(data);
     }
 
@@ -298,6 +386,7 @@ exports.requestLogout = (req, res) => {
     target.forceLogout = true;
     target.forceLogoutReason = 'Déconnexion automatique demandée depuis un autre appareil';
     M.closeSession(target, 'déconnexion automatique demandée à distance');
+    notifyPrincipals(data, sessionNotif(target, 'user_logout'), target.id);
     M.writeAll(data);
     res.json({ requestId, status: 'granted' });
   } catch (error) {
@@ -352,6 +441,7 @@ exports.respondLogout = (req, res) => {
       entry.forceLogout = true;
       entry.forceLogoutReason = 'Vous avez accepté la demande de déconnexion';
       M.closeSession(entry, 'déconnexion confirmée par l\'utilisateur');
+      notifyPrincipals(data, sessionNotif(entry, 'user_logout'), entry.id);
     } else {
       entry.logoutRequest.status = 'refused';
       entry.logoutRequest.respondedAt = iso;
@@ -392,7 +482,10 @@ exports.poll = (req, res) => {
     if (forceLogout) {
       entry.forceLogout = false;
       entry.forceLogoutReason = '';
-      if (isCurrent) M.closeSession(entry, 'déconnexion forcée');
+      if (isCurrent) {
+        M.closeSession(entry, 'déconnexion forcée');
+        notifyPrincipals(data, sessionNotif(entry, 'user_logout'), entry.id);
+      }
     } else {
       entry.lastSeenAt = new Date().toISOString();
     }
