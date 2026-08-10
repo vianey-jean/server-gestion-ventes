@@ -8,6 +8,21 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const authMiddleware = require('../middleware/auth');
+const { readJsonDecrypted } = require('../middleware/encryption');
+
+const commandesPath = path.join(__dirname, '../db/commandes.json');
+
+/** Commandes créées à moins de 24h de leur échéance : maintien automatique */
+const getAutoConfirmedCommandeIds = () => {
+  try {
+    const data = readJsonDecrypted(commandesPath) || [];
+    return new Set(
+      data.filter(c => c && c.confirmationAuto === true).map(c => c.id)
+    );
+  } catch {
+    return new Set();
+  }
+};
 
 const dbPath = path.join(__dirname, '../db/confirmation-rdv.json');
 
@@ -46,6 +61,7 @@ router.post('/sync', authMiddleware, (req, res) => {
     const existing = readJson();
     const byId = new Map(existing.map(e => [e.id, e]));
     const now = new Date().toISOString();
+    const autoIds = getAutoConfirmedCommandeIds();
 
     entries.forEach(r => {
       if (!r || !r.id) return;
@@ -64,8 +80,12 @@ router.post('/sync', authMiddleware, (req, res) => {
         produits: Array.isArray(r.produits) ? r.produits : [],
         commandeId: r.commandeId || null,
         statutRdv: r.statut,
-        confirmationStatut: prev.confirmationStatut || 'en_attente',
-        confirmedAt: prev.confirmedAt || null,
+        confirmationStatut:
+          prev.confirmationStatut && prev.confirmationStatut !== 'en_attente'
+            ? prev.confirmationStatut
+            : (r.commandeId && autoIds.has(r.commandeId) ? 'maintenu' : (prev.confirmationStatut || 'en_attente')),
+        confirmationAuto: !!(r.commandeId && autoIds.has(r.commandeId)),
+        confirmedAt: prev.confirmedAt || ((r.commandeId && autoIds.has(r.commandeId)) ? now : null),
         createdAt: prev.createdAt || now,
         updatedAt: now,
       });
