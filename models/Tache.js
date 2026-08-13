@@ -136,6 +136,9 @@ const validateTimeSlot = ({ date, heureDebut, heureFin, excludeId = null, travai
     items.filter(item => {
       if (item.id === excludeId) return false;
       if (item.date !== date) return false;
+      // ✅ Une tâche terminée / annulée libère son créneau
+      if (item.completed === true) return false;
+      if (item.statut === 'annule' || item.statut === 'termine') return false;
       // Only conflict with same person's tasks
       const itemName = (item.travailleurNom || '').trim().toLowerCase();
       const checkName = (travailleurNom || '').trim().toLowerCase();
