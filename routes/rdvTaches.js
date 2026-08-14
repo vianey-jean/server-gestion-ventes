@@ -148,6 +148,10 @@ router.post('/', (req, res) => {
       commentaires: data.commentaires || '',
       commandeId: data.commandeId || '',
       statut: data.statut || 'planifie',
+      // Panier produits lié au RDV (nom, quantité, prix, ville + frais de livraison)
+      produits: Array.isArray(data.produits) ? data.produits : [],
+      clientAdresse: data.clientAdresse || data.lieu || '',
+      saleId: data.saleId || '',
       createdAt: now,
       updatedAt: now
     };
