@@ -109,6 +109,15 @@ const corsOptions = {
 // Middleware CORS global
 app.use(cors(corsOptions));
 
+// Endpoint de santé (utilisé par le front pour sonder la disponibilité
+// avant d'ouvrir une connexion SSE — évite les erreurs CORS/réseau en console)
+app.get('/api/health', (req, res) => {
+  const origin = req.headers.origin || '*';
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Cache-Control', 'no-store');
+  res.status(200).json({ ok: true, timestamp: Date.now() });
+});
+
 // ===================
 // RATE LIMIT (APRÈS CORS)
 // ===================
