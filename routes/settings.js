@@ -694,6 +694,8 @@ router.post('/delete-all', authMiddleware, (req, res) => {
     // Files that MUST always be arrays (even if currently encrypted/corrupt)
     const ARRAY_FILES = [
       'admin-messages.json', 'avance.json', 'benefice.json', 'clients.json',
+      'attribut_kinds.json', 'modeleproduit.json', 'tailleproduits.json',
+      'couleurproduits.json', 'devantproduits.json', 'autresproduits.json',
       'commandes.json', 'compta.json', 'depensedumois.json', 'depensefixe.json',
       'entreprise.json',
       'fournisseurs.json', 'group-chats.json', 'group-messages.json',

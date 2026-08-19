@@ -1,16 +1,1 @@
-[
-  {"ville":"Saint-Suzanne","fee":0},
-  {"ville":"Sainte-Marie","fee":0},
-  {"ville":"Saint-Denis","fee":0},
-  {"ville":"La Possession","fee":0},
-  {"ville":"Le Port","fee":0},
-  {"ville":"Saint-Paul","fee":0},
-  {"ville":"Saint-André","fee":10},
-  {"ville":"Saint-Benoît","fee":10},
-  {"ville":"Saint-Leu","fee":10},
-  {"ville":"Saint-Louis","fee":20},
-  {"ville":"Saint-Pierre","fee":20},
-  {"ville":"Le Tampon","fee":20},
-  {"ville":"Saint-Joseph","fee":20},
-  {"ville":"Exonération","fee":0}
-]
+{"__encrypted":true,"iv":"1060060154c1266f65bad29ec3b5f20c","data":"831b559fc1845cdc50d549f255983180"}
