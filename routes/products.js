@@ -174,6 +174,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     if (reserver !== undefined) productData.reserver = reserver;
     if (fournisseur !== undefined) productData.fournisseur = fournisseur;
     if (sellingPrice !== undefined) productData.sellingPrice = Number(sellingPrice);
+    if (req.body.sellingPriceDate !== undefined) productData.sellingPriceDate = req.body.sellingPriceDate;
     if (caracteristique !== undefined) productData.caracteristique = caracteristique;
     
     const updatedProduct = Product.update(req.params.id, productData);
@@ -488,7 +489,7 @@ router.delete('/:id/photos/:photoIndex', authMiddleware, async (req, res) => {
  */
 router.post('/merge', authMiddleware, upload.array('photos', 6), async (req, res) => {
   try {
-    let { sourceIds, description, purchasePrice, quantity, fournisseur, keptPhotos, mainPhotoIndex } = req.body;
+    let { sourceIds, description, purchasePrice, quantity, fournisseur, keptPhotos, mainPhotoIndex, sellingPrice } = req.body;
 
     if (typeof sourceIds === 'string') {
       try { sourceIds = JSON.parse(sourceIds); } catch { sourceIds = []; }
@@ -521,6 +522,7 @@ router.post('/merge', authMiddleware, upload.array('photos', 6), async (req, res
       purchasePrice: Number(purchasePrice),
       quantity: Number(quantity),
       fournisseur: fournisseur || '',
+      ...(sellingPrice !== undefined && sellingPrice !== '' ? { sellingPrice: Number(sellingPrice) } : {}),
     };
     const newProduct = Product.create(productData);
     if (!newProduct) {

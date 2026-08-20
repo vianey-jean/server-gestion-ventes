@@ -88,6 +88,23 @@ const buildCaracteristique = (product) => {
   };
 };
 
+/**
+ * Maintient l'historique du prix de vente unitaire d'un produit.
+ * Ajoute une entrée { price, date } uniquement si le prix a changé.
+ */
+const appendSellingPriceHistory = (product, newPrice, date) => {
+  const price = Number(newPrice);
+  if (!isFinite(price)) return product;
+  if (!Array.isArray(product.sellingPriceHistory)) product.sellingPriceHistory = [];
+  const last = product.sellingPriceHistory[product.sellingPriceHistory.length - 1];
+  if (last && Number(last.price) === price) return product;
+  product.sellingPriceHistory.push({
+    price,
+    date: (typeof date === 'string' && date) ? date : new Date().toISOString(),
+  });
+  return product;
+};
+
 // ============================================
 // FONCTION DE GÉNÉRATION DE CODE UNIQUE
 // ============================================
@@ -268,6 +285,14 @@ const Product = {
         code: newProduct.code,
       };
 
+      // Historique du prix de vente unitaire
+      if (newProduct.sellingPrice !== undefined && newProduct.sellingPrice !== null && newProduct.sellingPrice !== '') {
+        newProduct.sellingPrice = Number(newProduct.sellingPrice) || 0;
+        appendSellingPriceHistory(newProduct, newProduct.sellingPrice, purchaseDate);
+      } else {
+        delete newProduct.sellingPrice;
+      }
+
       // Add to products array
       products.push(newProduct);
       
@@ -344,6 +369,18 @@ const Product = {
 
       if (!Array.isArray(merged.ventes)) merged.ventes = [];
 
+      // Historique du prix de vente unitaire (si modifié)
+      if (restUpdate.sellingPrice !== undefined && restUpdate.sellingPrice !== null && restUpdate.sellingPrice !== '') {
+        merged.sellingPrice = Number(restUpdate.sellingPrice) || 0;
+        appendSellingPriceHistory(
+          merged,
+          merged.sellingPrice,
+          (restUpdate.sellingPriceDate && typeof restUpdate.sellingPriceDate === 'string')
+            ? restUpdate.sellingPriceDate
+            : new Date().toISOString()
+        );
+      }
+      delete merged.sellingPriceDate;
 
       // Si pas encore de caractéristique, la créer maintenant
       if (!merged.caracteristique || typeof merged.caracteristique !== 'object') {
