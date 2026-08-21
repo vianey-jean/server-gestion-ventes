@@ -11,6 +11,7 @@
 
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../config/jwtSecret');
 let Fidelite;
 try { Fidelite = require('../models/Fidelite'); } catch (_) { Fidelite = null; }
 
@@ -22,7 +23,7 @@ exports.verifyToken = (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ valid: false, message: 'No token provided' });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultsecretkey');
+    const decoded = jwt.verify(token, getJwtSecret());
     const user = User.getById(decoded.id);
 
     if (!user) return res.status(401).json({ valid: false, message: 'User account not found in database' });
@@ -105,7 +106,7 @@ exports.login = (req, res) => {
 
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_SECRET || 'defaultsecretkey',
+      getJwtSecret(),
       { expiresIn: '8h' }
     );
 
@@ -176,7 +177,7 @@ exports.register = (req, res) => {
 
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET,
+      getJwtSecret(),
       { expiresIn: '8h' }
     );
 

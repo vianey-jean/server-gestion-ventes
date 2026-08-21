@@ -33,6 +33,8 @@ const {
   securityHeadersMiddleware,
   suspiciousActivityLogger
 } = require('./middleware/security');
+const { threatShield, getShieldStats } = require('./middleware/threatShield');
+const authMiddleware = require('./middleware/auth');
 
 // Load environment variables
 dotenv.config();
@@ -88,7 +90,12 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    // Par défaut, autoriser (évite les blocages preview)
+    // En production : refus strict de toute origine hors whitelist
+    if (process.env.NODE_ENV === 'production') {
+      return callback(new Error('Origine non autorisée par la politique CORS'));
+    }
+
+    // En développement uniquement : autoriser (évite les blocages preview)
     return callback(null, true);
   },
   credentials: true,
@@ -138,6 +145,14 @@ app.use((req, res, next) => {
 
 // Détection d'activités suspectes
 app.use(suspiciousActivityLogger);
+
+// ===================
+// BOUCLIER ADAPTATIF ANTI-INTRUSION
+// ===================
+// Moteur heuristique + comportemental : signatures d'attaque, honeypots,
+// tarpit progressif et bannissement gradué. Couche additive : aucune logique
+// métier n'est modifiée.
+app.use(threatShield());
 
 // Body parsing avec limites de taille
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -374,6 +389,18 @@ try { require('./models/Fidelite').rebuild(); } catch (e) { console.error('Fidel
 
 
 // Use routes
+// ===================
+// SUPERVISION SÉCURITÉ (lecture seule, réservée aux comptes authentifiés)
+// ===================
+app.get('/api/security/shield-stats', authMiddleware, (req, res) => {
+  try {
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({ ok: true, ...getShieldStats() });
+  } catch (error) {
+    res.status(500).json({ ok: false, message: 'Statistiques indisponibles' });
+  }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/products-vendu', productsVenduRoutes);

@@ -11,6 +11,7 @@
  */
 
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../config/jwtSecret');
 const User = require('../models/User');
 
 // Authentication middleware
@@ -23,7 +24,7 @@ const authMiddleware = (req, res, next) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultsecretkey');
+    const decoded = jwt.verify(token, getJwtSecret());
     
     // Set user data in request
     const user = User.getById(decoded.id);

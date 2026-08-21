@@ -8,6 +8,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../config/jwtSecret');
 const { rateLimitMiddleware, validateRequest } = require('../middleware/security');
 const validationSchemas = require('../middleware/validation');
 
@@ -24,7 +25,7 @@ router.get('/verify', (req, res) => {
     }
     
     // Verify JWT token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultsecretkey');
+    const decoded = jwt.verify(token, getJwtSecret());
     
     // CRITICAL: Verify user exists in database
     const user = User.getById(decoded.id);
@@ -146,7 +147,7 @@ router.post('/login', validateRequest(validationSchemas.login), (req, res) => {
     // Create and sign JWT token
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_SECRET || 'defaultsecretkey',
+      getJwtSecret(),
       { expiresIn: '8h' }
     );
     
@@ -264,7 +265,7 @@ router.post('/register', validateRequest(validationSchemas.register), (req, res)
     // Create and sign JWT token
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET,
+      getJwtSecret(),
       { expiresIn: '8h' }
     );
     

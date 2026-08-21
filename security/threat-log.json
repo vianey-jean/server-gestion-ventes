@@ -1,0 +1,14 @@
+[
+  {
+    "type": "signal",
+    "tags": [
+      "automated-client"
+    ],
+    "ip": "::1",
+    "ua": "curl/8.18.0",
+    "path": "/api/security/shield-stats",
+    "method": "GET",
+    "score": 6,
+    "at": "2026-08-21T03:49:29.223Z"
+  }
+]

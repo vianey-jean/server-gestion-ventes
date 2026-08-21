@@ -181,27 +181,79 @@ const sanitizeMiddleware = (req, res, next) => {
   next();
 };
 
-// Security headers middleware
+// Security headers middleware (durci)
 const securityHeadersMiddleware = (req, res, next) => {
-  // Protection XSS
+  // Protection XSS / sniffing / framing
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-XSS-Protection', '1; mode=block');
-  
+  res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
+  res.setHeader('X-DNS-Prefetch-Control', 'off');
+  res.removeHeader && res.removeHeader('X-Powered-By');
+
   // Referrer Policy
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
-  // Permissions Policy
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  
-  // Content Security Policy (ajustée pour API)
-  res.setHeader('Content-Security-Policy', "default-src 'self'; frame-ancestors 'none'");
-  
+  res.setHeader('Referrer-Policy', 'no-referrer');
+
+  // Permissions Policy étendue (désactive toutes les API sensibles)
+  res.setHeader(
+    'Permissions-Policy',
+    [
+      'geolocation=()', 'microphone=()', 'camera=()', 'usb=()', 'serial=()',
+      'bluetooth=()', 'payment=()', 'midi=()', 'magnetometer=()', 'gyroscope=()',
+      'accelerometer=()', 'display-capture=()', 'idle-detection=()',
+      'clipboard-read=()', 'interest-cohort=()'
+    ].join(', ')
+  );
+
+  // Isolation d'origine (anti-XS-Leaks / anti-clone par iframe)
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-site');
+
+  // CSP : stricte pour l'API JSON, adaptée pour les contenus servis (uploads,
+  // pages de partage HTML) afin de ne rien casser côté rendu.
+  const servesDocument =
+    req.path.startsWith('/uploads') ||
+    req.path.includes('/share') ||
+    req.path.includes('/comment');
+
+  if (servesDocument) {
+    res.setHeader(
+      'Content-Security-Policy',
+      [
+        "default-src 'self'",
+        "base-uri 'none'",
+        "img-src 'self' data: blob:",
+        "style-src 'self' 'unsafe-inline'",
+        "script-src 'self' 'unsafe-inline'",
+        "connect-src 'self'",
+        "frame-ancestors 'none'",
+        "object-src 'none'"
+      ].join('; ')
+    );
+    return next();
+  }
+
+  res.setHeader(
+    'Content-Security-Policy',
+    [
+      "default-src 'none'",
+      "base-uri 'none'",
+      "form-action 'none'",
+      "img-src 'self' data:",
+      "connect-src 'self'",
+      "frame-ancestors 'none'",
+      "object-src 'none'",
+      "script-src 'none'",
+      "style-src 'none'",
+      "upgrade-insecure-requests"
+    ].join('; ')
+  );
+
   // Strict Transport Security
   if (process.env.NODE_ENV === 'production') {
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   }
-  
+
   next();
 };
 
