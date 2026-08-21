@@ -154,6 +154,14 @@ app.use(suspiciousActivityLogger);
 // métier n'est modifiée.
 app.use(threatShield());
 
+// ===================
+// BLOCAGE D'IP GLOBAL
+// ===================
+// Toute requête provenant d'une IP listée dans db/blockage-ip.json est
+// refusée (403), sauf l'endpoint public de vérification.
+const { ipBlocklistMiddleware } = require('./middleware/ipBlocklist');
+app.use(ipBlocklistMiddleware);
+
 // Body parsing avec limites de taille
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
@@ -489,6 +497,7 @@ app.use('/api/prepa-livraison', prepaLivraisonRoutes);
 app.use('/api/confirmation-rdv', confirmationRdvRoutes);
 app.use('/api/historique-connexion', historiqueConnexionRoutes);
 app.use('/api/availability', require('./routes/availability'));
+app.use('/api/blockage-ip', require('./routes/blockageIp'));
 
 // Session unique par profil (connecte-profil-unique.json)
 app.use('/api/connecte-profil-unique', require('./routes/connecteProfilUnique'));
