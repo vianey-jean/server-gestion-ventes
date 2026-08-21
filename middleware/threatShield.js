@@ -214,7 +214,7 @@ const bannedUntil = (profile) => {
 setInterval(() => {
   const now = Date.now();
   for (const [id, p] of profiles.entries()) {
-    p.score = Math.max(0, p.score - 12);
+    p.score = Math.max(0, p.score - 25);
     if (p.paths.size > 400) p.paths = new Set();
     if (now - p.lastSeen > 30 * 60_000) profiles.delete(id);
   }
@@ -251,7 +251,18 @@ const analyze = (req, profile) => {
   else if (HEADLESS_UA.test(ua) && lowerPath.startsWith('/api/')) { tags.push('automated-client'); score += 6; }
 
   // 4) En-têtes anormaux (tentative de spoof / smuggling)
-  if (req.headers['x-forwarded-host'] && !IS_DEV) { tags.push('host-spoof'); score += 10; }
+  // Note : les hébergeurs (Render, Vercel, Cloudflare…) ajoutent toujours
+  // `x-forwarded-host` sur du trafic parfaitement légitime. On ne signale donc
+  // que les valeurs réellement anormales : plusieurs hôtes chaînés ou des
+  // caractères d'injection (CRLF, espaces, chevrons…).
+  const xfh = req.headers['x-forwarded-host'];
+  if (xfh && !IS_DEV) {
+    const raw = Array.isArray(xfh) ? xfh.join(',') : String(xfh);
+    if (raw.includes(',') || /[^A-Za-z0-9.\-:]/.test(raw)) {
+      tags.push('host-spoof'); score += 10;
+    }
+  }
+
   if (req.headers['transfer-encoding'] && req.headers['content-length']) { tags.push('request-smuggling'); score += 60; }
   const cl = Number(req.headers['content-length'] || 0);
   if (cl > 12 * 1024 * 1024) { tags.push('oversized-body'); score += 25; }
