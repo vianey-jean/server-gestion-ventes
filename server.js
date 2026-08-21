@@ -33,7 +33,7 @@ const {
   securityHeadersMiddleware,
   suspiciousActivityLogger
 } = require('./middleware/security');
-const { threatShield, getShieldStats } = require('./middleware/threatShield');
+const { threatShield, getShieldStats, getIntrusions, resetIntrusions } = require('./middleware/threatShield');
 const authMiddleware = require('./middleware/auth');
 
 // Load environment variables
@@ -400,6 +400,38 @@ app.get('/api/security/shield-stats', authMiddleware, (req, res) => {
     res.status(500).json({ ok: false, message: 'Statistiques indisponibles' });
   }
 });
+
+// Journal détaillé des intrusions (base de données server/db/intrusions.json)
+app.get('/api/security/intrusions', authMiddleware, (req, res) => {
+  try {
+    res.setHeader('Cache-Control', 'no-store');
+    const { limit, severity, mode, ip, since } = req.query;
+    const result = getIntrusions({
+      limit: Math.min(Number(limit) || 200, 1000),
+      severity: severity || undefined,
+      mode: mode || undefined,
+      ip: ip || undefined,
+      since: since || undefined,
+    });
+    res.json({ ok: true, ...result });
+  } catch (error) {
+    res.status(500).json({ ok: false, message: 'Journal des intrusions indisponible' });
+  }
+});
+
+// Purge du journal (administrateur principale uniquement)
+app.delete('/api/security/intrusions', authMiddleware, (req, res) => {
+  try {
+    if (!req.user || req.user.role !== 'administrateur principale') {
+      return res.status(403).json({ ok: false, message: 'Accès refusé' });
+    }
+    resetIntrusions();
+    res.json({ ok: true, message: 'Journal des intrusions réinitialisé' });
+  } catch (error) {
+    res.status(500).json({ ok: false, message: 'Réinitialisation impossible' });
+  }
+});
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);

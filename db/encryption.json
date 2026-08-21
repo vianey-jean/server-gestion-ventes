@@ -1,5 +1,13 @@
 {
   "enabled": true,
-  "key": "Layana05082016@",
-  "activatedAt": "2026-08-19T14:41:37.863Z"
+  "activatedAt": "2026-08-21T15:12:19.991Z",
+  "keySealed": {
+    "v": 1,
+    "iv": "70117e61397dd51cee69d459",
+    "tag": "2d6087c1310c6605545eab03529603c0",
+    "data": "a6cfe192c5e56252acd33b3645ad45"
+  },
+  "keyHint": "L••••••••••",
+  "keyFingerprint": "e5b88ed1d0ac8119",
+  "keyProtected": true
 }

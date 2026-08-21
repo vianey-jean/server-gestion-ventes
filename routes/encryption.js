@@ -30,8 +30,12 @@ router.get('/status', authMiddleware, (req, res) => {
     res.json({
       enabled: config.enabled || false,
       hasKey: !!config.key,
+      keyHint: config.keyHint || null,
+      keyFingerprint: config.keyFingerprint || null,
+      keyProtected: true,
       activatedAt: config.activatedAt || null
     });
+
   } catch (error) {
     console.error('Error getting encryption status:', error);
     res.status(500).json({ message: 'Erreur serveur' });

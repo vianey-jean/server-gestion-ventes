@@ -175,12 +175,121 @@ const logIncident = (entry) => {
   if (incidents.length > 50) flushLog();
 };
 
+// --- Base de données des intrusions (server/db/intrusions.json) ------------
+let intrusionStore = null;
+try {
+  intrusionStore = require('../security/intrusionStore');
+} catch (e) {
+  console.error('intrusionStore indisponible:', e.message);
+}
+
+const parseUa = (ua = '') => {
+  const s = String(ua);
+  const browser =
+    /edg\//i.test(s) ? 'Edge'
+      : /opr\/|opera/i.test(s) ? 'Opera'
+      : /chrome\//i.test(s) && !/chromium/i.test(s) ? 'Chrome'
+      : /safari\//i.test(s) && !/chrome/i.test(s) ? 'Safari'
+      : /firefox\//i.test(s) ? 'Firefox'
+      : /curl\//i.test(s) ? 'curl'
+      : /python-requests|go-http-client|okhttp|libwww/i.test(s) ? 'Client automatisé'
+      : s ? 'Autre' : 'Inconnu';
+  const os =
+    /windows nt/i.test(s) ? 'Windows'
+      : /android/i.test(s) ? 'Android'
+      : /iphone|ipad|ios/i.test(s) ? 'iOS'
+      : /mac os x/i.test(s) ? 'macOS'
+      : /linux/i.test(s) ? 'Linux'
+      : 'Inconnu';
+  const device = /mobile|android|iphone/i.test(s) ? 'Mobile' : /ipad|tablet/i.test(s) ? 'Tablette' : 'Ordinateur';
+  return { browser, os, device };
+};
+
+const severityOf = (score, tags = []) => {
+  if (tags.includes('honeypot') || tags.includes('scanner-ua') || score >= 100) return 'critique';
+  if (score >= 60) return 'eleve';
+  if (score >= 30) return 'moyen';
+  return 'faible';
+};
+
+const HEADER_WHITELIST = [
+  'user-agent', 'referer', 'origin', 'accept', 'accept-language', 'accept-encoding',
+  'content-type', 'content-length', 'x-forwarded-for', 'x-forwarded-host',
+  'x-real-ip', 'x-requested-with', 'connection', 'host',
+];
+
+const pickHeaders = (req) => {
+  const out = {};
+  HEADER_WHITELIST.forEach((h) => {
+    const v = req.headers[h];
+    if (v !== undefined) out[h] = String(Array.isArray(v) ? v.join(',') : v).slice(0, 300);
+  });
+  return out;
+};
+
+const redactBody = (body) => {
+  try {
+    if (!body || typeof body !== 'object') return safeStringify(body).slice(0, 800);
+    const clone = {};
+    Object.keys(body).slice(0, 30).forEach((k) => {
+      clone[k] = /pass|token|secret|key|authorization/i.test(k) ? '•••' : body[k];
+    });
+    return safeStringify(clone).slice(0, 800);
+  } catch (_) {
+    return '';
+  }
+};
+
+/**
+ * Enregistre une intrusion complète en base (tous les renseignements).
+ */
+const recordIntrusion = (req, profile, { tags, score, action, reason, banDurationMs, banUntil } = {}) => {
+  if (!intrusionStore) return;
+  const ua = profile.ua || '';
+  const { browser, os, device } = parseUa(ua);
+  intrusionStore.record({
+    fingerprint: profile.id,
+    ip: profile.ip,
+    ipChain: String(req.headers['x-forwarded-for'] || '').slice(0, 300) || null,
+    ua,
+    browser,
+    os,
+    device,
+    method: req.method,
+    path: req.path,
+    url: String(req.originalUrl || req.url || '').slice(0, 500),
+    query: safeStringify(req.query).slice(0, 500),
+    body: redactBody(req.body),
+    headers: pickHeaders(req),
+    referer: req.headers.referer || null,
+    origin: req.headers.origin || null,
+    language: req.headers['accept-language'] || null,
+    protocol: req.protocol,
+    secure: !!req.secure,
+    tags: tags || [],
+    modes: (tags || []).join(', '),
+    score: score ?? 0,
+    profileScore: profile.score,
+    severity: severityOf(profile.score, tags || []),
+    action: action || 'log',
+    reason: reason || null,
+    banDurationMs: banDurationMs || null,
+    banUntil: banUntil || null,
+    hits: profile.hits,
+    distinctPaths: profile.paths ? profile.paths.size : 0,
+    notFound: profile.notFound,
+    authFails: profile.authFails,
+    firstSeen: new Date(profile.firstSeen).toISOString(),
+  });
+};
+
 const flushLog = () => {
   if (!incidents.length) return;
   const current = readJson(LOG_FILE, []);
   const merged = (Array.isArray(current) ? current : []).concat(incidents.splice(0));
   writeJsonSafe(LOG_FILE, merged.slice(-MAX_LOG_ENTRIES));
 };
+
 
 const persistState = () => {
   const now = Date.now();
@@ -352,21 +461,42 @@ const threatShield = (options = {}) => {
       logIncident({ type: 'signal', tags, ip, ua, path: req.path, method: req.method, score: profile.score });
     }
 
-    if (observeOnly) return next();
-
     // Réponse graduée
-    if (profile.score >= 100 || tags.includes('honeypot') || tags.includes('scanner-ua')) {
-      applyBan(profile, 'seuil critique atteint', tags);
+    const critical = profile.score >= 100 || tags.includes('honeypot') || tags.includes('scanner-ua');
+
+    if (observeOnly) {
+      if (tags.length) {
+        recordIntrusion(req, profile, {
+          tags, score, action: 'observe',
+          reason: critical ? 'seuil critique (mode observation locale)' : 'signal détecté (mode observation locale)',
+        });
+      }
+      return next();
+    }
+
+    if (critical) {
+      const until = applyBan(profile, 'seuil critique atteint', tags);
+      recordIntrusion(req, profile, {
+        tags, score, action: 'ban', reason: 'seuil critique atteint',
+        banUntil: new Date(until).toISOString(),
+        banDurationMs: until - Date.now(),
+      });
       return res.status(403).json({ error: 'Accès bloqué', message: 'Tentative d’intrusion détectée.' });
     }
 
     if (profile.score >= 60) {
+      recordIntrusion(req, profile, { tags, score, action: 'reject', reason: 'contenu de requête non autorisé' });
       return res.status(400).json({ error: 'Requête rejetée', message: 'Contenu de requête non autorisé.' });
     }
 
     if (profile.score >= 35 && !isStream) {
+      recordIntrusion(req, profile, { tags, score, action: 'tarpit', reason: 'ralentissement adaptatif' });
       // Tarpit : ralentit fuzzers et brute force sans gêner l'usage normal
       return setTimeout(next, tarpitMs);
+    }
+
+    if (tags.length) {
+      recordIntrusion(req, profile, { tags, score, action: 'log', reason: 'signal détecté' });
     }
 
     return next();
@@ -380,18 +510,56 @@ const reportSuspiciousAuth = (req) => {
     const p = getProfile(id, ip, ua);
     p.authFails += 1;
     p.score += 10;
-    if (p.authFails >= 12) applyBan(p, 'brute force authentification', ['bruteforce']);
+    const banned = p.authFails >= 12;
+    if (banned) applyBan(p, 'brute force authentification', ['bruteforce']);
+    recordIntrusion(req, p, {
+      tags: ['auth-failure', ...(banned ? ['bruteforce'] : [])],
+      score: 10,
+      action: banned ? 'ban' : 'log',
+      reason: 'échec d’authentification',
+    });
   } catch (_) { /* silencieux */ }
 };
 
-const getShieldStats = () => ({
-  profiles: profiles.size,
-  bans: Array.from(bans.entries())
-    .filter(([k]) => !k.startsWith('ip:'))
-    .map(([k, until]) => ({ fingerprint: k, until: new Date(Number(until)).toISOString() })),
-  recentIncidents: readJson(LOG_FILE, []).slice(-50),
-});
+const getShieldStats = () => {
+  const base = {
+    profiles: profiles.size,
+    bans: Array.from(bans.entries())
+      .filter(([k]) => !k.startsWith('ip:'))
+      .map(([k, until]) => ({ fingerprint: k, until: new Date(Number(until)).toISOString() })),
+    recentIncidents: readJson(LOG_FILE, []).slice(-50),
+    activeProfiles: Array.from(profiles.values()).map((p) => ({
+      fingerprint: p.id,
+      ip: p.ip,
+      ua: p.ua,
+      ...parseUa(p.ua),
+      score: p.score,
+      hits: p.hits,
+      distinctPaths: p.paths ? p.paths.size : 0,
+      notFound: p.notFound,
+      authFails: p.authFails,
+      firstSeen: new Date(p.firstSeen).toISOString(),
+      lastSeen: new Date(p.lastSeen).toISOString(),
+      banLevel: p.banLevel,
+    })).sort((a, b) => b.score - a.score).slice(0, 50),
+  };
+
+  try {
+    if (intrusionStore) {
+      base.intrusionStats = intrusionStore.stats();
+      base.intrusions = intrusionStore.query({ limit: 100 }).items;
+    }
+  } catch (e) {
+    console.error('getShieldStats intrusions error:', e.message);
+  }
+
+  return base;
+};
+
+const getIntrusions = (filters) => (intrusionStore ? intrusionStore.query(filters) : { total: 0, items: [] });
+const resetIntrusions = () => (intrusionStore ? intrusionStore.reset() : false);
+
 
 process.on('exit', () => { flushLog(); persistState(); });
 
-module.exports = { threatShield, reportSuspiciousAuth, getShieldStats };
+module.exports = { threatShield, reportSuspiciousAuth, getShieldStats, getIntrusions, resetIntrusions };

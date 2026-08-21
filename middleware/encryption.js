@@ -8,6 +8,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const vault = require('../security/keyVault');
 
 const ALGORITHM = 'aes-256-cbc';
 const SALT = 'riziky-encryption-salt-2024';
@@ -20,7 +21,32 @@ const derivedKeyCache = new Map();
 const EXCLUDED_FILES = ['encryption.json', 'auto-sauvegarde.json', 'settings.json', 'moduleSettings.json'];
 
 /**
- * Get the current encryption config
+ * Écrit la configuration sur disque SANS jamais y placer la clé en clair.
+ * Seule une version scellée (AES-256-GCM via la clé maître locale) est stockée.
+ */
+function persistConfig(config) {
+  const plainKey = config && config.key ? String(config.key) : null;
+  const onDisk = { ...config };
+  delete onDisk.key;
+
+  if (plainKey) {
+    onDisk.keySealed = vault.sealKey(plainKey);
+    onDisk.keyHint = vault.hint(plainKey);
+    onDisk.keyFingerprint = vault.fingerprint(plainKey);
+    onDisk.keyProtected = true;
+  } else {
+    delete onDisk.keySealed;
+    delete onDisk.keyHint;
+    delete onDisk.keyFingerprint;
+    onDisk.keyProtected = false;
+  }
+
+  fs.writeFileSync(encryptionConfigPath, JSON.stringify(onDisk, null, 2));
+  return onDisk;
+}
+
+/**
+ * Get the current encryption config (la clé en clair n'existe qu'en mémoire)
  */
 function getEncryptionConfig() {
   try {
@@ -31,20 +57,32 @@ function getEncryptionConfig() {
     }
 
     const data = JSON.parse(fs.readFileSync(encryptionConfigPath, 'utf8'));
-    cachedConfig = data;
+
+    // Migration : ancienne configuration avec la clé en clair → scellement
+    if (data && typeof data.key === 'string' && data.key) {
+      const plain = data.key;
+      persistConfig({ ...data, key: plain });
+      const migrated = { ...data, key: plain };
+      cachedConfig = migrated;
+      try { cachedConfigMtimeMs = fs.statSync(encryptionConfigPath).mtimeMs; } catch { cachedConfigMtimeMs = Date.now(); }
+      return migrated;
+    }
+
+    const resolved = { ...data, key: data && data.keySealed ? vault.openKey(data.keySealed) : null };
+    cachedConfig = resolved;
     cachedConfigMtimeMs = stats.mtimeMs;
-    return data;
+    return resolved;
   } catch {
     return { enabled: false, key: null };
   }
 }
 
 /**
- * Save encryption config
+ * Save encryption config (la clé est scellée avant écriture)
  */
 function saveEncryptionConfig(config) {
-  fs.writeFileSync(encryptionConfigPath, JSON.stringify(config, null, 2));
-  cachedConfig = config;
+  persistConfig(config);
+  cachedConfig = { ...config };
   try {
     cachedConfigMtimeMs = fs.statSync(encryptionConfigPath).mtimeMs;
   } catch {
@@ -52,6 +90,7 @@ function saveEncryptionConfig(config) {
   }
   derivedKeyCache.clear();
 }
+
 
 /**
  * Derive a 32-byte key from the encryption key string
