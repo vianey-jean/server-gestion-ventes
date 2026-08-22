@@ -19,7 +19,7 @@ const { getClientIp } = require('../middleware/ipBlocklist');
 // --- Public : vérification de l'IP appelante ------------------------------
 router.get('/check', (req, res) => {
   const ip = getClientIp(req);
-  const entry = BlockageIp.find(ip);
+  const entry = BlockageIp.findActive(ip);
   res.json({
     ip,
     blocked: !!entry,
@@ -53,6 +53,34 @@ router.post('/', authMiddleware, (req, res) => {
   if (result.error) return res.status(400).json({ message: result.error });
 
   res.status(201).json({ success: true, entry: result.entry });
+});
+
+// --- Modification d'une IP bloquée ----------------------------------------
+router.put('/:id', authMiddleware, (req, res) => {
+  const { ip, reason } = req.body || {};
+  if (ip !== undefined) {
+    if (!ip || typeof ip !== 'string') {
+      return res.status(400).json({ message: 'Adresse IP requise' });
+    }
+    const self = BlockageIp.normalizeIp(getClientIp(req));
+    if (BlockageIp.normalizeIp(ip) === self) {
+      return res.status(400).json({ message: 'Vous ne pouvez pas bloquer votre propre adresse IP' });
+    }
+  }
+  const result = BlockageIp.update(req.params.id, { ip, reason });
+  if (result.error) return res.status(400).json({ message: result.error });
+  res.json({ success: true, entry: result.entry });
+});
+
+// --- Activation / mise en pause d'un blocage --------------------------------
+router.patch('/:id/active', authMiddleware, (req, res) => {
+  const { active } = req.body || {};
+  if (typeof active !== 'boolean') {
+    return res.status(400).json({ message: 'Champ "active" (booléen) requis' });
+  }
+  const result = BlockageIp.setActive(req.params.id, active);
+  if (result.error) return res.status(404).json({ message: result.error });
+  res.json({ success: true, entry: result.entry });
 });
 
 router.delete('/:id', authMiddleware, (req, res) => {

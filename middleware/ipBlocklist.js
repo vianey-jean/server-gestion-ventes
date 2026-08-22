@@ -32,7 +32,8 @@ const ipBlocklistMiddleware = (req, res, next) => {
     const ip = getClientIp(req);
     if (!ip) return next();
 
-    const entry = BlockageIp.find(ip);
+    // Seuls les blocages ACTIFS interdisent l'accès (un blocage en pause laisse passer)
+    const entry = BlockageIp.findActive(ip);
     if (!entry) return next();
 
     return res.status(403).json({

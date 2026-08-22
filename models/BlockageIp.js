@@ -46,17 +46,61 @@ const normalizeIp = (ip) => {
   return v;
 };
 
-const getAll = () => read().ips;
+/** Un blocage est actif par défaut (compat. anciennes entrées sans champ `active`). */
+const isActive = (entry) => entry?.active !== false;
+
+const getAll = () => read().ips.map((e) => ({ ...e, active: isActive(e) }));
 
 const isBlocked = (ip) => {
   const target = normalizeIp(ip);
   if (!target) return false;
-  return read().ips.some((e) => normalizeIp(e.ip) === target);
+  return read().ips.some((e) => normalizeIp(e.ip) === target && isActive(e));
 };
 
+/** Retourne l'entrée correspondante (active ou non). */
 const find = (ip) => {
   const target = normalizeIp(ip);
-  return read().ips.find((e) => normalizeIp(e.ip) === target) || null;
+  const entry = read().ips.find((e) => normalizeIp(e.ip) === target);
+  return entry ? { ...entry, active: isActive(entry) } : null;
+};
+
+/** Retourne l'entrée uniquement si le blocage est actif. */
+const findActive = (ip) => {
+  const entry = find(ip);
+  return entry && entry.active ? entry : null;
+};
+
+/** Modifie l'adresse IP et/ou le motif d'une entrée existante. */
+const update = (id, { ip, reason } = {}) => {
+  const data = read();
+  const idx = data.ips.findIndex((e) => e.id === id);
+  if (idx === -1) return { error: 'Adresse IP introuvable' };
+
+  if (ip !== undefined) {
+    const target = normalizeIp(ip);
+    if (!target) return { error: 'Adresse IP invalide' };
+    if (data.ips.some((e, i) => i !== idx && normalizeIp(e.ip) === target)) {
+      return { error: 'Cette adresse IP est déjà bloquée' };
+    }
+    data.ips[idx].ip = target;
+  }
+  if (reason !== undefined) {
+    data.ips[idx].reason = reason ? String(reason).slice(0, 300) : null;
+  }
+  data.ips[idx].updatedAt = new Date().toISOString();
+  write(data);
+  return { entry: { ...data.ips[idx], active: isActive(data.ips[idx]) } };
+};
+
+/** Active / désactive un blocage sans le supprimer. */
+const setActive = (id, active) => {
+  const data = read();
+  const idx = data.ips.findIndex((e) => e.id === id);
+  if (idx === -1) return { error: 'Adresse IP introuvable' };
+  data.ips[idx].active = !!active;
+  data.ips[idx].updatedAt = new Date().toISOString();
+  write(data);
+  return { entry: { ...data.ips[idx], active: !!active } };
 };
 
 const add = ({ ip, reason, createdBy }) => {
@@ -88,4 +132,6 @@ const remove = (idOrIp) => {
   return true;
 };
 
-module.exports = { getAll, isBlocked, find, add, remove, normalizeIp };
+module.exports = {
+  getAll, isBlocked, find, findActive, add, update, setActive, remove, normalizeIp,
+};
